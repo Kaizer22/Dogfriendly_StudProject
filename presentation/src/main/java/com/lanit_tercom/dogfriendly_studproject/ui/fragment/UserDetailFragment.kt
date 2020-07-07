@@ -10,6 +10,9 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 
+/*
+По минимуму скопировано с примера
+ */
 class UserDetailFragment : BaseFragment(), UserDetailsView{
 
     private val id: String? = null
