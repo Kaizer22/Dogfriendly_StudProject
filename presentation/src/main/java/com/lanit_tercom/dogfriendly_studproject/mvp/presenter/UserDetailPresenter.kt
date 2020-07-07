@@ -7,9 +7,6 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
     private val userId: String? = null
     private var viewDetailsView: UserDetailsView = userDetailsView
 
-    //    private fun showUserDetailsInView(userDto: UserDto) {
-//        val userModel: UserModel = this.userDtoModelMapper.map2(userDto)
-//        viewDetailsView!!.renderCurrentUser(userModel)
-//    }
+
 
 }
