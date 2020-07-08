@@ -1,7 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
-
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainActivity
 
 
 class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallback {
@@ -24,7 +25,7 @@ class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallbac
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getMapAsync(this)
-        presenter.fillListOfActiveUsers()
+
 
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -33,15 +34,26 @@ class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallbac
     override fun onStart() {
         super.onStart()
         Log.i("mapState", googleMap.toString())
-        presenter.renderMap()
+
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
+        presenter.fillListOfActiveUsers()
+        presenter.renderMap()
+
+        googleMap?.setOnMarkerClickListener {
+            //Да да, дебильный способ, но я пока не придумал лучше
+            if (activity is MainActivity)
+                (activity as MainActivity).replace(UserDetailFragment())
+
+            true
+        }
     }
 
 
     override fun renderCurrentUser(user: UserModel) {
+
         googleMap?.apply {
             val point = LatLng(user.point.x, user.point.y)
             addMarker(

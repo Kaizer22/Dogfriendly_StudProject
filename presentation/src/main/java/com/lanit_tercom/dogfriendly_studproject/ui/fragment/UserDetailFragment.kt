@@ -13,13 +13,14 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 /*
 По минимуму скопировано с примера
  */
-class UserDetailFragment : BaseFragment(), UserDetailsView{
+class UserDetailFragment() : BaseFragment(), UserDetailsView{
 
     private val id: String? = null
     private var userDetailPresenter: UserDetailPresenter? = null
 
     private var user_id: TextView? = null
     private var user_name: TextView? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +43,6 @@ class UserDetailFragment : BaseFragment(), UserDetailsView{
     override fun renderCurrentUser(user: UserModel) {
         this.user_id?.text = user.id.toString()
         this.user_name?.text = user.name
-
     }
 
 }
