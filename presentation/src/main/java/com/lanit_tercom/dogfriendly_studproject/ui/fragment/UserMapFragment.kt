@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.widget.TextView
+import com.google.android.gms.maps.SupportMapFragment
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 
-class UserMapFragment : BaseFragment(){
+class UserMapFragment : SupportMapFragment(){
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun initializePresenter() {
-        TODO("Not yet implemented")
-    }
 }
