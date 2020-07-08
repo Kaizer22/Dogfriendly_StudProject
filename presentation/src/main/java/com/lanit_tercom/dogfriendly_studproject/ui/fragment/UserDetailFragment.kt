@@ -14,6 +14,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 По минимуму скопировано с примера
  */
 class UserDetailFragment : BaseFragment(), UserDetailsView{
+
     private val id: String? = null
     private var userDetailPresenter: UserDetailPresenter? = null
 
@@ -26,9 +27,7 @@ class UserDetailFragment : BaseFragment(), UserDetailsView{
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val fragmentView: View = inflater.inflate(R.layout.fragment_user_detail, container, false)
-
 
         this.user_id = fragmentView.findViewById(R.id.user_id)
         this.user_name = fragmentView.findViewById(R.id.user_name)
@@ -40,11 +39,10 @@ class UserDetailFragment : BaseFragment(), UserDetailsView{
         userDetailPresenter = UserDetailPresenter(this)
     }
 
-    override fun renderCurrentUser(user: UserModel?) {
-        if (user != null) {
-            this.user_id?.text = user.id
-            this.user_name?.text = user.name
-        }
+    override fun renderCurrentUser(user: UserModel) {
+        this.user_id?.text = user.id.toString()
+        this.user_name?.text = user.name
+
     }
 
 }
