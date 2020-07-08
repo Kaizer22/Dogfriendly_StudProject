@@ -39,11 +39,10 @@ class UserDetailFragment : BaseFragment(), UserDetailsView{
         userDetailPresenter = UserDetailPresenter(this)
     }
 
-    override fun renderCurrentUser(user: UserModel?) {
-        if (user != null) {
-            this.user_id?.text = user.id
-            this.user_name?.text = user.name
-        }
+    override fun renderCurrentUser(user: UserModel) {
+        this.user_id?.text = user.id.toString()
+        this.user_name?.text = user.name
+
     }
 
 }
