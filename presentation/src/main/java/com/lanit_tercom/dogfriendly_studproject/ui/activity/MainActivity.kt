@@ -13,40 +13,22 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserMapFragment
 
-class MainActivity : BaseActivity(), UserDetailsView, OnMapReadyCallback{
+class MainActivity : BaseActivity(){
 
-    private val presenter = UserDetailPresenter(this)
-    private var googleMap: GoogleMap? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val mapFragment = UserMapFragment()
         addFragment(R.id.activity_main, mapFragment)
-        mapFragment.getMapAsync(this)
-        googleMap?.setOnMarkerClickListener {
+
+        mapFragment.googleMap?.setOnMarkerClickListener {
             replaceFragment(R.id.activity_main, UserDetailFragment())
             true
         }
-        presenter.fillListOfActiveUsers()
-        presenter.renderMap()
-
-    }
-    override fun onMapReady(googleMap: GoogleMap?) {
-        this.googleMap = googleMap
 
     }
 
-    override fun renderCurrentUser(user: UserModel) {
-        googleMap?.apply {
-            val point = LatLng(user.point.x, user.point.y)
-            addMarker(
-                    MarkerOptions()
-                            .position(point)
-                            .title("id: ${user.id} name: ${user.name}")
-            )
-            //moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
-        }
-    }
 }
