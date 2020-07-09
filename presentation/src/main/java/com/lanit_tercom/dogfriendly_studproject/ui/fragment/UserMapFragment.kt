@@ -13,6 +13,7 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainActivity
 
 /**
@@ -25,13 +26,7 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
     private var userDetailPresenter: UserDetailPresenter? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // сохранение состояния фрагмента и инициализация presenter
-        retainInstance = true
-        initializePresenter()
 
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_map, container, false)
@@ -47,10 +42,11 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
         userDetailPresenter?.renderMap()
 
 
-        googleMap?.setOnMarkerClickListener {
-
-            if (activity is MainActivity)
-                (activity as MainActivity).replace(UserDetailFragment())
+        googleMap?.setOnMarkerClickListener {marker ->
+            val userDetailFragment = UserDetailFragment()
+            val user = userDetailPresenter?.listOfActiveUsers?.find { it.id == marker.title.toInt() }
+            userDetailFragment.attachUser(user)
+            (activity as BaseActivity).replaceFragment(R.id.activity_main, userDetailFragment)
 
             true
         }
@@ -60,13 +56,13 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
         userDetailPresenter = UserDetailPresenter(this)
     }
 
-    override fun renderCurrentUser(user: UserModel) {
+    override fun renderCurrentUser(user: UserModel?) {
         googleMap?.apply {
-            val point = LatLng(user.point.x, user.point.y)
+            val point = LatLng(user?.point?.x ?: 0.0, user?.point?.y ?: 0.0)
             addMarker(
                     MarkerOptions()
                             .position(point)
-                            .title("id: ${user.id} name: ${user.name}")
+                            .title("${user?.id}")
             )
         }
     }

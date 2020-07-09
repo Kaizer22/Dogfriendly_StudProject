@@ -16,7 +16,7 @@ class UserSignInFragment : BaseFragment(), UserDetailsView {
         TODO("Not yet implemented")
     }
 
-    override fun renderCurrentUser(user: UserModel) {
+    override fun renderCurrentUser(user: UserModel?) {
         TODO("Not yet implemented")
     }
 

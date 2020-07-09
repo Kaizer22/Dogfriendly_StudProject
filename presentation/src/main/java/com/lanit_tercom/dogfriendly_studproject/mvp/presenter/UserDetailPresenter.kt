@@ -29,14 +29,10 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
         UseCaseTemp.fillList(listOfActiveUsers)
     }
 
-    fun renderUser(id: Int){
-        var current : UserModel = UserModel(0, "dummy_user", Point(0.0,0.0))
+    fun renderUser(id: Int?){
+        val user = listOfActiveUsers.find { it.id == id }
 
-        listOfActiveUsers.forEach{
-            if(id == it.id) current = it}
-
-
-        viewDetailsView.renderCurrentUser(current)
+        viewDetailsView.renderCurrentUser(user)
 
     }
 

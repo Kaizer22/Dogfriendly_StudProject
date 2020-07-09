@@ -11,14 +11,14 @@ import androidx.fragment.app.Fragment
  */
 abstract class BaseActivity : AppCompatActivity() {
 
-    protected fun addFragment(containerViewId: Int, fragment: Fragment?) {
+    fun addFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
         fragmentTransaction.add(containerViewId, fragment!!)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
-    protected fun replaceFragment(containerViewId: Int, fragment: Fragment?) {
+    fun replaceFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(containerViewId, fragment!!)
         fragmentTransaction.addToBackStack(null)

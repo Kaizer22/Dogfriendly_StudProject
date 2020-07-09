@@ -8,5 +8,5 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  * @author nikolaygorokhov1@gmail.com
  */
 interface UserDetailsView{
-    fun renderCurrentUser(user: UserModel)
+    fun renderCurrentUser(user: UserModel?)
 }
