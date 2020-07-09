@@ -17,7 +17,10 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainActivity
 
-
+/**
+ * Фрагмент работающий с API googleMaps
+ * @author prostak.sasha111@mail.ru
+ */
 class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallback {
 
     var googleMap: GoogleMap? = null
@@ -26,15 +29,7 @@ class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallbac
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getMapAsync(this)
 
-
-
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.i("mapState", googleMap.toString())
-
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -43,7 +38,7 @@ class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallbac
         presenter.renderMap()
 
         googleMap?.setOnMarkerClickListener {
-            //Да да, дебильный способ, но я пока не придумал лучше
+
             if (activity is MainActivity)
                 (activity as MainActivity).replace(UserDetailFragment())
 
@@ -53,9 +48,10 @@ class UserMapFragment : SupportMapFragment(), UserDetailsView, OnMapReadyCallbac
 
 
     override fun renderCurrentUser(user: UserModel) {
-
         googleMap?.apply {
             val point = LatLng(user.point.x, user.point.y)
+
+
             addMarker(
                     MarkerOptions()
                             .position(point)
