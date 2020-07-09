@@ -18,7 +18,9 @@ class MainActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val mapFragment = UserMapFragment()
-        addFragment(R.id.activity_main, mapFragment)
+        // Проверка на то, создается ли актвиность впервые
+        if (savedInstanceState == null)
+            addFragment(R.id.activity_main, mapFragment)
     }
 
     //Позволяет использовать protected функцию из BaseActivity в других классах.

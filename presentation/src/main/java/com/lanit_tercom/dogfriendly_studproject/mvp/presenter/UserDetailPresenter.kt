@@ -16,7 +16,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 class UserDetailPresenter(userDetailsView: UserDetailsView) {
     private val userId: String? = null
     private var viewDetailsView: UserDetailsView = userDetailsView
-    private val listOfActiveUsers: MutableList<UserModel> = mutableListOf()
+    val listOfActiveUsers: MutableList<UserModel> = mutableListOf()
     private val UseCaseTemp = UseCaseTemp()
 
     fun renderMap(){
