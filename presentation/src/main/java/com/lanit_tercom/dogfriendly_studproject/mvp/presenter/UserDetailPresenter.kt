@@ -8,7 +8,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
-
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 /**
  * presenter класс для работы с пользователями
  * @author prostak.sasha111@mail.ru
@@ -16,8 +16,8 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
  */
 class UserDetailPresenter(userDetailsView: UserDetailsView) {
     private var viewDetailsView: UserDetailsView = userDetailsView
-    val listOfActiveUsers: MutableList<UserModel> = mutableListOf()
-    private val UseCaseTemp = UseCaseTemp()
+    val listOfActiveUsers: MutableSet<UserModel> = mutableSetOf()
+    private val useCaseTemp = UseCaseTemp()
 
 
 
@@ -28,7 +28,7 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
     }
 
     fun fillListOfActiveUsers(){
-        UseCaseTemp.fillList(listOfActiveUsers)
+        useCaseTemp.fillList(listOfActiveUsers)
     }
 
     fun renderUser(id: Int?){
@@ -36,13 +36,11 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
         viewDetailsView.renderCurrentUser(user)
     }
 
-    fun auth(){
+    fun auth(email: String?, password: String?){
         if (viewDetailsView is UserSignInFragment){
-            val email = (viewDetailsView as UserSignInFragment).email
-            val password = (viewDetailsView as UserSignInFragment).password
 
             listOfActiveUsers.forEach {
-                if(it.email == email && it.password ==password){
+                if(it.email == email && it.password == password){
                     (viewDetailsView as UserSignInFragment).isRegistered = true
                 }
             }
@@ -50,9 +48,9 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
         }
     }
 
-    //TODO реализовать
-    fun registerUser(){
-
+    fun registerUser(email: String?, password: String?, name: String?){
+        var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
+        useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
     }
 
 

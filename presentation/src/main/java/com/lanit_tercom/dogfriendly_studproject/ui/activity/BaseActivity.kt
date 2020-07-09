@@ -13,14 +13,16 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun addFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(containerViewId, fragment!!)
+        if (fragment != null)
+            fragmentTransaction.add(containerViewId, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
     fun replaceFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(containerViewId, fragment!!)
+        if (fragment != null)
+            fragmentTransaction.replace(containerViewId, fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }

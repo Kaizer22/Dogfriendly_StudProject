@@ -23,7 +23,6 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainActivity
 class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
 
     var googleMap: GoogleMap? = null
-    private var userDetailPresenter: UserDetailPresenter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_map, container, false)
@@ -42,14 +41,10 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
             val userDetailFragment = UserDetailFragment()
             val user = userDetailPresenter?.listOfActiveUsers?.find { it.id == marker.title.toInt() }
             userDetailFragment.attachUser(user)
-            (activity as BaseActivity).replaceFragment(R.id.activity_main, userDetailFragment)
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, userDetailFragment)
 
             true
         }
-    }
-
-    override fun initializePresenter(){
-        userDetailPresenter = UserDetailPresenter(this)
     }
 
     override fun renderCurrentUser(user: UserModel?) {

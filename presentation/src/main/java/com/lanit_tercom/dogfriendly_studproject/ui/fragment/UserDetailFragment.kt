@@ -14,12 +14,12 @@ import kotlinx.android.synthetic.main.fragment_user_detail.*
 /**
  * Фрагмент отображающий окно пользователя
  * @author nikolaygorokhov1@gmail.com
+ * @author prostak.sasha111@mail.ru
  */
 
-class UserDetailFragment : BaseFragment(), UserDetailsView{
+class UserDetailFragment : BaseFragment(){
 
     private var user: UserModel? = null
-    private var userDetailPresenter: UserDetailPresenter? = null
 
 
 
@@ -29,16 +29,12 @@ class UserDetailFragment : BaseFragment(), UserDetailsView{
 
     override fun onStart() {
         super.onStart()
-        userDetailPresenter?.fillListOfActiveUsers()
         userDetailPresenter?.renderUser(user?.id)
     }
 
     fun attachUser(user: UserModel?){
         this.user = user
     }
-
-    override fun initializePresenter(){
-        userDetailPresenter = UserDetailPresenter(this)}
 
     override fun renderCurrentUser(user: UserModel?) {
         user_id.text = user?.id.toString()

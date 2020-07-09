@@ -23,7 +23,7 @@ class MainActivity : BaseActivity(){
 
         if (savedInstanceState == null)
             //addFragment(R.id.activity_main, mapFragment)
-            addFragment(R.id.activity_main, signInFragment)
+            addFragment(R.id.ft_container, signInFragment)
     }
 
 

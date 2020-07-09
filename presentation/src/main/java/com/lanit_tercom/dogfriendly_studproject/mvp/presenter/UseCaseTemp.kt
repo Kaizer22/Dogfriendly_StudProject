@@ -9,7 +9,9 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  * @author nikolaygorokhov1@gmail.com
  */
 class UseCaseTemp {
-    val users: MutableList<UserModel> = mutableListOf()
+    companion object{
+        val users: MutableSet<UserModel> = mutableSetOf()
+    }
 
     init{
         users.add(UserModel(1,"Bob", "bob@gmail.com", "Qwer1234", Point(10.2, 50.3)))
@@ -17,10 +19,15 @@ class UseCaseTemp {
         users.add(UserModel(3, "Beatrice", "beatrice@gmail.com", "password", Point(30.3, 30.5)))
     }
 
-    fun fillList(list: MutableList<UserModel>){
+    fun fillList(list: MutableSet<UserModel>){
         users.forEach {
             list.add(it)
         }
+    }
+
+    fun addUser(user: UserModel){
+        users.add(user)
+
     }
 
 
