@@ -25,16 +25,12 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback {
     var googleMap: GoogleMap? = null
     private var userDetailPresenter: UserDetailPresenter? = null
 
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         return view
     }
-
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap

@@ -12,7 +12,6 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-//TODO: Тут вообще все неправильно и не работает, саня помоги(((
 class UserDetailPresenter(userDetailsView: UserDetailsView) {
     private val userId: String? = null
     private var viewDetailsView: UserDetailsView = userDetailsView
@@ -24,16 +23,19 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
             viewDetailsView.renderCurrentUser(it)
         }
     }
-
     fun fillListOfActiveUsers(){
         UseCaseTemp.fillList(listOfActiveUsers)
     }
 
     fun renderUser(id: Int?){
         val user = listOfActiveUsers.find { it.id == id }
-
         viewDetailsView.renderCurrentUser(user)
+    }
+
+    fun auth(){
 
     }
+
+
 
 }

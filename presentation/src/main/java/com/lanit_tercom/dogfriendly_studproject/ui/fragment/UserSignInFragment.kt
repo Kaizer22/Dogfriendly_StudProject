@@ -12,12 +12,11 @@ class UserSignInFragment : BaseFragment(), UserDetailsView {
 
     private var userDetailPresenter: UserDetailPresenter? = null
 
-    override fun initializePresenter() {
-        TODO("Not yet implemented")
-    }
+    override fun initializePresenter(){
+        userDetailPresenter = UserDetailPresenter(this)}
 
     override fun renderCurrentUser(user: UserModel?) {
-        TODO("Not yet implemented")
+
     }
 
 }

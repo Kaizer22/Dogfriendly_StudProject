@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_user_detail.*
  * Фрагмент отображающий окно пользователя
  * @author nikolaygorokhov1@gmail.com
  */
-//TODO: Тут вообще все неправильно и не работает, саня помоги(((
+
 class UserDetailFragment : BaseFragment(), UserDetailsView{
 
     private var user: UserModel? = null
