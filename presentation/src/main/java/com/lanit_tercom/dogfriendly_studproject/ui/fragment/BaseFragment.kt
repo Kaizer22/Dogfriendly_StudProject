@@ -26,7 +26,7 @@ abstract class BaseFragment : Fragment(), UserDetailsView {
     private fun initializePresenter(){
         userDetailPresenter = UserDetailPresenter(this)
     }
-    protected fun showToastMessage(message: String?) {
+    fun showToastMessage(message: String?) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 }

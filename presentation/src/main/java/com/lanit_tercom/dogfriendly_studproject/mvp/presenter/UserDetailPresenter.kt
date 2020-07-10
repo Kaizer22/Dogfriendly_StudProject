@@ -7,7 +7,9 @@ import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.BaseFragment
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
+import java.lang.Exception
 
 /**
  * presenter класс для работы с пользователями
@@ -36,7 +38,13 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
 
     fun auth(email: String?, password: String?){
         if (viewDetailsView is UserSignInFragment)
-            authManager.signInEmail(email, password)
+            try{
+                authManager.signInEmail(email, password)
+                (viewDetailsView as UserSignInFragment).isRegistered = true
+            }catch (e: Exception){
+                (viewDetailsView as UserSignInFragment).showToastMessage(e.message)
+
+            }
     }
 
     fun registerUser(email: String?, password: String?, name: String?){
