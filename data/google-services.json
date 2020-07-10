@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "167502802471",
+    "firebase_url": "https://dogfriendlystudproject.firebaseio.com",
+    "project_id": "dogfriendlystudproject",
+    "storage_bucket": "dogfriendlystudproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167502802471:android:b1df3772038c3f2806e802",
+        "android_client_info": {
+          "package_name": ""
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167502802471-norqlcredu1sqbll121s53d18lb2q58a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "",
+            "certificate_hash": "3e6cc3ea48e16cc15f870924932855ce5d2b19ca"
+          }
+        },
+        {
+          "client_id": "167502802471-feb2vc8db4umdlf4cocujcgvcupon27u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNEhsObtRUmA5nXRY1DsSMPSgxQn-qcxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167502802471-feb2vc8db4umdlf4cocujcgvcupon27u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
