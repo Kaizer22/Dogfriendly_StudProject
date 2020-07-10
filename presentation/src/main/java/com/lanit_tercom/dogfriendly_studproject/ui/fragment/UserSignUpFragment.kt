@@ -41,7 +41,6 @@ class UserSignUpFragment : BaseFragment(), UserDetailsView {
         }
     }
 
-    override fun renderCurrentUser(user: UserModel?) {
+    override fun renderCurrentUser(user: UserModel?) {}
 
-    }
 }
