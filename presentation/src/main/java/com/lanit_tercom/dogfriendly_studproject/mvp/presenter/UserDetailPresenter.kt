@@ -1,6 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 
+import android.util.Log
+import com.lanit_tercom.data.auth_manager.AuthManager
+import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
@@ -14,7 +17,10 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
 class UserDetailPresenter(userDetailsView: UserDetailsView) {
     private var viewDetailsView: UserDetailsView = userDetailsView
     val listOfActiveUsers: MutableSet<UserModel> = mutableSetOf()
+
     private val useCaseTemp = UseCaseTemp()
+
+    val authManager : AuthManager = AuthManagerFirebaseImpl()
 
     fun fillListOfActiveUsers() =
             useCaseTemp.fillList(listOfActiveUsers)
@@ -30,6 +36,19 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
 
     fun auth(email: String?, password: String?){
         if (viewDetailsView is UserSignInFragment)
+            authManager.signInEmail(email, password)
+    }
+
+    fun registerUser(email: String?, password: String?, name: String?){
+        authManager.createUserWithEmailPassword(email, password)
+
+        var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
+        useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
+    }
+
+    /*
+    fun auth(email: String?, password: String?){
+        if (viewDetailsView is UserSignInFragment)
             listOfActiveUsers.forEach {
                 if(it.email == email && it.password == password)
                     (viewDetailsView as UserSignInFragment).isRegistered = true}
@@ -39,4 +58,6 @@ class UserDetailPresenter(userDetailsView: UserDetailsView) {
         var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
         useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
     }
+
+     */
 }
