@@ -19,10 +19,6 @@ class UseCaseTemp {
         users.add(UserModel(3, "Beatrice", "beatrice@gmail.com", "password", Point(30.3, 30.5)))
     }
 
-    fun fillList(list: MutableSet<UserModel>) =
-        users.forEach { list.add(it) }
-
-
     fun addUser(user: UserModel) = users.add(user)
 
 

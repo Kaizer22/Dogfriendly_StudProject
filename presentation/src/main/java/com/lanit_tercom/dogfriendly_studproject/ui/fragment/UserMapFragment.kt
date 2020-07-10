@@ -9,9 +9,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserMapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 
 
@@ -19,8 +23,8 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
  * Фрагмент работающий с API googleMaps
  * @author prostak.sasha111@mail.ru
  */
-class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback, OnBackButtonListener {
-
+class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackButtonListener {
+    private var userMapPresenter: UserMapPresenter? = null
     private var googleMap: GoogleMap? = null
     private var running = false
 
@@ -44,21 +48,14 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback, OnB
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        userDetailPresenter?.fillListOfActiveUsers()
-        userDetailPresenter?.renderMap()
-
-
-        googleMap?.setOnMarkerClickListener {marker ->
-            val userDetailFragment = UserDetailFragment()
-            val user = userDetailPresenter?.listOfActiveUsers?.find { it.id == marker.title.toInt() }
-            userDetailFragment.attachUser(user)
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, userDetailFragment)
-
+        userMapPresenter?.renderMap()
+        googleMap?.setOnMarkerClickListener {
+            toDetailScreen(it.title.toInt())
             true
         }
     }
 
-    override fun renderCurrentUser(user: UserModel?) {
+    override fun renderUserOnMap(user: UserModel?) {
         googleMap?.apply {
             val point = LatLng(user?.point?.x ?: 0.0, user?.point?.y ?: 0.0)
             addMarker(
@@ -69,7 +66,13 @@ class UserMapFragment : BaseFragment(), UserDetailsView, OnMapReadyCallback, OnB
         }
     }
 
+    override fun initializePresenter() {
+        userMapPresenter = UserMapPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
+    }
 
+    override fun toDetailScreen(id: Int) {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(id))
+    }
 
 
 

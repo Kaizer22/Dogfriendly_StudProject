@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignUpPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 
@@ -16,12 +20,12 @@ import kotlinx.android.synthetic.main.fragment_sign_up.*
  * @author nikolaygorokhov1@gmail.com
  * @author prostak.sasha111@mail.ru
  */
-class UserSignUpFragment : BaseFragment(), UserDetailsView {
+class UserSignUpFragment : BaseFragment(), UserSignUpView {
+    private var userSignUpPresenter: UserSignUpPresenter? = null
     private var email: String? = null
     private var password: String? = null
     private var password_repeat: String? = null
     private var name: String? = null
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sign_up, container, false)
@@ -35,12 +39,16 @@ class UserSignUpFragment : BaseFragment(), UserDetailsView {
             name = edit_name.text.toString()
             password_repeat = edit_repeat_password.text.toString()
             if (password == password_repeat){
-                userDetailPresenter?.registerUser(email, password, name)
-                (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
+                userSignUpPresenter?.registerUser(email, password, name)
             } else showToastMessage("Пароли не совпадают!")
         }
     }
 
-    override fun renderCurrentUser(user: UserModel?) {}
+    override fun initializePresenter() {
+        userSignUpPresenter = UserSignUpPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
+    }
 
+    override fun toMapScreen() {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
+    }
 }

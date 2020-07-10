@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 
@@ -12,20 +13,16 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
  * Сохраняет состояние фрагмента (при изменении/удалении Activity)
  * @author nikolaygorokhov1@gmail.com
  */
-abstract class BaseFragment : Fragment(), UserDetailsView {
-
-    protected var userDetailPresenter: UserDetailPresenter? = null
+abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
         initializePresenter()
-        userDetailPresenter?.fillListOfActiveUsers()
     }
 
-    private fun initializePresenter(){
-        userDetailPresenter = UserDetailPresenter(this)
-    }
+    abstract fun initializePresenter()
+
     fun showToastMessage(message: String?) {
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
