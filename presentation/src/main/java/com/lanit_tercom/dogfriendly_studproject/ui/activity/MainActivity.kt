@@ -29,10 +29,8 @@ class MainActivity : BaseActivity(){
 
         if (backStackCount > 0) {
             val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.ft_container)
-            if (currentFragment is OnBackButtonListener) {
-                val backListener: OnBackButtonListener? = currentFragment
-                val actionResult: Boolean = backListener!!.onBackPressed()
-                if (actionResult) return
+            if (currentFragment is OnBackButtonListener){
+                if (currentFragment.onBackPressed()) return
             }
         }
 

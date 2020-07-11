@@ -22,8 +22,17 @@ class UserSignInFragment : BaseFragment(), UserSignInView {
     private var email: String? = null
     private var password: String? = null
 
+    override fun initializePresenter() {
+        userSignInPresenter = UserSignInPresenter(null, UseCaseTemp())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sign_in, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userSignInPresenter?.setView(this)
     }
 
     override fun onStart() {
@@ -38,8 +47,31 @@ class UserSignInFragment : BaseFragment(), UserSignInView {
         }
     }
 
-    override fun initializePresenter() {
-        userSignInPresenter = UserSignInPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
+    override fun onPause() {
+        super.onPause()
+        userSignInPresenter?.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userSignInPresenter?.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userSignInPresenter?.onDestroy()
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
     }
 
     override fun toSignUpScreen() =

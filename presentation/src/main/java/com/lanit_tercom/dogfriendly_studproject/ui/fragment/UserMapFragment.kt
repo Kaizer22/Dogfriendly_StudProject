@@ -28,6 +28,10 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
     private var googleMap: GoogleMap? = null
     private var running = false
 
+    override fun initializePresenter() {
+        userMapPresenter = UserMapPresenter(null, UseCaseTemp())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -36,9 +40,41 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userMapPresenter?.setView(this)
+    }
+
     override fun onStop() {
         super.onStop()
         running = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        userMapPresenter?.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userMapPresenter?.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userMapPresenter?.onDestroy()
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
     }
 
     override fun onBackPressed(): Boolean = running
@@ -61,10 +97,6 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
                             .title("${user?.id}")
             )
         }
-    }
-
-    override fun initializePresenter() {
-        userMapPresenter = UserMapPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
     }
 
     override fun toDetailScreen(id: Int) =
