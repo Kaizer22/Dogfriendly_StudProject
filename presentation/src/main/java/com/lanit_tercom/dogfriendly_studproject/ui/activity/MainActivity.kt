@@ -11,7 +11,6 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
  * Запускает фрагмент с картой.
  * @author nikolaygorokhov1@gmail.com
  * @author prostak.sasha111@mail.ru
- *
  */
 class MainActivity : BaseActivity(){
 
@@ -29,10 +28,8 @@ class MainActivity : BaseActivity(){
 
         if (backStackCount > 0) {
             val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.ft_container)
-            if (currentFragment is OnBackButtonListener) {
-                val backListener: OnBackButtonListener? = currentFragment
-                val actionResult: Boolean = backListener!!.onBackPressed()
-                if (actionResult) return
+            if (currentFragment is OnBackButtonListener){
+                if (currentFragment.onBackPressed()) return
             }
         }
 
