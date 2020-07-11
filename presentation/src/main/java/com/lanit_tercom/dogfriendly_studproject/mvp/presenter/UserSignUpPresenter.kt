@@ -5,6 +5,8 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignUpActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignUpFragment
 
 /**
  * presenter класс для работы с регистрацией
@@ -30,7 +32,7 @@ class UserSignUpPresenter(private val authManager: AuthManager?, private val use
         fun registerUser(email: String?, password: String?, name: String?){
             var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
             useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
-            (view as UserSignUpView).toMapScreen()
+            ((view as UserSignUpFragment).activity as UserSignUpActivity).navigateToUserMap()
     }
 
 }

@@ -10,13 +10,14 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignInPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 
 /**
  * Фрагмент отображающий окно авторизации
  * @author nikolaygorokhov1@gmail.com
  */
-class UserSignInFragment : BaseFragment(), UserSignInView {
+class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener {
 
     private var userSignInPresenter: UserSignInPresenter? = null
     private var email: String? = null
@@ -33,17 +34,20 @@ class UserSignInFragment : BaseFragment(), UserSignInView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userSignInPresenter?.setView(this)
+        button_signin.setOnClickListener(this)
+        button_signup.setOnClickListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        button_signin.setOnClickListener {
-            email = enter_email.text.toString()
-            password = enter_password.text.toString()
-            userSignInPresenter?.auth(email, password)
-        }
-        button_signup.setOnClickListener {
-            toSignUpScreen()
+    override fun onClick(v: View?) {
+        when (v?.id){
+            R.id.button_signin -> {
+                email = enter_email.text.toString()
+                password = enter_password.text.toString()
+                userSignInPresenter?.auth(email, password)
+            }
+            R.id.button_signup -> {
+                (activity as UserSignInActivity).navigateToUserSignUp()
+            }
         }
     }
 
@@ -74,10 +78,5 @@ class UserSignInFragment : BaseFragment(), UserSignInView {
         TODO("Not yet implemented")
     }
 
-    override fun toSignUpScreen() =
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserSignUpFragment())
-
-    override fun toMapScreen() =
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
 
 }

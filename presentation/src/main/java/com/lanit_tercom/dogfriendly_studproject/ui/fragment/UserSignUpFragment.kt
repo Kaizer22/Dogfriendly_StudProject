@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_sign_up.button_signup
  * @author nikolaygorokhov1@gmail.com
  * @author prostak.sasha111@mail.ru
  */
-class UserSignUpFragment : BaseFragment(), UserSignUpView {
+class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener {
 
     private var userSignUpPresenter: UserSignUpPresenter? = null
     private var email: String? = null
@@ -36,18 +36,20 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userSignUpPresenter?.setView(this)
+        button_signup.setOnClickListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        button_signup.setOnClickListener {
-            email = edit_email.text.toString()
-            password = edit_password.text.toString()
-            name = edit_name.text.toString()
-            password_repeat = edit_repeat_password.text.toString()
-            if (password == password_repeat){
-                userSignUpPresenter?.registerUser(email, password, name)
-            } else showToastMessage("Пароли не совпадают!")
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.button_signup ->{
+                email = edit_email.text.toString()
+                password = edit_password.text.toString()
+                name = edit_name.text.toString()
+                password_repeat = edit_repeat_password.text.toString()
+                if (password == password_repeat){
+                    userSignUpPresenter?.registerUser(email, password, name)
+                } else showToastMessage("Пароли не совпадают!")
+            }
         }
     }
 
@@ -77,8 +79,5 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView {
     override fun showError(message: String) {
         TODO("Not yet implemented")
     }
-
-    override fun toMapScreen() =
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
 
 }

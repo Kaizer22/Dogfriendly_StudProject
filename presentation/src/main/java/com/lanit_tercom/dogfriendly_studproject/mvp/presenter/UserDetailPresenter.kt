@@ -14,7 +14,7 @@ class UserDetailPresenter(private val authManager: AuthManager?, private val use
         this.view = view
     }
 
-    fun renderUser(id: Int){
+    fun renderUser(id: Int?){
         val user = UseCaseTemp.users.find { it.id == id }
         (view as UserDetailsView).renderCurrentUser(user)
     }

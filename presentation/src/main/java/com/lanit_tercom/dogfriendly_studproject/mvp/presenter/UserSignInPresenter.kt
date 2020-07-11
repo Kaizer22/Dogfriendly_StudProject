@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import com.lanit_tercom.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
 
 /**
@@ -32,7 +33,7 @@ class UserSignInPresenter(private val authManager: AuthManager?, private val use
         if (view is UserSignInFragment)
             UseCaseTemp.users.forEach {
                 if(it.email == email && it.password == password)
-                    (view as UserSignInView).toMapScreen()}
+                    ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()}
     }
 
 }

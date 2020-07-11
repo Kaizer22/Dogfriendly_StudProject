@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
@@ -16,17 +17,17 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserMapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserMapActivity
 
 /**
  * Фрагмент работающий с API googleMaps
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackButtonListener {
+class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private var userMapPresenter: UserMapPresenter? = null
     private var googleMap: GoogleMap? = null
-    private var running = false
 
     override fun initializePresenter() {
         userMapPresenter = UserMapPresenter(null, UseCaseTemp())
@@ -36,18 +37,12 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
         val view = inflater.inflate(R.layout.fragment_user_map, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        running = true
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        running = false
     }
 
     override fun onPause() {
@@ -77,15 +72,16 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
         TODO("Not yet implemented")
     }
 
-    override fun onBackPressed(): Boolean = running
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        (activity as UserMapActivity).navigateToUserDetail(p0?.title?.toInt())
+        return true
+    }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
         userMapPresenter?.renderMap()
-        googleMap?.setOnMarkerClickListener {
-            toDetailScreen(it.title.toInt())
-            true
-        }
+        googleMap?.setOnMarkerClickListener(this)
+
     }
 
     override fun renderUserOnMap(user: UserModel?) {
@@ -98,8 +94,5 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
             )
         }
     }
-
-    override fun toDetailScreen(id: Int) =
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(id))
 
 }

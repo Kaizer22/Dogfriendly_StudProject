@@ -9,6 +9,5 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 interface UserMapView : LoadDataView{
 
     fun renderUserOnMap(user: UserModel?)
-    fun toDetailScreen(id: Int)
 
 }

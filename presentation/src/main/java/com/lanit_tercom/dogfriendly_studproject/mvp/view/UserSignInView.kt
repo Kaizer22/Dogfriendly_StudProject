@@ -6,7 +6,4 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.view
  */
 interface UserSignInView : LoadDataView{
 
-    fun toMapScreen()
-    fun toSignUpScreen()
-
 }
