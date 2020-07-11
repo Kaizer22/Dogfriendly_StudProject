@@ -6,35 +6,59 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.data.entity.UserEntity;
 
 import androidx.annotation.NonNull;
 
 
-import com.lanit_tercom.data.entity.UserEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class FirebaseEntityStore implements UserEntityStore{
+public class FirebaseUserEntityStore implements UsersListStore, UserEntityStore {
 
     private static final String CHILD_USERS = "Users";
-    private List<UserEntity> users = new ArrayList<>();
     private UserEntity userEntity = new UserEntity();
 
     protected DatabaseReference referenceDatabase;
 
 
-    public FirebaseEntityStore(){
+    public FirebaseUserEntityStore(){
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        // Test getUserById() and getAllUsers() methods
+        /*getUserById("1", new UserByIdCallback() {
+            @Override
+            public void onUserLoaded(UserEntity userEntity) {
+                System.out.println("USER: ");
+                System.out.println(userEntity.toString());
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Error");
+            }
+        });
+
+        getAllUsers(new UserListCallback() {
+            @Override
+            public void onUsersListLoaded(List<UserEntity> users) {
+                System.out.println("USER: ");
+                for (UserEntity user: users){
+                    System.out.println(user.toString());
+                }
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Error");
+            }
+        });*/
     }
 
 
-    public void getUserById(final String id, final DataStatus dataStatus){
+    public void getUserById(final String id, final UserByIdCallback userByIdCallback){
         referenceDatabase.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -44,7 +68,7 @@ public class FirebaseEntityStore implements UserEntityStore{
                        userEntity.setId(id);
                    }
                }
-               dataStatus.userEntityLoaded(userEntity); // return UserEntity
+               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
            }
 
            @Override
@@ -55,7 +79,8 @@ public class FirebaseEntityStore implements UserEntityStore{
     }
 
 
-    public void getAllUsers(final DataStatus dataStatus){
+    public void getAllUsers(final UserListCallback userListCallback){
+        final List<UserEntity> users = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,7 +92,7 @@ public class FirebaseEntityStore implements UserEntityStore{
                     userEntity.setId(keyNode.getKey());
                     users.add(userEntity);
                 }
-                dataStatus.allUsersLoaded(users); // return all users from Realtime Database
+                userListCallback.onUsersListLoaded(users); // return all users from Realtime Database
             }
 
             @Override

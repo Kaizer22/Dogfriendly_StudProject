@@ -1,21 +1,16 @@
 package com.lanit_tercom.data;
 
-import android.util.Log;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.firebase.FirebaseEntityStore;
+import com.lanit_tercom.data.firebase.FirebaseUserEntityStore;
 import com.lanit_tercom.data.firebase.UserEntityStore;
+import com.lanit_tercom.data.firebase.UsersListStore;
 import com.lanit_tercom.data.mapper.UserEntityDtoMapper;
 import com.lanit_tercom.domain.dto.UserDto;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static com.google.firebase.database.FirebaseDatabase.getInstance;
@@ -38,24 +33,35 @@ public class ExampleUnitTest {
     @Test
     public void firebaseTest() {
 
-        FirebaseEntityStore userEntityStore = Mockito.mock(FirebaseEntityStore.class);
-
-        final UserEntityDtoMapper userEntityDtoMapper = new UserEntityDtoMapper();
+        FirebaseUserEntityStore userEntityStore = Mockito.mock(FirebaseUserEntityStore.class);
 
         String userId = "1";
 
-        userEntityStore.getUserById(userId, new UserEntityStore.DataStatus() {
+        userEntityStore.getUserById(userId, new UserEntityStore.UserByIdCallback() {
             @Override
-            public void userEntityLoaded(UserEntity userEntity) {
-                UserDto userDto = userEntityDtoMapper.map2(userEntity);
-                System.out.println("Success");
+            public void onUserLoaded(UserEntity userEntity) {
+                System.out.println("USER: ");
+                System.out.println(userEntity.toString());
             }
 
-            @Override public void allUsersLoaded(List<UserEntity> users) {
-                for (UserEntity userEntity: users){
-                    UserDto userDto = userEntityDtoMapper.map2(userEntity);
-                    System.out.println("Success");
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Error");
+            }
+        });
+
+        userEntityStore.getAllUsers(new UsersListStore.UserListCallback() {
+            @Override
+            public void onUsersListLoaded(List<UserEntity> users) {
+                System.out.println("USER: ");
+                for (UserEntity user: users){
+                    System.out.println(user.toString());
                 }
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                System.out.println("Error");
             }
         });
     }

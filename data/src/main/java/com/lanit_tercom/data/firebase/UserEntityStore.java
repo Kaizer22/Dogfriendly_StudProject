@@ -6,13 +6,10 @@ import java.util.List;
 
 public interface UserEntityStore {
 
-
-    interface DataStatus{
-        void allUsersLoaded(List<UserEntity> users);
-        void userEntityLoaded(UserEntity user);
+    interface UserByIdCallback{
+        void onUserLoaded(UserEntity user);
+        void onError(Exception exception);
     }
 
-    void getUserById(String id, DataStatus dataStatus);
-
-    void getAllUsers(DataStatus dataStatus);
+    void getUserById(String id, UserByIdCallback userByIdCallback);
 }

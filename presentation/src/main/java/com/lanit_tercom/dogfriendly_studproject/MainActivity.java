@@ -3,9 +3,8 @@ package com.lanit_tercom.dogfriendly_studproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.lanit_tercom.data.firebase.FirebaseEntityStore;
+import com.lanit_tercom.data.firebase.FirebaseUserEntityStore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,5 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Test getUserById() and getAllUsers() methods from FirebaseUserEntityStore
+        //FirebaseUserEntityStore firebaseUserEntityStore = new FirebaseUserEntityStore();
     }
 }
