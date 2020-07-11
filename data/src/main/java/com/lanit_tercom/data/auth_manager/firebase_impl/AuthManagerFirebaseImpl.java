@@ -2,16 +2,20 @@ package com.lanit_tercom.data.auth_manager.firebase_impl;
 
 import android.util.Log;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.lanit_tercom.data.auth_manager.AuthManager;
 
+import io.realm.Realm;
 
 public class AuthManagerFirebaseImpl implements AuthManager {
-    private FirebaseAuth firebaseAuth;
 
-    //private GoogleApiClient googleApiClient;
+    private FirebaseAuth firebaseAuth;
 
     public AuthManagerFirebaseImpl(){
         this.firebaseAuth = FirebaseAuth.getInstance();
@@ -63,15 +67,25 @@ public class AuthManagerFirebaseImpl implements AuthManager {
             Log.w("AUTH_MANAGER", "Can not restart password with email. " +
                     "Current user is null");
         }
-
     }
 
+    @Override
+    public void signInGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider
+                .getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Log.d("AUTH_MANAGER", "Successfully signed in with Google");
+            }else {
+                Log.w("AUTH_MANAGER", task.getException().getMessage());
+            }
+        });
+    }
 
     @Override
     public void signOut() {
         firebaseAuth.signOut();
         //deleteCache();
-
     }
 
     @Override
@@ -103,15 +117,14 @@ public class AuthManagerFirebaseImpl implements AuthManager {
                                 Log.w("AUTH_MANAGER", task.getException().getMessage());
                             }
                         });
-            } else{
-            Log.w("AUTH_MANAGER", "Can not send a verification email. " +
-                    "Current user is null");
-        }
-
+            } else {
+                Log.w("AUTH_MANAGER", "Can not send a verification email. " +
+                        "Current user is null");
+            }
         }
     }
-   /* private void deleteCache() {
-        Realm.getDefaultInstance().executeTransactionAsync(realm -> realm.deleteAll());
+    private void deleteCache() {
+        Realm.getDefaultInstance().executeTransactionAsync(
+                realm -> realm.deleteAll());
     }
-   */
 }
