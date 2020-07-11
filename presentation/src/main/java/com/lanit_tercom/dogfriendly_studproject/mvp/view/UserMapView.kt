@@ -6,7 +6,6 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  * Интерфейс, который наследуют все классы работающие с картой
  * @author prostak.sasha111@mail.ru
  */
-
 interface UserMapView {
 
     fun renderUserOnMap(user: UserModel?)

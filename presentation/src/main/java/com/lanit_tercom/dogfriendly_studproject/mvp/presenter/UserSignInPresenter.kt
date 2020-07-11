@@ -1,21 +1,13 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import android.app.Activity
 import com.lanit_tercom.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserMapFragment
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignUpFragment
-import java.lang.Exception
 
 /**
  * presenter класс для работы с авторизацией
  * @author prostak.sasha111@mail.ru
  */
-
 class UserSignInPresenter(private val userSignInView: UserSignInView, private val authManager: AuthManager, private val useCaseTemp: UseCaseTemp) {
 
     /*
@@ -37,6 +29,5 @@ class UserSignInPresenter(private val userSignInView: UserSignInView, private va
                 if(it.email == email && it.password == password)
                     userSignInView.toMapScreen()}
     }
-
 
 }

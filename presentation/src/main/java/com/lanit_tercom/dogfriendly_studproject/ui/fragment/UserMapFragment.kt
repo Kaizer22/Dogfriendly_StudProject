@@ -14,16 +14,16 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserMapPresenter
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
-
 
 /**
  * Фрагмент работающий с API googleMaps
  * @author prostak.sasha111@mail.ru
+ * @author nikolaygorokhov1@gmail.com
  */
 class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackButtonListener {
+
     private var userMapPresenter: UserMapPresenter? = null
     private var googleMap: GoogleMap? = null
     private var running = false
@@ -41,10 +41,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
         running = false
     }
 
-    override fun onBackPressed(): Boolean {
-        if (running) return true
-        return false
-    }
+    override fun onBackPressed(): Boolean = running
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
@@ -70,10 +67,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, OnBackB
         userMapPresenter = UserMapPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
     }
 
-    override fun toDetailScreen(id: Int) {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(id))
-    }
-
-
+    override fun toDetailScreen(id: Int) =
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(id))
 
 }

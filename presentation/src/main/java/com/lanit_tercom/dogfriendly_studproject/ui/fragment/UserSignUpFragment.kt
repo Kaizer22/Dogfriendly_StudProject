@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignUpPresenter
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import kotlinx.android.synthetic.main.fragment_sign_up.*
@@ -21,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_sign_up.*
  * @author prostak.sasha111@mail.ru
  */
 class UserSignUpFragment : BaseFragment(), UserSignUpView {
+
     private var userSignUpPresenter: UserSignUpPresenter? = null
     private var email: String? = null
     private var password: String? = null
@@ -48,7 +46,7 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView {
         userSignUpPresenter = UserSignUpPresenter(this, AuthManagerFirebaseImpl(), UseCaseTemp())
     }
 
-    override fun toMapScreen() {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
-    }
+    override fun toMapScreen() =
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserMapFragment())
+
 }
