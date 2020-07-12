@@ -3,9 +3,6 @@ package com.lanit_tercom.data;
 import com.lanit_tercom.data.entity.UserEntity;
 import com.lanit_tercom.data.firebase.FirebaseUserEntityStore;
 import com.lanit_tercom.data.firebase.UserEntityStore;
-import com.lanit_tercom.data.firebase.UsersListStore;
-import com.lanit_tercom.data.mapper.UserEntityDtoMapper;
-import com.lanit_tercom.domain.dto.UserDto;
 
 import org.junit.Test;
 
@@ -50,7 +47,7 @@ public class ExampleUnitTest {
             }
         });
 
-        userEntityStore.getAllUsers(new UsersListStore.UserListCallback() {
+        userEntityStore.getAllUsers(new UserEntityStore.UserListCallback(){
             @Override
             public void onUsersListLoaded(List<UserEntity> users) {
                 System.out.println("USER: ");

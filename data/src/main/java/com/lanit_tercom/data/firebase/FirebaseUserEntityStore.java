@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.data.entity.UserEntity;
+import com.lanit_tercom.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
 
@@ -17,18 +18,22 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class FirebaseUserEntityStore implements UsersListStore, UserEntityStore {
+public class FirebaseUserEntityStore implements UserEntityStore {
 
     private static final String CHILD_USERS = "Users";
     private UserEntity userEntity = new UserEntity();
 
+    private final UserCache userCache;
+
     protected DatabaseReference referenceDatabase;
 
 
-    public FirebaseUserEntityStore(){
+    public FirebaseUserEntityStore(UserCache userCache){ //userCache???
+        this.userCache = userCache;
+
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
         // Test getUserById() and getAllUsers() methods
-        /*getUserById("1", new UserByIdCallback() {
+        getUserById("1", new UserByIdCallback() {
             @Override
             public void onUserLoaded(UserEntity userEntity) {
                 System.out.println("USER: ");
@@ -54,7 +59,7 @@ public class FirebaseUserEntityStore implements UsersListStore, UserEntityStore 
             public void onError(Exception exception) {
                 System.out.println("Error");
             }
-        });*/
+        });
     }
 
 
@@ -100,6 +105,13 @@ public class FirebaseUserEntityStore implements UsersListStore, UserEntityStore 
                 Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
+    }
+
+
+    private void putUserEntityInCache(String userId, UserEntity userEntity){
+        if (userCache != null){
+            this.userCache.saveUser(userId, userEntity);
+        }
     }
 
 }
