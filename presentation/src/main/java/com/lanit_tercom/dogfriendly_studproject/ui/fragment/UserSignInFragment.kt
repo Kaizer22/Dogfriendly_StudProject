@@ -45,9 +45,8 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
                 password = enter_password.text.toString()
                 userSignInPresenter?.auth(email, password)
             }
-            R.id.button_signup -> {
+            R.id.button_signup ->
                 (activity as UserSignInActivity).navigateToUserSignUp()
-            }
         }
     }
 
@@ -77,6 +76,5 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     override fun showError(message: String) {
         TODO("Not yet implemented")
     }
-
 
 }

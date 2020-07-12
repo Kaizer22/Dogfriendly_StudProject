@@ -1,7 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import com.lanit_tercom.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 
 /**
@@ -15,8 +15,8 @@ class UserMapPresenter(private val authManager: AuthManager?, private val useCas
         this.view = view
     }
 
-    fun renderMap() =
-            UseCaseTemp.users.forEach {
+    fun renderMap(users: MutableList<UserModel>?) =
+            users?.forEach {
                 (view as UserMapView).renderUserOnMap(it)}
 
 }

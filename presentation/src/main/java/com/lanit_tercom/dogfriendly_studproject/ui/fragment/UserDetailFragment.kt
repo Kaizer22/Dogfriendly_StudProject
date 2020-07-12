@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
@@ -32,11 +31,8 @@ class UserDetailFragment(private val userId: Int?) : BaseFragment(), UserDetails
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userDetailPresenter?.setView(this)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        userDetailPresenter?.renderUser(userId)
+        val user: UserModel? = userDetailPresenter?.loadUser(userId)
+        userDetailPresenter?.renderUser(user)
     }
 
     override fun onPause() {

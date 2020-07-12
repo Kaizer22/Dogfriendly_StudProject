@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import com.lanit_tercom.data.auth_manager.AuthManager
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 
 /**
@@ -14,9 +15,6 @@ class UserDetailPresenter(private val authManager: AuthManager?, private val use
         this.view = view
     }
 
-    fun renderUser(id: Int?){
-        val user = UseCaseTemp.users.find { it.id == id }
-        (view as UserDetailsView).renderCurrentUser(user)
-    }
+    fun renderUser(user: UserModel?) = (view as UserDetailsView).renderCurrentUser(user)
 
 }

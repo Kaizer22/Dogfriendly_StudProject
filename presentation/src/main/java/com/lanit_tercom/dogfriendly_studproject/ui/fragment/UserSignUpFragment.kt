@@ -46,9 +46,9 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
                 password = edit_password.text.toString()
                 name = edit_name.text.toString()
                 password_repeat = edit_repeat_password.text.toString()
-                if (password == password_repeat){
-                    userSignUpPresenter?.registerUser(email, password, name)
-                } else showToastMessage("Пароли не совпадают!")
+                if (password == password_repeat)
+                    userSignUpPresenter?.registerUser(email, password, name) ?:
+                        showToastMessage("Пароли не совпадают!")
             }
         }
     }

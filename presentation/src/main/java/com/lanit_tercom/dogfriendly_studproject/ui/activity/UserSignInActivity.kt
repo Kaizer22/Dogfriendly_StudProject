@@ -11,36 +11,30 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
  * Активность авторизации.
  * Запускает фрагмент с авторизацией.
  * @author prostak.sasha111@mail.ru
- *
  */
-
 class UserSignInActivity : BaseActivity() {
 
     companion object{
 
-        fun getCallingIntent(context: Context): Intent {
-            return Intent(context, UserSignInActivity::class.java)
-        }
+        fun getCallingIntent(context: Context): Intent =
+            Intent(context, UserSignInActivity::class.java)
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_sign_in)
-        initialize()
-        initializeActivity(savedInstanceState)
     }
 
-    fun navigateToUserSignUp(){
+    fun navigateToUserSignUp() =
         navigator?.navigateToUserSignUp(this)
-    }
 
-    fun navigateToUserMap(){
+    fun navigateToUserMap() =
         navigator?.navigateToUserMap(this)
-    }
 
-    private fun initializeActivity(savedInstanceState: Bundle?){
+    override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
             addFragment(R.id.ft_container, UserSignInFragment())
     }
+
 }

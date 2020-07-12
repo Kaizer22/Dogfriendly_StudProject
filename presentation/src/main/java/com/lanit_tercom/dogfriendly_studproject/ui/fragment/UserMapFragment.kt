@@ -10,13 +10,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserMapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserMapActivity
 
 /**
@@ -79,9 +77,9 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        userMapPresenter?.renderMap()
+        val users: MutableList<UserModel>? = userMapPresenter?.loadUsers()
+        userMapPresenter?.renderMap(users)
         googleMap?.setOnMarkerClickListener(this)
-
     }
 
     override fun renderUserOnMap(user: UserModel?) {

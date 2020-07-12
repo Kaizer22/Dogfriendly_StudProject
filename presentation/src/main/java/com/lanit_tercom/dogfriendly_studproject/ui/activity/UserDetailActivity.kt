@@ -2,7 +2,6 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
@@ -11,9 +10,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
  * Активность данных о пользователе.
  * Запускает фрагмент с данными о пользователе.
  * @author prostak.sasha111@mail.ru
- *
  */
-
 class UserDetailActivity : BaseActivity() {
 
     private var userId: Int? = null
@@ -33,14 +30,13 @@ class UserDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_detail)
-        initialize()
-        initializeActivity(savedInstanceState)
     }
 
-    private fun initializeActivity(savedInstanceState: Bundle?){
+    override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null){
             userId = intent.extras?.getInt(INTENT_EXTRA_PARAM_USER_ID)
             addFragment(R.id.ft_container, UserDetailFragment(userId))
         }
     }
+
 }
