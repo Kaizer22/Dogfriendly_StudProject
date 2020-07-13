@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
@@ -21,7 +22,7 @@ class UserDetailFragment(private val userId: Int?) : BaseFragment(), UserDetails
     private var userDetailPresenter: UserDetailPresenter? = null
 
     override fun initializePresenter() {
-        userDetailPresenter = UserDetailPresenter( null, UseCaseTemp())
+        userDetailPresenter = UserDetailPresenter(AuthManagerFirebaseImpl(), UseCaseTemp())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

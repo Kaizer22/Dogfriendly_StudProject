@@ -17,7 +17,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.navigator = Navigator()
+        initialize()
         initializeActivity(savedInstanceState)
     }
 
@@ -33,6 +33,10 @@ abstract class BaseActivity : AppCompatActivity() {
         if (fragment != null)
             fragmentTransaction.replace(containerViewId, fragment)
         fragmentTransaction.commit()
+    }
+
+    fun initialize(){
+        this.navigator = Navigator()
     }
 
     protected abstract fun initializeActivity(savedInstanceState: Bundle?)
