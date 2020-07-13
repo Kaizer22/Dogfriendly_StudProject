@@ -1,7 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.activity
 
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.lanit_tercom.dogfriendly_studproject.navigation.Navigator
 
 /**
  * Класс от которого наследуются все Activity.
@@ -11,11 +13,18 @@ import androidx.fragment.app.Fragment
  */
 abstract class BaseActivity : AppCompatActivity() {
 
+    protected var navigator: Navigator? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initialize()
+        initializeActivity(savedInstanceState)
+    }
+
     fun addFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
         if (fragment != null)
             fragmentTransaction.add(containerViewId, fragment)
-        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
@@ -23,7 +32,11 @@ abstract class BaseActivity : AppCompatActivity() {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
         if (fragment != null)
             fragmentTransaction.replace(containerViewId, fragment)
-        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
+
+    protected fun initialize(){ this.navigator = Navigator() }
+
+    protected abstract fun initializeActivity(savedInstanceState: Bundle?)
+
 }

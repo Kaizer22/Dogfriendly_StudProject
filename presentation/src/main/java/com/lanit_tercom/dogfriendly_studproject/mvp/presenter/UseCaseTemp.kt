@@ -10,7 +10,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  */
 class UseCaseTemp {
     companion object{
-        val users: MutableSet<UserModel> = mutableSetOf()
+        val users: MutableList<UserModel> = mutableListOf()
     }
 
     init{
@@ -20,7 +20,5 @@ class UseCaseTemp {
     }
 
     fun addUser(user: UserModel) = users.add(user)
-
-
 
 }

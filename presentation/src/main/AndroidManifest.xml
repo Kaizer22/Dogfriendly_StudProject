@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".ui.activity.UserSignInActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.UserSignUpActivity"/>
+        <activity android:name=".ui.activity.UserMapActivity" />
+        <activity android:name=".ui.activity.UserDetailActivity" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -17,14 +29,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6olvefAu4dgT02zRVG7UKVgTmfYdszBw" />
 
-
-        <activity android:name=".ui.activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
