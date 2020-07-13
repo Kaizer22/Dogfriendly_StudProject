@@ -12,5 +12,5 @@ public interface GetUserDetailsUseCase extends Interactor {
         void onError(ErrorBundle errorBundle);
     }
 
-    void perform(String userId, Callback callback);
+    void execute(String userId, Callback callback);
 }

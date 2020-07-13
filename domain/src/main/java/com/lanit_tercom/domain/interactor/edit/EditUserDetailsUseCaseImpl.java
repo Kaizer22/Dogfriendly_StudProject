@@ -19,11 +19,11 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
     }
 
     @Override
-    public void perform(String userId, Callback callback) {
+    public void execute(String userId, Callback callback) {
         if (userId.isEmpty() || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
-        super.perform();
+        super.execute();
         this.callback = callback;
         this.userId = userId;
     }

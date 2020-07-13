@@ -21,7 +21,7 @@ public abstract class UseCase implements Interactor {
         this.postExecutionThread = postExecutionThread;
     }
 
-    protected void perform() {
+    protected void execute() {
         this.threadExecutor.execute(this);
     }
 }

@@ -11,5 +11,5 @@ public interface EditUserDetailsUseCase {
         void onError(ErrorBundle errorBundle);
     }
 
-    void perform(String userId, Callback callback);
+    void execute(String userId, Callback callback);
 }

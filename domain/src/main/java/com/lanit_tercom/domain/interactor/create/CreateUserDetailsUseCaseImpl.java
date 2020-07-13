@@ -17,11 +17,11 @@ public class CreateUserDetailsUseCaseImpl extends UseCase implements CreateUserD
         super(userRepository, threadExecutor, postExecutionThread);
     }
 
-    public void perform(Callback callback) {
+    public void execute(Callback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
-        super.perform();
+        super.execute();
         this.callback = callback;
     }
 

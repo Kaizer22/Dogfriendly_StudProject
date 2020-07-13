@@ -20,11 +20,11 @@ public class GetUsersDetailsUseCaseImpl extends UseCase implements GetUsersDetai
     }
 
     @Override
-    public void perform(Callback callback) {
+    public void execute(Callback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
-        super.perform();
+        super.execute();
         this.callback = callback;
     }
 
