@@ -24,7 +24,7 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     private var password: String? = null
 
     override fun initializePresenter() {
-        userSignInPresenter = UserSignInPresenter(null, UseCaseTemp())
+        userSignInPresenter = UserSignInPresenter(AuthManagerFirebaseImpl(), UseCaseTemp())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

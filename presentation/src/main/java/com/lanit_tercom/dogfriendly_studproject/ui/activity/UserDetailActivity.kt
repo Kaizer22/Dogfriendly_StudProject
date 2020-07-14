@@ -13,13 +13,13 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
  */
 class UserDetailActivity : BaseActivity() {
 
-    private var userId: Int? = null
+    private var userId: String? = null
 
     companion object{
 
         private const val INTENT_EXTRA_PARAM_USER_ID = "INTENT_PARAM_USER_ID"
 
-        fun getCallingIntent(context: Context, userId: Int?): Intent {
+        fun getCallingIntent(context: Context, userId: String?): Intent {
             val callingIntent = Intent(context, UserDetailActivity::class.java)
             callingIntent.putExtra(INTENT_EXTRA_PARAM_USER_ID, userId)
             return callingIntent
@@ -34,7 +34,7 @@ class UserDetailActivity : BaseActivity() {
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null){
-            userId = intent.extras?.getInt(INTENT_EXTRA_PARAM_USER_ID)
+            userId = intent.extras?.getString(INTENT_EXTRA_PARAM_USER_ID)
             addFragment(R.id.ft_container, UserDetailFragment(userId))
         }
     }

@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_user_detail.*
  * @author nikolaygorokhov1@gmail.com
  * @author prostak.sasha111@mail.ru
  */
-class UserDetailFragment(private val userId: Int?) : BaseFragment(), UserDetailsView{
+class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailsView{
 
     private var userDetailPresenter: UserDetailPresenter? = null
 

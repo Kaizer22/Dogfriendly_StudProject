@@ -14,12 +14,12 @@ class UserDtoModelMapper {
         if (userModel == null) { return null }
         val id = userModel.id
         val name = userModel.name
-        return UserDto(id.toString(), name)
+        return UserDto(id, name)
     }
 
     fun map2(userDto: UserDto?): UserModel? {
         if (userDto == null) { return null }
-        val id = userDto.id.toInt()
+        val id = userDto.id
         val name = userDto.name
         val point = Point(Random.nextDouble(20.0,50.0), Random.nextDouble(20.0, 50.0))
         return UserModel(id, name, point = point, email = "martin@gmail.com", password = "12345678")

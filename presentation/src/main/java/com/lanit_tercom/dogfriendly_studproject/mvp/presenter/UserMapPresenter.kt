@@ -9,7 +9,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserMapPresenter(private val authManager: AuthManager?, private val useCaseTemp: UseCaseTemp) : BasePresenter(){
+class UserMapPresenter(private val useCaseTemp: UseCaseTemp) : BasePresenter(){
 
     fun setView(view: UserMapView){
         this.view = view
