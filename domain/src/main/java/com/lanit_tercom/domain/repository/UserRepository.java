@@ -3,9 +3,9 @@ package com.lanit_tercom.domain.repository;
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
-public interface UserRepository {
+import java.util.List;
 
-    void getUserById(String userId, UserDetailsCallback userCallback);
+public interface UserRepository {
 
     /**
      * Callback used to be notified when either a user has been loaded or an error happened.
@@ -17,6 +17,11 @@ public interface UserRepository {
         void onError(ErrorBundle errorBundle); // ErrorBundle errorBundle
     }
 
+    interface UserListCallback{
+        void onUsersListLoaded(List<UserDto> usersDtoList);
+        void onError(ErrorBundle errorBundle);
+    }
+
     /**
      * Get an {@link UserDto} by id.
      *
@@ -24,5 +29,7 @@ public interface UserRepository {
      * @param userCallback A {@link UserDetailsCallback} used for notifying clients.
      */
 
-    //void getUserById(final String userId, UserDetailsCallback userCallback);
+    void getUserById(final String userId, UserDetailsCallback userCallback);
+
+    void getAllUsers(UserListCallback userListCallback);
 }
