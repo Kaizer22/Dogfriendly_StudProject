@@ -10,11 +10,26 @@
       "client_info": {
         "mobilesdk_app_id": "1:167502802471:android:b1df3772038c3f2806e802",
         "android_client_info": {
+<<<<<<< HEAD
           "package_name": "com.lanit_tercom.data"
+=======
+          "package_name": ""
+>>>>>>> antropov_dev
         }
       },
       "oauth_client": [
         {
+<<<<<<< HEAD
+=======
+          "client_id": "167502802471-norqlcredu1sqbll121s53d18lb2q58a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "",
+            "certificate_hash": "3e6cc3ea48e16cc15f870924932855ce5d2b19ca"
+          }
+        },
+        {
+>>>>>>> antropov_dev
           "client_id": "167502802471-feb2vc8db4umdlf4cocujcgvcupon27u.apps.googleusercontent.com",
           "client_type": 3
         }
