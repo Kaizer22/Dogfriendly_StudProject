@@ -2,6 +2,10 @@ package com.lanit_tercom.data.auth_manager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+/**
+ * Интерфейс для взаимодействия с разными реализациями аутентификации
+ * @author dshebut@rambler.ru
+ */
 public interface AuthManager {
 
     interface SignInCallback{
