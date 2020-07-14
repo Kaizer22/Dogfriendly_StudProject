@@ -31,7 +31,6 @@ public interface AuthManager {
 
     void signOut(SignOutCallback signOutCallback);
 
-
     boolean isSignedIn();
 
     String getCurrentUserId();
