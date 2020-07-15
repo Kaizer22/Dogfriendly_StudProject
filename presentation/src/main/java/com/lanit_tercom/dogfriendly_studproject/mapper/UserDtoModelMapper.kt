@@ -12,9 +12,11 @@ import kotlin.random.Random
 class UserDtoModelMapper {
     fun map1(userModel: UserModel?): UserDto? {
         if (userModel == null) { return null }
-        val id = userModel.id
-        val name = userModel.name
-        return UserDto(id, name)
+        val userDto: UserDto = UserDto()
+        userDto.id = userModel.id
+        userDto.name = userModel.name
+        userDto.age = Random.nextInt(18,100)
+        return userDto
     }
 
     fun map2(userDto: UserDto?): UserModel? {

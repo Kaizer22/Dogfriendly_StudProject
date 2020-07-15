@@ -26,10 +26,10 @@ class UserSignInPresenter(private val authManager: AuthManager?, private val use
     fun auth(email: String?, password: String?) {
         try {
             Log.i("AUTH_MANAGER", "sign in button is pressed")
-            authManager?.signOut()
-            authManager?.signInEmail(email, password)
-            val b : Boolean? = authManager?.isSignedIn
-            if(b!!) Navigator().navigateToUserMap((view as UserSignInFragment).requireContext())
+            //authManager?.signOut()
+           // authManager?.signInEmail(email, password)
+            //val b : Boolean? = authManager?.isSignedIn
+            //if(b!!) Navigator().navigateToUserMap((view as UserSignInFragment).requireContext())
 
             //Это сохраним пока, не поймем как правильно сделать взаимодействие
             if (view is UserSignInFragment)

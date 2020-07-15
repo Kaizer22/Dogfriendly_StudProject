@@ -23,7 +23,7 @@ class UserSignUpPresenter(private val authManager: AuthManager?, private val use
 
     fun registerUser(email: String?, password: String?, name: String?) {
         Log.i("AUTH_MANAGER", "sign up button is pressed")
-        authManager?.createUserWithEmailPassword(email, password)
+       // authManager?.createUserWithEmailPassword(email, password)
         //var maxId = UseCaseTemp.users.maxBy { it.id.toInt() }!!.id
         //useCaseTemp.addUser(UserModel((++maxId.toInt()).toString(), name!!, email!!, password!!, Point(21.8, 42.3)))
         Navigator().navigateToUserSignIn((view as UserSignUpFragment).requireContext())

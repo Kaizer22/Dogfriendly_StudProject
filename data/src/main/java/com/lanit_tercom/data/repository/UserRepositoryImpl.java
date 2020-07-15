@@ -56,4 +56,19 @@ public class UserRepositoryImpl implements UserRepository {
             }
         });
     }
+
+    @Override
+    public void getUsers(UsersDetailsCallback userCallback) {
+
+    }
+
+    @Override
+    public void createUser(UserDetailsCallback userCallback) {
+
+    }
+
+    @Override
+    public void editUserById(String name, UserDetailsCallback userCallback) {
+
+    }
 }
