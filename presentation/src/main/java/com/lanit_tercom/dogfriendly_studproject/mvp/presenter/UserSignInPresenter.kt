@@ -15,23 +15,23 @@ class UserSignInPresenter(private val authManager: AuthManager?, private val use
         this.view = view
     }
 
-    /*
+
         fun auth(email: String?, password: String?){
         try{
-            authManager.signInEmail(email, password)
-            userSignInView.toMapScreen()
+            authManager?.signInEmail(email, password)
+            ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
         }catch (e: Exception){
-            (userSignInView as UserSignInFragment).showToastMessage(e.message)
+            (view as UserSignInFragment).showToastMessage(e.message)
         }
     }
-    */
 
-    //Временный метод, пока не разберемся с data слоем
-    fun auth(email: String?, password: String?){
-        if (view is UserSignInFragment)
-            loadUsers().forEach {
-                if(it.email == email && it.password == password)
-                    ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()}
-    }
+
+//    //Временный метод, пока не разберемся с data слоем
+//    fun auth(email: String?, password: String?){
+//        if (view is UserSignInFragment)
+//            loadUsers().forEach {
+//                if(it.email == email && it.password == password)
+//                    ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()}
+//    }
 
 }
