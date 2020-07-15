@@ -23,13 +23,15 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     private static final String CHILD_USERS = "Users";
     private UserEntity userEntity = new UserEntity();
 
-    private final UserCache userCache;
+    private UserCache userCache; //
 
     protected DatabaseReference referenceDatabase;
 
-
-    public FirebaseUserEntityStore(UserCache userCache){ //userCache???
+    public FirebaseUserEntityStore(UserCache userCache){
         this.userCache = userCache;
+    }
+
+    public FirebaseUserEntityStore(){ //userCache???
 
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
         // Test getUserById() and getAllUsers() methods
