@@ -7,29 +7,25 @@ import java.util.List;
 
 public interface UserRepository {
 
-    /**
-     * Callback used to be notified when either a user has been loaded or an error happened.
-     */
-
-    interface UserDetailsCallback {
-        void onUserLoaded(UserDto userDto);
-
-        void onError(ErrorBundle errorBundle); // ErrorBundle errorBundle
-    }
-
-    interface UserListCallback{
-        void onUsersListLoaded(List<UserDto> usersDtoList);
+    interface Error {
         void onError(ErrorBundle errorBundle);
     }
 
-    /**
-     * Get an {@link UserDto} by id.
-     *
-     * @param userId The user id used to retrieve user data.
-     * @param userCallback A {@link UserDetailsCallback} used for notifying clients.
-     */
+    interface UserDetailsCallback extends Error {
+        void onUserLoaded(UserDto userDto);
+    }
+
+    interface UsersDetailsCallback extends Error {
+        void onUsersLoaded(List<UserDto> users);
+    }
+
 
     void getUserById(final String userId, UserDetailsCallback userCallback);
 
-    void getAllUsers(UserListCallback userListCallback);
+    void getUsers(UsersDetailsCallback userCallback);
+
+    void createUser(UserDetailsCallback userCallback);
+
+    void editUserById(String name, UserDetailsCallback userCallback);
+
 }
