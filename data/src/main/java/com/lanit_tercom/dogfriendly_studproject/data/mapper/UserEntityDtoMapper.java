@@ -1,6 +1,6 @@
-package com.lanit_tercom.data.mapper;
+package com.lanit_tercom.dogfriendly_studproject.data.mapper;
 
-import com.lanit_tercom.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.domain.dto.UserDto;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class UserEntityDtoMapper {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userDto.getId());
         userEntity.setUserName(userDto.getName());
-        userEntity.setAge(userDto.getAge());
+//        userEntity.setAge(userDto.getAge());
         return userEntity;
     }
 
@@ -25,10 +25,7 @@ public class UserEntityDtoMapper {
         if (userEntity == null) {
             return null;
         }
-        UserDto userDto = new UserDto();
-        userDto.setId(userEntity.getId());
-        userDto.setName(userEntity.getUserName());
-        userDto.setAge(userEntity.getAge());
+        UserDto userDto = new UserDto(userEntity.getId(), userEntity.getUserName());
         return userDto;
     }
 
@@ -37,11 +34,8 @@ public class UserEntityDtoMapper {
             return null;
         }
         List<UserDto> usersDtoList = new ArrayList<>();
-        UserDto userDto = new UserDto();
         for (UserEntity userEntity: users){
-            userDto.setId(userEntity.getId());
-            userDto.setName(userEntity.getUserName());
-            userDto.setAge(userEntity.getAge());
+            UserDto userDto = new UserDto(userEntity.getId(), userEntity.getUserName());
             usersDtoList.add(userDto);
         }
         return usersDtoList;

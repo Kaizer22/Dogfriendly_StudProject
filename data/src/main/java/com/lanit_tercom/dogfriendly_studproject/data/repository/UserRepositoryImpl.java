@@ -1,12 +1,12 @@
-package com.lanit_tercom.data.repository;
+package com.lanit_tercom.dogfriendly_studproject.data.repository;
 
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.exception.RepositoryErrorBundle;
-import com.lanit_tercom.data.exception.UserListException;
-import com.lanit_tercom.data.exception.UserNotFoundException;
-import com.lanit_tercom.data.firebase.UserEntityStore;
-import com.lanit_tercom.data.firebase.UserEntityStoreFactory;
-import com.lanit_tercom.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.UserListException;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
 
@@ -60,8 +60,19 @@ public class UserRepositoryImpl implements UserRepository {
         });
     }
 
+
     @Override
-    public void getAllUsers(final UserListCallback userListCallback) {
+    public void createUser(UserDetailsCallback userCallback) {
+
+    }
+
+    @Override
+    public void editUserById(String name, UserDetailsCallback userCallback) {
+
+    }
+
+    @Override
+    public void getUsers(final UsersDetailsCallback userListCallback) {
         UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
 
         userEntityStore.getAllUsers(new UserEntityStore.UserListCallback() {
@@ -69,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
             public void onUsersListLoaded(List<UserEntity> users) {
                 List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList(users);
                 if (usersDtoList != null){
-                    userListCallback.onUsersListLoaded(usersDtoList);
+                    userListCallback.onUsersLoaded(usersDtoList);
                 } else {
                     userListCallback.onError(new RepositoryErrorBundle(new UserListException())); // ошибка для списка пользователей
                 }

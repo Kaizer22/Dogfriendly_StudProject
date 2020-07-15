@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.exception;
+package com.lanit_tercom.dogfriendly_studproject.data.exception;
 
 public class UserListException extends Exception {
 

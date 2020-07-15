@@ -1,6 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import com.lanit_tercom.data.auth_manager.AuthManager
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment

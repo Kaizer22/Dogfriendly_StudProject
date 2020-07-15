@@ -1,8 +1,8 @@
-package com.lanit_tercom.data;
+package com.lanit_tercom.dogfriendly_studproject.data;
 
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.firebase.FirebaseUserEntityStore;
-import com.lanit_tercom.data.firebase.UserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.FirebaseUserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore;
 
 import org.junit.Test;
 

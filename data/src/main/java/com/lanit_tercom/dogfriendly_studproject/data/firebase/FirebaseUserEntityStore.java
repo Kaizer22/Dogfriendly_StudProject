@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
 import android.util.Log;
 
@@ -7,8 +7,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
 

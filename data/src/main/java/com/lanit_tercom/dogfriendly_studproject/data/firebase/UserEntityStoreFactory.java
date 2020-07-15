@@ -1,8 +1,8 @@
-package com.lanit_tercom.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
 import android.util.Log;
 
-import com.lanit_tercom.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 
 public class UserEntityStoreFactory {

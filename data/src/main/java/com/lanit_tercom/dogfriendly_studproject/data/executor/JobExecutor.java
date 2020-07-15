@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.executor;
+package com.lanit_tercom.dogfriendly_studproject.data.executor;
 
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 

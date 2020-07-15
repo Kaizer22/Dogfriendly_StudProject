@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.auth_manager;
+package com.lanit_tercom.dogfriendly_studproject.data.auth_manager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
