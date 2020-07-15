@@ -25,7 +25,7 @@ class UserMapActivity : BaseActivity() {
         setContentView(R.layout.activity_user_map)
     }
 
-    fun navigateToUserDetail(userId: Int?) =
+    fun navigateToUserDetail(userId: String?) =
         navigator?.navigateToUserDetail(this, userId)
 
 

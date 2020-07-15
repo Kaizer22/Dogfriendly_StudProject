@@ -14,9 +14,9 @@ class UseCaseTemp {
     }
 
     init{
-        users.add(UserModel(1,"Bob", "bob@gmail.com", "Qwer1234", Point(10.2, 50.3)))
-        users.add(UserModel(2, "Martin", "martin@gmail.com", "12345678",Point(20.3, 40.5)))
-        users.add(UserModel(3, "Beatrice", "beatrice@gmail.com", "password", Point(30.3, 30.5)))
+        users.add(UserModel("1","Bob", "bob@gmail.com", "Qwer1234", Point(10.2, 50.3)))
+        users.add(UserModel("2", "Martin", "martin@gmail.com", "12345678",Point(20.3, 40.5)))
+        users.add(UserModel("3", "Beatrice", "beatrice@gmail.com", "password", Point(30.3, 30.5)))
     }
 
     fun addUser(user: UserModel) = users.add(user)

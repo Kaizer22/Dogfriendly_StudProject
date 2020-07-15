@@ -28,7 +28,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     private var googleMap: GoogleMap? = null
 
     override fun initializePresenter() {
-        userMapPresenter = UserMapPresenter(null, UseCaseTemp())
+        userMapPresenter = UserMapPresenter(UseCaseTemp())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,7 +71,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        (activity as UserMapActivity).navigateToUserDetail(p0?.title?.toInt())
+        (activity as UserMapActivity).navigateToUserDetail(p0?.title)
         return true
     }
 

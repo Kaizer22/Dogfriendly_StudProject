@@ -32,57 +32,28 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     }
 
     public FirebaseUserEntityStore(){ //userCache???
-
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
-        // Test getUserById() and getAllUsers() methods
-        getUserById("1", new UserByIdCallback() {
-            @Override
-            public void onUserLoaded(UserEntity userEntity) {
-                System.out.println("USER: ");
-                System.out.println(userEntity.toString());
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
-
-        getAllUsers(new UserListCallback() {
-            @Override
-            public void onUsersListLoaded(List<UserEntity> users) {
-                System.out.println("USER: ");
-                for (UserEntity user: users){
-                    System.out.println(user.toString());
-                }
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
     }
 
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
         referenceDatabase.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
-                   if (id.equals(snapshot.getKey())) {
-                       userEntity = snapshot.getValue(UserEntity.class);
-                       userEntity.setId(id);
-                   }
-               }
-               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
-           }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
+                    if (id.equals(snapshot.getKey())) {
+                        userEntity = snapshot.getValue(UserEntity.class);
+                        userEntity.setId(id);
+                    }
+                }
+                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+            }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-               Log.e(TAG, "onCancelled", databaseError.toException());
-           }
-       });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
     }
 
 

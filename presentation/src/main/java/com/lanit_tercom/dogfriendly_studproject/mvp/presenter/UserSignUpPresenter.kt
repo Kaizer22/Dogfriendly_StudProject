@@ -29,7 +29,7 @@ class UserSignUpPresenter(private val authManager: AuthManager?, private val use
     //Временный метод, пока не разберемся с data слоем
     fun registerUser(email: String?, password: String?, name: String?) {
         var maxId = loadUsers().maxBy { it.id }!!.id
-        useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
+        useCaseTemp.addUser(UserModel((maxId.toInt()+1).toString(), name!!, email!!, password!!, Point(21.8, 42.3)))
         ((view as UserSignUpFragment).activity as UserSignUpActivity).navigateToUserMap()
     }
 
