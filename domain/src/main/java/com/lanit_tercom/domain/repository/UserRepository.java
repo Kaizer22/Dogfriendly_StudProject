@@ -19,7 +19,6 @@ public interface UserRepository {
         void onUsersLoaded(List<UserDto> users);
     }
 
-
     void getUserById(final String userId, UserDetailsCallback userCallback);
 
     void getUsers(UsersDetailsCallback userCallback);
@@ -29,3 +28,4 @@ public interface UserRepository {
     void editUserById(String name, UserDetailsCallback userCallback);
 
 }
+
