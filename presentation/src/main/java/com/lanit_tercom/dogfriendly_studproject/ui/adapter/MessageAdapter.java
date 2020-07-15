@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.MessageViewHolder;
 
+/**
+ *  Адаптер, для вывода объектов в RecyclerView
+ *  @author dshebut@rambler.ru
+ */
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     @NonNull
     @Override

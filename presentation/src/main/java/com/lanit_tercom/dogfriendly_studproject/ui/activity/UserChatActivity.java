@@ -7,6 +7,10 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserChatFragment;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ *  Активность, отображающая UserChatFragment
+ *  @author dshebut@rambler.ru
+ */
 public class UserChatActivity extends BaseActivity {
 
     @Override

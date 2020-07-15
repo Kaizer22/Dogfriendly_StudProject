@@ -11,6 +11,10 @@ import androidx.annotation.Nullable;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserChatView;
 
+/**
+ *  Фрагмент, отвечающий за отображение диалога между двумя пользователями
+ *  @author dshebut@rambler.ru
+ */
 public class UserChatFragment extends BaseFragment implements UserChatView {
     @Override
     public void initializePresenter() {
@@ -21,5 +25,10 @@ public class UserChatFragment extends BaseFragment implements UserChatView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_user_chat, container);
+    }
+
+    @Override
+    public void showProgressMessage(String event) {
+
     }
 }
