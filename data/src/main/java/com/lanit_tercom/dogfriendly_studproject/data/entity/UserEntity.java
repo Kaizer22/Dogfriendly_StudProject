@@ -14,6 +14,11 @@ public class UserEntity {
         this.age = age;
     }
 
+    public UserEntity(String id, String name){
+        this.id = id;
+        this.userName = name;
+    }
+
    public String getId() {
         return id;
     }
