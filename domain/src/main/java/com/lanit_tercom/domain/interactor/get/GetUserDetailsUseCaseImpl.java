@@ -47,10 +47,20 @@ public class GetUserDetailsUseCaseImpl extends UseCase implements GetUserDetails
             };
 
     private void notifyGetUserDetailsSuccessfully(final UserDto userDto) {
-        this.postExecutionThread.post(() -> callback.onUserDataLoaded(userDto));
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUserDataLoaded(userDto);
+            }
+        });
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
-        this.postExecutionThread.post(() -> callback.onError(errorBundle));
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(errorBundle);
+            }
+        });
     }
 }
