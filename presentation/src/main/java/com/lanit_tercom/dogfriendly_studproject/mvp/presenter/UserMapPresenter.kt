@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
@@ -43,6 +44,7 @@ class UserMapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCas
     private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
         override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
             this@UserMapPresenter.renderMap(users)
+            Log.d("LOAD", "USERS");
         }
 
         override fun onError(errorBundle: ErrorBundle?) {

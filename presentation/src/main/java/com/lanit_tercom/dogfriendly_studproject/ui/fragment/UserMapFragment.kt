@@ -102,6 +102,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
         googleMap?.setOnMarkerClickListener(this)
+        userMapPresenter?.initialize()
     }
 
     override fun renderUserOnMap(user: UserModel?) {

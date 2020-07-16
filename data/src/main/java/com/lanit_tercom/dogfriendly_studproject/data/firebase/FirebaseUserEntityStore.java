@@ -28,11 +28,8 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
-        this.userCache = userCache;
-    }
-
-    public FirebaseUserEntityStore(){ //userCache???
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        this.userCache = userCache;
     }
 
 
