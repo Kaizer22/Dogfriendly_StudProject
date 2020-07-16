@@ -1,7 +1,6 @@
-package com.lanit_tercom.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.exception.UserNotFoundException;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 
 import java.util.List;
 

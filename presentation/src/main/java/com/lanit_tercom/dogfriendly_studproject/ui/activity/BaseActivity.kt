@@ -35,9 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun initialize(){
-        this.navigator = Navigator()
-    }
+    protected fun initialize(){ this.navigator = Navigator() }
 
     protected abstract fun initializeActivity(savedInstanceState: Bundle?)
 

@@ -3,9 +3,6 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 
 /**
  * Класс от которого наследуются все фрагменты.

@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignInPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 
@@ -39,7 +37,7 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     }
 
     override fun onClick(v: View?) {
-        when (v?.id){
+        when (v?.id) {
             R.id.button_signin -> {
                 email = enter_email.text.toString()
                 password = enter_password.text.toString()

@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.exception;
+package com.lanit_tercom.dogfriendly_studproject.data.exception;
 
 import com.lanit_tercom.domain.exception.ErrorBundle;
 

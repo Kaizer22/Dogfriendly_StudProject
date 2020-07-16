@@ -9,7 +9,6 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignUpPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.fragment_sign_up.button_signup
 

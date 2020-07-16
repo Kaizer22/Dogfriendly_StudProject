@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
 import android.util.Log;
 
@@ -7,8 +7,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
 
@@ -23,64 +23,37 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     private static final String CHILD_USERS = "Users";
     private UserEntity userEntity = new UserEntity();
 
-    private final UserCache userCache;
+    private UserCache userCache; //
 
     protected DatabaseReference referenceDatabase;
 
-
-    public FirebaseUserEntityStore(UserCache userCache){ //userCache???
+    public FirebaseUserEntityStore(UserCache userCache){
         this.userCache = userCache;
+    }
 
+    public FirebaseUserEntityStore(){ //userCache???
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
-        // Test getUserById() and getAllUsers() methods
-        getUserById("1", new UserByIdCallback() {
-            @Override
-            public void onUserLoaded(UserEntity userEntity) {
-                System.out.println("USER: ");
-                System.out.println(userEntity.toString());
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
-
-        getAllUsers(new UserListCallback() {
-            @Override
-            public void onUsersListLoaded(List<UserEntity> users) {
-                System.out.println("USER: ");
-                for (UserEntity user: users){
-                    System.out.println(user.toString());
-                }
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
     }
 
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
         referenceDatabase.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
-                   if (id.equals(snapshot.getKey())) {
-                       userEntity = snapshot.getValue(UserEntity.class);
-                       userEntity.setId(id);
-                   }
-               }
-               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
-           }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
+                    if (id.equals(snapshot.getKey())) {
+                        userEntity = snapshot.getValue(UserEntity.class);
+                        userEntity.setId(id);
+                    }
+                }
+                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+            }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-               Log.e(TAG, "onCancelled", databaseError.toException());
-           }
-       });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
     }
 
 

@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.entity;
+package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
 public class UserEntity {
 

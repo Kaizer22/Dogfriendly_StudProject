@@ -1,4 +1,4 @@
-package com.lanit_tercom.data;
+package com.lanit_tercom.dogfriendly_studproject.data;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.lanit_tercom.data.test", appContext.getPackageName());
+        assertEquals("com.lanit_tercom.dogfriendly_studproject.data.test", appContext.getPackageName());
     }
 }

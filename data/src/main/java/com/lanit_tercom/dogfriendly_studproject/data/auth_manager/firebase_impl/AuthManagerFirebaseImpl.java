@@ -1,4 +1,4 @@
-package com.lanit_tercom.data.auth_manager.firebase_impl;
+package com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.lanit_tercom.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 
 import io.realm.Realm;
 
