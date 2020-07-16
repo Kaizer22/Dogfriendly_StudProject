@@ -15,15 +15,16 @@ class UserSignInPresenter(private val authManager: AuthManager?, private val use
         this.view = view
     }
 
+    fun auth(email: String?, password: String?){}
 
-        fun auth(email: String?, password: String?){
-        try{
-            authManager?.signInEmail(email, password)
-            ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
-        }catch (e: Exception){
-            (view as UserSignInFragment).showToastMessage(e.message)
-        }
-    }
+//        fun auth(email: String?, password: String?){
+//        try{
+//            authManager?.signInEmail(email, password)
+//            ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
+//        }catch (e: Exception){
+//            (view as UserSignInFragment).showToastMessage(e.message)
+//        }
+//    }
 
 
 //    //Временный метод, пока не разберемся с data слоем

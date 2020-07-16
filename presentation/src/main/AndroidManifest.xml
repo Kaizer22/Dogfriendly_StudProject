@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activity.UserSignInActivity">
+        <activity android:name=".ui.activity.UserMapActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,7 @@
         </activity>
 
         <activity android:name=".ui.activity.UserSignUpActivity"/>
-        <activity android:name=".ui.activity.UserMapActivity" />
+        <activity android:name=".ui.activity.UserSignInActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
 
         <meta-data

@@ -47,7 +47,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 userEntityDtoMapper)
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        val userModelDataMapper = UserDtoModelMapper()
 
         //Так штоле?
         val entityStore: FirebaseUserEntityStore = userEntityStoreFactory.create() as FirebaseUserEntityStore
