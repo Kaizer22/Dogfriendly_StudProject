@@ -36,17 +36,17 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
         button_signup.setOnClickListener(this)
     }
 
+    fun auth(){
+        email = enter_email.text.toString()
+        password = enter_password.text.toString()
+        userSignInPresenter?.auth(email, password)
+        showLoading()
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button_signin -> {
-                email = enter_email.text.toString()
-                password = enter_password.text.toString()
-                userSignInPresenter?.auth(email, password)
-
-                if(userSignInPresenter?.currentUserId != null)
-                    (activity as UserSignInActivity).navigateToUserMap()
-                else
-                    showToastMessage("Неверный email или пароль")
+                auth()
             }
             R.id.button_signup ->
                 (activity as UserSignInActivity).navigateToUserSignUp()
@@ -69,15 +69,15 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun hideLoading() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun showError(message: String) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
 }

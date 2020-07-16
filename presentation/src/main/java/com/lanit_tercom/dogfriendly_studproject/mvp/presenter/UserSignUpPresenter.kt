@@ -31,7 +31,7 @@ class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter
         }
 
         override fun OnError(e: Exception?) {
-            TODO("Not yet implemented")
+            //TODO("Not yet implemented")
         }
 
 
