@@ -35,7 +35,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     private var userDetailPresenter: UserDetailPresenter? = null
 
 
-    //Что за ад здесь я тоже не до конца врубаю...
     override fun initializePresenter() {
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
@@ -48,11 +47,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
 
-        //Так штоле?
-        val entityStore: FirebaseUserEntityStore = userEntityStoreFactory.create() as FirebaseUserEntityStore
-
-
-        userDetailPresenter = UserDetailPresenter(null, entityStore, getUserDetailsUseCase)
+        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,9 +57,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userDetailPresenter?.setView(this)
-
-//        val user: UserModel? = userDetailPresenter?.loadUser(userId)
-//        userDetailPresenter?.renderUser(user)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
