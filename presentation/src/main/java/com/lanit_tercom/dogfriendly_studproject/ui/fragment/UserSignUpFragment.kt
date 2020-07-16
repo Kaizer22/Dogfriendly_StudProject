@@ -8,6 +8,7 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignUpPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignUpActivity
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.fragment_sign_up.button_signup
 
@@ -45,9 +46,11 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
                 password = edit_password.text.toString()
                 name = edit_name.text.toString()
                 passwordRepeat = edit_repeat_password.text.toString()
-                if (password == passwordRepeat)
-                    userSignUpPresenter?.registerUser(email, password) else
-                        showToastMessage("Пароли не совпадают!")
+                if (password == passwordRepeat) {
+                    userSignUpPresenter?.registerUser(email, password)
+                    (activity as UserSignUpActivity).navigateToUserSignIn()
+                } else
+                    showToastMessage("Пароли не совпадают!")
             }
         }
     }

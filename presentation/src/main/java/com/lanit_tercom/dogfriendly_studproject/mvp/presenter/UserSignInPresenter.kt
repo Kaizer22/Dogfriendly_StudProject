@@ -1,7 +1,10 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
 import java.lang.Exception
 
 /**
@@ -19,8 +22,9 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
 
     fun auth(email: String?, password: String?) {
 
-        if(!authManager?.isSignedIn!!)
-            authManager.signInEmail(email, password, signInCallback)
+        authManager?.signOut(signOutCallback)
+
+        authManager?.signInEmail(email, password, signInCallback)
 
     }
 
@@ -28,14 +32,22 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
 
         override fun OnSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
+            ((view as UserSignInFragment)).hideLoading()
+            if(currentUserId != null)
+                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
+            else
+                //не срабатывает... потом сделаем
+                ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
         }
 
         override fun OnError(e: Exception?) {
-            TODO("Not yet implemented")
+            Log.i("AUTH_MANAGER", "EXCEPTION")
+
         }
 
-
     }
+
+    private val signOutCallback: AuthManager.SignOutCallback = AuthManager.SignOutCallback { }
 
 
 }
