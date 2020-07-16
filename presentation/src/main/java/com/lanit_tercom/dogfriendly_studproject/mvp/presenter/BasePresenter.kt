@@ -23,8 +23,5 @@ abstract class BasePresenter {
         view = null
     }
 
-//    fun loadUser(id: String?) : UserModel? = UseCaseTemp.users.find { it.id == id }
-
-    fun loadUsers() : MutableList<UserModel> = UseCaseTemp.users
 
 }

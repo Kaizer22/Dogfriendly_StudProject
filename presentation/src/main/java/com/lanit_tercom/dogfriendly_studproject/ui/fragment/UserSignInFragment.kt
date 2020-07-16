@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignInPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
@@ -23,7 +22,7 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     private var password: String? = null
 
     override fun initializePresenter() {
-        userSignInPresenter = UserSignInPresenter(AuthManagerFirebaseImpl(), UseCaseTemp())
+        userSignInPresenter = UserSignInPresenter(AuthManagerFirebaseImpl())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,6 +42,11 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
                 email = enter_email.text.toString()
                 password = enter_password.text.toString()
                 userSignInPresenter?.auth(email, password)
+
+                if(userSignInPresenter?.currentUserId != null)
+                    (activity as UserSignInActivity).navigateToUserMap()
+                else
+                    showToastMessage("Неверный email или пароль")
             }
             R.id.button_signup ->
                 (activity as UserSignInActivity).navigateToUserSignUp()

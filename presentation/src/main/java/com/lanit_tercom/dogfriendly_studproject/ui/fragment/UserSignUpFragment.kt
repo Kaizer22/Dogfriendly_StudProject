@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignUpPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
 import kotlinx.android.synthetic.main.fragment_sign_up.*
@@ -22,11 +21,11 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
     private var userSignUpPresenter: UserSignUpPresenter? = null
     private var email: String? = null
     private var password: String? = null
-    private var password_repeat: String? = null
+    private var passwordRepeat: String? = null
     private var name: String? = null
 
     override fun initializePresenter() {
-        userSignUpPresenter = UserSignUpPresenter( AuthManagerFirebaseImpl(), UseCaseTemp())
+        userSignUpPresenter = UserSignUpPresenter(AuthManagerFirebaseImpl())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,9 +44,9 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
                 email = edit_email.text.toString()
                 password = edit_password.text.toString()
                 name = edit_name.text.toString()
-                password_repeat = edit_repeat_password.text.toString()
-                if (password == password_repeat)
-                    userSignUpPresenter?.registerUser(email, password, name) else
+                passwordRepeat = edit_repeat_password.text.toString()
+                if (password == passwordRepeat)
+                    userSignUpPresenter?.registerUser(email, password) else
                         showToastMessage("Пароли не совпадают!")
             }
         }

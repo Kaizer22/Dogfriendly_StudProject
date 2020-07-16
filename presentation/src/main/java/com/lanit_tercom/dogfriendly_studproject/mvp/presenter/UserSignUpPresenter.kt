@@ -1,36 +1,40 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignUpActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignUpFragment
+import java.lang.Exception
 
 /**
  * presenter класс для работы с регистрацией
  * @author prostak.sasha111@mail.ru
+ * @author nikolaygorokhov1@gmail.com
  */
-class UserSignUpPresenter(private val authManager: AuthManager?, private val useCaseTemp: UseCaseTemp) : BasePresenter() {
+class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter() {
+
+    var currentUserId: String? = null
 
     fun setView(view: UserSignUpView) {
         this.view = view
+        Log.i("AUTH_MANAGER", authManager?.isSignedIn.toString())
     }
 
-    /*
-        fun registerUser(email: String?, password: String?, name: String?){
-            authManager.createUserWithEmailPassword(email, password)
-            var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
-            useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
-            userSignUpView.toMapScreen()
-        }
-    */
+    fun registerUser(email: String?, password: String?) {
+        authManager?.createUserWithEmailPassword(email, password, createUserCallback)
+    }
 
-    //Временный метод, пока не разберемся с data слоем
-    fun registerUser(email: String?, password: String?, name: String?) {
-        var maxId = loadUsers().maxBy { it.id }!!.id
-        useCaseTemp.addUser(UserModel((maxId.toInt()+1).toString(), name!!, email!!, password!!, Point(21.8, 42.3)))
-        ((view as UserSignUpFragment).activity as UserSignUpActivity).navigateToUserMap()
+    private val createUserCallback: AuthManager.CreateUserCallback = object : AuthManager.CreateUserCallback {
+
+        override fun OnCreateUserFinished(currentUserID: String?) {
+            Log.i("AUTH_MANAGER", "A new user has been created.")
+            currentUserId = currentUserID
+        }
+
+        override fun OnError(e: Exception?) {
+            TODO("Not yet implemented")
+        }
+
+
     }
 
 }

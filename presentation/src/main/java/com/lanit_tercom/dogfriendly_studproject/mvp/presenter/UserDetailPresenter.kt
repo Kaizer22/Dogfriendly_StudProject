@@ -16,9 +16,7 @@ import java.lang.Exception
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserDetailPresenter(private val useCaseTemp: UseCaseTemp?,
-                          private val entityStore: UserEntityStore? ,
-                          private val getUserDetailsUseCase: GetUserDetailsUseCase?) : BasePresenter() {
+class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?) : BasePresenter() {
 
     private var userId: String? = null
 
@@ -50,7 +48,5 @@ class UserDetailPresenter(private val useCaseTemp: UseCaseTemp?,
 
         }
     }
-
-    //fun renderUser(user: UserModel?) = (view as UserDetailsView).renderCurrentUser(user)
 
 }
