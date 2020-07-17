@@ -1,8 +1,8 @@
-package com.lanit_tercom.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
 import android.util.Log;
 
-import com.lanit_tercom.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 
 public class UserEntityStoreFactory {
@@ -11,7 +11,7 @@ public class UserEntityStoreFactory {
     private final UserCache userCache;
 
     public UserEntityStoreFactory(NetworkManager networkManager, UserCache userCache){
-        if (networkManager == null || userCache == null){
+        if (networkManager == null){
             throw new IllegalArgumentException("Constructor parameters cannot be null");
         }
         this.networkManager = networkManager;
@@ -23,11 +23,12 @@ public class UserEntityStoreFactory {
 
         Log.d("Network", String.valueOf(networkManager.isNetworkAvailable()));
 
-        if (networkManager.isNetworkAvailable()) {
-            userEntityStore = new FirebaseUserEntityStore(this.userCache);
-        } else {
-            userEntityStore = userCache;
-        }
+        userEntityStore = new FirebaseUserEntityStore(this.userCache);
+//        if (networkManager.isNetworkAvailable()) {
+//            userEntityStore = new FirebaseUserEntityStore(this.userCache);
+//        } else {
+//            userEntityStore = userCache;
+//        }
 
         return userEntityStore;
 

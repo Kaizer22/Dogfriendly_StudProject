@@ -4,12 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.FirebaseUserEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
+import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.get.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.get.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.UserRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.fragment_user_detail.*
 
 /**
@@ -21,8 +34,26 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
     private var userDetailPresenter: UserDetailPresenter? = null
 
+
+    //Что за ад здесь я тоже не до конца врубаю...
     override fun initializePresenter() {
-        userDetailPresenter = UserDetailPresenter(AuthManagerFirebaseImpl(), UseCaseTemp())
+        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+
+        val networkManager: NetworkManager = NetworkManagerImpl(context)
+        val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
+        val userEntityDtoMapper = UserEntityDtoMapper()
+        val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
+                userEntityDtoMapper)
+        val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
+        val userModelDataMapper = UserDtoModelMapper()
+
+        //Так штоле?
+        val entityStore: FirebaseUserEntityStore = userEntityStoreFactory.create() as FirebaseUserEntityStore
+
+
+        userDetailPresenter = UserDetailPresenter(null, entityStore, getUserDetailsUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,8 +63,14 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userDetailPresenter?.setView(this)
-        val user: UserModel? = userDetailPresenter?.loadUser(userId)
-        userDetailPresenter?.renderUser(user)
+
+//        val user: UserModel? = userDetailPresenter?.loadUser(userId)
+//        userDetailPresenter?.renderUser(user)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        userDetailPresenter?.initialize(userId)
     }
 
     override fun onPause() {

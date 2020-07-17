@@ -28,7 +28,7 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     private var googleMap: GoogleMap? = null
 
     override fun initializePresenter() {
-        userMapPresenter = UserMapPresenter( UseCaseTemp())
+        userMapPresenter = UserMapPresenter(UseCaseTemp())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

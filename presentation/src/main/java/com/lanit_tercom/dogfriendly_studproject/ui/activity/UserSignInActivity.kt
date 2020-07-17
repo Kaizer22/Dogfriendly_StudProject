@@ -2,7 +2,6 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
