@@ -30,7 +30,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/chat"/>
+            android:id="@+id/chat"
+            android:layout_marginBottom="@dimen/chat_top_bottom_margin"
+            android:layout_marginTop="@dimen/chat_top_bottom_margin"/>
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +41,40 @@
         android:layout_weight="6"
         android:id="@+id/bottom_space"
         android:orientation="horizontal"
-        android:background="@color/colorAccent"/>
+        android:background="@color/colorAccent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:id="@+id/edit_text_container">
+
+            <EditText
+                android:id="@+id/edit_text_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textAutoComplete"
+                android:text="@string/new_message"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="6">
+
+            <ImageButton
+                android:id="@+id/button_send_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@android:drawable/ic_menu_send" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 

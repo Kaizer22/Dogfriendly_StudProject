@@ -24,6 +24,5 @@ public class UserChatActivity extends BaseActivity {
         if (savedInstanceState==null){
             addFragment(R.id.ft_container, new UserChatFragment());
         }
-
     }
 }

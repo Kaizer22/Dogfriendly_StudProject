@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/button_onoff_indicator_on"
+    android:gravity="start"
     android:orientation="vertical"
-    android:padding="@dimen/single_message_padding">
+    android:id="@+id/message_string"
+    android:layout_marginTop="@dimen/single_message_padding">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:text="Empty message"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/extraInfoText"
-        android:textStyle="italic"
-        android:textSize="12sp"
-        android:text="01.01.70 23:59"/>
+        android:background="@android:drawable/button_onoff_indicator_on"
+        android:padding="@dimen/single_message_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/message_container">
 
+        <TextView
+            android:id="@+id/message_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Empty message"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01.01.70 23:59"
+            android:textColor="@color/extraInfoText"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintTop_toBottomOf="@+id/message_text"
+            android:id="@+id/message_time"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

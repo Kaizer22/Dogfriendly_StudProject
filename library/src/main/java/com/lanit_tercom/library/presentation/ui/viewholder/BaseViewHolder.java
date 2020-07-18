@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- *  Базовый ViewHolder от которого наследуются все остальные
+ *  Базовый ViewHolder, от которого наследуются все остальные
  *  @author dshebut@rambler.ru
  */
 public class BaseViewHolder extends RecyclerView.ViewHolder {

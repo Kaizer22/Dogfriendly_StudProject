@@ -42,5 +42,10 @@ public class UserChatPresenter extends BasePresenter {
         //Обновление данных о собеседнике
     }
 
+    //TODO скорее всего, этого метода тут быть не должно
+    public AuthManager getAuthManager(){
+        return authManager;
+    }
+
 
 }

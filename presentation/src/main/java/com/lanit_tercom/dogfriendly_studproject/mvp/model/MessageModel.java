@@ -16,6 +16,25 @@ public class MessageModel {
 
     private long time;
 
+    public MessageModel(){
+
+    }
+    //Это конструктор используется при тестированиии
+    //см. MessageProviderTemp
+    public MessageModel(String messageID,
+                        String senderID,
+                        String receiverID,
+                        String text,
+                        long time){
+        this.messageID = messageID;
+        this.senderID = senderID;
+        this.receiverID = receiverID;
+        this.text = text;
+        this.time = time;
+
+    }
+
+
     public String getMessageID() {
         return messageID;
     }
