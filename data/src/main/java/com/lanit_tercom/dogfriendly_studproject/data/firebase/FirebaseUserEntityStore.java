@@ -28,29 +28,32 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
-        referenceDatabase = FirebaseDatabase.getInstance().getReference();
         this.userCache = userCache;
+    }
+
+    public FirebaseUserEntityStore(){ //userCache???
+        referenceDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
         referenceDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
-                    if (id.equals(snapshot.getKey())) {
-                        userEntity = snapshot.getValue(UserEntity.class);
-                        userEntity.setId(id);
-                    }
-                }
-                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
-            }
+           @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
+                   if (id.equals(snapshot.getKey())) {
+                       userEntity = snapshot.getValue(UserEntity.class);
+                       userEntity.setId(id);
+                   }
+               }
+               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+           }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
-            }
-        });
+           @Override
+           public void onCancelled(@NonNull DatabaseError databaseError) {
+               Log.e(TAG, "onCancelled", databaseError.toException());
+           }
+       });
     }
 
 

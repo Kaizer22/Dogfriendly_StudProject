@@ -1,21 +1,19 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import java.sql.Timestamp;
+
 public class MessageEntity {
+    String id;
+    Timestamp timestamp;
+    String userName;
+    String body;
 
-    private String id;
-    private String senderId;
-    private String receiverId;
-    private String text;
-    private long timestamp;
+    public MessageEntity() {
+    }
 
-    public MessageEntity(){}
-
-    public MessageEntity(String id, String senderId, String receiverId, String text, long timestamp){
-        this.id = id;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
-        this.text = text;
-        this.timestamp = timestamp;
+    public MessageEntity(String userName, String body) {
+        this.userName = userName;
+        this.body = body;
     }
 
     public String getId() {
@@ -26,46 +24,27 @@ public class MessageEntity {
         this.id = id;
     }
 
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(String receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public long getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "MessageEntity{" +
-                "id='" + id + '\'' +
-                ", senderId='" + senderId + '\'' +
-                ", receiverId='" + receiverId + '\'' +
-                ", text='" + text + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 }
