@@ -1,15 +1,10 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore
-import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.get.GetUserDetailsUseCase
-import java.lang.Exception
+import com.lanit_tercom.domain.interactor.user.get.GetUserDetailsUseCase
 
 /**
  * presenter класс для работы с конкретным пользователем
@@ -25,13 +20,11 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
         this.loadUserDetails()
     }
 
-    fun setView(view: UserDetailsView){
-        this.view = view
-    }
+    fun setView(view: UserDetailsView){ this.view = view }
 
-    private fun loadUserDetails() {
+    private fun loadUserDetails() =
         getUserDetailsUseCase!!.execute(userId, userDetailsCallback)
-    }
+
 
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
@@ -40,13 +33,11 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     }
 
     private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
-        override fun onUserDataLoaded(userDto: UserDto?) {
+
+        override fun onUserDataLoaded(userDto: UserDto?) =
             this@UserDetailPresenter.showUserDetailsInView(userDto)
-        }
 
-        override fun onError(errorBundle: ErrorBundle?) {
+        override fun onError(errorBundle: ErrorBundle?) {}
 
-        }
     }
-
 }

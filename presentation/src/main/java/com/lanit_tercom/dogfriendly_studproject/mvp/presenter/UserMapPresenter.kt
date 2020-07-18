@@ -6,8 +6,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.get.GetUserDetailsUseCase
-import com.lanit_tercom.domain.interactor.get.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.get.GetUsersDetailsUseCase
 
 /**
  * presenter класс для работы с картой
@@ -16,17 +15,14 @@ import com.lanit_tercom.domain.interactor.get.GetUsersDetailsUseCase
  */
 class UserMapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) : BasePresenter(){
 
-    fun setView(view: UserMapView){
-        this.view = view
-    }
+    fun setView(view: UserMapView){ this.view = view }
 
-    fun initialize() {
-        this.loadUsersDetails()
-    }
+    fun initialize() = this.loadUsersDetails()
 
-    private fun loadUsersDetails() {
+
+    private fun loadUsersDetails() =
         getUsersDetailsUseCase.execute(usersDetailsCallback)
-    }
+
 
     fun renderMap(users: MutableList<UserDto>?){
         val usersModel = mutableListOf<UserModel?>()
@@ -42,13 +38,12 @@ class UserMapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCas
     }
 
     private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
-        override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
-            this@UserMapPresenter.renderMap(users)
-            Log.d("LOAD", "USERS");
-        }
 
-        override fun onError(errorBundle: ErrorBundle?) {
-            TODO("Not yet implemented")
-        }
+        override fun onUsersDataLoaded(users: MutableList<UserDto>?) =
+            this@UserMapPresenter.renderMap(users)
+
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
     }
 }

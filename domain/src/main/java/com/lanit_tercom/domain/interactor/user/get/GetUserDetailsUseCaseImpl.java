@@ -1,20 +1,20 @@
-package com.lanit_tercom.domain.interactor.edit;
+package com.lanit_tercom.domain.interactor.user.get;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
-import com.lanit_tercom.domain.interactor.UseCase;
+import com.lanit_tercom.domain.interactor.user.UseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
-public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetailsUseCase {
+public class GetUserDetailsUseCaseImpl extends UseCase implements GetUserDetailsUseCase {
 
     private String userId = "";
-    private EditUserDetailsUseCase.Callback callback;
+    private GetUserDetailsUseCase.Callback callback;
 
-    public EditUserDetailsUseCaseImpl(UserRepository userRepository,
-                                      ThreadExecutor threadExecutor,
-                                      PostExecutionThread postExecutionThread) {
+    public GetUserDetailsUseCaseImpl(UserRepository userRepository,
+                                     ThreadExecutor threadExecutor,
+                                     PostExecutionThread postExecutionThread) {
         super(userRepository, threadExecutor, postExecutionThread);
     }
 
@@ -30,14 +30,14 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
 
     @Override
     public void run() {
-        this.userRepository.editUserById(this.userId, this.repositoryCallback);
+        this.userRepository.getUserById(this.userId, this.repositoryCallback);
     }
 
     private final UserRepository.UserDetailsCallback repositoryCallback =
             new UserRepository.UserDetailsCallback() {
                 @Override
                 public void onUserLoaded(UserDto userDto) {
-                    notifyEditUserDetailsSuccessfully(userDto);
+                    notifyGetUserDetailsSuccessfully(userDto);
                 }
 
                 @Override
@@ -46,11 +46,21 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
                 }
             };
 
-    private void notifyEditUserDetailsSuccessfully(final UserDto userDto) {
-        this.postExecutionThread.post(() -> callback.onUserDataEdited(userDto));
+    private void notifyGetUserDetailsSuccessfully(final UserDto userDto) {
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onUserDataLoaded(userDto);
+            }
+        });
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
-        this.postExecutionThread.post(() -> callback.onError(errorBundle));
+        this.postExecutionThread.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(errorBundle);
+            }
+        });
     }
 }

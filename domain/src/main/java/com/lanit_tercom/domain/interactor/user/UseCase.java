@@ -1,7 +1,8 @@
-package com.lanit_tercom.domain.interactor;
+package com.lanit_tercom.domain.interactor.user;
 
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.Interactor;
 import com.lanit_tercom.domain.repository.UserRepository;
 
 public abstract class UseCase implements Interactor {
