@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface MessageEntityStore {
@@ -18,7 +19,31 @@ public interface MessageEntityStore {
         void onError(Exception exception);
     }
 
+    interface MessageCreateCallback {
+        void onMessageCreated();
+
+        void onError(Exception exception);
+    }
+
+    interface MessageUpdateCallback {
+        void onMessageUpdated();
+
+        void onError(Exception exception);
+    }
+
+    interface MessageDeleteCallback {
+        void onMessageDeleteCallback();
+
+        void onError(Exception exception);
+    }
+
     void getAllMessages(MessageEntityStore.MessageListCallback messageListCallback);
 
     void getMessageById(String id, MessageEntityStore.MessageByIdCallback messageByIdCallback);
+
+    void createMessage(String id, Timestamp timestamp, String userName, String body, MessageEntityStore.MessageCreateCallback messageCreateCallback);
+
+    void updateMessage(String id, String body, MessageEntityStore.MessageUpdateCallback messageUpdateCallback);
+
+    void deleteMessage(String id, MessageEntityStore.MessageDeleteCallback messageDeleteCallback);
 }

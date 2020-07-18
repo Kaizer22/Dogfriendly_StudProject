@@ -1,11 +1,12 @@
-package com.lanit_tercom.data.repository;
+package com.lanit_tercom.dogfriendly_studproject.data.repository;
 
-import com.lanit_tercom.data.entity.UserEntity;
-import com.lanit_tercom.data.exception.RepositoryErrorBundle;
-import com.lanit_tercom.data.exception.UserNotFoundException;
-import com.lanit_tercom.data.firebase.UserEntityStore;
-import com.lanit_tercom.data.firebase.UserEntityStoreFactory;
-import com.lanit_tercom.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
 

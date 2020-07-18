@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,38 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
         });
     }
 
+    @Override
+    public void createMessage(String id, Timestamp timestamp, String userName, String body, MessageCreateCallback messageCreateCallback) {
+        MessageEntity messageEntity = new MessageEntity(userName, body);
+        messageEntity.setId(id);
+        messageEntity.setTimestamp(timestamp);
+        referenceDatabase.child(CHILD_MESSAGES).push().setValue(messageEntity, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                messageCreateCallback.onMessageCreated();
+            }
+        });
+    }
+
+    @Override
+    public void updateMessage(String id, String body, MessageUpdateCallback messageUpdateCallback) {
+        referenceDatabase.child(CHILD_MESSAGES).child(id).child("body").setValue(body, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                messageUpdateCallback.onMessageUpdated();
+            }
+        });
+    }
+
+    @Override
+    public void deleteMessage(String id, MessageDeleteCallback messageDeleteCallback) {
+        referenceDatabase.child(CHILD_MESSAGES).child(id).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                messageDeleteCallback.onMessageDeleteCallback();
+            }
+        });
+    }
 
     private void putMessageEntityInCache(String messageId, MessageEntity messageEntity) {
         if (messageCache != null) {
