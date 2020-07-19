@@ -9,7 +9,7 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 public interface DeleteMessageUseCase {
 
     interface Callback {
-        void onMessageDeleted(MessageDto MessageDto);
+        void onMessageDeleted();
 
         void onError(ErrorBundle errorBundle);
     }

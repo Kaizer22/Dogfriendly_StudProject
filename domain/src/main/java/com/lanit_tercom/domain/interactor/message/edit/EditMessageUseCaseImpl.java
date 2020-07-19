@@ -35,12 +35,12 @@ public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCas
         this.messageRepository.editMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageDetailCallback repositoryCallback =
-            new MessageRepository.MessageDetailCallback() {
+    private final MessageRepository.MessageEditCallback repositoryCallback =
+            new MessageRepository.MessageEditCallback() {
 
                 @Override
-                public void onMessageLoaded(MessageDto messageDto) {
-                    notifyEditMessageSuccessfully(messageDto);
+                public void onMessageEdited() {
+                    notifyEditMessageSuccessfully();
                 }
 
                 @Override
@@ -50,8 +50,8 @@ public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCas
             };
 
 
-    private void notifyEditMessageSuccessfully(final MessageDto messageDto) {
-        this.postExecutionThread.post(() -> callback.onMessageEdited(messageDto));
+    private void notifyEditMessageSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onMessageEdited());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

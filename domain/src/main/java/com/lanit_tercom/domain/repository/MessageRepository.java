@@ -15,12 +15,21 @@ public interface MessageRepository {
         void onError(ErrorBundle errorBundle);
     }
 
+    //to edit and delete message
+    interface MessageEditCallback{
+        void onMessageEdited();
+
+        void onError(ErrorBundle errorBundle);
+    }
+
+    //to post message
     interface MessageDetailCallback{
         void onMessageLoaded(MessageDto messageDto);
 
         void onError(ErrorBundle errorBundle);
     }
 
+    //to get messages
     interface MessagesDetailCallback{
         void onMessagesLoaded(List<MessageDto> messages);
 
@@ -31,7 +40,7 @@ public interface MessageRepository {
 
     void postMessage(MessageDto message, MessageDetailCallback callback);
 
-    void editMessage(MessageDto editedMessage, MessageDetailCallback callback);
+    void editMessage(MessageDto editedMessage, MessageEditCallback callback);
 
-    void deleteMessage(MessageDto message, MessageDetailCallback callback);
+    void deleteMessage(MessageDto message, MessageEditCallback callback);
 }

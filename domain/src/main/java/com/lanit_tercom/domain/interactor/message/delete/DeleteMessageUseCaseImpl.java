@@ -35,12 +35,12 @@ public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUs
         this.messageRepository.deleteMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageDetailCallback repositoryCallback =
-            new MessageRepository.MessageDetailCallback() {
+    private final MessageRepository.MessageEditCallback repositoryCallback =
+            new MessageRepository.MessageEditCallback() {
 
                 @Override
-                public void onMessageLoaded(MessageDto messageDto) {
-                    notifyDeleteMessageSuccessfully(messageDto);
+                public void onMessageEdited() {
+                    notifyDeleteMessageSuccessfully();
                 }
 
                 @Override
@@ -50,8 +50,8 @@ public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUs
             };
 
 
-    private void notifyDeleteMessageSuccessfully(final MessageDto messageDto) {
-        this.postExecutionThread.post(() -> callback.onMessageDeleted(messageDto));
+    private void notifyDeleteMessageSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onMessageDeleted());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

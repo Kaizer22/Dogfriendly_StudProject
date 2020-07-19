@@ -9,7 +9,7 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 public interface EditMessageUseCase {
 
     interface Callback {
-        void onMessageEdited(MessageDto messageDto);
+        void onMessageEdited();
 
         void onError(ErrorBundle errorBundle);
     }
