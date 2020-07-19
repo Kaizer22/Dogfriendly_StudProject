@@ -62,13 +62,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void createUser(UserDetailsCallback userCallback) {
-
+    public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
     }
 
     @Override
-    public void editUserById(String name, UserDetailsCallback userCallback) {
-
+    public void editUserById(String name, UserDto userDto, CreateOrEditCallback userCallback) {
     }
 
     @Override

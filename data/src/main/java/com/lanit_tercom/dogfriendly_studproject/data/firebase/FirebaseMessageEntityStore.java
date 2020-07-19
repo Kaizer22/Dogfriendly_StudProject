@@ -33,9 +33,10 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getAllMessages(MessageListCallback messageListCallback) {
+    public void getMessages(MessagesDetailCallback messagesDetailCallback) {
         final List<MessageEntity> messages = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages.clear();
@@ -47,7 +48,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
                     messageEntity.setId(keyNode.getKey());
                     messages.add(messageEntity);
                 }
-                messageListCallback.onMessagesListLoaded(messages); // return all messages from Realtime Database
+                messagesDetailCallback.onMessagesLoaded(messages); // return all messages from Realtime Database
             }
 
             @Override
@@ -58,7 +59,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getMessageById(String id, MessageByIdCallback messageByIdCallback) {
+    public void getMessage(String id, MessageDetailCallback messageDetailCallback) {
         referenceDatabase.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -70,7 +71,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
                         messageEntity.setId(id);
                     }
                 }
-                messageByIdCallback.onMessageLoaded(messageEntity); // return MessageEntity
+                messageDetailCallback.onMessageLoaded(messageEntity); // return MessageEntity
             }
 
             @Override
@@ -79,7 +80,6 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
             }
         });
     }
-
 
     private void putMessageEntityInCache(String messageId, MessageEntity messageEntity) {
         if (messageCache != null) {
