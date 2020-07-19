@@ -1,43 +1,46 @@
-package com.lanit_tercom.domain.interactor.get;
+package com.lanit_tercom.domain.interactor.user.impl;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.UseCase;
+import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
-import java.util.List;
+public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetailsUseCase {
 
-public class GetUsersDetailsUseCaseImpl extends UseCase implements GetUsersDetailsUseCase {
+    private String userId = "";
+    private UserDto userDto;
+    private EditUserDetailsUseCase.Callback callback;
 
-    private GetUsersDetailsUseCase.Callback callback;
-
-    public GetUsersDetailsUseCaseImpl(UserRepository userRepository,
+    public EditUserDetailsUseCaseImpl(UserRepository userRepository,
                                       ThreadExecutor threadExecutor,
                                       PostExecutionThread postExecutionThread) {
         super(userRepository, threadExecutor, postExecutionThread);
     }
 
     @Override
-    public void execute(Callback callback) {
-        if (callback == null) {
+    public void execute(String userId, UserDto userDto, Callback callback) {
+        if (userId.isEmpty() || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
+        this.userId = userId;
+        this.userDto = userDto;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.userRepository.getUsers(this.repositoryCallback);
+        this.userRepository.editUserById(this.userId, this.userDto, this.repositoryCallback);
     }
 
-    private final UserRepository.UsersDetailsCallback repositoryCallback =
-            new UserRepository.UsersDetailsCallback() {
+    private final UserRepository.CreateOrEditCallback repositoryCallback =
+            new UserRepository.CreateOrEditCallback() {
                 @Override
-                public void onUsersLoaded(List<UserDto> userDto) {
-                    notifyGetUsersSuccessfully(userDto);
+                public void onUserCreatedOrEdited() {
+                    notifyEditUserDetailsSuccessfully();
                 }
 
                 @Override
@@ -46,8 +49,8 @@ public class GetUsersDetailsUseCaseImpl extends UseCase implements GetUsersDetai
                 }
             };
 
-    private void notifyGetUsersSuccessfully(final List<UserDto> users) {
-        this.postExecutionThread.post(() -> callback.onUsersDataLoaded(users));
+    private void notifyEditUserDetailsSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onUserDataEdited());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

@@ -1,15 +1,17 @@
-package com.lanit_tercom.domain.interactor.create;
+package com.lanit_tercom.domain.interactor.user.impl;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.UseCase;
+import com.lanit_tercom.domain.interactor.user.CreateUserDetailsUseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
 public class CreateUserDetailsUseCaseImpl extends UseCase implements CreateUserDetailsUseCase {
 
     private CreateUserDetailsUseCase.Callback callback;
+    private UserDto userDto;
 
     public CreateUserDetailsUseCaseImpl(UserRepository userRepository,
                                         ThreadExecutor threadExecutor,
@@ -17,24 +19,25 @@ public class CreateUserDetailsUseCaseImpl extends UseCase implements CreateUserD
         super(userRepository, threadExecutor, postExecutionThread);
     }
 
-    public void execute(Callback callback) {
+    public void execute(UserDto userDto, Callback callback) {
         if (callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
+        this.userDto = userDto;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.userRepository.createUser(this.repositoryCallback);
+        this.userRepository.createUser(userDto, this.repositoryCallback);
     }
 
-    private final UserRepository.UserDetailsCallback repositoryCallback =
-            new UserRepository.UserDetailsCallback() {
+    private final UserRepository.CreateOrEditCallback repositoryCallback =
+            new UserRepository.CreateOrEditCallback() {
                 @Override
-                public void onUserLoaded(UserDto userDto) {
-                    notifyCreateUserDetailsSuccessfully(userDto);
+                public void onUserCreatedOrEdited() {
+                    notifyCreateUserDetailsSuccessfully();
                 }
 
                 @Override
@@ -43,8 +46,8 @@ public class CreateUserDetailsUseCaseImpl extends UseCase implements CreateUserD
                 }
             };
 
-    private void notifyCreateUserDetailsSuccessfully(final UserDto userDto) {
-        this.postExecutionThread.post(() -> callback.onUserDataCreated(userDto));
+    private void notifyCreateUserDetailsSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onUserDataCreated());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

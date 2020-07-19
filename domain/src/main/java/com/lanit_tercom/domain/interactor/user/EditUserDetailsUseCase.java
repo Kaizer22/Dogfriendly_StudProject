@@ -1,4 +1,4 @@
-package com.lanit_tercom.domain.interactor.edit;
+package com.lanit_tercom.domain.interactor.user;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
@@ -6,10 +6,10 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 public interface EditUserDetailsUseCase {
 
     interface Callback {
-        void onUserDataEdited(UserDto userDto);
+        void onUserDataEdited();
 
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String userId, Callback callback);
+    void execute(String userId, UserDto userDto, Callback callback);
 }

@@ -1,10 +1,11 @@
-package com.lanit_tercom.domain.interactor.get;
+package com.lanit_tercom.domain.interactor.user.impl;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.UseCase;
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
 public class GetUserDetailsUseCaseImpl extends UseCase implements GetUserDetailsUseCase {

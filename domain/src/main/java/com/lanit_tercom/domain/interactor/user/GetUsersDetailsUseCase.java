@@ -1,16 +1,18 @@
-package com.lanit_tercom.domain.interactor.get;
+package com.lanit_tercom.domain.interactor.user;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.Interactor;
 
-public interface GetUserDetailsUseCase extends Interactor {
+import java.util.List;
+
+public interface GetUsersDetailsUseCase extends Interactor {
 
     interface Callback {
-        void onUserDataLoaded(UserDto userDto);
+        void onUsersDataLoaded(List<UserDto> users);
 
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String userId, Callback callback);
+    void execute(Callback callback);
 }
