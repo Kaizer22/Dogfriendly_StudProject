@@ -41,9 +41,9 @@ public interface MessageEntityStore {
 
     void getMessageById(String id, MessageEntityStore.MessageByIdCallback messageByIdCallback);
 
-    void createMessage(String id, Timestamp timestamp, String userName, String body, MessageEntityStore.MessageCreateCallback messageCreateCallback);
+    void postMessage(MessageEntity messageEntity, MessageEntityStore.MessageCreateCallback messageCreateCallback);
 
-    void updateMessage(String id, String body, MessageEntityStore.MessageUpdateCallback messageUpdateCallback);
+    void editMessage(MessageEntity messageEntity, MessageEntityStore.MessageUpdateCallback messageUpdateCallback);
 
-    void deleteMessage(String id, MessageEntityStore.MessageDeleteCallback messageDeleteCallback);
+    void deleteMessage(MessageEntity messageEntity, MessageEntityStore.MessageDeleteCallback messageDeleteCallback);
 }

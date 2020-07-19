@@ -83,33 +83,37 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void createMessage(String id, Timestamp timestamp, String userName, String body, MessageCreateCallback messageCreateCallback) {
-        MessageEntity messageEntity = new MessageEntity(userName, body);
-        messageEntity.setId(id);
-        messageEntity.setTimestamp(timestamp);
-        referenceDatabase.child(CHILD_MESSAGES).push().setValue(messageEntity, new DatabaseReference.CompletionListener() {
+    public void postMessage(MessageEntity messageEntity, MessageCreateCallback messageCreateCallback) {
+        String id = messageEntity.getId();
+        referenceDatabase.child(CHILD_MESSAGES).child(id).setValue(messageEntity, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error != null) messageCreateCallback.onError(error.toException());
                 messageCreateCallback.onMessageCreated();
             }
         });
     }
 
     @Override
-    public void updateMessage(String id, String body, MessageUpdateCallback messageUpdateCallback) {
+    public void editMessage(MessageEntity messageEntity, MessageUpdateCallback messageUpdateCallback) {
+        String id = messageEntity.getId();
+        String body = messageEntity.getBody();
         referenceDatabase.child(CHILD_MESSAGES).child(id).child("body").setValue(body, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error != null) messageUpdateCallback.onError(error.toException());
                 messageUpdateCallback.onMessageUpdated();
             }
         });
     }
 
     @Override
-    public void deleteMessage(String id, MessageDeleteCallback messageDeleteCallback) {
+    public void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback) {
+        String id = messageEntity.getId();
         referenceDatabase.child(CHILD_MESSAGES).child(id).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error != null) messageDeleteCallback.onError(error.toException());
                 messageDeleteCallback.onMessageDeleteCallback();
             }
         });
