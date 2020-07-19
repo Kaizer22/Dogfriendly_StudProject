@@ -1,4 +1,4 @@
-package com.lanit_tercom.domain.interactor.edit;
+package com.lanit_tercom.domain.interactor.user.edit;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;

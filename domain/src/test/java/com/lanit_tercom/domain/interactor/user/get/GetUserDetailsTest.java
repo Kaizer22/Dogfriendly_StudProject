@@ -1,4 +1,4 @@
-package com.lanit_tercom.domain.interactor.get;
+package com.lanit_tercom.domain.interactor.user.get;
 
 import com.lanit_tercom.domain.repository.UserRepository;
 

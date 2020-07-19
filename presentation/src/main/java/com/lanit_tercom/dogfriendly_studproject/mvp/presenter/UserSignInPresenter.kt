@@ -16,9 +16,7 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
 
     var currentUserId: String? = null
 
-    fun setView(view: UserSignInView) {
-        this.view = view
-    }
+    fun setView(view: UserSignInView) { this.view = view }
 
     fun auth(email: String?, password: String?) {
 
@@ -36,14 +34,11 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
             if(currentUserId != null)
                 ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
             else
-                //не срабатывает... потом сделаем
+                //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
                 ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
         }
 
-        override fun OnError(e: Exception?) {
-            Log.i("AUTH_MANAGER", "EXCEPTION")
-
-        }
+        override fun OnError(e: Exception?) {}
 
     }
 

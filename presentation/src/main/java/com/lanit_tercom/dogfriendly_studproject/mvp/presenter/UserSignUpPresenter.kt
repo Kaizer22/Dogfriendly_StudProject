@@ -14,19 +14,15 @@ class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter
 
     var currentUserId: String? = null
 
-    fun setView(view: UserSignUpView) {
-        this.view = view
-        Log.i("AUTH_MANAGER", authManager?.isSignedIn.toString())
-    }
+    fun setView(view: UserSignUpView) { this.view = view }
 
-    fun registerUser(email: String?, password: String?) {
+    fun registerUser(email: String?, password: String?) =
         authManager?.createUserWithEmailPassword(email, password, createUserCallback)
-    }
+
 
     private val createUserCallback: AuthManager.CreateUserCallback = object : AuthManager.CreateUserCallback {
 
         override fun OnCreateUserFinished(currentUserID: String?) {
-            Log.i("AUTH_MANAGER", "A new user has been created.")
             currentUserId = currentUserID
         }
 
