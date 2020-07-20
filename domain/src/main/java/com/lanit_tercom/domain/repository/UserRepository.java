@@ -30,6 +30,6 @@ public interface UserRepository {
 
     void createUser(UserDto userDto, CreateOrEditCallback userCallback);
 
-    void editUserById(String id, UserDto userDto, CreateOrEditCallback userCallback);
+    void editUserById(UserDto userDto, CreateOrEditCallback userCallback);
 
 }

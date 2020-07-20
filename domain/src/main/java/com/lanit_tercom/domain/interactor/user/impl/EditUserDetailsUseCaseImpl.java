@@ -10,7 +10,6 @@ import com.lanit_tercom.domain.repository.UserRepository;
 
 public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetailsUseCase {
 
-    private String userId = "";
     private UserDto userDto;
     private EditUserDetailsUseCase.Callback callback;
 
@@ -21,19 +20,18 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
     }
 
     @Override
-    public void execute(String userId, UserDto userDto, Callback callback) {
-        if (userId.isEmpty() || callback == null) {
+    public void execute(UserDto userDto, Callback callback) {
+        if (callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
-        this.userId = userId;
         this.userDto = userDto;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.userRepository.editUserById(this.userId, this.userDto, this.repositoryCallback);
+        this.userRepository.editUserById(this.userDto, this.repositoryCallback);
     }
 
     private final UserRepository.CreateOrEditCallback repositoryCallback =
