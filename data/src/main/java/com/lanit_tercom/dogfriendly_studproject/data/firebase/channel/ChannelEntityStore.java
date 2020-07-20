@@ -19,7 +19,7 @@ public interface ChannelEntityStore {
         void onError(Exception exception);
     }
 
-    void getChannels(ChannelsDetailCallback callback);
+    void getChannels(String userId, ChannelsDetailCallback callback);
     void addChannel(ChannelEntity channel, ChannelDetailCallback callback);
-    void deleteChannel(String channelId, ChannelDetailCallback callback);
+    void deleteChannel(ChannelEntity channel, ChannelDetailCallback callback);
 }

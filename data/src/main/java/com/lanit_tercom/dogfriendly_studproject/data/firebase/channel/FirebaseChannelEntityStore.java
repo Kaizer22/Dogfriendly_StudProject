@@ -12,8 +12,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
 
-import java.nio.channels.Channel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -32,8 +32,15 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         this.referenceDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+    public boolean isUserInList(String value, List<HashMap<String, String>> list){
+        if(list == null) return false;
+        for(int i = 0;i<list.size();i++)
+            if(list.get(i).containsValue(value)) return true;
+        return false;
+    }
+
     @Override
-    public void getChannels(ChannelsDetailCallback channelsDetailCallback) {
+    public void getChannels(String userId, ChannelsDetailCallback channelsDetailCallback) {
         final List<ChannelEntity> channels = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
 
@@ -47,7 +54,9 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
                     ChannelEntity channelEntity = keyNode.getValue(ChannelEntity.class);
                     channelEntity.setId(keyNode.getKey());
-                    channels.add(channelEntity);
+
+                    if(isUserInList(userId, channelEntity.getMembers()))
+                        channels.add(channelEntity);
                 }
                 channelsDetailCallback.onChannelsLoaded(channels);
             }
@@ -62,12 +71,18 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
     @Override
     public void addChannel(ChannelEntity channel, ChannelDetailCallback callback) {
-        referenceDatabase.child(CHILD_CHANNELS).setValue(channel);
+        referenceDatabase.child(CHILD_CHANNELS).push().setValue(channel);
     }
 
+    //23:30 я имею право тупить. Что-то с этими id-шниками не заходит совсем...
     @Override
-    public void deleteChannel(String channelId, ChannelDetailCallback callback) {
-        referenceDatabase.child(CHILD_CHANNELS).child(channelId).removeValue();
+    public void deleteChannel(ChannelEntity entity, ChannelDetailCallback callback) {
+        referenceDatabase.child(CHILD_CHANNELS).child(entity.getId()).removeValue();
+        //Ни один из вариантов не работает
+        //referenceDatabase.child(CHILD_CHANNELS).child(channelId).push().setValue(null);
+        //referenceDatabase.child(CHILD_CHANNELS).child(channelId).push().removeValue();
+        //referenceDatabase.child(CHILD_CHANNELS).push().child(channelId).removeValue();
+        //referenceDatabase.child(CHILD_CHANNELS).push().child(channelId).push().removeValue();
     }
 
 
