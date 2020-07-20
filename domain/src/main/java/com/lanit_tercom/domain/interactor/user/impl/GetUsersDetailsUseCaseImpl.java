@@ -1,9 +1,10 @@
-package com.lanit_tercom.domain.interactor.user.get;
+package com.lanit_tercom.domain.interactor.user.impl;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase;
 import com.lanit_tercom.domain.interactor.user.UseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
@@ -47,20 +48,10 @@ public class GetUsersDetailsUseCaseImpl extends UseCase implements GetUsersDetai
             };
 
     private void notifyGetUsersSuccessfully(final List<UserDto> users) {
-        this.postExecutionThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onUsersDataLoaded(users);
-            }
-        });
+        this.postExecutionThread.post(() -> callback.onUsersDataLoaded(users));
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
-        this.postExecutionThread.post(new Runnable() {
-            @Override
-            public void run() {
-                callback.onError(errorBundle);
-            }
-        });
+        this.postExecutionThread.post(() -> callback.onError(errorBundle));
     }
 }

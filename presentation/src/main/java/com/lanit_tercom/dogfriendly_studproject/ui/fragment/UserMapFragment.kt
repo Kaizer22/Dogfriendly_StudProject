@@ -22,8 +22,8 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserMapActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
-import com.lanit_tercom.domain.interactor.user.get.GetUsersDetailsUseCase
-import com.lanit_tercom.domain.interactor.user.get.GetUsersDetailsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl

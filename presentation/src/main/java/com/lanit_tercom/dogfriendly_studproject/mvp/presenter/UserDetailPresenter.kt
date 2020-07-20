@@ -4,7 +4,7 @@ import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.user.get.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 
 /**
  * presenter класс для работы с конкретным пользователем

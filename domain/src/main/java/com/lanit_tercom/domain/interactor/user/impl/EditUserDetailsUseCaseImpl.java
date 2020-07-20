@@ -1,15 +1,17 @@
-package com.lanit_tercom.domain.interactor.user.edit;
+package com.lanit_tercom.domain.interactor.user.impl;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase;
 import com.lanit_tercom.domain.interactor.user.UseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
 public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetailsUseCase {
 
     private String userId = "";
+    private UserDto userDto;
     private EditUserDetailsUseCase.Callback callback;
 
     public EditUserDetailsUseCaseImpl(UserRepository userRepository,
@@ -19,25 +21,26 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
     }
 
     @Override
-    public void execute(String userId, Callback callback) {
+    public void execute(String userId, UserDto userDto, Callback callback) {
         if (userId.isEmpty() || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
-        this.callback = callback;
         this.userId = userId;
+        this.userDto = userDto;
+        this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.userRepository.editUserById(this.userId, this.repositoryCallback);
+        this.userRepository.editUserById(this.userId, this.userDto, this.repositoryCallback);
     }
 
-    private final UserRepository.UserDetailsCallback repositoryCallback =
-            new UserRepository.UserDetailsCallback() {
+    private final UserRepository.CreateOrEditCallback repositoryCallback =
+            new UserRepository.CreateOrEditCallback() {
                 @Override
-                public void onUserLoaded(UserDto userDto) {
-                    notifyEditUserDetailsSuccessfully(userDto);
+                public void onUserCreatedOrEdited() {
+                    notifyEditUserDetailsSuccessfully();
                 }
 
                 @Override
@@ -46,8 +49,8 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
                 }
             };
 
-    private void notifyEditUserDetailsSuccessfully(final UserDto userDto) {
-        this.postExecutionThread.post(() -> callback.onUserDataEdited(userDto));
+    private void notifyEditUserDetailsSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onUserDataEdited());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

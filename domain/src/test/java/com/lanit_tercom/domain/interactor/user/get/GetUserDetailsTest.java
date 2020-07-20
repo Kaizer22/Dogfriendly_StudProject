@@ -1,5 +1,6 @@
 package com.lanit_tercom.domain.interactor.user.get;
 
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
 import com.lanit_tercom.domain.repository.UserRepository;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -1,20 +1,21 @@
-package com.lanit_tercom.domain.interactor.message.delete;
+package com.lanit_tercom.domain.interactor.message.impl;
 
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.message.PostMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.UseCase;
 import com.lanit_tercom.domain.repository.MessageRepository;
 
 /**
  * @author nikolaygorokhov1@gmail.com
  */
-public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUseCase{
+public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCase {
     private MessageDto messageDto = null;
-    private DeleteMessageUseCase.Callback callback;
+    private PostMessageUseCase.Callback callback;
 
-    public DeleteMessageUseCaseImpl(MessageRepository messageRepository,
+    public PostMessageUseCaseImpl(MessageRepository messageRepository,
                                   ThreadExecutor threadExecutor,
                                   PostExecutionThread postExecutionThread) {
         super(messageRepository, threadExecutor, postExecutionThread);
@@ -32,15 +33,15 @@ public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUs
 
     @Override
     public void run() {
-        this.messageRepository.deleteMessage(this.messageDto, this.repositoryCallback);
+        this.messageRepository.postMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageEditCallback repositoryCallback =
-            new MessageRepository.MessageEditCallback() {
+    private final MessageRepository.MessageDetailCallback repositoryCallback =
+            new MessageRepository.MessageDetailCallback() {
 
                 @Override
-                public void onMessageEdited() {
-                    notifyDeleteMessageSuccessfully();
+                public void onMessageLoaded(MessageDto messageDto) {
+                    notifyPostMessageSuccessfully(messageDto);
                 }
 
                 @Override
@@ -50,12 +51,11 @@ public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUs
             };
 
 
-    private void notifyDeleteMessageSuccessfully() {
-        this.postExecutionThread.post(() -> callback.onMessageDeleted());
+    private void notifyPostMessageSuccessfully(final MessageDto messageDto) {
+        this.postExecutionThread.post(() -> callback.onMessagePosted(messageDto));
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
         this.postExecutionThread.post(() -> callback.onError(errorBundle));
     }
-
 }

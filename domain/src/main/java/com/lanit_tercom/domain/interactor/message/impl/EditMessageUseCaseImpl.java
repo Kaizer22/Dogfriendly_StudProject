@@ -1,22 +1,23 @@
-package com.lanit_tercom.domain.interactor.message.post;
+package com.lanit_tercom.domain.interactor.message.impl;
 
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.UseCase;
 import com.lanit_tercom.domain.repository.MessageRepository;
 
 /**
  * @author nikolaygorokhov1@gmail.com
  */
-public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCase {
+public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCase {
     private MessageDto messageDto = null;
-    private PostMessageUseCase.Callback callback;
+    private EditMessageUseCase.Callback callback;
 
-    public PostMessageUseCaseImpl(MessageRepository messageRepository,
-                                  ThreadExecutor threadExecutor,
-                                  PostExecutionThread postExecutionThread) {
+    public EditMessageUseCaseImpl(MessageRepository messageRepository,
+                                    ThreadExecutor threadExecutor,
+                                    PostExecutionThread postExecutionThread) {
         super(messageRepository, threadExecutor, postExecutionThread);
     }
 
@@ -32,15 +33,15 @@ public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCas
 
     @Override
     public void run() {
-        this.messageRepository.postMessage(this.messageDto, this.repositoryCallback);
+        this.messageRepository.editMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageDetailCallback repositoryCallback =
-            new MessageRepository.MessageDetailCallback() {
+    private final MessageRepository.MessageEditCallback repositoryCallback =
+            new MessageRepository.MessageEditCallback() {
 
                 @Override
-                public void onMessageLoaded(MessageDto messageDto) {
-                    notifyPostMessageSuccessfully(messageDto);
+                public void onMessageEdited() {
+                    notifyEditMessageSuccessfully();
                 }
 
                 @Override
@@ -50,8 +51,8 @@ public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCas
             };
 
 
-    private void notifyPostMessageSuccessfully(final MessageDto messageDto) {
-        this.postExecutionThread.post(() -> callback.onMessagePosted(messageDto));
+    private void notifyEditMessageSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onMessageEdited());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

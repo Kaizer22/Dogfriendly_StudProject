@@ -6,7 +6,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.user.get.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
 
 /**
  * presenter класс для работы с картой

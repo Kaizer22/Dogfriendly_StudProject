@@ -1,22 +1,23 @@
-package com.lanit_tercom.domain.interactor.message.edit;
+package com.lanit_tercom.domain.interactor.message.impl;
 
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.message.DeleteMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.UseCase;
 import com.lanit_tercom.domain.repository.MessageRepository;
 
 /**
  * @author nikolaygorokhov1@gmail.com
  */
-public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCase {
+public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUseCase {
     private MessageDto messageDto = null;
-    private EditMessageUseCase.Callback callback;
+    private DeleteMessageUseCase.Callback callback;
 
-    public EditMessageUseCaseImpl(MessageRepository messageRepository,
-                                    ThreadExecutor threadExecutor,
-                                    PostExecutionThread postExecutionThread) {
+    public DeleteMessageUseCaseImpl(MessageRepository messageRepository,
+                                  ThreadExecutor threadExecutor,
+                                  PostExecutionThread postExecutionThread) {
         super(messageRepository, threadExecutor, postExecutionThread);
     }
 
@@ -32,7 +33,7 @@ public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCas
 
     @Override
     public void run() {
-        this.messageRepository.editMessage(this.messageDto, this.repositoryCallback);
+        this.messageRepository.deleteMessage(this.messageDto, this.repositoryCallback);
     }
 
     private final MessageRepository.MessageEditCallback repositoryCallback =
@@ -40,7 +41,7 @@ public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCas
 
                 @Override
                 public void onMessageEdited() {
-                    notifyEditMessageSuccessfully();
+                    notifyDeleteMessageSuccessfully();
                 }
 
                 @Override
@@ -50,11 +51,12 @@ public class EditMessageUseCaseImpl extends UseCase implements EditMessageUseCas
             };
 
 
-    private void notifyEditMessageSuccessfully() {
-        this.postExecutionThread.post(() -> callback.onMessageEdited());
+    private void notifyDeleteMessageSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onMessageDeleted());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
         this.postExecutionThread.post(() -> callback.onError(errorBundle));
     }
+
 }

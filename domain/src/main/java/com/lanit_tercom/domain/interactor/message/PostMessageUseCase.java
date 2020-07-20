@@ -1,4 +1,4 @@
-package com.lanit_tercom.domain.interactor.message.delete;
+package com.lanit_tercom.domain.interactor.message;
 
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
@@ -6,10 +6,10 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 /**
  * @author nikolaygorokhov1@gmail.com
  */
-public interface DeleteMessageUseCase {
+public interface PostMessageUseCase {
 
     interface Callback {
-        void onMessageDeleted();
+        void onMessagePosted(MessageDto MessageDto);
 
         void onError(ErrorBundle errorBundle);
     }

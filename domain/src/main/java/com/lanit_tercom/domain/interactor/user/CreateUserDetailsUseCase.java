@@ -1,14 +1,15 @@
-package com.lanit_tercom.domain.interactor.user.create;
+package com.lanit_tercom.domain.interactor.user;
 
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
 public interface CreateUserDetailsUseCase {
+
     interface Callback {
-        void onUserDataCreated(UserDto userDto);
+        void onUserDataCreated();
 
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(Callback callback);
+    void execute(UserDto userDto, Callback callback);
 }

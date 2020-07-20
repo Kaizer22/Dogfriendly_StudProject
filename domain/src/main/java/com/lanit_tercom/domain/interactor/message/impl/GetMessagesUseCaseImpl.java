@@ -1,9 +1,10 @@
-package com.lanit_tercom.domain.interactor.message.get;
+package com.lanit_tercom.domain.interactor.message.impl;
 
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.message.UseCase;
 import com.lanit_tercom.domain.repository.MessageRepository;
 

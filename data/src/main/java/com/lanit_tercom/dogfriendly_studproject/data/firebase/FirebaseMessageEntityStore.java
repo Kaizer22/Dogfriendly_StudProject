@@ -3,7 +3,6 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,7 +12,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +33,10 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getAllMessages(MessageListCallback messageListCallback) {
+    public void getMessages(MessagesDetailCallback messagesDetailCallback) {
         final List<MessageEntity> messages = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages.clear();
@@ -49,7 +48,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
                     messageEntity.setId(keyNode.getKey());
                     messages.add(messageEntity);
                 }
-                messageListCallback.onMessagesListLoaded(messages); // return all messages from Realtime Database
+                messagesDetailCallback.onMessagesLoaded(messages); // return all messages from Realtime Database
             }
 
             @Override
@@ -60,7 +59,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getMessageById(String id, MessageByIdCallback messageByIdCallback) {
+    public void getMessage(String id, MessageDetailCallback messageDetailCallback) {
         referenceDatabase.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -72,49 +71,12 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
                         messageEntity.setId(id);
                     }
                 }
-                messageByIdCallback.onMessageLoaded(messageEntity); // return MessageEntity
+                messageDetailCallback.onMessageLoaded(messageEntity); // return MessageEntity
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException());
-            }
-        });
-    }
-
-    @Override
-    public void postMessage(MessageEntity messageEntity, MessageCreateCallback messageCreateCallback) {
-        String id = messageEntity.getId();
-        referenceDatabase.child(CHILD_MESSAGES).child(id).setValue(messageEntity, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                if (error != null) messageCreateCallback.onError(error.toException());
-                messageCreateCallback.onMessageCreated();
-            }
-        });
-    }
-
-    @Override
-    public void editMessage(MessageEntity messageEntity, MessageUpdateCallback messageUpdateCallback) {
-        String id = messageEntity.getId();
-        String body = messageEntity.getBody();
-        referenceDatabase.child(CHILD_MESSAGES).child(id).child("body").setValue(body, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                if (error != null) messageUpdateCallback.onError(error.toException());
-                messageUpdateCallback.onMessageUpdated();
-            }
-        });
-    }
-
-    @Override
-    public void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback) {
-        String id = messageEntity.getId();
-        referenceDatabase.child(CHILD_MESSAGES).child(id).removeValue(new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                if (error != null) messageDeleteCallback.onError(error.toException());
-                messageDeleteCallback.onMessageDeleteCallback();
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.lanit_tercom.domain.interactor.message.get;
+package com.lanit_tercom.domain.interactor.message;
 
 
 import com.lanit_tercom.domain.dto.MessageDto;
