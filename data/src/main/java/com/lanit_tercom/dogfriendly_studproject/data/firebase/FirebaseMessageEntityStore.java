@@ -19,7 +19,7 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseMessageEntityStore implements MessageEntityStore {
 
-    private static final String CHILD_MESSAGES = "messages";
+    private static final String CHILD_MESSAGES = "Messages";
 
     private MessageEntity messageEntity = new MessageEntity();
 

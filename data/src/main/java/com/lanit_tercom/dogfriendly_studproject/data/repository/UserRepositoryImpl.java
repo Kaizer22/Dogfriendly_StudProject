@@ -66,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void editUserById(String name, UserDto userDto, CreateOrEditCallback userCallback) {
+    public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
     }
 
     @Override

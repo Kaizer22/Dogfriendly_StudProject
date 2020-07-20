@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.entity;
 import java.sql.Timestamp;
 
 public class MessageEntity {
+    String channelId;
     String id;
     Timestamp timestamp;
     String userName;
@@ -46,5 +47,13 @@ public class MessageEntity {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 }
