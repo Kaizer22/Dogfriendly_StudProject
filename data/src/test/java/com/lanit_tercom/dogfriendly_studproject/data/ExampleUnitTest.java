@@ -1,8 +1,13 @@
 package com.lanit_tercom.dogfriendly_studproject.data;
 
+import android.util.Log;
+
+import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.FirebaseUserEntityStore;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.FirebaseChannelEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.FirebaseUserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore;
 
 import org.junit.Test;
 
@@ -24,6 +29,26 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
         System.out.println("Ok");
+    }
+
+
+
+    @Test
+    public void testGetChannels(){
+        new FirebaseChannelEntityStore(null).getChannels(new ChannelEntityStore.ChannelsDetailCallback(){
+
+            @Override
+            public void onChannelsLoaded(List<ChannelEntity> channels) {
+                for(ChannelEntity entity: channels){
+                    Log.i("CHANNEL_TEST", entity.getId());
+                }
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
     }
 
 

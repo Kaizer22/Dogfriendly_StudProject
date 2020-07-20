@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase.message;
 
 import android.util.Log;
 
@@ -13,6 +13,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread

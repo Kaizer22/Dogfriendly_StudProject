@@ -1,8 +1,10 @@
-package com.lanit_tercom.dogfriendly_studproject.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase.message;
 
 import android.util.Log;
 
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.FirebaseMessageEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStore;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 
 public class MessageEntityStoreFactory {

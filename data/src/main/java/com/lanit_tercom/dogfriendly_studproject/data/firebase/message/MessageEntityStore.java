@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase.message;
 
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
