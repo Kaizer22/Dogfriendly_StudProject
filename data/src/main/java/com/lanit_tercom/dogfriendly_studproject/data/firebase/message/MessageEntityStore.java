@@ -23,8 +23,20 @@ public interface MessageEntityStore {
         void onError(Exception exception);
     }
 
+    interface MessagePostCallback {
+        void onMessagePosted();
+
+        void onError(ErrorBundle errorBundle);
+    }
+
     interface MessageEditCallback {
         void onMessageEdited();
+
+        void onError(ErrorBundle errorBundle);
+    }
+
+    interface MessageDeleteCallback {
+        void onMessageDeleted();
 
         void onError(ErrorBundle errorBundle);
     }
@@ -32,4 +44,10 @@ public interface MessageEntityStore {
     void getMessages(MessagesDetailCallback messagesDetailCallback);
 
     void getMessage(String id, MessageDetailCallback messageDetailCallback);
+
+    void postMessage(MessageEntity messageEntity, MessagePostCallback messageCreateCallback);
+
+    void editMessage(MessageEntity messageEntity, MessageEditCallback messageUpdateCallback);
+
+    void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback);
 }

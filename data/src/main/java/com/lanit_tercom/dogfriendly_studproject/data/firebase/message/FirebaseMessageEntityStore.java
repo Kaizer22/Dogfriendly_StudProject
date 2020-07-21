@@ -3,7 +3,10 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
+import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +24,7 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseMessageEntityStore implements MessageEntityStore {
 
-    private static final String CHILD_MESSAGES = "messages";
+    private static final String CHILD_MESSAGES = "Messages";
 
     private MessageEntity messageEntity = new MessageEntity();
 
@@ -78,6 +82,87 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+    }
+    @Override
+    public void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback) {
+
+        String channelId = messageEntity.getChannelId();
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).push().setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                messagePostCallback.onMessagePosted();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                messagePostCallback.onError(new ErrorBundle() {
+                    @Override
+                    public Exception getException() {
+                        return e;
+                    }
+
+                    @Override
+                    public String getErrorMessage() {
+                        return e.getMessage();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void editMessage(MessageEntity messageEntity, MessageEditCallback messageEditCallback) {
+        String id = messageEntity.getId();
+        String channelId = messageEntity.getChannelId();
+        String body = messageEntity.getBody();
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).child("body").setValue(body).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                messageEditCallback.onMessageEdited();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                messageEditCallback.onError(new ErrorBundle() {
+                    @Override
+                    public Exception getException() {
+                        return e;
+                    }
+
+                    @Override
+                    public String getErrorMessage() {
+                        return e.getMessage();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback) {
+        String id = messageEntity.getId();
+        String channelId = messageEntity.getChannelId();
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                messageDeleteCallback.onMessageDeleted();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                messageDeleteCallback.onError(new ErrorBundle() {
+                    @Override
+                    public Exception getException() {
+                        return e;
+                    }
+
+                    @Override
+                    public String getErrorMessage() {
+                        return e.getMessage();
+                    }
+                });
             }
         });
     }
