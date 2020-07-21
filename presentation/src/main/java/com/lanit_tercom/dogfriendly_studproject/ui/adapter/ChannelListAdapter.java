@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelListModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
 
 import java.util.List;
@@ -18,13 +18,13 @@ import java.util.List;
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHolder> {
 
     private LayoutInflater inflater;
-    private List<ChannelListModel> channels;
+    private List<ChannelModel> channels;
     private String currentUserID;
 
-    public ChannelListAdapter(Context context, List<ChannelListModel> channels, AuthManager authManager){
+    public ChannelListAdapter(Context context, List<ChannelModel> channels){
         this.channels = channels;
         inflater = LayoutInflater.from(context);
-        currentUserID = authManager.getCurrentUserId();
+        //currentUserID = authManager.getCurrentUserId();
     }
 
     @NonNull
@@ -36,7 +36,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ChannelListViewHolder holder, int position) {
-        ChannelListModel dialogModel = channels.get(position);
+        ChannelModel dialogModel = channels.get(position);
         // TODO Change image provider
         holder.setUserProfileImage(R.drawable.ic_user_profile_image);
         // TODO Change ID to Name

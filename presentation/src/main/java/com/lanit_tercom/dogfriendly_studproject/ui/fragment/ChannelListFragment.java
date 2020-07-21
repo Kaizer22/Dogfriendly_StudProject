@@ -13,22 +13,23 @@ import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelsProviderTemp;
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserChannelListPresenter;
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.ChannelListAdapter;
+import com.lanit_tercom.domain.interactor.get.GetChannelListImpl;
 
 
-public class UserChannelListFragment extends BaseFragment {
+public class ChannelListFragment extends BaseFragment {
 
-    UserChannelListPresenter userDialogListPresenter;
+    ChannelListPresenter channelListPresenter;
 
-    public UserChannelListFragment() {
+    public ChannelListFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void initializePresenter() {
         AuthManager authManager = new AuthManagerFirebaseImpl();
-        userDialogListPresenter = new UserChannelListPresenter(authManager);
+        channelListPresenter = new ChannelListPresenter( );
     }
 
 
@@ -44,8 +45,7 @@ public class UserChannelListFragment extends BaseFragment {
 
 
 
-        ChannelListAdapter dialogListAdapter = new ChannelListAdapter(getContext(), ChannelsProviderTemp.getChannels(),
-                userDialogListPresenter.getAuthManager());
+        ChannelListAdapter dialogListAdapter = new ChannelListAdapter(getContext(), ChannelsProviderTemp.getChannels());
         recyclerViewForChannels.setAdapter(dialogListAdapter);
 
         return view;

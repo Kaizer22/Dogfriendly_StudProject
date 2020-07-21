@@ -1,6 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
-public class ChannelListModel {
+public class ChannelModel {
 
     private String dialogID; //ID диалога
 
@@ -10,10 +10,10 @@ public class ChannelListModel {
 
     private String lastMessageTime; // Время последнего полученного сообщения
 
-    public ChannelListModel() {
+    public ChannelModel() {
     }
 
-    public ChannelListModel(String dialogID, String receiverID, String lastMessage, String lastMessageTime){
+    public ChannelModel(String dialogID, String receiverID, String lastMessage, String lastMessageTime){
         this.dialogID = dialogID;
         this.receiverID = receiverID;
         this.lastMessage = lastMessage;
