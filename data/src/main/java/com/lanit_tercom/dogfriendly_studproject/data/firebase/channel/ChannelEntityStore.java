@@ -5,6 +5,9 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public interface ChannelEntityStore {
 
     interface ChannelDetailCallback {

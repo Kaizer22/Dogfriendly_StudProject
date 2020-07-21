@@ -19,6 +19,9 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
     private static final String CHILD_CHANNELS = "Channels";
@@ -40,7 +43,6 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         return output;
     }
 
-    //Тут вроде все нормик
     @Override
     public void getChannels(String userId, ChannelsDetailCallback channelsDetailCallback) {
         final List<ChannelEntity> channels = new ArrayList<>();
@@ -72,22 +74,20 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         String[] userIDs = getUserIDs(channel.getMembers());
         DatabaseReference dr = referenceDatabase.child(CHILD_CHANNELS);
 
-        String firebaseId = null;
+        String firebaseId = dr.push().getKey();
 
-        //Не уверен что это должно быть так, но по тестам оно делает так как надо.
-        for(int i = 0;i<userIDs.length;i++){
-            if(i == 0){
-                firebaseId = dr.push().getKey();
-                dr.child(userIDs[i]).child(firebaseId).setValue(channel);
-            } else {
-                Map<String, Object> map = new HashMap<>();
-                map.put(firebaseId, channel);
-                dr.child(userIDs[i]).updateChildren(map);
-            }
+        //Тут наверное можно по красивее сделать как то. А может и нет... но вроде работает.
+        Map<String, Object> map = new HashMap<>();
+        for(String userId: userIDs){
+            Map<String, ChannelEntity> pair = new HashMap<>();
+            pair.put(firebaseId, channel);
+            map.put(userId, pair);
         }
+
+        //Все одновременно одним вызовом.
+        dr.updateChildren(map);
     }
 
-    //Удаляет userId вместе с channelId - почему?
     @Override
     public void deleteChannel(ChannelEntity channel, ChannelDetailCallback callback) {
         String[] users = getUserIDs(channel.getMembers());
