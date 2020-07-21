@@ -41,7 +41,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.button_add ->{
                 val entity:ChannelEntity = ChannelEntity()
-                entity.id = "1234"
+                entity.id = "1"
                 entity.lastMessage="1234"
                 entity.lastMessageOwner="1234"
                 entity.name="1234"
@@ -50,7 +50,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 val first = HashMap<String, String>()
                 first["userId"] = "1234"
                 val second = HashMap<String, String>()
-                second["userId"] = "1234"
+                second["userId"] = "2345"
                 users.add(first)
                 users.add(second)
                 entity.members = users
@@ -70,38 +70,34 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
             }
             R.id.button_delete ->{
-                val entity:ChannelEntity = ChannelEntity()
-                entity.id = "1234"
-                entity.lastMessage="1234"
-                entity.lastMessageOwner="1234"
-                entity.name="1234"
-                entity.timestamp=1234L
-                val users: MutableList<HashMap<String, String>> = ArrayList()
-                val first = HashMap<String, String>()
-                first["userId"] = "1234"
-                val second = HashMap<String, String>()
-                second["userId"] = "1234"
-                users.add(first)
-                users.add(second)
-                entity.members = users
+
+                FirebaseChannelEntityStore(null).getChannels("1234",object : ChannelEntityStore.ChannelsDetailCallback{
+
+                    override fun onChannelsLoaded(channels: MutableList<ChannelEntity>?) {
+                        val entity = channels?.get(0);
+
+                        FirebaseChannelEntityStore(null).deleteChannel(entity ,object : ChannelEntityStore.ChannelDetailCallback{
+
+                            override fun onChannelEdited() {
+                                Log.i("TEST_ACTIVITY", "1234 DELETED")
+                            }
 
 
-                FirebaseChannelEntityStore(null).deleteChannel(entity ,object : ChannelEntityStore.ChannelDetailCallback{
+                            override fun onError(exception: Exception?){
+                                Log.i("TEST_ACTIVITY", "ERROR DELETING 1234")
+                            }
 
-                    override fun onChannelEdited() {
-                        Log.i("TEST_ACTIVITY", "1234 DELETED")
+                        })
+
                     }
 
-
-                    override fun onError(exception: Exception?){
-                        Log.i("TEST_ACTIVITY", "ERROR DELETING 1234")
+                    override fun onError(exception: Exception?) {
+                        TODO("Not yet implemented")
                     }
 
                 })
-
             }
         }
-
     }
 
 }
