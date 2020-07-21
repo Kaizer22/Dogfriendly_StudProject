@@ -18,14 +18,16 @@ public class UserChatPresenter extends BasePresenter {
     public UserChatPresenter(AuthManager authManager){
         this.authManager = authManager;
     }
+
     public void sendMessage(String message){
         MessageModel messageModel = new MessageModel();
         messageModel.setSenderID(authManager.getCurrentUserId());
-        messageModel.setReceiverID(addresseeID);
+        messageModel.setChatID(addresseeID);
 
         messageModel.setText(message);
         messageModel.setTime(System.currentTimeMillis());
 
+        MessageProviderTemp.addMessage(messageModel);
         //Добавление сообщения в БД через domain слой
     }
 
@@ -42,9 +44,8 @@ public class UserChatPresenter extends BasePresenter {
         //Обновление данных о собеседнике
     }
 
-    //TODO скорее всего, этого метода тут быть не должно
-    public AuthManager getAuthManager(){
-        return authManager;
+    public String getCurrentUserID(){
+        return authManager.getCurrentUserId();
     }
 
 

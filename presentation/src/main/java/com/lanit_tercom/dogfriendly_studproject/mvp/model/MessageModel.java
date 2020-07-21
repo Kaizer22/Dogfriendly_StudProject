@@ -10,7 +10,7 @@ public class MessageModel {
 
     private String senderID;
 
-    private String receiverID;
+    private String chatID;
 
     private String text;
 
@@ -23,12 +23,12 @@ public class MessageModel {
     //см. MessageProviderTemp
     public MessageModel(String messageID,
                         String senderID,
-                        String receiverID,
+                        String chatID,
                         String text,
                         long time){
         this.messageID = messageID;
         this.senderID = senderID;
-        this.receiverID = receiverID;
+        this.chatID = chatID;
         this.text = text;
         this.time = time;
 
@@ -43,12 +43,12 @@ public class MessageModel {
         this.messageID = messageID;
     }
 
-    public String getReceiverID() {
-        return receiverID;
+    public String getChatID() {
+        return chatID;
     }
 
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
+    public void setChatID(String chatID) {
+        this.chatID = chatID;
     }
 
     public String getSenderID() {

@@ -10,15 +10,24 @@ import java.util.List;
  * @author dshebut@rambler.ru
  */
 public class MessageProviderTemp {
+    private static LinkedList<MessageModel> messages;
 
-    public static List<MessageModel> getMessages(){
-        LinkedList<MessageModel> messages = new LinkedList<>();
+    public static void initProvider(){
+        messages = new LinkedList<>();
         messages.add(new MessageModel("1","g9C670M67cT00qnljCisnyWG3Tj2",
                 "2", "hello hello hello hello", System.currentTimeMillis()));
         messages.add(new MessageModel("2","123",
                 "g9C670M67cT00qnljCisnyWG3Tj2", "bye bye bye bye bye", System.currentTimeMillis() + 1000000));
         messages.add(new MessageModel("2","123",
                 "g9C670M67cT00qnljCisnyWG3Tj2", "bye", System.currentTimeMillis() + 1000000));
+    }
+
+    public static List<MessageModel> getMessages(){
         return messages;
     }
+
+    public static void addMessage(MessageModel message){
+        messages.add(message);
+    }
+
 }

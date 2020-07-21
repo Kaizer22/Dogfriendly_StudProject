@@ -25,14 +25,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/chat_container">
+        android:id="@+id/chat_container"
+        android:gravity="bottom">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/chat"
-            android:layout_marginBottom="@dimen/chat_top_bottom_margin"
-            android:layout_marginTop="@dimen/chat_top_bottom_margin"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout

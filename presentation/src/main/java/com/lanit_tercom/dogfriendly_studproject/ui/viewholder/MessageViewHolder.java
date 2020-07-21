@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.viewholder;
 
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,6 +31,8 @@ public class MessageViewHolder extends BaseViewHolder{
     LinearLayout singleMessageLine; // Эта дополнительная обертка нужна, чтобы распологать
                                     // сообщение справа или слева на экране чата, в зависимости от
                                     // ID отправителя.
+    LinearLayout messageStringSeparator; // Разделитель, чтобы сообщение не заполняло всю строку
+
     ConstraintLayout messageContainer;  // Контейнер сообщения для изменения фона и обработки
                                         // пользовтаельского нажатия
 
@@ -43,6 +44,7 @@ public class MessageViewHolder extends BaseViewHolder{
         timeView = itemView.findViewById(R.id.message_time);
         singleMessageLine = itemView.findViewById(R.id.message_string);
         messageContainer = itemView.findViewById(R.id.message_container);
+        messageStringSeparator = itemView.findViewById(R.id.message_string_separator);
 
         messageContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +53,7 @@ public class MessageViewHolder extends BaseViewHolder{
                 // предположительно, эта логика должна быть тут
             }
         });
-        constraintSet.clone(messageContainer);
+
     }
 
     public void setTime(long time){
@@ -64,14 +66,20 @@ public class MessageViewHolder extends BaseViewHolder{
     }
 
     public void changeMessagePosition(boolean isSentByCurrentUser){
+        constraintSet.clone(messageContainer);
+        //constraintSet.clear(R.id.message_text);
+        //constraintSet.clear(R.id.message_time);
+
         if (isSentByCurrentUser){
             singleMessageLine.setGravity(Gravity.RIGHT);
+            messageStringSeparator.setGravity(Gravity.RIGHT);
             constraintSet.connect(R.id.message_text,ConstraintSet.RIGHT,
                     R.id.message_container, ConstraintSet.RIGHT, 0 );
             constraintSet.connect(R.id.message_time,ConstraintSet.RIGHT,
                     R.id.message_container, ConstraintSet.RIGHT, 0);
         } else {
             singleMessageLine.setGravity(Gravity.LEFT);
+            messageStringSeparator.setGravity(Gravity.LEFT);
             constraintSet.connect(R.id.message_text,ConstraintSet.LEFT,
                     R.id.message_container, ConstraintSet.LEFT, 0);
             constraintSet.connect(R.id.message_time,ConstraintSet.LEFT,

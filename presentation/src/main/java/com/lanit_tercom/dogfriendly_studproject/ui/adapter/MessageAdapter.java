@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lanit_tercom.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.MessageViewHolder;
@@ -25,9 +24,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private String currentUserID;
     private LayoutInflater inflater;
 
-    public MessageAdapter(Context context, List<MessageModel> messages, AuthManager authManager){
+    public MessageAdapter(Context context, List<MessageModel> messages, String currentUserID){
         this.messages = messages;
-        currentUserID = authManager.getCurrentUserId();
+        this.currentUserID = currentUserID;
         inflater = LayoutInflater.from(context);
     }
 
