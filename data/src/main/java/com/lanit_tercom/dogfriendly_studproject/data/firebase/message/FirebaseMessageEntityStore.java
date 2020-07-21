@@ -116,8 +116,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void editMessage(MessageEntity messageEntity, MessageEditCallback messageEditCallback) {
         String id = messageEntity.getId();
         String channelId = messageEntity.getChannelId();
-        String body = messageEntity.getBody();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).child("body").setValue(body).addOnSuccessListener(new OnSuccessListener<Void>() {
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 messageEditCallback.onMessageEdited();

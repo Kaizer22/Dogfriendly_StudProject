@@ -45,9 +45,9 @@ public interface MessageEntityStore {
 
     void getMessage(String id, MessageDetailCallback messageDetailCallback);
 
-    void postMessage(MessageEntity messageEntity, MessagePostCallback messageCreateCallback);
+    void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback);
 
-    void editMessage(MessageEntity messageEntity, MessageEditCallback messageUpdateCallback);
+    void editMessage(MessageEntity messageEntity, MessageEditCallback messageEditCallback);
 
     void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback);
 }
