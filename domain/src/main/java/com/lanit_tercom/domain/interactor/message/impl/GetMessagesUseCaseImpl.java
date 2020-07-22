@@ -11,8 +11,11 @@ import com.lanit_tercom.domain.repository.MessageRepository;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class GetMessagesUseCaseImpl extends UseCase implements GetMessagesUseCase {
-    private String peerId = "";
+    private String channelId = "";
     private GetMessagesUseCase.Callback callback;
 
     public GetMessagesUseCaseImpl(MessageRepository messageRepository,
@@ -22,18 +25,18 @@ public class GetMessagesUseCaseImpl extends UseCase implements GetMessagesUseCas
     }
 
     @Override
-    public void execute(String peerId, Callback callback) {
-        if (peerId.isEmpty() || callback == null) {
+    public void execute(String channelId, Callback callback) {
+        if (channelId.isEmpty() || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
         this.callback = callback;
-        this.peerId = peerId;
+        this.channelId = channelId;
     }
 
     @Override
     public void run() {
-        this.messageRepository.getMessages(this.peerId, this.repositoryCallback);
+        this.messageRepository.getMessages(this.channelId, this.repositoryCallback);
     }
 
     private final MessageRepository.MessagesDetailCallback repositoryCallback =

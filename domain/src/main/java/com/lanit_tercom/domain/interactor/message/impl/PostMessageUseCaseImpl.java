@@ -36,12 +36,13 @@ public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCas
         this.messageRepository.postMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageDetailCallback repositoryCallback =
-            new MessageRepository.MessageDetailCallback() {
+    private final MessageRepository.MessagePostCallback repositoryCallback =
+            new MessageRepository.MessagePostCallback() {
+
 
                 @Override
-                public void onMessageLoaded(MessageDto messageDto) {
-                    notifyPostMessageSuccessfully(messageDto);
+                public void onMessagePosted() {
+                    notifyPostMessageSuccessfully();
                 }
 
                 @Override
@@ -51,8 +52,8 @@ public class PostMessageUseCaseImpl extends UseCase implements PostMessageUseCas
             };
 
 
-    private void notifyPostMessageSuccessfully(final MessageDto messageDto) {
-        this.postExecutionThread.post(() -> callback.onMessagePosted(messageDto));
+    private void notifyPostMessageSuccessfully() {
+        this.postExecutionThread.post(() -> callback.onMessagePosted());
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
