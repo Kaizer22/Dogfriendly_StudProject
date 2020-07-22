@@ -37,53 +37,16 @@ public class FirebaseChannelUnitTest {
 
     @Test
     public void testGetChannels(){
-        new FirebaseChannelEntityStore(null).getChannels(new ChannelEntityStore.ChannelsDetailCallback(){
-
-            @Override
-            public void onChannelsLoaded(List<ChannelEntity> channels) {
-                for(ChannelEntity entity: channels){
-                    Log.i("CHANNEL_TEST", entity.getId());
-                }
-            }
-
-            @Override
-            public void onError(Exception exception) {
-
-            }
-        });
+       //todo
     }
 
     @Test
     public void testAddChannel(){
-        new FirebaseChannelEntityStore(null).addChannel(entity ,new ChannelEntityStore.ChannelDetailCallback(){
-
-            @Override
-            public void onChannelEdited() {
-                Log.i("CHANNEL_TEST", "New user added");
-            }
-
-            @Override
-            public void onError(Exception exception) {
-
-            }
-
-        });
+        //todo
     }
 
     @Test
     public void testDeleteChannel(){
-        new FirebaseChannelEntityStore(null).deleteChannel("1234" ,new ChannelEntityStore.ChannelDetailCallback(){
-
-
-            @Override
-            public void onChannelEdited() {
-                Log.i("CHANNEL_TEST", "User 1234 deleted");
-            }
-
-            @Override
-            public void onError(Exception exception) {
-
-            }
-        });
+       //todo
     }
 }
