@@ -2,39 +2,30 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
 public class ChannelModel {
 
-    private String dialogID; //ID диалога
+    private String channelID; //ID диалога
 
-    private String receiverID; // ID отправителя
+    private String lastMessage; // ID отправителя
 
-    private String lastMessage; // Последнее полученное сообщение (для отображения)
+    private String lastMessageOwner; // Последнее полученное сообщение (для отображения)
 
-    private String lastMessageTime; // Время последнего полученного сообщения
+    //private String lastMessageTime; // Время последнего полученного сообщения
 
     public ChannelModel() {
     }
 
-    public ChannelModel(String dialogID, String receiverID, String lastMessage, String lastMessageTime){
-        this.dialogID = dialogID;
-        this.receiverID = receiverID;
+    public ChannelModel(String channelID, String lastMessage, String lastMessageOwner){
+        this.channelID = channelID;
         this.lastMessage = lastMessage;
-        this.lastMessageTime = lastMessageTime;
+        this.lastMessageOwner = lastMessageOwner;
     }
 
-    public String getDialogID() {
-        return dialogID;
+
+    public String getChannelID() {
+        return channelID;
     }
 
-    public void setDialogID(String dialogID) {
-        this.dialogID = dialogID;
-    }
-
-    //TODO Name or ID
-    public String getReceiverID() {
-        return receiverID;
-    }
-
-    public void setReceiverID(String receiverID) {
-        this.receiverID = receiverID;
+    public void setChannelID(String channelId){
+        this.channelID = channelId;
     }
 
     public String getLastMessage() {
@@ -45,11 +36,11 @@ public class ChannelModel {
         this.lastMessage = lastMessage;
     }
 
-    public String getLastMessageTime() {
-        return lastMessageTime;
+    public String getLastMessageOwner() {
+        return lastMessageOwner;
     }
 
-    public void setLastMessageTime(String lastMessageTime) {
-        this.lastMessageTime = lastMessageTime;
+    public void setLastMessageOwner(String lastMessageOwner) {
+        this.lastMessageOwner = lastMessageOwner;
     }
 }

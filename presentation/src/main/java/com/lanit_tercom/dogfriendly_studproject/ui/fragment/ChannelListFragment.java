@@ -15,7 +15,6 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelsProviderTemp;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.ChannelListAdapter;
-import com.lanit_tercom.domain.interactor.get.GetChannelListImpl;
 
 
 public class ChannelListFragment extends BaseFragment {
