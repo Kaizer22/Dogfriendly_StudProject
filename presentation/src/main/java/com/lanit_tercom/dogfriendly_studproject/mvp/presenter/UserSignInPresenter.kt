@@ -1,37 +1,48 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
+import java.lang.Exception
 
 /**
  * presenter класс для работы с авторизацией
  * @author prostak.sasha111@mail.ru
+ * @author nikolaygorokhov1@gmail.com
  */
-class UserSignInPresenter(private val authManager: AuthManager?, private val useCaseTemp: UseCaseTemp) : BasePresenter(){
+class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
 
-    fun setView(view: UserSignInView){
-        this.view = view
+    var currentUserId: String? = null
+
+    fun setView(view: UserSignInView) { this.view = view }
+
+    fun auth(email: String?, password: String?) {
+
+        authManager?.signOut(signOutCallback)
+
+        authManager?.signInEmail(email, password, signInCallback)
+
     }
 
-    /*
-        fun auth(email: String?, password: String?){
-        try{
-            authManager.signInEmail(email, password)
-            userSignInView.toMapScreen()
-        }catch (e: Exception){
-            (userSignInView as UserSignInFragment).showToastMessage(e.message)
+    private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
+
+        override fun OnSignInFinished(currentUserID: String?) {
+            currentUserId = currentUserID
+            ((view as UserSignInFragment)).hideLoading()
+            if(currentUserId != null)
+                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
+            else
+                //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
+                ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
         }
-    }
-    */
 
-    //Временный метод, пока не разберемся с data слоем
-    fun auth(email: String?, password: String?){
-        if (view is UserSignInFragment)
-            loadUsers().forEach {
-                if(it.email == email && it.password == password)
-                    ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()}
+        override fun OnError(e: Exception?) {}
+
     }
+
+    private val signOutCallback: AuthManager.SignOutCallback = AuthManager.SignOutCallback { }
+
 
 }
