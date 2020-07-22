@@ -23,7 +23,7 @@ class Navigator {
         context.startActivity(
                 UserMapActivity.getCallingIntent(context))
 
-    fun navigateToUserDetail(context: Context, userId: Int?) =
+    fun navigateToUserDetail(context: Context, userId: String?) =
         context.startActivity(
                 UserDetailActivity.getCallingIntent(context, userId))
 

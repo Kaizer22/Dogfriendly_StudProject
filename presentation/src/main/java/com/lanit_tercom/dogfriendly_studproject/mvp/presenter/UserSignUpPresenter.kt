@@ -1,36 +1,36 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import com.lanit_tercom.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import android.util.Log
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignUpActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignUpFragment
+import java.lang.Exception
 
 /**
  * presenter класс для работы с регистрацией
  * @author prostak.sasha111@mail.ru
+ * @author nikolaygorokhov1@gmail.com
  */
-class UserSignUpPresenter(private val authManager: AuthManager?, private val useCaseTemp: UseCaseTemp) : BasePresenter() {
+class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter() {
 
-    fun setView(view: UserSignUpView) {
-        this.view = view
-    }
+    var currentUserId: String? = null
 
-    /*
-        fun registerUser(email: String?, password: String?, name: String?){
-            authManager.createUserWithEmailPassword(email, password)
-            var maxId = UseCaseTemp.users.maxBy { it.id }!!.id
-            useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
-            userSignUpView.toMapScreen()
+    fun setView(view: UserSignUpView) { this.view = view }
+
+    fun registerUser(email: String?, password: String?) =
+        authManager?.createUserWithEmailPassword(email, password, createUserCallback)
+
+
+    private val createUserCallback: AuthManager.CreateUserCallback = object : AuthManager.CreateUserCallback {
+
+        override fun OnCreateUserFinished(currentUserID: String?) {
+            currentUserId = currentUserID
         }
-    */
 
-    //Временный метод, пока не разберемся с data слоем
-    fun registerUser(email: String?, password: String?, name: String?) {
-        var maxId = loadUsers().maxBy { it.id }!!.id
-        useCaseTemp.addUser(UserModel(++maxId, name!!, email!!, password!!, Point(21.8, 42.3)))
-        ((view as UserSignUpFragment).activity as UserSignUpActivity).navigateToUserMap()
+        override fun OnError(e: Exception?) {
+            //TODO("Not yet implemented")
+        }
+
+
     }
 
 }

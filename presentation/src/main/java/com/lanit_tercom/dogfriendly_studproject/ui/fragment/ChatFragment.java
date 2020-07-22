@@ -7,20 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lanit_tercom.data.auth_manager.AuthManager;
-import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MessageProviderTemp;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -40,9 +43,12 @@ public class ChatFragment extends BaseFragment implements ChatView {
     MessageAdapter messageAdapter;
     @Override
     public void initializePresenter() {
-        //TODO разобраться с использованием authManager в presentation слое
+        //Тестовый код
         authManager = new AuthManagerFirebaseImpl();
         chatPresenter = new ChatPresenter(authManager);
+
+        //chatPresenter = new ChatPresenter(new AuthManagerFirebaseImpl());
+        chatPresenter.setView(this);
     }
 
     @Nullable
@@ -64,7 +70,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
                     }
                 });
 
-
         initData();
         initRecyclerView(root);
 
@@ -72,15 +77,11 @@ public class ChatFragment extends BaseFragment implements ChatView {
         return root;
     }
 
-    @Override
-    public void showProgressMessage(String event) {
 
-    }
 
     private void initData(){
         MessageProviderTemp.initProvider();
         messages = MessageProviderTemp.getMessages();
-        //Collections.reverse(messages);
     }
 
     private void initInteractions(View root){
@@ -88,9 +89,9 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
         sendMessage.setOnClickListener(v -> {
+            //TODO изменить эту часть кода
             chatPresenter.sendMessage(messageText
                     .getText().toString());
-            //initData();
             showProgressMessage(SENDING_MESSAGE_EVENT);
             messageAdapter.notifyDataSetChanged();
             chat.smoothScrollToPosition(
@@ -111,5 +112,28 @@ public class ChatFragment extends BaseFragment implements ChatView {
         messageAdapter = new MessageAdapter(getContext(),
                 messages, chatPresenter.getCurrentUserID());
         chat.setAdapter(messageAdapter);
+    }
+
+    @Override
+    public void showProgressMessage(@NotNull String event) {
+        //Пока отобразим только тост
+        Toast.makeText(getContext(), event, Toast.LENGTH_LONG)
+                .show();
+    }
+
+    @Override
+    public void showLoading() {
+        //TODO отображение загрузки в UI
+    }
+
+    @Override
+    public void hideLoading() {
+        //TODO скрытие загрузки в UI
+    }
+
+    @Override
+    public void showError(@NotNull String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG)
+                .show();
     }
 }
