@@ -1,7 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
 import java.sql.Timestamp;
-
+/**
+ * @author prostak.sasha111@mail.ru
+ */
 public class MessageEntity {
     String channelId;
     String id;
