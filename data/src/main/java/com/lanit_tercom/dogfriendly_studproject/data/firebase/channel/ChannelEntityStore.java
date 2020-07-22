@@ -5,6 +5,9 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public interface ChannelEntityStore {
 
     interface ChannelDetailCallback {
@@ -19,7 +22,7 @@ public interface ChannelEntityStore {
         void onError(Exception exception);
     }
 
-    void getChannels(ChannelsDetailCallback callback);
+    void getChannels(String userId, ChannelsDetailCallback callback);
     void addChannel(ChannelEntity channel, ChannelDetailCallback callback);
-    void deleteChannel(String channelId, ChannelDetailCallback callback);
+    void deleteChannel(ChannelEntity channel, ChannelDetailCallback callback);
 }

@@ -36,18 +36,17 @@ public class DeleteMessageUseCaseImpl extends UseCase implements DeleteMessageUs
         this.messageRepository.deleteMessage(this.messageDto, this.repositoryCallback);
     }
 
-    private final MessageRepository.MessageEditCallback repositoryCallback =
-            new MessageRepository.MessageEditCallback() {
+    private final MessageRepository.MessageDeleteCallback repositoryCallback =
+            new MessageRepository.MessageDeleteCallback() {
 
                 @Override
-                public void onMessageEdited() {
-                    notifyDeleteMessageSuccessfully();
-                }
+                public void onMessageDeleted() { notifyDeleteMessageSuccessfully(); }
 
                 @Override
                 public void onError(ErrorBundle errorBundle) {
                     notifyError(errorBundle);
                 }
+
             };
 
 
