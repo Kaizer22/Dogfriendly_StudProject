@@ -35,7 +35,7 @@ public class ExampleUnitTest {
 
     @Test
     public void testGetChannels(){
-        new FirebaseChannelEntityStore(null).getChannels(new ChannelEntityStore.ChannelsDetailCallback(){
+        new FirebaseChannelEntityStore(null).getChannels(new ChannelEntityStore.GetChannelsCallback(){
 
             @Override
             public void onChannelsLoaded(List<ChannelEntity> channels) {
