@@ -19,8 +19,11 @@ public interface UserRepository {
         void onUsersLoaded(List<UserDto> users);
     }
 
-    interface CreateOrEditCallback extends Error {
-        void onUserCreatedOrEdited();
+    interface UserCreateCallback extends Error {
+        void onUserCreated();
+    }
+    interface UserEditCallback extends Error {
+        void onUserEdited();
     }
 
 
@@ -28,8 +31,8 @@ public interface UserRepository {
 
     void getUsers(UsersDetailsCallback userCallback);
 
-    void createUser(UserDto userDto, CreateOrEditCallback userCallback);
+    void createUser(UserDto userDto, UserCreateCallback userCallback);
 
-    void editUserById(UserDto userDto, CreateOrEditCallback userCallback);
+    void editUser(UserDto userDto, UserEditCallback userCallback);
 
 }

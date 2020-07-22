@@ -33,10 +33,10 @@ public class CreateUserDetailsUseCaseImpl extends UseCase implements CreateUserD
         this.userRepository.createUser(userDto, this.repositoryCallback);
     }
 
-    private final UserRepository.CreateOrEditCallback repositoryCallback =
-            new UserRepository.CreateOrEditCallback() {
+    private final UserRepository.UserCreateCallback repositoryCallback =
+            new UserRepository.UserCreateCallback() {
                 @Override
-                public void onUserCreatedOrEdited() {
+                public void onUserCreated() {
                     notifyCreateUserDetailsSuccessfully();
                 }
 

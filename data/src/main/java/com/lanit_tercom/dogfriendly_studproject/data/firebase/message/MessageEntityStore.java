@@ -11,37 +11,27 @@ public interface MessageEntityStore {
         void onError(ErrorBundle errorBundle);
     }
 
-    interface MessageDetailCallback {
+    interface MessageDetailCallback extends Error {
         void onMessageLoaded(MessageEntity message);
-
-        void onError(Exception exception);
     }
 
-    interface MessagesDetailCallback {
+    interface MessagesDetailCallback extends Error{
         void onMessagesLoaded(List<MessageEntity> messages);
-
-        void onError(Exception exception);
     }
 
-    interface MessagePostCallback {
+    interface MessagePostCallback extends Error {
         void onMessagePosted();
-
-        void onError(ErrorBundle errorBundle);
     }
 
-    interface MessageEditCallback {
+    interface MessageEditCallback extends Error{
         void onMessageEdited();
-
-        void onError(ErrorBundle errorBundle);
     }
 
-    interface MessageDeleteCallback {
+    interface MessageDeleteCallback extends Error{
         void onMessageDeleted();
-
-        void onError(ErrorBundle errorBundle);
     }
 
-    void getMessages(MessagesDetailCallback messagesDetailCallback);
+    void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback);
 
     void getMessage(String id, MessageDetailCallback messageDetailCallback);
 

@@ -42,9 +42,9 @@ public class MessageRepositoryImpl implements MessageRepository {
     }
 
     @Override
-    public void getMessages(String peerId, MessagesDetailCallback callback) {
+    public void getMessages(String channelId, MessagesDetailCallback callback) {
         MessageEntityStore messageEntityStore = messageEntityStoreFactory.create();
-        messageEntityStore.getMessages(new MessageEntityStore.MessagesDetailCallback() {
+        messageEntityStore.getMessages(channelId, new MessageEntityStore.MessagesDetailCallback() {
             @Override
             public void onMessagesLoaded(List<MessageEntity> messages) {
                 List<MessageDto> messagesDtoList = MessageRepositoryImpl.this.messageEntityDtoMapper.mapForList(messages);
@@ -54,8 +54,8 @@ public class MessageRepositoryImpl implements MessageRepository {
             }
 
             @Override
-            public void onError(Exception exception) {
-                callback.onError(new RepositoryErrorBundle(exception));
+            public void onError(ErrorBundle errorBundle) {
+                callback.onError(new RepositoryErrorBundle(errorBundle.getException()));
             }
         });
 
