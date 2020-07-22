@@ -23,7 +23,8 @@ public class ChannelModelDtoMapper {
         ChannelModel channelModel = new ChannelModel(
                 channelDto.getChannelId(),
                 channelDto.getLastMessage(),
-                channelDto.getLastMessageOwner());
+                channelDto.getLastMessageOwner(),
+                channelDto.getLastMessageTime());
 
         return channelModel;
     }
@@ -37,7 +38,8 @@ public class ChannelModelDtoMapper {
         ChannelDto channelDto = new ChannelDto(
                 channelModel.getChannelID(),
                 channelModel.getLastMessage(),
-                channelModel.getLastMessageOwner());
+                channelModel.getLastMessageOwner(),
+                channelModel.getLastMessageTime());
 
         return channelDto;
     }

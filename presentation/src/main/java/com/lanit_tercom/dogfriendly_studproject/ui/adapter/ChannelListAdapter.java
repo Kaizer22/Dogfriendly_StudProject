@@ -36,13 +36,13 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ChannelListViewHolder holder, int position) {
-        ChannelModel dialogModel = channels.get(position);
+        ChannelModel channelModel = channels.get(position);
         // TODO Change image provider
         holder.setUserProfileImage(R.drawable.ic_user_profile_image);
         // TODO Change ID to Name
-        holder.setUserReceiverName(dialogModel.getReceiverID());
-        holder.setLastMessage(dialogModel.getLastMessage());
-        holder.setLastMessageTime(dialogModel.getLastMessageTime());
+        holder.setUserReceiverName(channelModel.getLastMessageOwner());
+        holder.setLastMessage(channelModel.getLastMessage());
+        holder.setLastMessageTime(channelModel.getLastMessageTime());
     }
 
     @Override

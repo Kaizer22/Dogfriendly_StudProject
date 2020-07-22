@@ -7,14 +7,16 @@ public class ChannelDto {
     private String channelId;
     private String lastMessage;
     private String lastMessageOwner;
+    private String lastMessageTime;
     //private List<UserDto> members;
     //private String name;
 
 
-    public ChannelDto(String channelId, String lastMessage, String lastMessageOwner) {//needs more ???
+    public ChannelDto(String channelId, String lastMessage, String lastMessageOwner, String lastMessageTime) {//needs more ???
         this.channelId = channelId;
         this.lastMessage = lastMessage;
         this.lastMessageOwner = lastMessageOwner;
+        this.lastMessageTime = lastMessageTime;
     }
 
 
@@ -35,5 +37,13 @@ public class ChannelDto {
 
     public void setLastMessageOwner(String lastMessageOwner) {
         this.lastMessageOwner = lastMessageOwner;
+    }
+
+    public String getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(String lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
     }
 }

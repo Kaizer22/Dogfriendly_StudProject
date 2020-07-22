@@ -8,15 +8,16 @@ public class ChannelModel {
 
     private String lastMessageOwner; // Последнее полученное сообщение (для отображения)
 
-    //private String lastMessageTime; // Время последнего полученного сообщения
+    private String lastMessageTime; // Время последнего полученного сообщения
 
     public ChannelModel() {
     }
 
-    public ChannelModel(String channelID, String lastMessage, String lastMessageOwner){
+    public ChannelModel(String channelID, String lastMessage, String lastMessageOwner, String lastMessageTime){
         this.channelID = channelID;
         this.lastMessage = lastMessage;
         this.lastMessageOwner = lastMessageOwner;
+        this.lastMessageTime = lastMessageTime;
     }
 
 
@@ -42,5 +43,13 @@ public class ChannelModel {
 
     public void setLastMessageOwner(String lastMessageOwner) {
         this.lastMessageOwner = lastMessageOwner;
+    }
+
+    public String getLastMessageTime() {
+        return lastMessageTime;
+    }
+
+    public void setLastMessageTime(String lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
     }
 }
