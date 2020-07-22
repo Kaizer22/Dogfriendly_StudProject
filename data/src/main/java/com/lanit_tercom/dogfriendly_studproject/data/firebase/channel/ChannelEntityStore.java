@@ -16,22 +16,20 @@ public interface ChannelEntityStore {
 
         void onError(ErrorBundle errorBundle);
     }
-
-    //Если мы делает DeleteChannel то разумно ChannelDetailCallback переименовать в AddChannelCallback
-    //Так как кроме как для добавления он нигде не используется теперь.
+    
     interface AddChannelCallback {
         void onChannelAdded();
 
         void onError(ErrorBundle errorBundle);
     }
 
-    interface ChannelsDetailCallback {
+    interface GetChannelsCallback {
         void onChannelsLoaded(List<ChannelEntity> channels);
 
         void onError(ErrorBundle errorBundle);
     }
 
-    void getChannels(String userId, ChannelsDetailCallback callback);
+    void getChannels(String userId, GetChannelsCallback callback);
 
     void addChannel(ChannelEntity channel, AddChannelCallback callback);
 

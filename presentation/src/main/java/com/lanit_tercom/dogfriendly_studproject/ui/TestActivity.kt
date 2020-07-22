@@ -26,7 +26,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
         when (p0?.id) {
             R.id.button_get ->{
-                FirebaseChannelEntityStore(null).getChannels("3456",object : ChannelEntityStore.ChannelsDetailCallback{
+                FirebaseChannelEntityStore(null).getChannels("3456",object : ChannelEntityStore.GetChannelsCallback {
 
 
                     override fun onChannelsLoaded(channels: MutableList<ChannelEntity>?) {
@@ -88,7 +88,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.button_delete ->{
 
-                FirebaseChannelEntityStore(null).getChannels("2345",object : ChannelEntityStore.ChannelsDetailCallback{
+                FirebaseChannelEntityStore(null).getChannels("2345",object : ChannelEntityStore.GetChannelsCallback {
 
 
                     override fun onChannelsLoaded(channels: MutableList<ChannelEntity>?) {

@@ -39,7 +39,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
 
     @Override
-    public void getChannels(String userId, ChannelsDetailCallback channelsDetailCallback) {
+    public void getChannels(String userId, GetChannelsCallback getChannelsCallback) {
         final List<ChannelEntity> channels = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
 
@@ -51,7 +51,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
                     channelEntity.setId(keyNode.getKey());
                     channels.add(channelEntity);
                 }
-                channelsDetailCallback.onChannelsLoaded(channels);
+                getChannelsCallback.onChannelsLoaded(channels);
             }
 
             @Override
@@ -75,7 +75,6 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         String[] userIDs = getUserIDs(channel.getMembers());
         DatabaseReference dr = referenceDatabase.child(CHILD_CHANNELS);
 
-        //При вызове updateChildren один раз, как до этого - добавление нового канала затирает все старые
         String firebaseId = dr.push().getKey();
         for(String userId: userIDs){
             Map<String, Object> pair = new HashMap<>();
