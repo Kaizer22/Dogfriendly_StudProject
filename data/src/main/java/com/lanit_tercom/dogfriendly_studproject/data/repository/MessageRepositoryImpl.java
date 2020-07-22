@@ -62,13 +62,13 @@ public class MessageRepositoryImpl implements MessageRepository {
     }
 
     @Override
-    public void postMessage(MessageDto message, MessageDetailCallback callback) {
+    public void postMessage(MessageDto message, MessagePostCallback callback) {
         MessageEntityStore messageEntityStore = messageEntityStoreFactory.create();
         MessageEntity messageEntity = messageEntityDtoMapper.map1(message);
         messageEntityStore.postMessage(messageEntity, new MessageEntityStore.MessagePostCallback() {
             @Override
             public void onMessagePosted() {
-                callback.onMessageLoaded(message);
+                callback.onMessagePosted();
             }
 
             @Override
@@ -97,13 +97,13 @@ public class MessageRepositoryImpl implements MessageRepository {
     }
 
     @Override
-    public void deleteMessage(MessageDto message, MessageEditCallback callback) {
+    public void deleteMessage(MessageDto message, MessageDeleteCallback callback) {
         MessageEntityStore messageEntityStore = messageEntityStoreFactory.create();
         MessageEntity messageEntity = messageEntityDtoMapper.map1(message);
         messageEntityStore.deleteMessage(messageEntity, new MessageEntityStore.MessageDeleteCallback() {
             @Override
             public void onMessageDeleted() {
-                callback.onMessageEdited();
+                callback.onMessageDeleted();
             }
 
             @Override

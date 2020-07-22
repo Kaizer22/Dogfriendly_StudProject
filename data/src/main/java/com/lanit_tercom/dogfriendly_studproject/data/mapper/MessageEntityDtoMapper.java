@@ -9,31 +9,26 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO исправить MessageDto (методы/поля)
-
 public class MessageEntityDtoMapper {
     public MessageEntityDtoMapper(){}
     public MessageEntity map1(MessageDto messageDto){
         if (messageDto == null)
             return null;
         MessageEntity messageEntity = new MessageEntity();
-        messageEntity.setId(messageDto.getMessageId());
-        // Нет метода
-        //messageEntity.setChannelId(messageDto.getChannelId());
-        messageEntity.setTimestamp(new Timestamp(messageDto.getTimestamp()));
-        messageEntity.setUserName(messageDto.getSenderId());
-        messageEntity.setBody(messageDto.getText());
+        messageEntity.setChannelId(messageDto.getChannelId());
+        messageEntity.setId(messageDto.getId());
+        messageEntity.setUserName(messageDto.getUserName());
+        messageEntity.setBody(messageDto.getBody());
+        messageEntity.setTimestamp(messageDto.getTimestamp());
         return messageEntity;
     }
     public MessageDto map2(MessageEntity messageEntity){
         if (messageEntity == null)
             return null;
-        // Нужно изменить domain (убрать receiver, добавить channel...
-        MessageDto messageDto = new MessageDto(messageEntity.getId(),
-                messageEntity.getUserName(),
-                "",
-                messageEntity.getBody(),
-                messageEntity.getTimestamp().getTime());
+        MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
+        messageDto.setChannelId(messageEntity.getChannelId());
+        messageDto.setId(messageEntity.getId());
+        messageDto.setTimestamp(messageEntity.getTimestamp());
         return messageDto;
 
     }
@@ -42,11 +37,10 @@ public class MessageEntityDtoMapper {
             return null;
         List<MessageDto> messagesDtoList = new ArrayList<>();
         for (MessageEntity messageEntity: messages){
-            MessageDto messageDto = new MessageDto(messageEntity.getId(),
-                    messageEntity.getUserName(),
-                    "",
-                    messageEntity.getBody(),
-                    messageEntity.getTimestamp().getTime());
+            MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
+            messageDto.setChannelId(messageEntity.getChannelId());
+            messageDto.setId(messageEntity.getId());
+            messageDto.setTimestamp(messageEntity.getTimestamp());
             messagesDtoList.add(messageDto);
         }
         return messagesDtoList;
