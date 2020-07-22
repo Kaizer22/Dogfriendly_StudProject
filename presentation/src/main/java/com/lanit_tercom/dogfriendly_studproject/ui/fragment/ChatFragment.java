@@ -18,23 +18,21 @@ import com.lanit_tercom.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MessageProviderTemp;
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserChatPresenter;
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserChatView;
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  *  Фрагмент, отвечающий за отображение диалога между двумя пользователями
  *  @author dshebut@rambler.ru
  */
-public class UserChatFragment extends BaseFragment implements UserChatView {
+public class ChatFragment extends BaseFragment implements ChatView {
 
     private final String SENDING_MESSAGE_EVENT = "Отправка сообщения...";
 
-    UserChatPresenter userChatPresenter;
+    ChatPresenter chatPresenter;
     AuthManager authManager;
 
     List<MessageModel> messages;
@@ -44,7 +42,7 @@ public class UserChatFragment extends BaseFragment implements UserChatView {
     public void initializePresenter() {
         //TODO разобраться с использованием authManager в presentation слое
         authManager = new AuthManagerFirebaseImpl();
-        userChatPresenter = new UserChatPresenter(authManager);
+        chatPresenter = new ChatPresenter(authManager);
     }
 
     @Nullable
@@ -90,7 +88,7 @@ public class UserChatFragment extends BaseFragment implements UserChatView {
 
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
         sendMessage.setOnClickListener(v -> {
-            userChatPresenter.sendMessage(messageText
+            chatPresenter.sendMessage(messageText
                     .getText().toString());
             //initData();
             showProgressMessage(SENDING_MESSAGE_EVENT);
@@ -111,7 +109,7 @@ public class UserChatFragment extends BaseFragment implements UserChatView {
         chat = root.findViewById(R.id.chat);
         chat.setLayoutManager(new LinearLayoutManager(getActivity()));
         messageAdapter = new MessageAdapter(getContext(),
-                messages, userChatPresenter.getCurrentUserID());
+                messages, chatPresenter.getCurrentUserID());
         chat.setAdapter(messageAdapter);
     }
 }

@@ -3,7 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity;
 import android.os.Bundle;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserChatFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChatFragment;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
  *  Активность, отображающая UserChatFragment
  *  @author dshebut@rambler.ru
  */
-public class UserChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class UserChatActivity extends BaseActivity {
     @Override
     protected void initializeActivity(@Nullable Bundle savedInstanceState) {
         if (savedInstanceState==null){
-            addFragment(R.id.ft_container, new UserChatFragment());
+            addFragment(R.id.ft_container, new ChatFragment());
         }
     }
 }

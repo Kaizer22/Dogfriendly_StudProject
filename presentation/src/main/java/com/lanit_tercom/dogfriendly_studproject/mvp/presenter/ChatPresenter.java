@@ -9,13 +9,13 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
  *  а также логика обработки действий пользователя
  *  @author dshebut@rambler.ru
  */
-public class UserChatPresenter extends BasePresenter {
+public class ChatPresenter extends BasePresenter {
 
     private AuthManager authManager;
 
     String addresseeID;
 
-    public UserChatPresenter(AuthManager authManager){
+    public ChatPresenter(AuthManager authManager){
         this.authManager = authManager;
     }
 
