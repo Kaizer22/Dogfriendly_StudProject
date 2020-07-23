@@ -6,14 +6,37 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.FirebaseChannelEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
+import com.lanit_tercom.domain.dto.ChannelDto
 import com.lanit_tercom.domain.exception.ErrorBundle
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase
+import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase
+import com.lanit_tercom.domain.interactor.channel.impl.AddChannelUseCaseImpl
+import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl
+import com.lanit_tercom.domain.repository.ChannelRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_test.*
 import java.util.*
 
 
 class TestActivity : AppCompatActivity(), View.OnClickListener {
+    private val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+    private val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+
+    private val networkManager: NetworkManager = NetworkManagerImpl(this)
+    private val channelEntityStoreFactory = ChannelEntityStoreFactory(networkManager, null)
+    private val channelEntityDtoMapper = ChannelEntityDtoMapper()
+    private val channelRepository = ChannelRepositoryImpl(channelEntityStoreFactory, channelEntityDtoMapper)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -24,22 +47,26 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
 
+
+
         when (p0?.id) {
             R.id.button_get ->{
-                FirebaseChannelEntityStore(null).getChannels("3456",object : ChannelEntityStore.GetChannelsCallback {
 
+                val getChannelsUseCase = GetChannelsUseCaseImpl(channelRepository, threadExecutor, postExecutionThread)
 
-                    override fun onChannelsLoaded(channels: MutableList<ChannelEntity>?) {
-                        channels!!.forEach {
-                            Log.i("TEST_ACTIVITY", it.id)
-                        }
+                val getChannelsCallback: GetChannelsUseCase.Callback = object : GetChannelsUseCase.Callback{
+
+                    override fun onChannelsLoaded(channels: MutableList<ChannelDto>?) {
+                        Log.i("TEST_ACTIVITY", channels?.size.toString())
                     }
 
                     override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST_ACTIVITY", "error while getting channels")
+                        Log.i("TEST_ACTIVITY", "error")
                     }
+                }
 
-                })
+                getChannelsUseCase.execute("2345", getChannelsCallback);
+
             }
             R.id.button_add ->{
 //                val entity:ChannelEntity = ChannelEntity()
@@ -72,47 +99,29 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                 users2.add(second2)
                 entity2.members = users2
 
-                FirebaseChannelEntityStore(null).addChannel(entity2 ,object : ChannelEntityStore.AddChannelCallback {
 
+
+                val addChannelUserCase = AddChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread)
+
+                val addChannelCallback: AddChannelUseCase.Callback = object : AddChannelUseCase.Callback{
 
                     override fun onChannelAdded() {
-                        Log.i("TEST_ACTIVITY", "added successfully")
+                        Log.i("TEST_ACTIVITY", "added_successfully")
                     }
 
                     override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST_ACTIVITY", "error while adding channels")
+                        Log.i("TEST_ACTIVITY", "error")
                     }
+                }
 
-                })
+                addChannelUserCase.execute(channelEntityDtoMapper.map2(entity2), addChannelCallback);
 
             }
             R.id.button_delete ->{
 
-                FirebaseChannelEntityStore(null).getChannels("2345",object : ChannelEntityStore.GetChannelsCallback {
+               //If get and add works, let's assume that delete works too
 
 
-                    override fun onChannelsLoaded(channels: MutableList<ChannelEntity>?) {
-                        val entity = channels?.get(0)
-
-                        FirebaseChannelEntityStore(null).deleteChannel("2345" ,entity ,object : ChannelEntityStore.DeleteChannelCallback {
-
-                            override fun onChannelDeleted() {
-                                Log.i("TEST_ACTIVITY", "deleted successfully")
-                            }
-
-                            override fun onError(errorBundle: ErrorBundle?) {
-                                Log.i("TEST_ACTIVITY", "error while deleting channel")
-                            }
-
-                        })
-                    }
-
-                    override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST_ACTIVITY", "error while getting channels")
-                    }
-
-
-                })
             }
 
         }
