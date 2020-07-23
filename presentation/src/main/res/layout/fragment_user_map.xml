@@ -10,6 +10,6 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.lanit_tercom.dogfriendly_studproject.ui.activity.MainActivity" />
+        tools:context=".tests.ui.activity.MainActivity" />
 
 </LinearLayout>
