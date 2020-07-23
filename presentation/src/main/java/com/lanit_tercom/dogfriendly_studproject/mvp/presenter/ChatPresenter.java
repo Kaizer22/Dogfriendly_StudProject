@@ -12,6 +12,7 @@ import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.message.PostMessageUseCase;
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,30 +22,33 @@ import java.util.List;
  *  @author dshebut@rambler.ru
  */
 public class ChatPresenter extends BasePresenter {
+    private final String SENDING_MESSAGE_EVENT = "Отправка сообщения...";
 
     private AuthManager authManager;
 
-    String channelID;
+    private String channelID;
+    private List<MessageModel> messages;
 
-    DeleteMessageUseCase deleteMessage;
-    EditMessageUseCase editMessage;
-    GetMessagesUseCase getMessages;
-    PostMessageUseCase postMessage;
-    GetUserDetailsUseCase getUser;
+    private DeleteMessageUseCase deleteMessage;
+    private EditMessageUseCase editMessage;
+    private GetMessagesUseCase getMessages;
+    private PostMessageUseCase postMessage;
+    //private GetUserDetailsUseCase getUser;
 
-    MessageDtoModelMapper modelMapper;
+    private MessageDtoModelMapper modelMapper;
 
-    ChatView view;
+    private ChatView view;
 
-    public ChatPresenter(AuthManager authManager, DeleteMessageUseCase deleteMessage,
+    public ChatPresenter(String channelID, AuthManager authManager, DeleteMessageUseCase deleteMessage,
                          EditMessageUseCase editMessage, GetMessagesUseCase getMessages,
-                         PostMessageUseCase postMessage, GetUserDetailsUseCase getUser){
+                         PostMessageUseCase postMessage){   //, GetUserDetailsUseCase getUser){
+        this.channelID = channelID;
         this.authManager = authManager;
         this.deleteMessage = deleteMessage;
         this.editMessage = editMessage;
         this.getMessages = getMessages;
         this.postMessage = postMessage;
-        this.getUser = getUser;
+        //this.getUser = getUser;
         modelMapper = new MessageDtoModelMapper();
     }
 
@@ -58,6 +62,9 @@ public class ChatPresenter extends BasePresenter {
     }
 
     public void sendMessage(String message){
+        view.showLoading();
+        view.showProgressMessage(SENDING_MESSAGE_EVENT);
+
         MessageModel messageModel = new MessageModel();
         messageModel.setSenderID(authManager.getCurrentUserId());
         messageModel.setChatID(channelID);
@@ -71,7 +78,8 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessagePosted() {
                 //TODO действия после отправки сообщения
-
+                view.refreshRecyclerView();
+                view.hideLoading();
             }
 
             @Override
@@ -80,7 +88,7 @@ public class ChatPresenter extends BasePresenter {
             }
         });
 
-        MessageProviderTemp.addMessage(messageModel);
+        //MessageProviderTemp.addMessage(messageModel);
 
     }
 
@@ -118,7 +126,7 @@ public class ChatPresenter extends BasePresenter {
 
     public void refreshData(){
         //Получение диалога
-        getMessages();
+        messages = getMessagesFromDB();
         //Обновление данных о чате
         //getChannel();
     }
@@ -127,6 +135,9 @@ public class ChatPresenter extends BasePresenter {
         return authManager.getCurrentUserId();
     }
 
+    public List<MessageModel> getMessages() {
+        return messages;
+    }
 
     //private void getChannel() {
         //getChat.execute(channelID);
@@ -134,11 +145,15 @@ public class ChatPresenter extends BasePresenter {
 
 
 
-    private void getMessages(){
+    private List<MessageModel> getMessagesFromDB(){
+        List<MessageModel> result = new LinkedList<>();
         getMessages.execute(channelID, new GetMessagesUseCase.Callback() {
             @Override
             public void onMessagesDataLoaded(List<MessageDto> messages) {
-                //TODO действия после получения списка сообщений
+                for (MessageDto message: messages) {
+                    result.add(
+                            modelMapper.map2(message));
+                }
             }
 
             @Override
@@ -146,5 +161,6 @@ public class ChatPresenter extends BasePresenter {
                 errorBundle.getException().printStackTrace();
             }
         });
+        return result;
     }
 }

@@ -9,5 +9,7 @@ import android.view.View
 */
 interface ChatView : LoadDataView{
 
-    fun showProgressMessage(event : String);
+    fun showProgressMessage(event : String)
+
+    fun refreshRecyclerView()
 }

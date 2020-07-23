@@ -29,7 +29,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         val message = MessageEntity(userName, body)
         message.id = id
         message.channelId = channelId
-        message.timestamp = Timestamp(10000)
+        message.timestamp = 10000//Timestamp(10000)
 
         when (p0?.id) {
             R.id.button_post ->{
