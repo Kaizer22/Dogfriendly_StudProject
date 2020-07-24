@@ -62,14 +62,6 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
-    }
-
-    @Override
-    public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
-    }
-
-    @Override
     public void getUsers(final UsersDetailsCallback userListCallback) {
         UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
 
@@ -88,6 +80,16 @@ public class UserRepositoryImpl implements UserRepository {
                 userListCallback.onError(new RepositoryErrorBundle(exception));
             }
         });
+    }
+
+    @Override
+    public void createUser(UserDto userDto, UserCreateCallback userCallback) {
+
+    }
+
+    @Override
+    public void editUser(UserDto userDto, UserEditCallback userCallback) {
+
     }
 
 
