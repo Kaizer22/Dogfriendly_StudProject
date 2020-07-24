@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 public class MessageEntity {
     String channelId;
     String id;
-    Timestamp timestamp;
+    long timestamp;
     String userName;
     String body;
 
@@ -27,11 +27,11 @@ public class MessageEntity {
         this.id = id;
     }
 
-    public Timestamp getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 

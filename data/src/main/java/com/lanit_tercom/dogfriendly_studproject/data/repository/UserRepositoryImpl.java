@@ -61,13 +61,25 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
+    //TODO чтобы заработало пришлось закомментить эти методы
+    //Denis
+    //@Override
+    //public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
+    //}
+
+    //@Override
+    //public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
+    //}
     @Override
-    public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
+    public void createUser(UserDto userDto, UserCreateCallback userCallback) {
+
     }
 
     @Override
-    public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
+    public void editUser(UserDto userDto, UserEditCallback userCallback) {
+
     }
+
 
     @Override
     public void getUsers(final UsersDetailsCallback userListCallback) {
@@ -89,6 +101,7 @@ public class UserRepositoryImpl implements UserRepository {
             }
         });
     }
+
 
 
 }
