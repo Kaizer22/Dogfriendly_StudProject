@@ -3,7 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelModelDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChannelListView;
-import com.lanit_tercom.domain.interactor.get.GetChannelListUseCaseImpl;
+import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl;
 
 
 public class ChannelListPresenter extends BasePresenter {
@@ -11,14 +11,14 @@ public class ChannelListPresenter extends BasePresenter {
 
     private ChannelListView channelListView;
 
-    private GetChannelListUseCaseImpl getChannelListUseCase; /**final*/
+    private GetChannelsUseCaseImpl getChannelsUseCase; /**final*/
     private ChannelModelDtoMapper channelModelMapper;    /**final*/
 
     public ChannelListPresenter(){}
 
-    public ChannelListPresenter(GetChannelListUseCaseImpl getChannelListUseCase,
+    public ChannelListPresenter(GetChannelsUseCaseImpl getChannelListUseCase,
                                 ChannelModelDtoMapper channelModelMapper){
-        this.getChannelListUseCase = getChannelListUseCase;
+        this.getChannelsUseCase = getChannelListUseCase;
         this.channelModelMapper = channelModelMapper;
 
     }
@@ -57,7 +57,7 @@ public class ChannelListPresenter extends BasePresenter {
      * how get channelID ???
      */
     private void getChannelList(){
-        this.getChannelListUseCase.execute("",null);
+        this.getChannelsUseCase.execute("",null);
     }
 
 

@@ -1,49 +1,62 @@
 package com.lanit_tercom.domain.dto;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ChannelDto {
 
-    private String channelId;
+    private String id;
+    private String name;
     private String lastMessage;
     private String lastMessageOwner;
-    private String lastMessageTime;
-    //private List<UserDto> members;
-    //private String name;
+    private Long timestamp;
+    private List<String> members;
 
-
-    public ChannelDto(String channelId, String lastMessage, String lastMessageOwner, String lastMessageTime) {//needs more ???
-        this.channelId = channelId;
-        this.lastMessage = lastMessage;
-        this.lastMessageOwner = lastMessageOwner;
-        this.lastMessageTime = lastMessageTime;
+    public void setId(String id) {
+        this.id = id;
     }
 
-
-    public String getChannelId() {return channelId;}
-
-
-    public String getLastMessage() {
-        return lastMessage;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setLastMessage(String lastMessage) {
         this.lastMessage = lastMessage;
     }
 
-    public String getLastMessageOwner() {
-        return lastMessageOwner;
-    }
-
     public void setLastMessageOwner(String lastMessageOwner) {
         this.lastMessageOwner = lastMessageOwner;
     }
 
-    public String getLastMessageTime() {
-        return lastMessageTime;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public void setLastMessageTime(String lastMessageTime) {
-        this.lastMessageTime = lastMessageTime;
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public String getLastMessageOwner() {
+        return lastMessageOwner;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public List<String> getMembers() {
+        return members;
     }
 }

@@ -14,7 +14,9 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelsProviderTemp;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.ChannelListAdapter;
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 
 public class ChannelListFragment extends BaseFragment {
@@ -43,8 +45,11 @@ public class ChannelListFragment extends BaseFragment {
         recyclerViewForChannels.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-
-        ChannelListAdapter dialogListAdapter = new ChannelListAdapter(getContext(), ChannelsProviderTemp.getChannels());
+        /**
+         * Вызов метода для получения списка каналов
+         ChannelsProviderTemp.getChannels() - 2 argument
+         */
+        ChannelListAdapter dialogListAdapter = new ChannelListAdapter(getContext());
         recyclerViewForChannels.setAdapter(dialogListAdapter);
 
         return view;

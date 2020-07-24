@@ -7,19 +7,26 @@ import java.util.List;
 
 public interface ChannelRepository {
 
-    interface Error{
+    interface Error {
         void onError(ErrorBundle errorBundle);
     }
 
-    interface ChannelDetailsCallback extends Error{
-        void onChannelLoaded(ChannelDto channelDto); //ChannelDto
+    interface ChannelsLoadCallback extends Error {
+        void onChannelsLoaded(List<ChannelDto> channels);
     }
 
-    interface ChannelsDetailsCallback extends Error{
-        void onChannelsLoaded(List<ChannelDto> channels); //List<ChannelDto>
+
+    interface ChannelAddCallback extends Error {
+        void onChannelAdded();
     }
 
-    void getChannelByID(final String channelId, ChannelDetailsCallback channelCallback);
+    interface ChannelDeleteCallback extends Error {
+        void onChannelDeleted();
+    }
 
-    void getChannels(ChannelsDetailsCallback channelsCallback);
+    void getChannels(String userId, ChannelsLoadCallback callback);
+
+    void addChannel(ChannelDto channelDto, ChannelAddCallback callback);
+
+    void deleteChannel(String userId, ChannelDto channelDto, ChannelDeleteCallback callback);
 }

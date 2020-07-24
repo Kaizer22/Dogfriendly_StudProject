@@ -21,10 +21,12 @@ public class ChannelModelDtoMapper {
         }
 
         ChannelModel channelModel = new ChannelModel(
-                channelDto.getChannelId(),
+                channelDto.getId(),
+                channelDto.getName(),
                 channelDto.getLastMessage(),
                 channelDto.getLastMessageOwner(),
-                channelDto.getLastMessageTime());
+                channelDto.getTimestamp(),
+                channelDto.getMembers());
 
         return channelModel;
     }
@@ -35,11 +37,14 @@ public class ChannelModelDtoMapper {
             return null;
         }
 
-        ChannelDto channelDto = new ChannelDto(
-                channelModel.getChannelID(),
-                channelModel.getLastMessage(),
-                channelModel.getLastMessageOwner(),
-                channelModel.getLastMessageTime());
+        ChannelDto channelDto = new ChannelDto();
+
+        channelDto.setId(channelModel.getId());
+        channelDto.setName(channelModel.getName());
+        channelDto.setLastMessage(channelModel.getLastMessage());
+        channelDto.setLastMessageOwner(channelModel.getLastMessageOwner());
+        channelDto.setTimestamp(channelModel.getTimestamp());
+        channelDto.setMembers(channelModel.getMembers());
 
         return channelDto;
     }
