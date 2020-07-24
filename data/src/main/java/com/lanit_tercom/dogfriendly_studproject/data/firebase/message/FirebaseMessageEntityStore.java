@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
@@ -38,7 +39,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getMessages(MessagesDetailCallback messagesDetailCallback) {
+    public void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback) {
         final List<MessageEntity> messages = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
 
@@ -46,19 +47,19 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages.clear();
                 List<String> keys = new ArrayList<>();
-                Iterable<DataSnapshot> snapshots = dataSnapshot.child(CHILD_MESSAGES).getChildren();
+                Iterable<DataSnapshot> snapshots = dataSnapshot.child(CHILD_MESSAGES).child(channelId).getChildren();
                 for (DataSnapshot keyNode : snapshots) {
                     keys.add(keyNode.getKey());
                     MessageEntity messageEntity = keyNode.getValue(MessageEntity.class);
                     messageEntity.setId(keyNode.getKey());
                     messages.add(messageEntity);
                 }
-                messagesDetailCallback.onMessagesLoaded(messages); // return all messages from Realtime Database
+                messagesDetailCallback.onMessagesLoaded(messages); // return all messages from Realtime Database with channelId
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
+                messagesDetailCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
     }
@@ -81,7 +82,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
+                messageDetailCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
     }
@@ -97,17 +98,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                messagePostCallback.onError(new ErrorBundle() {
-                    @Override
-                    public Exception getException() {
-                        return e;
-                    }
-
-                    @Override
-                    public String getErrorMessage() {
-                        return e.getMessage();
-                    }
-                });
+                messagePostCallback.onError(new RepositoryErrorBundle(e));
             }
         });
     }
@@ -116,8 +107,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void editMessage(MessageEntity messageEntity, MessageEditCallback messageEditCallback) {
         String id = messageEntity.getId();
         String channelId = messageEntity.getChannelId();
-        String body = messageEntity.getBody();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).child("body").setValue(body).addOnSuccessListener(new OnSuccessListener<Void>() {
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 messageEditCallback.onMessageEdited();
@@ -125,17 +115,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                messageEditCallback.onError(new ErrorBundle() {
-                    @Override
-                    public Exception getException() {
-                        return e;
-                    }
-
-                    @Override
-                    public String getErrorMessage() {
-                        return e.getMessage();
-                    }
-                });
+                messageEditCallback.onError(new RepositoryErrorBundle(e));
             }
         });
     }
@@ -152,17 +132,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                messageDeleteCallback.onError(new ErrorBundle() {
-                    @Override
-                    public Exception getException() {
-                        return e;
-                    }
-
-                    @Override
-                    public String getErrorMessage() {
-                        return e.getMessage();
-                    }
-                });
+                messageDeleteCallback.onError(new RepositoryErrorBundle(e));
             }
         });
     }

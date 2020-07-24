@@ -31,13 +31,13 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
 
     @Override
     public void run() {
-        this.userRepository.editUserById(this.userDto, this.repositoryCallback);
+        this.userRepository.editUser(this.userDto, this.repositoryCallback);
     }
 
-    private final UserRepository.CreateOrEditCallback repositoryCallback =
-            new UserRepository.CreateOrEditCallback() {
+    private final UserRepository.UserEditCallback repositoryCallback =
+            new UserRepository.UserEditCallback() {
                 @Override
-                public void onUserCreatedOrEdited() {
+                public void onUserEdited() {
                     notifyEditUserDetailsSuccessfully();
                 }
 

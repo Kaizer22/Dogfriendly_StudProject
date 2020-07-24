@@ -16,5 +16,5 @@ public interface GetMessagesUseCase {
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String peerId, Callback callback);
+    void execute(String channelId, Callback callback);
 }
