@@ -25,8 +25,8 @@ class UserSignUpActivity : BaseActivity() {
         setContentView(R.layout.activity_user_sign_up)
     }
 
-    fun navigateToUserMap() =
-        navigator?.navigateToUserMap(this)
+    fun navigateToUserSignIn() =
+        navigator?.navigateToUserSignIn(this)
 
 
     override fun initializeActivity(savedInstanceState: Bundle?){

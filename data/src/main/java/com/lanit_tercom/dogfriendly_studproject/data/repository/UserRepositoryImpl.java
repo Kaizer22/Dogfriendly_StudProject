@@ -4,8 +4,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserListException;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStore;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
@@ -62,13 +62,11 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void createUser(UserDetailsCallback userCallback) {
-
+    public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
     }
 
     @Override
-    public void editUserById(String name, UserDetailsCallback userCallback) {
-
+    public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
     }
 
     @Override

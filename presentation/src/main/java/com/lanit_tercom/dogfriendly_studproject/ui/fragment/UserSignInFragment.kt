@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserSignInPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
@@ -22,7 +22,7 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     private var password: String? = null
 
     override fun initializePresenter() {
-        userSignInPresenter = UserSignInPresenter(null, UseCaseTemp())
+        userSignInPresenter = UserSignInPresenter(AuthManagerFirebaseImpl())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,12 +36,17 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
         button_signup.setOnClickListener(this)
     }
 
+    fun auth(){
+        email = enter_email.text.toString()
+        password = enter_password.text.toString()
+        userSignInPresenter?.auth(email, password)
+        showLoading()
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.button_signin -> {
-                email = enter_email.text.toString()
-                password = enter_password.text.toString()
-                userSignInPresenter?.auth(email, password)
+                auth()
             }
             R.id.button_signup ->
                 (activity as UserSignInActivity).navigateToUserSignUp()
@@ -64,15 +69,15 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     }
 
     override fun showLoading() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun hideLoading() {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
     override fun showError(message: String) {
-        TODO("Not yet implemented")
+        //TODO("Not yet implemented")
     }
 
 }
