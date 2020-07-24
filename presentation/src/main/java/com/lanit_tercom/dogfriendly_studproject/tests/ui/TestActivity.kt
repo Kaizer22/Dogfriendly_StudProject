@@ -5,15 +5,21 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStore
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.FirebaseChannelEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.domain.dto.ChannelDto
+import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
@@ -21,6 +27,15 @@ import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase
 import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase
 import com.lanit_tercom.domain.interactor.channel.impl.AddChannelUseCaseImpl
 import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.CreateUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.CreateUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.EditUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_test.*
@@ -32,9 +47,9 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
     private val postExecutionThread: PostExecutionThread = UIThread.getInstance()
 
     private val networkManager: NetworkManager = NetworkManagerImpl(this)
-    private val channelEntityStoreFactory = ChannelEntityStoreFactory(networkManager, null)
-    private val channelEntityDtoMapper = ChannelEntityDtoMapper()
-    private val channelRepository = ChannelRepositoryImpl(channelEntityStoreFactory, channelEntityDtoMapper)
+    private val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null);
+    private val userEntityDtoMapper = UserEntityDtoMapper()
+    private val userRepository = UserRepositoryImpl(userEntityStoreFactory, userEntityDtoMapper)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,83 +61,66 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
 
-
-
         when (p0?.id) {
+           //get
             R.id.button_get ->{
 
-                val getChannelsUseCase = GetChannelsUseCaseImpl(channelRepository, threadExecutor, postExecutionThread)
+                val userGetChannelsUseCase = GetUsersDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
-                val getChannelsCallback: GetChannelsUseCase.Callback = object : GetChannelsUseCase.Callback{
+                val getUsersCallback : GetUsersDetailsUseCase.Callback = object : GetUsersDetailsUseCase.Callback{
 
-                    override fun onChannelsLoaded(channels: MutableList<ChannelDto>?) {
-                        Log.i("TEST_ACTIVITY", channels?.size.toString())
+                    override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
+                        Log.i("TEST", users?.size.toString())
                     }
 
                     override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST_ACTIVITY", "error")
+                        Log.i("TEST", "ERROR")
                     }
+
                 }
 
-                getChannelsUseCase.execute("2345", getChannelsCallback);
+                userGetChannelsUseCase.execute(getUsersCallback);
+
 
             }
+            //create
             R.id.button_add ->{
-//                val entity:ChannelEntity = ChannelEntity()
-//                entity.id = "1"
-//                entity.lastMessage="1234"
-//                entity.lastMessageOwner="1234"
-//                entity.name="1234"
-//                entity.timestamp=1234L
-//                val users: MutableList<HashMap<String, String>> = ArrayList()
-//                val first = HashMap<String, String>()
-//                first["userId"] = "1234"
-//                val second = HashMap<String, String>()
-//                second["userId"] = "2345"
-//                users.add(first)
-//                users.add(second)
-//                entity.members = users
+                val userDto= UserDto("0", "Васян");
 
-                val entity2 = ChannelEntity()
-                entity2.id = "2"
-                entity2.lastMessage="2345"
-                entity2.lastMessageOwner="2345"
-                entity2.name="2345"
-                entity2.timestamp=2345L
-                val users2: MutableList<HashMap<String, String>> = ArrayList()
-                val first2 = HashMap<String, String>()
-                first2["userId"] = "2345"
-                val second2 = HashMap<String, String>()
-                second2["userId"] = "3456"
-                users2.add(first2)
-                users2.add(second2)
-                entity2.members = users2
+                val createUserDetailsUseCase = CreateUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
-
-
-                val addChannelUserCase = AddChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread)
-
-                val addChannelCallback: AddChannelUseCase.Callback = object : AddChannelUseCase.Callback{
-
-                    override fun onChannelAdded() {
-                        Log.i("TEST_ACTIVITY", "added_successfully")
+                val createUserCallback: CreateUserDetailsUseCase.Callback = object : CreateUserDetailsUseCase.Callback{
+                    override fun onUserDataCreated() {
+                        Log.i("TEST", "CREATED")
                     }
 
                     override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST_ACTIVITY", "error")
+                        Log.i("TEST", "ERROR")
                     }
+
                 }
 
-                addChannelUserCase.execute(channelEntityDtoMapper.map2(entity2), addChannelCallback);
-
+                createUserDetailsUseCase.execute(userDto, createUserCallback)
             }
+            //update
             R.id.button_delete ->{
+                val userDto= UserDto("-MD0BnHIw-Wmm4d6WNQG", "Саня");
 
-               //If get and add works, let's assume that delete works too
+                val editUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
+                val editUserCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback{
+                    override fun onUserDataEdited() {
+                        Log.i("TEST", "EDITED")
+                    }
 
+                    override fun onError(errorBundle: ErrorBundle?) {
+                        Log.i("TEST", "ERROR")
+                    }
+
+                }
+
+                editUserDetailsUseCase.execute(userDto, editUserCallback)
             }
-
         }
     }
 

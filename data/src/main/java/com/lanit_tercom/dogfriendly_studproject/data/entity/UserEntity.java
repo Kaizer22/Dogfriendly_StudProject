@@ -1,5 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import java.util.List;
+
 public class UserEntity {
 
     private String id;
