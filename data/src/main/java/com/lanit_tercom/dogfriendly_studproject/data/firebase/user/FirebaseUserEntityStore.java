@@ -2,6 +2,8 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
 import android.util.Log;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

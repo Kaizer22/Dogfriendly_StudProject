@@ -6,10 +6,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.FirebaseMessageEntityStore
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.FirebaseUserEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore
 import com.lanit_tercom.domain.exception.ErrorBundle
 import kotlinx.android.synthetic.main.activity_test.*
+import java.lang.Exception
 import java.sql.Timestamp
 
 class TestActivity : AppCompatActivity(), View.OnClickListener {
@@ -19,6 +23,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
         button_edit.setOnClickListener(this)
         button_post.setOnClickListener(this)
         button_delete.setOnClickListener(this)
+        button_geofire.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -65,6 +70,18 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
                         Toast.makeText(this@TestActivity, "Error (delete)!", Toast.LENGTH_LONG).show()
                     }
                 })
+            }
+            R.id.button_geofire -> {
+                FirebaseUserEntityStore(null).getAllUsers(object : UserEntityStore.UserListCallback{
+                    override fun onUsersListLoaded(users: MutableList<UserEntity>?) {
+                        Toast.makeText(this@TestActivity, "Geofire tested!", Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onError(exception: Exception?) {
+                        Toast.makeText(this@TestActivity, "Geofire test failed!", Toast.LENGTH_LONG).show()
+                    }
+                }
+                )
             }
         }
     }
