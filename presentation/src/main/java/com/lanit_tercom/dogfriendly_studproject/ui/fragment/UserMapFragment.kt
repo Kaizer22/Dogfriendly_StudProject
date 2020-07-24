@@ -11,11 +11,22 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UseCaseTemp
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserMapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserMapActivity
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.UserRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -28,7 +39,18 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     private var googleMap: GoogleMap? = null
 
     override fun initializePresenter() {
-        userMapPresenter = UserMapPresenter(null, UseCaseTemp())
+        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+
+        val networkManager: NetworkManager = NetworkManagerImpl(context)
+        val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
+        val userEntityDtoMapper = UserEntityDtoMapper()
+        val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
+                userEntityDtoMapper)
+        val getUsersDetailsUseCase: GetUsersDetailsUseCase = GetUsersDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
+
+        userMapPresenter = UserMapPresenter(getUsersDetailsUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,15 +93,14 @@ class UserMapFragment : BaseFragment(), UserMapView, OnMapReadyCallback, GoogleM
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        (activity as UserMapActivity).navigateToUserDetail(p0?.title?.toInt())
+        (activity as UserMapActivity).navigateToUserDetail(p0?.title)
         return true
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val users: MutableList<UserModel>? = userMapPresenter?.loadUsers()
-        userMapPresenter?.renderMap(users)
         googleMap?.setOnMarkerClickListener(this)
+        userMapPresenter?.initialize()
     }
 
     override fun renderUserOnMap(user: UserModel?) {
