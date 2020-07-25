@@ -10,6 +10,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
 import com.lanit_tercom.library.presentation.ui.viewholder.BaseViewHolder;
 
 import java.text.DateFormat;
@@ -26,6 +28,10 @@ public class MessageViewHolder extends BaseViewHolder{
 
     private final String MESSAGE_TIME_PATTERN = "dd.MM.YY HH:mm";
 
+    private ChatView parentView; //Передаем сюда ChatView, чтобы иметь
+                                //возможность отобразить контекстное меню
+                                //с действиями для одного сообщения
+
     private TextView textView;
     private TextView timeView;
     LinearLayout singleMessageLine; // Эта дополнительная обертка нужна, чтобы распологать
@@ -36,8 +42,10 @@ public class MessageViewHolder extends BaseViewHolder{
     ConstraintLayout messageContainer;  // Контейнер сообщения для изменения фона и обработки
                                         // пользовтаельского нажатия
 
-    public MessageViewHolder(@NonNull View itemView) {
+    public MessageViewHolder(@NonNull View itemView,
+                             ChatView chatView) {
         super(itemView);
+
         constraintSet = new ConstraintSet();
 
         textView = itemView.findViewById(R.id.message_text);
@@ -46,15 +54,22 @@ public class MessageViewHolder extends BaseViewHolder{
         messageContainer = itemView.findViewById(R.id.message_container);
         messageStringSeparator = itemView.findViewById(R.id.message_string_separator);
 
-        messageContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO предложение пользователю удалить или отредактировать сообщение,
-                // предположительно, эта логика должна быть тут
-            }
-        });
-
+        parentView = chatView;
     }
+
+    public void bind(MessageModel messageOnBind,
+                     boolean isSentByCurrentUser, int position){
+        changeMessagePosition(isSentByCurrentUser);
+        changeMessageBackground(isSentByCurrentUser);
+
+        setText(messageOnBind.getText());
+        setTime(messageOnBind.getTime());
+
+        messageContainer.setOnClickListener(view ->
+                parentView.showMessageMenu(messageOnBind, position, itemView));
+    }
+
+
 
     public void setTime(long time){
         DateFormat df = new SimpleDateFormat(MESSAGE_TIME_PATTERN);

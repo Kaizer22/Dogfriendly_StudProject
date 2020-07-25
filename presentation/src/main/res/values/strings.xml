@@ -3,4 +3,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_message">Новое сообщение…</string>
     <string name="sending_message_event">Отправка сообщения…</string>
+    <string name="edit_message">Редактировать</string>
+    <string name="delete_message">Удалить для всех</string>
 </resources>

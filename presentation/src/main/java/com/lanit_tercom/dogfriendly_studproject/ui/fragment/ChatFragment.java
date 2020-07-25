@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -141,6 +142,33 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chat.smoothScrollToPosition(
                 messageAdapter.getItemCount());
     }
+
+    @Override
+    public void showMessageMenu(@NotNull MessageModel message, int position,
+                                @NotNull View targetView) {
+        PopupMenu messageMenu = new PopupMenu(targetView.getContext(), targetView);
+        messageMenu.inflate(R.menu.item_message_menu);
+        boolean canBeEdited = message.getSenderID()
+                .equals(chatPresenter.getCurrentUserID())
+                && position == messageAdapter.getItemCount() -1; // Оставляем редактирование
+                                                                // только последнего сообщения?
+        messageMenu.getMenu().findItem(R.id.item_edit_message)
+                .setVisible(canBeEdited);
+        messageMenu.setOnMenuItemClickListener(menuItem ->{
+            switch (menuItem.getItemId()){
+                case R.id.item_edit_message:
+                    //TODO вызов интерфейса редактирования сообщения
+                    return true;
+                case R.id.item_delete_message:
+                    chatPresenter.deleteMessage(message);
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        messageMenu.show();
+
+    }
     //endregion
 
     //region Initialisations
@@ -149,20 +177,16 @@ public class ChatFragment extends BaseFragment implements ChatView {
         EditText messageText = root.findViewById(R.id.edit_text_send_message);
 
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
-        sendMessage.setOnClickListener(v -> {
-            sendMessage(messageText);
-        });
+        sendMessage.setOnClickListener(v -> sendMessage(messageText));
 
         ImageButton backToDialogs = root.findViewById(R.id.button_back);
-        backToDialogs.setOnClickListener(v -> {
-            backToDialogsFragment();
-        });
+        backToDialogs.setOnClickListener(v -> backToDialogsFragment());
     }
 
     private void initRecyclerView(@NotNull View root){
         chat = root.findViewById(R.id.chat);
         chat.setLayoutManager(new LinearLayoutManager(getActivity()));
-        messageAdapter = new MessageAdapter(getContext(), chatPresenter.getCurrentUserID());
+        messageAdapter = new MessageAdapter(this, chatPresenter.getCurrentUserID());
         chat.setAdapter(messageAdapter);
     }
     //endregion

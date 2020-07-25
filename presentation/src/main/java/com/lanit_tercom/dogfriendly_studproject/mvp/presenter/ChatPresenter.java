@@ -38,9 +38,6 @@ public class ChatPresenter extends BasePresenter {
 
     private MessageDtoModelMapper modelMapper;
 
-    //Пока не решена проблема с view из BasePresenter
-    //При обращении из ChatPresenter:
-    //'view' has private access in 'com.lanit_tercom.dogfriendly_studproject.mvp.presenter.BasePresenter'
     private ChatView view;
 
     public ChatPresenter(String channelID, AuthManager authManager, DeleteMessageUseCase deleteMessage,
@@ -57,9 +54,9 @@ public class ChatPresenter extends BasePresenter {
         messagesList = new LinkedList<>();
     }
 
-    public ChatPresenter(AuthManager authManager) {
-        this.authManager = authManager;
-    }
+    //public ChatPresenter(AuthManager authManager) {
+        //this.authManager = authManager;
+    //}
 
     //Задаем View, к которой будет привязан presenter
     public void setView(ChatView view){
@@ -99,6 +96,7 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessageEdited() {
                 //TODO действия после редактирования сообщения
+                refreshData();
             }
 
             @Override
@@ -115,6 +113,7 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessageDeleted() {
                 //TODO действия после удаления сообщения
+                refreshData();
             }
 
             @Override
