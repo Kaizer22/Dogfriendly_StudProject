@@ -65,8 +65,10 @@ public class MessageViewHolder extends BaseViewHolder{
         setText(messageOnBind.getText());
         setTime(messageOnBind.getTime());
 
-        messageContainer.setOnClickListener(view ->
-                parentView.showMessageMenu(messageOnBind, position, itemView));
+        messageContainer.setOnClickListener(view ->{
+            if (isSentByCurrentUser)
+                parentView.showMessageMenu(messageOnBind, position, itemView);
+        });
     }
 
 
