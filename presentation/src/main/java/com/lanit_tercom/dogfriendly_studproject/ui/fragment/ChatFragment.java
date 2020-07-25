@@ -57,7 +57,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     ChatPresenter chatPresenter;
 
-    List<MessageModel> messages;
     RecyclerView chat;
     MessageAdapter messageAdapter;
     //Временно
@@ -75,12 +74,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         AuthManager authManager = new AuthManagerFirebaseImpl();
         NetworkManager networkManager = new NetworkManagerImpl(getContext());
         MessageEntityDtoMapper messageEntityDtoMapper = new MessageEntityDtoMapper();
-        MessageCache messageCache = new MessageCache() {
-            @Override
-            public void saveMessage(String messageId, MessageEntity messageEntity) {
-                //TODO что здесь должно быть?
-            }
-        };
+        MessageCache messageCache = null;
         MessageEntityStoreFactory messageEntityStoreFactory =
                 new MessageEntityStoreFactory(networkManager, messageCache);
         MessageRepository messageRepository = MessageRepositoryImpl
@@ -100,33 +94,18 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chatPresenter = new ChatPresenter(channelID, authManager,
                 deleteMessageUseCase, editMessageUseCase,
                 getMessagesUseCase, postMessageUseCase);
-        chatPresenter.setView(this);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_chat, container, false);
+        chatPresenter.setView(this);
 
+        showLoading();
 
-        //Тестовый код
-        //authManager.signInEmail("dshebut@rambler.ru", "123456",
-                //new AuthManager.SignInCallback() {
-                   // @Override
-                    //public void OnSignInFinished(String currentUserID) {
-                        //Log.i("USER_CHAT", currentUserID);
-                    //}
-
-                    //@Override
-                   // public void OnError(Exception e) {
-                       // e.printStackTrace();
-                    //}
-                //});
-
-        initData();
         initRecyclerView(root);
-
+        chatPresenter.refreshData();
         initInteractions(root);
         return root;
     }
@@ -156,22 +135,15 @@ public class ChatFragment extends BaseFragment implements ChatView {
     }
 
     @Override
-    public void refreshRecyclerView() {
-        messageAdapter.notifyDataSetChanged();
+    public void renderMessages() {
+        messageAdapter.setMessages(
+                chatPresenter.getMessages());
         chat.smoothScrollToPosition(
                 messageAdapter.getItemCount());
-        chat.invalidate();
     }
-
     //endregion
 
     //region Initialisations
-    private void initData(){
-        //MessageProviderTemp.initProvider();
-        //messages = MessageProviderTemp.getMessages();
-        chatPresenter.refreshData();
-        messages = chatPresenter.getMessages();
-    }
 
     private void initInteractions(@NotNull View root){
         EditText messageText = root.findViewById(R.id.edit_text_send_message);
@@ -190,8 +162,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private void initRecyclerView(@NotNull View root){
         chat = root.findViewById(R.id.chat);
         chat.setLayoutManager(new LinearLayoutManager(getActivity()));
-        messageAdapter = new MessageAdapter(getContext(),
-                messages, chatPresenter.getCurrentUserID());
+        messageAdapter = new MessageAdapter(getContext(), chatPresenter.getCurrentUserID());
         chat.setAdapter(messageAdapter);
     }
     //endregion
@@ -206,8 +177,5 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private void backToDialogsFragment(){
         //TODO возвращение к экрану диалогов с помощью Navigator
     }
-
     //endregion
-
-
 }

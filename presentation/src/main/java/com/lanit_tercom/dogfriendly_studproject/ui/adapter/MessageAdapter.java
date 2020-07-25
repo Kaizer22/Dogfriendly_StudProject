@@ -12,6 +12,7 @@ import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.MessageViewHolder;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,14 +21,14 @@ import java.util.List;
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
-    private List<MessageModel> messages;
+    private List<MessageModel> messages = new LinkedList<>();
     private String currentUserID;
     private LayoutInflater inflater;
 
-    public MessageAdapter(Context context, List<MessageModel> messages, String currentUserID){
-        this.messages = messages;
+    public MessageAdapter(Context context, String currentUserID){
         this.currentUserID = currentUserID;
         inflater = LayoutInflater.from(context);
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -52,5 +53,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     @Override
     public int getItemCount() {
         return messages.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public void setMessages(List<MessageModel> messages){
+        this.messages.clear();
+        this.messages.addAll(messages);
+        notifyDataSetChanged();
     }
 }

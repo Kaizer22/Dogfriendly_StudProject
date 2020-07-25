@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
+import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.mapper.MessageDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
@@ -27,7 +28,7 @@ public class ChatPresenter extends BasePresenter {
     private AuthManager authManager;
 
     private String channelID;
-    private List<MessageModel> messages;
+    private List<MessageModel> messagesList;
 
     private DeleteMessageUseCase deleteMessage;
     private EditMessageUseCase editMessage;
@@ -37,6 +38,9 @@ public class ChatPresenter extends BasePresenter {
 
     private MessageDtoModelMapper modelMapper;
 
+    //Пока не решена проблема с view из BasePresenter
+    //При обращении из ChatPresenter:
+    //'view' has private access in 'com.lanit_tercom.dogfriendly_studproject.mvp.presenter.BasePresenter'
     private ChatView view;
 
     public ChatPresenter(String channelID, AuthManager authManager, DeleteMessageUseCase deleteMessage,
@@ -50,6 +54,7 @@ public class ChatPresenter extends BasePresenter {
         this.postMessage = postMessage;
         //this.getUser = getUser;
         modelMapper = new MessageDtoModelMapper();
+        messagesList = new LinkedList<>();
     }
 
     public ChatPresenter(AuthManager authManager) {
@@ -62,8 +67,8 @@ public class ChatPresenter extends BasePresenter {
     }
 
     public void sendMessage(String message){
-        view.showLoading();
-        view.showProgressMessage(SENDING_MESSAGE_EVENT);
+        this.view.showLoading();
+        this.view.showProgressMessage(SENDING_MESSAGE_EVENT);
 
         MessageModel messageModel = new MessageModel();
         messageModel.setSenderID(authManager.getCurrentUserId());
@@ -77,9 +82,7 @@ public class ChatPresenter extends BasePresenter {
         postMessage.execute(messageDto, new PostMessageUseCase.Callback() {
             @Override
             public void onMessagePosted() {
-                //TODO действия после отправки сообщения
-                view.refreshRecyclerView();
-                view.hideLoading();
+                refreshData();
             }
 
             @Override
@@ -87,9 +90,6 @@ public class ChatPresenter extends BasePresenter {
                 errorBundle.getException().printStackTrace();
             }
         });
-
-        //MessageProviderTemp.addMessage(messageModel);
-
     }
 
     public void editMessage(MessageModel messageModel){
@@ -126,7 +126,7 @@ public class ChatPresenter extends BasePresenter {
 
     public void refreshData(){
         //Получение диалога
-        messages = getMessagesFromDB();
+        getMessagesFromDB();
         //Обновление данных о чате
         //getChannel();
     }
@@ -136,7 +136,7 @@ public class ChatPresenter extends BasePresenter {
     }
 
     public List<MessageModel> getMessages() {
-        return messages;
+        return messagesList;
     }
 
     //private void getChannel() {
@@ -145,22 +145,22 @@ public class ChatPresenter extends BasePresenter {
 
 
 
-    private List<MessageModel> getMessagesFromDB(){
-        List<MessageModel> result = new LinkedList<>();
+    private void getMessagesFromDB(){
+        messagesList.clear();
         getMessages.execute(channelID, new GetMessagesUseCase.Callback() {
             @Override
             public void onMessagesDataLoaded(List<MessageDto> messages) {
                 for (MessageDto message: messages) {
-                    result.add(
+                    messagesList.add(
                             modelMapper.map2(message));
                 }
+                view.renderMessages();
+                view.hideLoading();
             }
-
             @Override
             public void onError(ErrorBundle errorBundle) {
                 errorBundle.getException().printStackTrace();
             }
         });
-        return result;
     }
 }

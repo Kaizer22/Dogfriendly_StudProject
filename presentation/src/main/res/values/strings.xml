@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Dogfriendly_StudProject</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_message">New message…</string>
+    <string name="new_message">Новое сообщение…</string>
+    <string name="sending_message_event">Отправка сообщения…</string>
 </resources>

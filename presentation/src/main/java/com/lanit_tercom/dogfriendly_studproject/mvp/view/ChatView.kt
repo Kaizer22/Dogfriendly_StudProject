@@ -11,5 +11,5 @@ interface ChatView : LoadDataView{
 
     fun showProgressMessage(event : String)
 
-    fun refreshRecyclerView()
+    fun renderMessages()
 }
