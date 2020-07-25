@@ -76,7 +76,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
          java.lang.BootstrapMethodError: Exception from call site #5 bootstrap method
          */
 
-        //channelsUseCase.execute("1OUgqDel92RLeacUFajLizVxWyk2", getChannelsUseCase);
+        channelsUseCase.execute("1OUgqDel92RLeacUFajLizVxWyk2", getChannelsUseCase);
 
         //1OUgqDel92RLeacUFajLizVxWyk2 -- id user
         //-MCxNrG1TEk0XoOdN7X8 -- id channel

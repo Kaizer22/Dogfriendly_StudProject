@@ -13,5 +13,5 @@ public interface GetChannelsUseCase {
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String channelId, GetChannelsUseCase.Callback callback);
+    void execute(String userId, GetChannelsUseCase.Callback callback);
 }

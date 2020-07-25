@@ -11,7 +11,7 @@ import com.lanit_tercom.domain.repository.ChannelRepository;
 import java.util.List;
 
 public class GetChannelsUseCaseImpl extends UseCase implements GetChannelsUseCase {
-    private String channelId;
+    private String userId;
     private GetChannelsUseCase.Callback callback;
 
     public GetChannelsUseCaseImpl(ChannelRepository channelRepository,
@@ -21,18 +21,18 @@ public class GetChannelsUseCaseImpl extends UseCase implements GetChannelsUseCas
     }
 
     @Override
-    public void execute(String channelId, Callback callback) {
-        if (channelId.isEmpty() || callback == null) {
+    public void execute(String userId, Callback callback) {
+        if (userId.isEmpty() || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
         this.callback = callback;
-        this.channelId = channelId;
+        this.userId = userId;
     }
 
     @Override
     public void run() {
-        this.channelRepository.getChannels(channelId, repositoryCallback);
+        this.channelRepository.getChannels(userId, repositoryCallback);
     }
 
     private final ChannelRepository.ChannelsLoadCallback repositoryCallback =
