@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
-import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.mapper.MessageDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
@@ -11,7 +10,6 @@ import com.lanit_tercom.domain.interactor.message.DeleteMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.message.PostMessageUseCase;
-import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -95,7 +93,6 @@ public class ChatPresenter extends BasePresenter {
         editMessage.execute(messageDto, new EditMessageUseCase.Callback() {
             @Override
             public void onMessageEdited() {
-                //TODO действия после редактирования сообщения
                 refreshData();
             }
 
@@ -112,7 +109,6 @@ public class ChatPresenter extends BasePresenter {
         deleteMessage.execute(messageDto, new DeleteMessageUseCase.Callback() {
             @Override
             public void onMessageDeleted() {
-                //TODO действия после удаления сообщения
                 refreshData();
             }
 

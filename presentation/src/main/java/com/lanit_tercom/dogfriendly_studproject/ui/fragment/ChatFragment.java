@@ -1,7 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.R;
-import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStoreFactory;
@@ -26,7 +25,6 @@ import com.lanit_tercom.dogfriendly_studproject.data.mapper.MessageEntityDtoMapp
 import com.lanit_tercom.dogfriendly_studproject.data.repository.MessageRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MessageProviderTemp;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
@@ -40,15 +38,11 @@ import com.lanit_tercom.domain.interactor.message.impl.DeleteMessageUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.EditMessageUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.GetMessagesUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.PostMessageUseCaseImpl;
-import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
-import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl;
 import com.lanit_tercom.domain.repository.MessageRepository;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  *  Фрагмент, отвечающий за отображение диалога между двумя пользователями
@@ -56,19 +50,20 @@ import java.util.List;
  */
 public class ChatFragment extends BaseFragment implements ChatView {
 
-    ChatPresenter chatPresenter;
+    private ChatPresenter chatPresenter;
 
-    RecyclerView chat;
-    MessageAdapter messageAdapter;
-    //Временно
-    String channelID = "-MCqwIrhuEPqkgz1GV18";
+    private RecyclerView chat;
+    private MessageAdapter messageAdapter;
+
+    private String channelID;
+
+    public ChatFragment(String channelID){
+        this.channelID = channelID;
+    }
 
     //region Implementations
     @Override
     public void initializePresenter() {
-        //Тестовый код
-        //authManager = new AuthManagerFirebaseImpl();
-        //chatPresenter = new ChatPresenter(authManager);
         ThreadExecutor threadExecutor = JobExecutor.getInstance();
         PostExecutionThread postExecutionThread = UIThread.getInstance();
 
@@ -95,6 +90,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chatPresenter = new ChatPresenter(channelID, authManager,
                 deleteMessageUseCase, editMessageUseCase,
                 getMessagesUseCase, postMessageUseCase);
+        chatPresenter.refreshData();
     }
 
     @Nullable
@@ -106,7 +102,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
         showLoading();
 
         initRecyclerView(root);
-        chatPresenter.refreshData();
         initInteractions(root);
         return root;
     }
@@ -157,7 +152,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         messageMenu.setOnMenuItemClickListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.item_edit_message:
-                    //TODO вызов интерфейса редактирования сообщения
+                    showEditDialog(message);
                     return true;
                 case R.id.item_delete_message:
                     chatPresenter.deleteMessage(message);
@@ -200,6 +195,20 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     private void backToDialogsFragment(){
         //TODO возвращение к экрану диалогов с помощью Navigator
+    }
+
+    private void showEditDialog(MessageModel message){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        final EditText editText = new EditText(getContext());
+        editText.setText(message.getText());
+        dialog.setView(editText);
+        dialog.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> {
+            message.setText(editText.getText().toString());
+            chatPresenter.editMessage(message);
+        });
+        dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
+        });
+        dialog.show();
     }
     //endregion
 }
