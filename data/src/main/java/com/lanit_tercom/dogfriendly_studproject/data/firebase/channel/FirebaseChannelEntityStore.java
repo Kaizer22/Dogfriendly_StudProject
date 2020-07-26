@@ -78,6 +78,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         String firebaseId = dr.push().getKey();
         for(String userId: userIDs){
             Map<String, Object> pair = new HashMap<>();
+            channel.setId(firebaseId);
             pair.put(firebaseId, channel);
             dr.child(userId).updateChildren(pair)
                     .addOnSuccessListener(aVoid -> callback.onChannelAdded())

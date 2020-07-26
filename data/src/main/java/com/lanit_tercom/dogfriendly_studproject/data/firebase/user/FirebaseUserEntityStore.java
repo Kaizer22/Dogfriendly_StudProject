@@ -83,7 +83,11 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        referenceDatabase.child(CHILD_USERS).push().setValue(user)
+        String firebaseId = referenceDatabase.child(CHILD_USERS).push().getKey();
+        user.setId(firebaseId);
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.child(CHILD_USERS).updateChildren(map)
                 .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
                 .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
     }

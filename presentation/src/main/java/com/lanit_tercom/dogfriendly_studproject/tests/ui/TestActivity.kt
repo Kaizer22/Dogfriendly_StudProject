@@ -85,7 +85,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             }
             //create
             R.id.button_add ->{
-                val userDto= UserDto("0", "Васян");
+                val userDto= UserDto("0", "Олег");
 
                 val createUserDetailsUseCase = CreateUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
@@ -104,7 +104,7 @@ class TestActivity : AppCompatActivity(), View.OnClickListener {
             }
             //update
             R.id.button_delete ->{
-                val userDto= UserDto("-MD0BnHIw-Wmm4d6WNQG", "Саня");
+                val userDto= UserDto("-MD0BnHIw-Wmm4d6WNQG", "С");
 
                 val editUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
