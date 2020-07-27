@@ -1,20 +1,43 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailsView
+import com.lanit_tercom.domain.dto.UserDto
+import com.lanit_tercom.domain.exception.ErrorBundle
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 
 /**
  * presenter класс для работы с конкретным пользователем
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserDetailPresenter(private val authManager: AuthManager?, private val useCaseTemp: UseCaseTemp) : BasePresenter() {
+class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?) : BasePresenter() {
 
-    fun setView(view: UserDetailsView){
-        this.view = view
+    private var userId: String? = null
+
+    fun initialize(userId: String?) {
+        this.userId = userId
+        this.loadUserDetails()
     }
 
-    fun renderUser(user: UserModel?) = (view as UserDetailsView).renderCurrentUser(user)
+    fun setView(view: UserDetailsView){ this.view = view }
 
+    private fun loadUserDetails() =
+        getUserDetailsUseCase!!.execute(userId, userDetailsCallback)
+
+
+    private fun showUserDetailsInView(userDto: UserDto?) {
+        val userDtoModelMapper = UserDtoModelMapper()
+        val userModel = userDtoModelMapper.map2(userDto)
+        (view as UserDetailsView).renderCurrentUser(userModel)
+    }
+
+    private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
+
+        override fun onUserDataLoaded(userDto: UserDto?) =
+            this@UserDetailPresenter.showUserDetailsInView(userDto)
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
+    }
 }

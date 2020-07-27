@@ -8,6 +8,9 @@ import com.lanit_tercom.domain.interactor.channel.DeleteChannelUseCase;
 import com.lanit_tercom.domain.interactor.channel.UseCase;
 import com.lanit_tercom.domain.repository.ChannelRepository;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class DeleteChannelUseCaseImpl extends UseCase implements DeleteChannelUseCase {
     private String userId;
     private ChannelDto channelDto;

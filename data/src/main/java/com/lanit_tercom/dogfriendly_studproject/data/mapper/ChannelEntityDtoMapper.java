@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class ChannelEntityDtoMapper {
 
     public ChannelEntity map1(ChannelDto channelDto){

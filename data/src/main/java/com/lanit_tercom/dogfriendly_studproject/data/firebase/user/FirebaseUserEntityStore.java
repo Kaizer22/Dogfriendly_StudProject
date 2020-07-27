@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.data.firebase;
+package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
 import android.util.Log;
 
@@ -28,40 +28,8 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
-        this.userCache = userCache;
-    }
-
-    public FirebaseUserEntityStore(){ //userCache???
-
         referenceDatabase = FirebaseDatabase.getInstance().getReference();
-        // Test getUserById() and getAllUsers() methods
-        getUserById("1", new UserByIdCallback() {
-            @Override
-            public void onUserLoaded(UserEntity userEntity) {
-                System.out.println("USER: ");
-                System.out.println(userEntity.toString());
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
-
-        getAllUsers(new UserListCallback() {
-            @Override
-            public void onUsersListLoaded(List<UserEntity> users) {
-                System.out.println("USER: ");
-                for (UserEntity user: users){
-                    System.out.println(user.toString());
-                }
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                System.out.println("Error");
-            }
-        });
+        this.userCache = userCache;
     }
 
 

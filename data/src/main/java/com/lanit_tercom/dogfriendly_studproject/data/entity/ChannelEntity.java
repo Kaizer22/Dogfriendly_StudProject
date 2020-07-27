@@ -3,6 +3,9 @@ package com.lanit_tercom.dogfriendly_studproject.data.entity;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class ChannelEntity {
 
     private String id;

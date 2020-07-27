@@ -12,6 +12,9 @@ import com.lanit_tercom.domain.repository.ChannelRepository;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class ChannelRepositoryImpl implements ChannelRepository {
 
     private static ChannelRepositoryImpl INSTANCE;

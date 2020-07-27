@@ -5,6 +5,9 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public interface ChannelRepository {
 
     interface Error {

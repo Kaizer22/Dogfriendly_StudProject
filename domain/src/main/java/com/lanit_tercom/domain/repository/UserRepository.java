@@ -19,13 +19,20 @@ public interface UserRepository {
         void onUsersLoaded(List<UserDto> users);
     }
 
+    interface UserCreateCallback extends Error {
+        void onUserCreated();
+    }
+    interface UserEditCallback extends Error {
+        void onUserEdited();
+    }
 
-    void getUserById(final String userId, UserDetailsCallback userCallback);
+
+    void getUserById(String userId, UserDetailsCallback userCallback);
 
     void getUsers(UsersDetailsCallback userCallback);
 
-    void createUser(UserDetailsCallback userCallback);
+    void createUser(UserDto userDto, UserCreateCallback userCallback);
 
-    void editUserById(String name, UserDetailsCallback userCallback);
+    void editUser(UserDto userDto, UserEditCallback userCallback);
 
 }

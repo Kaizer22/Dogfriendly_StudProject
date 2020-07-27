@@ -4,6 +4,13 @@ import com.lanit_tercom.domain.dto.ChannelDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase;
+import com.lanit_tercom.domain.interactor.channel.UseCase;
+import com.lanit_tercom.domain.repository.ChannelRepository;
+
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 import com.lanit_tercom.domain.interactor.channel.UseCase;
 import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase;
 import com.lanit_tercom.domain.repository.ChannelRepository;
@@ -13,8 +20,8 @@ public class AddChannelUseCaseImpl extends UseCase implements AddChannelUseCase 
     private AddChannelUseCase.Callback callback;
 
     public AddChannelUseCaseImpl(ChannelRepository channelRepository,
-                                 ThreadExecutor threadExecutor,
-                                 PostExecutionThread postExecutionThread) {
+                                    ThreadExecutor threadExecutor,
+                                    PostExecutionThread postExecutionThread) {
         super(channelRepository, threadExecutor, postExecutionThread);
     }
 

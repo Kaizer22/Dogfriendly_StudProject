@@ -13,6 +13,10 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 
 import io.realm.Realm;
 
+/**
+ * Реализация аутентификации с помощью Firebase
+ * @author dshebut@rambler.ru
+ */
 public class AuthManagerFirebaseImpl implements AuthManager {
 
     private FirebaseAuth firebaseAuth;
@@ -96,7 +100,7 @@ public class AuthManagerFirebaseImpl implements AuthManager {
 
     @Override
     public boolean isSignedIn() {
-            return firebaseAuth.getCurrentUser() != null;
+        return firebaseAuth.getCurrentUser() != null;
     }
 
     @Override

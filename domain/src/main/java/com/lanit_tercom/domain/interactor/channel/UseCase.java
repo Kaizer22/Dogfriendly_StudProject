@@ -5,6 +5,9 @@ import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.Interactor;
 import com.lanit_tercom.domain.repository.ChannelRepository;
 
+/**
+ * @author nikolaygorokhov1@gnmail.com
+ */
 public abstract class UseCase implements Interactor {
 
     protected final ChannelRepository channelRepository;

@@ -30,61 +30,18 @@ import com.lanit_tercom.domain.repository.ChannelRepository;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHolder> {
 
     private LayoutInflater inflater;
     private List<ChannelModel> channels;
-    private String currentUserID;
+    //private String currentUserID;
 
-    public ChannelListAdapter(Context context){ //  List<ChannelModel> channels
-        final List<ChannelModel> channelsModel = new ArrayList<>();
-
-        ThreadExecutor threadExecutor = JobExecutor.getInstance();
-        PostExecutionThread postExecutionThread = UIThread.getInstance();
-
-        NetworkManagerImpl networkManager = new NetworkManagerImpl(context);
-        ChannelEntityStoreFactory channelEntityStoreFactory = new ChannelEntityStoreFactory(networkManager, null);
-        ChannelEntityDtoMapper dtoMapper = new ChannelEntityDtoMapper();
-        ChannelRepositoryImpl channelRepository = new ChannelRepositoryImpl(channelEntityStoreFactory, dtoMapper);
-
-        final ChannelModelDtoMapper modelDtoMapper = new ChannelModelDtoMapper();
-
-        GetChannelsUseCase channelsUseCase = new GetChannelsUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
-
-        GetChannelsUseCase.Callback getChannelsUseCase = new GetChannelsUseCase.Callback() {
-            @Override
-            public void onChannelsLoaded(List<ChannelDto> channelsDto) {
-                for (ChannelDto dtoObject: channelsDto){
-                    channelsModel.add(modelDtoMapper.mapToModel(dtoObject));
-                }
-                Log.i("TEST_Channels", "Success");
-            }
-
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                Log.i("TEST_Channels", "error");
-            }
-        };
-
-        /**
-            При вызове execute c id (id канала) -MCxNrG1TEk0XoOdN7X8 появляется слудюущая ошибка:
-         Can't convert object of type java.util.ArrayList to type com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity
-
-         Если брать id пользователя, то ошибка такая:
-         java.lang.BootstrapMethodError: Exception from call site #5 bootstrap method
-         */
-
-        channelsUseCase.execute("1OUgqDel92RLeacUFajLizVxWyk2", getChannelsUseCase);
-
-        //1OUgqDel92RLeacUFajLizVxWyk2 -- id user
-        //-MCxNrG1TEk0XoOdN7X8 -- id channel
-
-
-        this.channels = channelsModel;
+    public ChannelListAdapter(Context context){ //need channels?? TODO List<ChannelModel> channels
+        this.channels = new LinkedList<>();
         inflater = LayoutInflater.from(context);
-        Log.i("TEST_Channels", "Adapter");
         //currentUserID = authManager.getCurrentUserId();
     }
 
@@ -108,6 +65,34 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
 
     @Override
     public int getItemCount() {
-        return channels.size();
+        /**
+         * Error is here^ channels.size = 0
+         */
+        Log.e("ChannelList Size", String.valueOf(channels.size()));
+        return (this.channels != null) ? this.channels.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+
+    public void setChannels(List<ChannelModel> channelList){
+        this.validateChannelList(channelList);
+        this.channels.clear();
+        this.channels.addAll(channelList);
+        this.notifyDataSetChanged();
+    }
+
+    private void validateChannelList(List<ChannelModel> channelList){
+        if (channelList == null){
+            throw new IllegalArgumentException("List of channels cannot be null... ChannelListAdapter");
+        }
     }
 }

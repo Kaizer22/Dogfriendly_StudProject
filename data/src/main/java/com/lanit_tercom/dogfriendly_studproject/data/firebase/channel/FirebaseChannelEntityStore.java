@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,9 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
     private static final String CHILD_CHANNELS = "Channels";

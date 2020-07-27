@@ -1,7 +1,13 @@
 package com.lanit_tercom.dogfriendly_studproject.mapper;
 
+
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.domain.dto.ChannelDto;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class ChannelModelDtoMapper {
 
@@ -47,6 +53,21 @@ public class ChannelModelDtoMapper {
         channelDto.setMembers(channelModel.getMembers());
 
         return channelDto;
+    }
+
+    public Collection<ChannelModel> transformList(List<ChannelDto> channelDtoList){
+        List<ChannelModel> channelModelList;
+
+        if (channelDtoList != null && !channelDtoList.isEmpty()){
+            channelModelList = new ArrayList<>();
+            for (ChannelDto channelDto: channelDtoList){
+                channelModelList.add(mapToModel(channelDto));
+            }
+        }
+        else{
+            channelModelList = Collections.emptyList();
+        }
+        return channelModelList;
     }
 
 

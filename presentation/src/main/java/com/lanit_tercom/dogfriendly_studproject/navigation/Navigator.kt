@@ -7,6 +7,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.*
 /**
  * Класс для перехода к активностям
  * @author prostak.sasha111@mail.ru
+ * @author dshebut@rambler.ru
  */
 class Navigator {
     private var intentToLaunch: Intent? = null
@@ -23,8 +24,12 @@ class Navigator {
         context.startActivity(
                 UserMapActivity.getCallingIntent(context))
 
-    fun navigateToUserDetail(context: Context, userId: Int?) =
+    fun navigateToUserDetail(context: Context, userId: String?) =
         context.startActivity(
                 UserDetailActivity.getCallingIntent(context, userId))
+
+    fun navigateToChat(context: Context, channelID : String?) =
+            context.startActivity(
+                    ChatActivity.getCallingIntent(context, channelID))
 
 }

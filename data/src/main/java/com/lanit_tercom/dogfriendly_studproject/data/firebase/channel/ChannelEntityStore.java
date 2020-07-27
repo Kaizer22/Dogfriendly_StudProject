@@ -1,10 +1,14 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.channel;
 
+
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
 
+/**
+ * @author nikolaygorokhov1@gmail.com
+ */
 public interface ChannelEntityStore {
 
     interface DeleteChannelCallback{
