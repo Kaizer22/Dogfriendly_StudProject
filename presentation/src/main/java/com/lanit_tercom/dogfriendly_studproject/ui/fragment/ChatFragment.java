@@ -103,6 +103,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
         initRecyclerView(root);
         initInteractions(root);
+        renderMessages();
         return root;
     }
 
@@ -164,6 +165,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         messageMenu.show();
 
     }
+
     //endregion
 
     //region Initialisations
