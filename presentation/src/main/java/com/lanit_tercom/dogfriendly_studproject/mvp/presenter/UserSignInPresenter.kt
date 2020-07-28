@@ -27,13 +27,15 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
     }
 
     private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
-        //TODO удалить тестовый код!!!
+
         override fun OnSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
             ((view as UserSignInFragment)).hideLoading()
             if(currentUserId != null)
-                //((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
-                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
+                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
+            //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
+            // код и код в UserSignInActivity
+                //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
             else
                 //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
                 ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
