@@ -12,4 +12,11 @@ public interface ChannelListView extends LoadDataView{
     void showUnreadMessage();
 
     void renderChannels(List<ChannelModel> channels);
+
+    /**
+     * View a {@link ChannelModel} profile/details.
+     *
+     * @param channelModel The channel that will be shown.
+     */
+    void viewChannel(ChannelModel channelModel);
 }

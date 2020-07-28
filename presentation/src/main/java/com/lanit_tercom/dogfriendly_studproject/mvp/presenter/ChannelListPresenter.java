@@ -97,21 +97,11 @@ public class ChannelListPresenter extends BasePresenter {
         this.channelListView.renderChannels((List<ChannelModel>) channelModelList);
     }
 
-//    public List<ChannelModel> getChannelList(){
-//        return channelsList;
-//    }
 
     public void getChannelList(){
         this.getChannels.execute(userId, new GetChannelsUseCase.Callback() {
             @Override
             public void onChannelsLoaded(List<ChannelDto> channels) {
-               /* for(ChannelDto channelDto: channels){
-                    channelsList.add(channelModelMapper.mapToModel(channelDto));
-                }
-                channelListView.renderChannels(channelsList);
-                channelListView.hideLoading();*/
-                Log.e("ChannelDto", "channels:");
-                System.out.println(channels.toString());
                 ChannelListPresenter.this.showChannelListInView(channels);
             }
 
@@ -123,6 +113,9 @@ public class ChannelListPresenter extends BasePresenter {
     }
 
 
+    public void onChannelClicked(ChannelModel channelModel){
+        this.channelListView.viewChannel(channelModel);
+    }
 
     public void refreshChannelsData(){
         getChannelList();
