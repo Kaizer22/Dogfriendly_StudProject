@@ -9,89 +9,35 @@
 
 
     <Button
-        android:id="@+id/button_post"
+        android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="post"
-        app:layout_constraintBottom_toTopOf="@+id/button_edit"
+        android:text="CREATE"
+        app:layout_constraintBottom_toTopOf="@+id/button_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_body" />
+        app:layout_constraintTop_toBottomOf="@+id/button_get" />
 
     <Button
         android:id="@+id/button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DELETE"
+        android:text="EDIT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_edit" />
+        app:layout_constraintTop_toBottomOf="@+id/button_add" />
 
     <Button
-        android:id="@+id/button_edit"
+        android:id="@+id/button_get"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="edit"
-        app:layout_constraintBottom_toTopOf="@+id/button_delete"
+        android:text="GET"
+        app:layout_constraintBottom_toTopOf="@+id/button_add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_post" />
-
-    <EditText
-        android:id="@+id/editText_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="id"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText_channelId"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText_channelId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="channelId"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText_userName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_id" />
-
-    <EditText
-        android:id="@+id/editText_userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="userName"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editText_body"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_channelId" />
-
-    <EditText
-        android:id="@+id/editText_body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="body"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/button_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_userName" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <Button
         android:id="@+id/button_geofire"

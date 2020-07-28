@@ -1,5 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import java.util.List;
+
 public class UserEntity {
 
     private String id;
@@ -12,6 +14,11 @@ public class UserEntity {
         this.id = id;
         this.userName = name;
         this.age = age;
+    }
+
+    public UserEntity(String id, String name){
+        this.id = id;
+        this.userName = name;
     }
 
    public String getId() {
