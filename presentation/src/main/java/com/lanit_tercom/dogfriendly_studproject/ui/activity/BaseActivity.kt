@@ -21,6 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
         initializeActivity(savedInstanceState)
     }
 
+
     fun addFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction()
         if (fragment != null)

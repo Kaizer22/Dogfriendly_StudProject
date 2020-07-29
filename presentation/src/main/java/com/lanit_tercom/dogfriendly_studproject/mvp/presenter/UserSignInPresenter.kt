@@ -1,8 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import android.util.Log
+import android.content.Intent
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.TestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
 import java.lang.Exception

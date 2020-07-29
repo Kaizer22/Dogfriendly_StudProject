@@ -46,7 +46,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         holder.changeMessageBackground(isSentByCurrentUser);
 
         holder.setText(messageOnBind.getText());
-        holder.setTime(messageOnBind.getTime());
+        holder.setTime(messageOnBind.getTime().getTime());
     }
 
     @Override

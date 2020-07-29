@@ -11,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
@@ -18,6 +19,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,15 +44,13 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     @Override
     public void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback) {
         final List<MessageEntity> messages = new ArrayList<>();
-        referenceDatabase.addValueEventListener(new ValueEventListener() {
+        referenceDatabase.child(CHILD_MESSAGES).child(channelId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messages.clear();
-                List<String> keys = new ArrayList<>();
-                Iterable<DataSnapshot> snapshots = dataSnapshot.child(CHILD_MESSAGES).child(channelId).getChildren();
+                Iterable<DataSnapshot> snapshots = dataSnapshot.getChildren();
                 for (DataSnapshot keyNode : snapshots) {
-                    keys.add(keyNode.getKey());
                     MessageEntity messageEntity = keyNode.getValue(MessageEntity.class);
                     messageEntity.setId(keyNode.getKey());
                     messages.add(messageEntity);

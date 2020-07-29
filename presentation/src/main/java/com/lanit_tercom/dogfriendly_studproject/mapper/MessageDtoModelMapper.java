@@ -5,6 +5,7 @@ import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.library.data.mapper.BaseMapper;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class MessageDtoModelMapper extends BaseMapper<MessageDto, MessageModel> {
 
@@ -16,7 +17,7 @@ public class MessageDtoModelMapper extends BaseMapper<MessageDto, MessageModel> 
         MessageDto messageDto = new MessageDto(o2.getSenderID(), o2.getText());
         messageDto.setChannelId(o2.getChatID());
         messageDto.setId(o2.getMessageID());
-        messageDto.setTimestamp(new Timestamp(o2.getTime()));
+        messageDto.setTimestamp(o2.getTime().getTime());
         return messageDto;
     }
 
@@ -28,9 +29,10 @@ public class MessageDtoModelMapper extends BaseMapper<MessageDto, MessageModel> 
         String messageID = o1.getId();
         String chatID = o1.getChannelId();
         String senderID = o1.getUserName();
-        long time = o1.getTimestamp().getTime();
+        Date time = new Date(o1.getTimestamp());
         String text = o1.getBody();
-
-        return new MessageModel(messageID, senderID, chatID, text, time);
+        MessageModel messageModel = new MessageModel(messageID, senderID, chatID, text);
+        messageModel.setTime(time);
+        return messageModel;
     }
 }
