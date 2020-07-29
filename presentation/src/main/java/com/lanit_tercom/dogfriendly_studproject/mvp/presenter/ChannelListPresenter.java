@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import android.util.Log;
 
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelModelDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChannelListView;
@@ -21,7 +22,9 @@ public class ChannelListPresenter extends BasePresenter {
 
     private ChannelListView channelListView;
 
-    private String userId;
+    private AuthManager authManager;
+
+    //private String userId;
     private List<ChannelModel> channelsList;
 
     private ChannelModelDtoMapper channelModelMapper;    /**final*/
@@ -31,13 +34,15 @@ public class ChannelListPresenter extends BasePresenter {
     private DeleteChannelUseCase deleteChannel;
 
 
-    //public ChannelListPresenter(){}
+    public ChannelListPresenter(AuthManager authManager){this.authManager = authManager;}
 
-    public ChannelListPresenter(String userId,
+    public ChannelListPresenter(//String userId,
+                                AuthManager authManager,
                                 GetChannelsUseCase getChannelListUseCase,
                                 AddChannelUseCase addChannelUseCase,
                                 DeleteChannelUseCase deleteChannelUseCase){
-        this.userId = userId;
+        //this.userId = userId;
+        this.authManager = authManager;
         this.getChannels = getChannelListUseCase;
         this.addChannel = addChannelUseCase;
         this.deleteChannel = deleteChannelUseCase;
@@ -50,14 +55,14 @@ public class ChannelListPresenter extends BasePresenter {
         this.channelListView = view;
     }
 
-    public void openChannel(ChannelModel channelModel){
+    /*public void openChannel(ChannelModel channelModel){
         //TODO Открытые выбранного чата
-    }
+    }*/
 
 
     public void deleteChannel(ChannelModel channelModel){
         ChannelDto channelDto = channelModelMapper.mapToDto(channelModel);
-        deleteChannel.execute(userId, channelDto, new DeleteChannelUseCase.Callback() {
+        deleteChannel.execute(authManager.getCurrentUserId(), channelDto, new DeleteChannelUseCase.Callback() {
             @Override
             public void onChannelDeleted() {
                 //Действие после удалаения канала
@@ -99,7 +104,8 @@ public class ChannelListPresenter extends BasePresenter {
 
 
     public void getChannelList(){
-        this.getChannels.execute(userId, new GetChannelsUseCase.Callback() {
+        //TODO authManager.getCurrentUserId() instead userId = 2345
+        this.getChannels.execute("2345", new GetChannelsUseCase.Callback() {
             @Override
             public void onChannelsLoaded(List<ChannelDto> channels) {
                 ChannelListPresenter.this.showChannelListInView(channels);
@@ -113,9 +119,9 @@ public class ChannelListPresenter extends BasePresenter {
     }
 
 
-    public void onChannelClicked(ChannelModel channelModel){
+    /*public void onChannelClicked(ChannelModel channelModel){
         this.channelListView.viewChannel(channelModel);
-    }
+    }*/
 
     public void refreshChannelsData(){
         getChannelList();

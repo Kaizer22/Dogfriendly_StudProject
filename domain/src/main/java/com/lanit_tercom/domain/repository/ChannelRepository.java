@@ -31,5 +31,5 @@ public interface ChannelRepository {
 
     void addChannel(ChannelDto channelDto, ChannelAddCallback callback);
 
-    void deleteChannel(String userId, ChannelDto channelDto, ChannelDeleteCallback callback);
+    void deleteChannel(String userId, ChannelDto channelDto, ChannelDeleteCallback callback); //String userId ???
 }

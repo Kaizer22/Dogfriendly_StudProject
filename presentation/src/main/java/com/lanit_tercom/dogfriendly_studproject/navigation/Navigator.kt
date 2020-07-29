@@ -32,4 +32,9 @@ class Navigator {
             context.startActivity(
                     ChatActivity.getCallingIntent(context, channelID))
 
+    fun navigateToChannelList(context: Context, userID: String?) =
+            context.startActivity(
+                    ChannelListActivity.getCallingIntent(context, userID)
+            )
+
 }

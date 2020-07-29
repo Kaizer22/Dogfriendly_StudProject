@@ -18,5 +18,5 @@ public interface ChannelListView extends LoadDataView{
      *
      * @param channelModel The channel that will be shown.
      */
-    void viewChannel(ChannelModel channelModel);
+    //void viewChannel(ChannelModel channelModel);
 }

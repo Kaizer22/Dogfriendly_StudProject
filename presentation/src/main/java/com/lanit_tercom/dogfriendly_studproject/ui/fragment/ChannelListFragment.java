@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
@@ -60,7 +62,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     /**
      * For test
      */
-    String userId = "2345"; //58CktVjke1frVUW9YirSQVlXt2x1 1OUgqDel92RLeacUFajLizVxWyk2 gZApuK3QxMhXT0PPtsVs4eeo5Dp2
+    //String userId = "2345";
 
     public ChannelListFragment() {
         // Required empty public constructor
@@ -107,7 +109,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         ThreadExecutor threadExecutor = JobExecutor.getInstance();
         PostExecutionThread postExecutionThread = UIThread.getInstance();
 
-        //AuthManager authManager = new AuthManagerFirebaseImpl();
+        AuthManager authManager = new AuthManagerFirebaseImpl();
         NetworkManager networkManager = new NetworkManagerImpl(getContext());
         ChannelEntityDtoMapper dtoMapper = new ChannelEntityDtoMapper();
         ChannelCache channelCache = new ChannelCache() {
@@ -124,7 +126,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         AddChannelUseCase addChannelUseCase = new AddChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
         DeleteChannelUseCase deleteChannelUseCase = new DeleteChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
 
-        channelListPresenter = new ChannelListPresenter(userId, getChannelsUseCase, addChannelUseCase, deleteChannelUseCase);
+        channelListPresenter = new ChannelListPresenter(authManager, getChannelsUseCase, addChannelUseCase, deleteChannelUseCase);
         channelListPresenter.refreshChannelsData();
     }
 
@@ -167,17 +169,17 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         channelListAdapter.setChannels(channels); // channelListPresenter.getChannelList()
     }
 
-    @Override
+   /* @Override
     public void viewChannel(ChannelModel channelModel) {
         if (this.channelListListener != null){
             this.channelListListener.onChannelClicked(channelModel);
         }
-    }
+    }*/
 
-    private ChannelListAdapter.OnItemClickListener onItemClickListener =
+   /* private ChannelListAdapter.OnItemClickListener onItemClickListener =
             channelModel -> {
                 if (ChannelListFragment.this.channelListPresenter != null && channelModel != null){
                     ChannelListFragment.this.channelListPresenter.onChannelClicked(channelModel);
                 }
-            };
+            };*/
 }
