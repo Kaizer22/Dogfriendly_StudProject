@@ -42,86 +42,12 @@ import kotlinx.android.synthetic.main.activity_test.*
 import java.util.*
 
 
-class TestActivity : AppCompatActivity(), View.OnClickListener {
-    private val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
-    private val postExecutionThread: PostExecutionThread = UIThread.getInstance()
-
-    private val networkManager: NetworkManager = NetworkManagerImpl(this)
-    private val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null);
-    private val userEntityDtoMapper = UserEntityDtoMapper()
-    private val userRepository = UserRepositoryImpl(userEntityStoreFactory, userEntityDtoMapper)
+class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
-        button_get.setOnClickListener(this)
-        button_add.setOnClickListener(this)
-        button_delete.setOnClickListener(this)
-    }
+        setContentView(R.layout.user_detail_test)
 
-    override fun onClick(p0: View?) {
-
-        when (p0?.id) {
-           //get
-            R.id.button_get ->{
-
-                val userGetChannelsUseCase = GetUsersDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
-
-                val getUsersCallback : GetUsersDetailsUseCase.Callback = object : GetUsersDetailsUseCase.Callback{
-
-                    override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
-                        Log.i("TEST", users?.size.toString())
-                    }
-
-                    override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST", "ERROR")
-                    }
-
-                }
-
-                userGetChannelsUseCase.execute(getUsersCallback);
-
-
-            }
-            //create
-            R.id.button_add ->{
-                val userDto= UserDto("0", "Олег");
-
-                val createUserDetailsUseCase = CreateUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
-
-                val createUserCallback: CreateUserDetailsUseCase.Callback = object : CreateUserDetailsUseCase.Callback{
-                    override fun onUserDataCreated() {
-                        Log.i("TEST", "CREATED")
-                    }
-
-                    override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST", "ERROR")
-                    }
-
-                }
-
-                createUserDetailsUseCase.execute(userDto, createUserCallback)
-            }
-            //update
-            R.id.button_delete ->{
-                val userDto= UserDto("-MD0BnHIw-Wmm4d6WNQG", "С");
-
-                val editUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
-
-                val editUserCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback{
-                    override fun onUserDataEdited() {
-                        Log.i("TEST", "EDITED")
-                    }
-
-                    override fun onError(errorBundle: ErrorBundle?) {
-                        Log.i("TEST", "ERROR")
-                    }
-
-                }
-
-                editUserDetailsUseCase.execute(userDto, editUserCallback)
-            }
-        }
     }
 
 }
