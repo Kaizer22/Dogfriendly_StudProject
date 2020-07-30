@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -14,29 +13,80 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.UserMapActivity" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/test_visibility"
+        android:layout_gravity="end"
+        android:layout_margin="15dp"/>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center_vertical|end">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/test_user_location_button"
+            android:background="@null"
+            android:id="@+id/button_location"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/test_radar_button"
+            android:id="@+id/button_radar"
+            android:background="@null"
+            android:layout_gravity="center|end"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_peekHeight="70dp">
+        app:behavior_peekHeight="65dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="bottom_sheet_peek"
-            android:textColor="@android:color/white" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="@color/colorPrimaryDark"
-            android:text="bottom_sheet_content"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:background="@color/colorOverlay">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test_rectangle56"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test_title"
+                android:layout_gravity="start"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test_frame407"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test_frame408"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/bottom_menu"
@@ -60,39 +110,86 @@
 
                 <ImageButton
                     android:id="@+id/to_user_profile_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/ic_pressed_button"
+
                     android:src="@drawable/ic_button_user_profile" />
 
                 <ImageButton
                     android:id="@+id/to_map_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_button_map" />
 
                 <ImageButton
                     android:id="@+id/to_chats_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_button_chats" />
 
                 <ImageButton
                     android:id="@+id/to_settings_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_button_settings" />
+
             </LinearLayout>
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/seekbar_container"
+        android:visibility="gone"
+        android:background="#FFFFFF"
+        android:layout_gravity="bottom">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Радиус поиска"
+            android:layout_gravity="start|top"
+            android:id="@+id/textView_radar"
+            android:visibility="gone"
+            android:layout_margin="10dp"/>
 
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="3"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:id="@+id/search_container"
+        android:visibility="gone"
+        android:layout_marginBottom="80dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_search"
+            android:src="@drawable/test_search_button"
+            android:background="@null"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
