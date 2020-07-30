@@ -30,9 +30,9 @@ class ChannelListActivity : BaseActivity() {
         }
     }
 
-    //TODO channelId: String
-    fun navigateToChat() =
-            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" ); //123123123 -MCqwIrhuEPqkgz1GV18
+
+    fun navigateToChat(channelId: String?) =
+            navigator?.navigateToChat(this, channelId)
 
 
 }

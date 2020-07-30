@@ -10,14 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.ChannelListActivity">
+        </activity>
+        <activity android:name=".ui.activity.ChatActivity"/>
+        <activity android:name=".ui.activity.UserSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ChatActivity"/>
-        <activity android:name=".ui.activity.UserSignInActivity"></activity>
         <activity android:name=".ui.activity.UserSignUpActivity" />
         <activity android:name=".ui.activity.UserMapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />

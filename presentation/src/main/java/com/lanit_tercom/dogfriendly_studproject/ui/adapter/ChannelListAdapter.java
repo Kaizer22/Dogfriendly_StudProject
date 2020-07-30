@@ -17,26 +17,17 @@ import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHol
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHolder> {
 
     private LayoutInflater inflater;
     private List<ChannelModel> channels;
     private Context context;
-    //private String currentUserID;
 
-    /*public interface OnItemClickListener{
-        void onChannelItemClicked(ChannelModel channelModel);
-    }*/
 
-    //private OnItemClickListener onItemClickListener;
-
-    public ChannelListAdapter(Context context){ //need channels?? TODO List<ChannelModel> channels
+    public ChannelListAdapter(Context context){
         this.channels = new LinkedList<>();
         this.context = context;
         inflater = LayoutInflater.from(context);
-        //currentUserID = authManager.getCurrentUserId();
     }
 
     @NonNull
@@ -55,18 +46,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         holder.setLastMessageTime(channelModel.getTimestamp().toString());
 
         holder.itemView.setOnClickListener(v -> {
-            Log.e("Click", "the item was clicked");
-            //TODO navigation to chosen chat (channelId)
             String channelId = channelModel.getId();
             if (context != null && context instanceof ChannelListActivity){
-                ((ChannelListActivity) context).navigateToChat(); // channelId
+                ((ChannelListActivity) context).navigateToChat(channelId);
             }
-/*
-            if (ChannelListAdapter.this.onItemClickListener != null){
-                ChannelListAdapter.this.onItemClickListener.onChannelItemClicked(channelModel);
-                Log.e("Click", "the item was clicked");
-            }
-            else Log.e("Click", "onItemClickListener = null");*/
         });
 
 
@@ -97,17 +80,11 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     }
 
 
-
-    /*public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
-    }*/
-
-
     public void setChannels(List<ChannelModel> channelList){
-        this.validateChannelList(channelList);
-        this.channels.clear();
-        this.channels.addAll(channelList);
-        this.notifyDataSetChanged();
+        validateChannelList(channelList);
+        channels.clear();
+        channels.addAll(channelList);
+        notifyDataSetChanged();
     }
 
     private void validateChannelList(List<ChannelModel> channelList){
@@ -116,11 +93,15 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         }
     }
 
-    /*static class ChannelViewHolder extends RecyclerView.ViewHolder{
+    public void clearAdapter(){
+        //channels.clear();
+        int size = channels.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                channels.remove(0);
+            }
 
-        public ChannelViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
+            notifyItemRangeRemoved(0, size);
         }
-    }*/
+    }
 }

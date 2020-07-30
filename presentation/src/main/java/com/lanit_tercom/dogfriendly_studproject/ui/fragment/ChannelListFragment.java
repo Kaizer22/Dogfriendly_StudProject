@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -47,40 +46,12 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
     ChannelListPresenter channelListPresenter;
 
-    List<ChannelModel> channels;
     RecyclerView channelListRecyclerView;
     ChannelListAdapter channelListAdapter;
 
-    public interface ChannelListListener{
-        void onChannelClicked(final ChannelModel channelModel);
-    }
-
-
-
-    private ChannelListListener channelListListener;
-
-    /**
-     * For test
-     */
-    //String userId = "2345";
 
     public ChannelListFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof ChannelListListener){
-            this.channelListListener = (ChannelListListener) context;
-        }
-    }
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        this.channelListListener = null;
     }
 
     @Override
@@ -102,6 +73,18 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
             this.loadChannelList();
         }
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        channelListAdapter.clearAdapter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       // channelListAdapter.clearAdapter();
     }
 
     @Override
@@ -151,9 +134,6 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     }
 
     public void initRecycleView(@NotNull View view){
-        // TODO connect onClickListener
-        //onItemClickListener = null
-        //this.channelListAdapter.setOnItemClickListener(onItemClickListener);
         channelListRecyclerView = view.findViewById(R.id.rv_channel);
         channelListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         channelListAdapter = new ChannelListAdapter(getContext());
@@ -166,20 +146,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
     @Override
     public void renderChannels(List<ChannelModel> channels){
-        channelListAdapter.setChannels(channels); // channelListPresenter.getChannelList()
+        channelListAdapter.setChannels(channels);
     }
 
-   /* @Override
-    public void viewChannel(ChannelModel channelModel) {
-        if (this.channelListListener != null){
-            this.channelListListener.onChannelClicked(channelModel);
-        }
-    }*/
-
-   /* private ChannelListAdapter.OnItemClickListener onItemClickListener =
-            channelModel -> {
-                if (ChannelListFragment.this.channelListPresenter != null && channelModel != null){
-                    ChannelListFragment.this.channelListPresenter.onChannelClicked(channelModel);
-                }
-            };*/
 }

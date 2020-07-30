@@ -35,7 +35,8 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
             //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
             // код и код в UserSignInActivity
-                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
+                //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
+                ((view as UserSignInFragment).activity as UserSignInActivity).navigateToChannelList(currentUserID)
             else
                 //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
                 ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
