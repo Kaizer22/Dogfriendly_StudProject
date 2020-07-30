@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.MessageViewHolder;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,21 +21,22 @@ import java.util.List;
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
-    private List<MessageModel> messages;
+    private List<MessageModel> messages = new LinkedList<>();
     private String currentUserID;
-    private LayoutInflater inflater;
+    private ChatView chatView;
 
-    public MessageAdapter(Context context, List<MessageModel> messages, String currentUserID){
-        this.messages = messages;
+    public MessageAdapter(ChatView chatView, String currentUserID){
         this.currentUserID = currentUserID;
-        inflater = LayoutInflater.from(context);
+        this.chatView = chatView;
+        setHasStableIds(true);
     }
 
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_message, parent,false);
-        return new MessageViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_message, parent,false);
+        return new MessageViewHolder(view, chatView);
     }
 
     @Override
@@ -42,18 +44,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         MessageModel messageOnBind = messages.get(position);
         boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
 
-        holder.changeMessagePosition(isSentByCurrentUser);
-        holder.changeMessageBackground(isSentByCurrentUser);
-
-        holder.setText(messageOnBind.getText());
-        holder.setTime(messageOnBind.getTime());
+        holder.bind(messageOnBind, isSentByCurrentUser, position);
     }
 
     @Override
     public int getItemCount() {
         return (this.messages != null) ? this.messages.size() : 0;
     }
-
 
     @Override
     public long getItemId(int position) {
