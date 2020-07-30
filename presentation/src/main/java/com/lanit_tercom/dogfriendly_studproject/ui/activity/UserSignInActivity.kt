@@ -33,8 +33,8 @@ class UserSignInActivity : BaseActivity() {
 
     //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
     // код и код в UserSignInPresenter
-    //fun navigateToChat() =
-            //navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" );
+    fun navigateToChat() =
+            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" );
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)

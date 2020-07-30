@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
@@ -26,7 +27,7 @@ public class MessageViewHolder extends BaseViewHolder{
 
     private ConstraintSet constraintSet;
 
-    private final String MESSAGE_TIME_PATTERN = "dd.MM.YY HH:mm";
+    private final String MESSAGE_TIME_PATTERN = "HH:mm";
 
     private ChatView parentView; //Передаем сюда ChatView, чтобы иметь
                                 //возможность отобразить контекстное меню
@@ -61,6 +62,7 @@ public class MessageViewHolder extends BaseViewHolder{
                      boolean isSentByCurrentUser, int position){
         changeMessagePosition(isSentByCurrentUser);
         changeMessageBackground(isSentByCurrentUser);
+        //changeMessageShape(isSentByCurrentUser);
 
         setText(messageOnBind.getText());
         setTime(messageOnBind.getTime());
@@ -90,17 +92,17 @@ public class MessageViewHolder extends BaseViewHolder{
         if (isSentByCurrentUser){
             singleMessageLine.setGravity(Gravity.RIGHT);
             messageStringSeparator.setGravity(Gravity.RIGHT);
-            constraintSet.connect(R.id.message_text,ConstraintSet.RIGHT,
-                    R.id.message_container, ConstraintSet.RIGHT, 0 );
-            constraintSet.connect(R.id.message_time,ConstraintSet.RIGHT,
-                    R.id.message_container, ConstraintSet.RIGHT, 0);
+            //constraintSet.connect(R.id.message_text,ConstraintSet.RIGHT,
+                   // R.id.message_container, ConstraintSet.RIGHT, 0 );
+            //constraintSet.connect(R.id.message_time,ConstraintSet.RIGHT,
+                    //R.id.message_container, ConstraintSet.RIGHT, 0);
         } else {
             singleMessageLine.setGravity(Gravity.LEFT);
             messageStringSeparator.setGravity(Gravity.LEFT);
-            constraintSet.connect(R.id.message_text,ConstraintSet.LEFT,
-                    R.id.message_container, ConstraintSet.LEFT, 0);
-            constraintSet.connect(R.id.message_time,ConstraintSet.LEFT,
-                    R.id.message_container, ConstraintSet.LEFT, 0);
+            //constraintSet.connect(R.id.message_text,ConstraintSet.LEFT,
+                    //R.id.message_container, ConstraintSet.LEFT, 0);
+            //constraintSet.connect(R.id.message_time,ConstraintSet.LEFT,
+                    //R.id.message_container, ConstraintSet.LEFT, 0);
         }
         constraintSet.applyTo(messageContainer);
     }
@@ -108,10 +110,14 @@ public class MessageViewHolder extends BaseViewHolder{
     public void changeMessageBackground(boolean isSentByCurrentUser){
         if (isSentByCurrentUser){
             messageContainer.setBackgroundResource(
-                    R.drawable.current_user_message_background);
+                    R.drawable.current_user_message_shape);
+            //messageContainer.setBackgroundColor(
+                    //ContextCompat.getColor(itemView.getContext(),R.color.current_user_message_background));
         } else {
             messageContainer.setBackgroundResource(
-                    R.drawable.other_user_message_background);
+                    R.drawable.other_user_message_shape);
+            //messageContainer.setBackgroundColor(
+                    //ContextCompat.getColor(itemView.getContext(),R.color.other_user_message_background));
         }
     }
 }

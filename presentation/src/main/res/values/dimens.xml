@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="single_message_padding">10dp</dimen>
-    <dimen name="chat_top_bottom_margin">12dp</dimen>
-    <dimen name="chat_side_margin">8dp</dimen>
+    <!-- Chat screen start -->
+
+        <!-- Chat screen upper space -->
+        <dimen name="chat_upper_space_width">60dp</dimen>
+        <dimen name="chat_upper_space_margin">120dp</dimen>
+        <dimen name="chat_upper_space_elevation">5dp</dimen>
+            <!-- User avatar -->
+            <dimen name="user_avatar_height">40dp</dimen>
+            <dimen name="user_avatar_width">40dp</dimen>
+
+        <!--Chat RecyclerView -->
+        <dimen name="chat_top_bottom_margin">12dp</dimen>
+        <dimen name="chat_side_margin">12dp</dimen>
+            <!-- Message -->
+            <dimen name="single_message_padding">10dp</dimen>
+            <dimen name="message_corner_radius_large">18dp</dimen>
+            <dimen name="message_corner_radius_small">2dp</dimen>
+
+        <!-- Chat screen bottom space -->
+            <!-- Edit message field -->
+            <dimen name="edit_message_field_corner_radius_large">18dp</dimen>
+            <dimen name="edit_message_field_stroke_width">0.6dp</dimen>
+            <!-- Button send message -->
+            <dimen name="button_send_message_height">36dp</dimen>
+            <dimen name="button_send_message_width">36dp</dimen>
+
+    <!-- Chat screen end -->
+
+
+    <!-- Fonts sizes -->
+    <dimen name="user_additional_info_text_size">13sp</dimen>
+    <dimen name="chat_user_name_text_size">16sp</dimen>
+
+    <!-- Base indents -->
+    <dimen name="indent_small">2dp</dimen>
+    <dimen name="indent_small_plus">4dp</dimen>
+    <dimen name="indent_medium">8dp</dimen>
+    <dimen name="indent_medium_plus">10dp</dimen>
+    <dimen name="indent_large">16dp</dimen>
+    <dimen name="indent_large_plus">18dp</dimen>
+    <dimen name="indent_large_plus_plus">20dp</dimen>
+    <dimen name="indent_huge">24dp</dimen>
+    <dimen name="indent_huge_plus">26dp</dimen>
+    <dimen name="indent_enormous">32dp</dimen>
 </resources>

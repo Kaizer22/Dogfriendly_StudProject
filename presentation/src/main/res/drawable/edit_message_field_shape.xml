@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/white"/>
+    <corners
+        android:bottomRightRadius="@dimen/edit_message_field_corner_radius_large"
+        android:bottomLeftRadius="@dimen/edit_message_field_corner_radius_large"
+        android:topLeftRadius="@dimen/edit_message_field_corner_radius_large"
+        android:topRightRadius="@dimen/edit_message_field_corner_radius_large"/>
+    <stroke
+        android:width="@dimen/edit_message_field_stroke_width"
+        android:color="@color/colorPrimaryGreen"/>
+
+</shape>

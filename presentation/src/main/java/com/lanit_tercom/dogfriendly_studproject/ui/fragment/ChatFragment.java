@@ -96,7 +96,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_user_chat, container, false);
+        View root = inflater.inflate(R.layout.fragment_chat, container, false);
         chatPresenter.setView(this);
 
         showLoading();
