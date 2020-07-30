@@ -17,31 +17,10 @@ import com.lanit_tercom.dogfriendly_studproject.R
  */
 class TestActivity : AppCompatActivity() {
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.user_detail_test)
-//    }
-
-    var expandableView: LinearLayout? = null
-    var openDescButton: ImageButton? = null
-    var cardView: CardView? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_detail_test2)
-        expandableView = findViewById(R.id.expandable_desc)
-        cardView = findViewById(R.id.cardView)
-        openDescButton = findViewById(R.id.open_desc_button)
-
-        openDescButton?.setOnClickListener(View.OnClickListener {
-            if (expandableView?.visibility == View.GONE) {
-                TransitionManager.beginDelayedTransition(cardView, AutoTransition())
-                expandableView?.visibility = View.VISIBLE
-
-            } else {
-                TransitionManager.beginDelayedTransition(cardView, AutoTransition())
-                expandableView?.visibility = View.GONE
-            }
-        })
+        setContentView(R.layout.user_detail_test)
     }
+
 }
+
