@@ -8,4 +8,9 @@
     <string name="ok">Подтвердить</string>
     <string name="cancel">Отмена</string>
     <string name="loading">Загрузка…</string>
+    <string name="open_user_profile">Открыть профиль</string>
+    <string name="disable_notification">Отключить уведомления</string>
+    <string name="add_user_to_chat">Добавить в чат</string>
+    <string name="delete_all_messages">Очистить переписку</string>
+    <string name="add_to_blacklist">Добавить в черный список</string>
 </resources>

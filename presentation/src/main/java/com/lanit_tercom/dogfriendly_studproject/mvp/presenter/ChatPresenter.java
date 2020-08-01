@@ -38,6 +38,8 @@ public class ChatPresenter extends BasePresenter {
 
     private ChatView view;
 
+    private boolean isChannelEmpty;
+
     public ChatPresenter(String channelID, AuthManager authManager, DeleteMessageUseCase deleteMessage,
                          EditMessageUseCase editMessage, GetMessagesUseCase getMessages,
                          PostMessageUseCase postMessage){   //, GetUserDetailsUseCase getUser){
@@ -134,6 +136,10 @@ public class ChatPresenter extends BasePresenter {
         return messagesList;
     }
 
+    public boolean isChannelEmpty(){
+        return isChannelEmpty;
+    }
+
     //private void getChannel() {
         //getChat.execute(channelID);
     //}
@@ -146,9 +152,10 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessagesDataLoaded(List<MessageDto> messages) {
                 for (MessageDto message: messages) {
-                    messagesList.add(
+                   messagesList.add(
                             modelMapper.map2(message));
                 }
+                isChannelEmpty = messagesList.size() == 0;
                 view.renderMessages();
                 view.hideLoading();
             }
