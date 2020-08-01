@@ -13,43 +13,44 @@
         android:layout_height="match_parent"
         tools:context=".tests.ui.TestActivity" />
 
-    <ToggleButton
-        android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:textOff=""
-        android:textOn=""
-        android:layout_gravity="end"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_visibility"
-        android:background="@null"
-        android:layout_marginTop="15dp"/>
-
-    <LinearLayout
+        android:src="@drawable/ic_visibility_inactive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical|end">
+        android:layout_gravity="end"
+        android:layout_margin="15dp"
+        app:backgroundTint="@null"
+        app:maxImageSize="56dp" />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/test_user_location_button"
-            android:background="@null"
-            android:id="@+id/button_location"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src = "@drawable/ic_button_location"
+        android:id="@+id/button_location"
+        app:backgroundTint="@null"
+        app:fabSize="mini"
+        app:maxImageSize="56dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="50dp"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/test_radar_button"
-            android:id="@+id/button_radar"
-            android:background="@null"
-            android:layout_gravity="center|end"/>
-
-    </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_button_radar"
+        app:backgroundTint="@null"
+        app:fabSize="mini"
+        app:maxImageSize="56dp"
+        android:layout_marginEnd="10dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginTop="50dp"
+        android:id="@+id/button_radar" />
 
     <FrameLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_peekHeight="65dp">
 
@@ -62,31 +63,26 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/test_rectangle56"
+                android:src="@drawable/ic_bottom_sheet_rectangle"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="5dp"/>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/test_title"
+                android:src="@drawable/ic_text_near"
                 android:layout_gravity="start"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"/>
 
-            <ImageView
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/test_frame407"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/test_frame408"
-                android:layout_gravity="center_horizontal"/>
+                android:id="@+id/near_list_recycler_view"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="45dp"/>
 
         </LinearLayout>
     </FrameLayout>
@@ -152,15 +148,15 @@
 
     </RelativeLayout>
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/button_search"
-        android:src="@drawable/test_search_button"
-        android:background="@null"
         android:visibility="gone"
+        android:textColor="@color/black"
+        android:text="Искать здесь"
+        app:cornerRadius="20dp"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="80dp"
-        />
+        android:layout_marginBottom="80dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
