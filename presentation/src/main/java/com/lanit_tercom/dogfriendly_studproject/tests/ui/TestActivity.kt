@@ -21,7 +21,7 @@ class TestActivity : AppCompatActivity() {
 
         val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
         val bottomNav = findViewById<View>(R.id.bottom_nav) as BottomNavigationView
-        val heightDp = resources.displayMetrics.heightPixels  * 0.5 - (48+10) * resources.displayMetrics.density
+        val heightDp = resources.displayMetrics.heightPixels  * 0.5 - 10 * resources.displayMetrics.density
         val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
         lp.height = heightDp.toInt()
 
@@ -31,8 +31,6 @@ class TestActivity : AppCompatActivity() {
 
                 if(state == State.EXPANDED)
                     bottomNav.visibility = View.GONE
-                    //Ну я и не сомневался почему-то что это не прокатит. Но в самом деле это фича - юзер не нажмет случайно на кнопку "домой"
-                    lp.height = (resources.displayMetrics.heightPixels  * 0.5 * resources.displayMetrics.density).toInt()
                 if(state == State.COLLAPSED)
                     bottomNav.visibility = View.VISIBLE
             }

@@ -89,78 +89,27 @@
         при открытии макета был в проскролен в самый низ (на figma так было -
         открывается описание питомцев, и только потом скроллом можно открыть "о себе"-->
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/top_panel"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/top_panel"
-            android:fitsSystemWindows="true">
+            android:layout_height="30dp"
+            android:background="#ffffff"
+            android:fitsSystemWindows="true"
+            app:expanded="false">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="#ffffff"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:fitsSystemWindows="true"
-                app:expanded="false">
-
-                <com.google.android.material.appbar.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:fitsSystemWindows="true"
-                    app:layout_scrollFlags="scroll|snap">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginEnd="32dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/about_label"
-                            android:layout_width="64dp"
-                            android:layout_height="16dp"
-                            android:lineSpacingExtra="3sp"
-                            android:text="О себе:"
-                            android:textColor="#828282"
-                            android:textSize="14sp"
-                            android:translationY="-1.71sp" />
-
-                        <TextView
-                            android:id="@+id/about_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="8dp"
-                            android:lineSpacingExtra="2sp"
-                            android:text="@string/lorem"
-                            android:textColor="#333333"
-                            android:textSize="15sp"
-                            android:translationY="-1.11sp" />
-
-                    </LinearLayout><!--"О СЕБЕ"-->
-
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|bottom"
-                        android:src="@drawable/ic_button_open_desc" />
-
-
-
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nestedScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_scrollFlags="scroll|snap">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -170,37 +119,88 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/pets_label"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/about_label"
+                        android:layout_width="64dp"
                         android:layout_height="16dp"
-                        android:layout_marginTop="8dp"
                         android:lineSpacingExtra="3sp"
-                        android:text="Питомцы: "
+                        android:text="О себе:"
                         android:textColor="#828282"
                         android:textSize="14sp"
                         android:translationY="-1.71sp" />
 
-                    <ListView
+                    <TextView
+                        android:id="@+id/about_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp" />
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="2sp"
+                        android:text="@string/lorem"
+                        android:textColor="#333333"
+                        android:textSize="15sp"
+                        android:translationY="-1.11sp" />
 
-                    <ImageButton
-                        android:id="@+id/add_pet_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="24dp"
-                        android:background="#FFFFFF"
-                        android:src="@drawable/ic_button_add_pet" />
-                </LinearLayout>
+                </LinearLayout><!--"О СЕБЕ"-->
 
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
-<!--    А тут можно фиксированную высоту? Она здесь соответствует высоте ImageButton-->
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:src="@drawable/ic_button_open_desc" />
+
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pets_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="3sp"
+                    android:text="Питомцы: "
+                    android:textColor="#828282"
+                    android:textSize="14sp"
+                    android:translationY="-1.71sp" />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+                <ImageButton
+                    android:id="@+id/add_pet_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:background="#FFFFFF"
+                    android:src="@drawable/ic_button_add_pet" />
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
