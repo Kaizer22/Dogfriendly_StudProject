@@ -1,12 +1,15 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositor
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelRecyclerTouchListener;
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelRecyclerTouchListener;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChannelListView;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.ChannelListAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
@@ -49,6 +54,8 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     RecyclerView channelListRecyclerView;
     ChannelListAdapter channelListAdapter;
 
+    ChannelRecyclerTouchListener touchListener;
+
 
     public ChannelListFragment() {
         // Required empty public constructor
@@ -61,6 +68,9 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
         channelListPresenter.setView(this);
         initRecycleView(view);
+        initializeListener();
+
+        Log.i("RecycleTest", "onCreateView() was run");
 
         return view;
     }
@@ -72,20 +82,8 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         if (savedInstanceState == null){
             this.loadChannelList();
         }
-
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        channelListAdapter.clearAdapter();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-       // channelListAdapter.clearAdapter();
-    }
 
     @Override
     public void initializePresenter() {
@@ -111,6 +109,46 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
         channelListPresenter = new ChannelListPresenter(authManager, getChannelsUseCase, addChannelUseCase, deleteChannelUseCase);
         channelListPresenter.refreshChannelsData();
+
+
+    }
+
+    private void initializeListener(){
+        touchListener = new ChannelRecyclerTouchListener(this,channelListRecyclerView);
+        touchListener
+                .setClickable(new ChannelRecyclerTouchListener.OnRowClickListener() {
+                    @Override
+                    public void onRowClicked(int position) {
+                        //Toast.makeText(getContext(), "Row was clicked", Toast.LENGTH_SHORT).show();
+                        channelListAdapter.navigate(position);
+                    }
+
+                    @Override
+                    public void onIndependentViewClicked(int independentViewID, int position) {
+
+                    }
+                })
+                .setSwipeOptionViews(R.id.delete_button,R.id.turnOffNotification_button, R.id.holdOn_button)
+                .setSwipeable(R.id.rowFB, R.id.rowBG, new ChannelRecyclerTouchListener.OnSwipeOptionsClickListener() {
+                    @Override
+                    public void onSwipeOptionClicked(int viewID, int position) {
+                        switch (viewID){
+                            case R.id.delete_button:
+                                //taskList.remove(position);
+                                //recyclerviewAdapter.setTaskList(taskList);
+                                Toast.makeText(getContext(), "Delete item", Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.turnOffNotification_button:
+                                Toast.makeText(getContext(),"Edit Not Available",Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.holdOn_button:
+                                Toast.makeText(getContext(), "The message was holded", Toast.LENGTH_LONG).show();
+                                break;
+
+                        }
+                    }
+                });
+        channelListRecyclerView.addOnItemTouchListener(touchListener);
     }
 
     @Override
@@ -138,6 +176,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         channelListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         channelListAdapter = new ChannelListAdapter(getContext());
         channelListRecyclerView.setAdapter(channelListAdapter);
+
     }
 
     private void loadChannelList(){

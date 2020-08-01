@@ -51,17 +51,14 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
                 ((ChannelListActivity) context).navigateToChat(channelId);
             }
         });
+    }
 
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.e("Click", "the item was clicked long");
-
-                Toast.makeText(context, "IT WAS LONG CLICK", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
+    public void navigate(int position){
+        ChannelModel channelModel = channels.get(position);
+        String channelId = channelModel.getId();
+        if (context != null && context instanceof ChannelListActivity){
+            ((ChannelListActivity) context).navigateToChat(channelId);
+        }
     }
 
     @Override
@@ -90,18 +87,6 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     private void validateChannelList(List<ChannelModel> channelList){
         if (channelList == null){
             throw new IllegalArgumentException("List of channels cannot be null... ChannelListAdapter");
-        }
-    }
-
-    public void clearAdapter(){
-        //channels.clear();
-        int size = channels.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                channels.remove(0);
-            }
-
-            notifyItemRangeRemoved(0, size);
         }
     }
 }
