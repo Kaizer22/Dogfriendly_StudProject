@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
@@ -72,9 +74,15 @@ class TestActivity : AppCompatActivity() {
         val names = arrayOf("Катя", "Лена", "Маша", "Саша")
         val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
         val distances = arrayOf(3, 2, 5, 1)
-
-        dogRecycler.adapter = DogAdapter(names, imageIds, distances)
+        val adapter = DogAdapter(names, imageIds, distances)
+        adapter.setListener(object: DogAdapter.Listener{
+            override fun onClick(position: Int) {
+                Snackbar.make(user_map_test,"Профиль ${names[position]} на расстоянии ${distances[position]} км", Snackbar.LENGTH_SHORT).show()
+            }
+        })
+        dogRecycler.adapter = adapter
         dogRecycler.layoutManager = LinearLayoutManager(this)
+
 
 
 

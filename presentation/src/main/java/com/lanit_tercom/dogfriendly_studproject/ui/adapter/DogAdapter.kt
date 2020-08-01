@@ -10,7 +10,17 @@ import kotlinx.android.synthetic.main.near_list_item_view_test.view.*
 
 class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distances: Array<Int>): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
 
+    private var listener: Listener? = null
+
+    interface Listener{
+        fun onClick(position: Int)
+    }
+
     inner class ViewHolder(val cardView: CardView) : RecyclerView.ViewHolder(cardView){
+    }
+
+    fun setListener(listener: Listener){
+        this.listener = listener
     }
 
     override fun getItemCount(): Int {
@@ -33,5 +43,8 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distanc
         textViewDogName.text = names[position]
         val textViewDistance = cardView.textView_distance
         textViewDistance.text = "${distances[position]} км от вас"
+        cardView.setOnClickListener {
+            listener?.onClick(position)
+        }
     }
 }

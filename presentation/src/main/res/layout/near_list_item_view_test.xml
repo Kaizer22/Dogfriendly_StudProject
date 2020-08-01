@@ -14,8 +14,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-    >
+        android:paddingEnd="24dp">
 
         <ImageView
             android:layout_width="58dp"
@@ -33,13 +32,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Клава"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:id="@+id/textView_dog_name"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3 км от вас"
                 android:id="@+id/textView_distance"/>
 
         </LinearLayout>
@@ -48,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="200dp"
+            android:layout_marginStart="180dp"
             android:src="@drawable/ic_arrow"/>
 
 
