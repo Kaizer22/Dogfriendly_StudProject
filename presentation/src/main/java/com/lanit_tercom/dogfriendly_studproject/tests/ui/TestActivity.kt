@@ -17,25 +17,25 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_detail_test)
+        setContentView(R.layout.pet_character_edit)
 
-        val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
-        val bottomNav = findViewById<View>(R.id.bottom_nav) as BottomNavigationView
-        val heightDp = resources.displayMetrics.heightPixels  * 0.5 - 10 * resources.displayMetrics.density
-        val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
-        lp.height = heightDp.toInt()
-
-        appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener(){
-
-            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
-
-                if(state == State.EXPANDED)
-                    bottomNav.visibility = View.GONE
-                if(state == State.COLLAPSED)
-                    bottomNav.visibility = View.VISIBLE
-            }
-
-        })
+//        val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
+//        val bottomNav = findViewById<View>(R.id.bottom_nav) as BottomNavigationView
+//        val heightDp = resources.displayMetrics.heightPixels  * 0.5 - 10 * resources.displayMetrics.density
+//        val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
+//        lp.height = heightDp.toInt()
+//
+//        appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener(){
+//
+//            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
+//
+//                if(state == State.EXPANDED)
+//                    bottomNav.visibility = View.GONE
+//                if(state == State.COLLAPSED)
+//                    bottomNav.visibility = View.VISIBLE
+//            }
+//
+//        })
     }
 
     abstract class AppBarStateChangeListener : OnOffsetChangedListener {
