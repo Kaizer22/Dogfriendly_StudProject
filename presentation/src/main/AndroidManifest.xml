@@ -9,19 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.TestActivity">
+        <activity android:name=".tests.ui.PetCharacterEditTestActivity"></activity>
+        <activity android:name=".tests.ui.PetPhotoEditTestActivity" />
+        <activity android:name=".tests.ui.UserDetailEditTestActivity" />
+        <activity android:name=".tests.ui.PetDetailEditTestActivity" />
+        <activity android:name=".tests.ui.PetDetailTestActivity" />
+        <activity android:name=".tests.ui.UserDetailTestActivity" />
+        <activity android:name=".tests.ui.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.activity.UserSignInActivity">
-
-        </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.activity.UserSignUpActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.activity.UserMapActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.activity.UserDetailActivity" />
+        <activity android:name=".tests.ui.activity.UserSignInActivity" />
+        <activity android:name=".tests.ui.activity.UserSignUpActivity" />
+        <activity android:name=".tests.ui.activity.UserMapActivity" />
+        <activity android:name=".tests.ui.activity.UserDetailActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
