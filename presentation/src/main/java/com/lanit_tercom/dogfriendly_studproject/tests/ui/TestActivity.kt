@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.GoogleMap
@@ -15,7 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
-import kotlinx.android.synthetic.main.user_map_test.*
+import kotlinx.android.synthetic.main.fragment_map.*
 
 
 class TestActivity : AppCompatActivity() {
@@ -24,7 +23,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_map_test)
+        setContentView(R.layout.fragment_map)
         var flag: Boolean = true
         button_visibility.setOnClickListener {
             if (!flag){

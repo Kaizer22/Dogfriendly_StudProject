@@ -10,17 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.TestActivity">
+
+        </activity>
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity">
-
-        </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignUpActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserMapActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignUpActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity" />
         <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
 
         <meta-data

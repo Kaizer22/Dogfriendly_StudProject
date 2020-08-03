@@ -4,25 +4,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.SignInFragment
 
 /**
  * Активность авторизации.
  * Запускает фрагмент с авторизацией.
  * @author prostak.sasha111@mail.ru
  */
-class UserSignInActivity : BaseActivity() {
+class SignInActivity : BaseActivity() {
 
     companion object{
 
         fun getCallingIntent(context: Context): Intent =
-            Intent(context, UserSignInActivity::class.java)
+            Intent(context, SignInActivity::class.java)
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_sign_in)
+        setContentView(R.layout.activity_sign_in)
     }
 
     fun navigateToUserSignUp() =
@@ -37,7 +37,7 @@ class UserSignInActivity : BaseActivity() {
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
-            addFragment(R.id.ft_container, UserSignInFragment())
+            addFragment(R.id.ft_container, SignInFragment())
     }
 
 }

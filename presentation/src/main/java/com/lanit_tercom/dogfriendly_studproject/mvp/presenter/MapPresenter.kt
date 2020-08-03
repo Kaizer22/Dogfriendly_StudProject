@@ -1,9 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserMapView
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
@@ -13,9 +12,11 @@ import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserMapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) : BasePresenter(){
+class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) : BasePresenter(){
 
-    fun setView(view: UserMapView){ this.view = view }
+    private var view: MapView? = null
+
+    fun setView(view: MapView){ this.view = view }
 
     fun initialize() = this.loadUsersDetails()
 
@@ -34,16 +35,20 @@ class UserMapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCas
         }
 
         usersModel.forEach {
-            (view as UserMapView).renderUserOnMap(it)}
+            view?.renderUserOnMap(it)}
     }
 
     private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
 
         override fun onUsersDataLoaded(users: MutableList<UserDto>?) =
-            this@UserMapPresenter.renderMap(users)
+            this@MapPresenter.renderMap(users)
 
 
         override fun onError(errorBundle: ErrorBundle?) {}
 
+    }
+
+    override fun onDestroy() {
+        this.view = null
     }
 }

@@ -162,4 +162,9 @@ public class ChatPresenter extends BasePresenter {
         });
         return result;
     }
+
+    @Override
+    public void onDestroy() {
+        //TODO Not yet implemented
+    }
 }

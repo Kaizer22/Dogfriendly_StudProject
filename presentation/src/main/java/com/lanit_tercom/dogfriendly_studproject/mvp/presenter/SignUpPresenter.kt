@@ -1,8 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignUpView
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.SignUpView
 import java.lang.Exception
 
 /**
@@ -10,11 +9,12 @@ import java.lang.Exception
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter() {
+class SignUpPresenter(private val authManager: AuthManager?) : BasePresenter() {
 
+    private var view: SignUpView? = null
     var currentUserId: String? = null
 
-    fun setView(view: UserSignUpView) { this.view = view }
+    fun setView(view: SignUpView) { this.view = view }
 
     fun registerUser(email: String?, password: String?) =
         authManager?.createUserWithEmailPassword(email, password, createUserCallback)
@@ -31,6 +31,10 @@ class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter
         }
 
 
+    }
+
+    override fun onDestroy() {
+        this.view = null
     }
 
 }

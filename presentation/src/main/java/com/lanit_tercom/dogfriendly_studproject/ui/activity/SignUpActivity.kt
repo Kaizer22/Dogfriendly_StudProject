@@ -4,37 +4,35 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserMapFragment
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.SignUpFragment
 
 /**
- * Активность карты.
- * Запускает фрагмент с картой.
+ * Активность регистрации.
+ * Запускает фрагмент с регистрацией.
  * @author prostak.sasha111@mail.ru
  */
-class UserMapActivity : BaseActivity() {
+class SignUpActivity : BaseActivity() {
 
     companion object{
 
         fun getCallingIntent(context: Context): Intent =
-            Intent(context, UserMapActivity::class.java)
+            Intent(context, SignUpActivity::class.java)
 
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_map)
+        setContentView(R.layout.activity_sign_up)
     }
 
-    fun navigateToUserDetail(userId: String?) =
-        navigator?.navigateToUserDetail(this, userId)
+    fun navigateToUserSignIn() =
+        navigator?.navigateToUserSignIn(this)
 
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null){
-            addFragment(R.id.ft_container, UserMapFragment())
+            addFragment(R.id.ft_container, SignUpFragment())
         }
     }
-
-    override fun onBackPressed() { return }
 
 }
