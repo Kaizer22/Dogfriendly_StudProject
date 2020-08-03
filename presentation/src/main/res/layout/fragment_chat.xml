@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/upper_space"
-        app:srcCompat="@color/whiteTransparent"
+        app:srcCompat="@color/blurTransparent"
         tools:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -138,8 +138,9 @@
                 android:paddingTop="@dimen/indent_medium"
                 android:paddingEnd="@dimen/indent_enormous"
                 android:paddingBottom="@dimen/indent_medium"
-                android:text="@string/new_message"
-                android:textColor="@color/colorPrimaryGreen"
+                android:hint="@string/new_message"
+                android:textColorHint="@color/primaryLight"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

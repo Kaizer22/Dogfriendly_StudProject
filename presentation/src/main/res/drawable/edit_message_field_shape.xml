@@ -8,6 +8,6 @@
         android:topRightRadius="@dimen/edit_message_field_corner_radius_large"/>
     <stroke
         android:width="@dimen/edit_message_field_stroke_width"
-        android:color="@color/colorPrimaryGreen"/>
+        android:color="@color/primaryLight"/>
 
 </shape>

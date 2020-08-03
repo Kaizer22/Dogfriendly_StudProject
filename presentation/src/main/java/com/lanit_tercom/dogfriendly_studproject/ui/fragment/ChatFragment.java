@@ -96,23 +96,26 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chatPresenter = new ChatPresenter(channelID, authManager,
                 deleteMessageUseCase, editMessageUseCase,
                 getMessagesUseCase, postMessageUseCase);
-        chatPresenter.refreshData();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
-        chatPresenter.setView(this);
         showLoading();
-
         initEmptyChat(root);
         initRecyclerView(root);
         initInteractions(root);
-        renderMessages();
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        chatPresenter.setView(this);
+        chatPresenter.refreshData();
+        renderMessages();
+    }
 
     @Override
     public void showProgressMessage(@NotNull String event) {
@@ -223,7 +226,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private void sendMessage(@NotNull EditText messageText){
         chatPresenter.sendMessage(messageText
                 .getText().toString());
-        messageText.setText(R.string.new_message);
     }
 
     private void backToDialogsFragment(){
@@ -250,7 +252,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
         blur.setVisibility(View.VISIBLE);
         PopupMenu chatMenu = new PopupMenu(upperSpace.getContext(), upperSpace);
         chatMenu.setOnDismissListener(listener -> blur.setVisibility(View.GONE));
-        chatMenu.inflate(R.menu.chat_menu);
         chatMenu.setOnMenuItemClickListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.item_open_user_profile:
@@ -260,8 +261,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
                 case R.id.item_add_user:
                     return true;
                 case R.id.item_delete_all_messages:
-                    return true;
-                case R.id.item_add_to_blacklist:
                     return true;
                 default:
                     return false;

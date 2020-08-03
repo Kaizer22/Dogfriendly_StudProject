@@ -6,13 +6,13 @@
         android:visible="true"
         android:icon="@drawable/ic_item_chat_menu_icon"/>
 
-    <item android:id="@+id/item_disable_notification"
-        android:title="@string/disable_notification"
+    <item android:id="@+id/item_add_user"
+        android:title="@string/add_user_to_chat"
         android:visible="true"
         android:icon="@drawable/ic_item_chat_menu_icon"/>
 
-    <item android:id="@+id/item_add_user"
-        android:title="@string/add_user_to_chat"
+    <item android:id="@+id/item_disable_notification"
+        android:title="@string/disable_notification"
         android:visible="true"
         android:icon="@drawable/ic_item_chat_menu_icon"/>
 
@@ -20,10 +20,4 @@
         android:title="@string/delete_all_messages"
         android:visible="true"
         android:icon="@drawable/ic_item_chat_menu_icon"/>
-
-    <item android:id="@+id/item_add_to_blacklist"
-        android:title="@string/add_to_blacklist"
-        android:visible="true"
-        android:icon="@drawable/ic_item_chat_menu_icon"/>
-
 </menu>

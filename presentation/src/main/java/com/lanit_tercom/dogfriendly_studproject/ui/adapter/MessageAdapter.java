@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,9 +43,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MessageModel messageOnBind = messages.get(position);
-        boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
-
-        holder.bind(messageOnBind, isSentByCurrentUser, position);
+        if (messageOnBind != null){
+            try{
+                boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
+                holder.bind(messageOnBind, isSentByCurrentUser, position);
+            }catch(NullPointerException e){
+                e.printStackTrace();
+                Log.e("MESSAGE_ADAPTER_DEBUG", "Message without senderID (field userName)");
+            }
+            boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
+            holder.bind(messageOnBind, isSentByCurrentUser, position);
+        }else{
+            Log.e("MESSAGE_ADAPTER_DEBUG", "NULL message");
+        }
     }
 
     @Override

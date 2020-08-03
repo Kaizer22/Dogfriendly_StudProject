@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="23:59"
-                android:textColor="@color/extraInfoText"
+                android:textColor="@color/threeGray"
                 android:textSize="14sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
