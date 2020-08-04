@@ -7,6 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 
+/**
+ * Таже проблема, что и с PetCharacterEdit - размер элемментом зафиксирован и от этого проблемы
+ */
 class PhotoAdapter(private val images: List<Int>) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

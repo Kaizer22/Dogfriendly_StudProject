@@ -22,7 +22,7 @@
 
 
         <ImageView
-            android:id="@+id/dog_avatar"
+            android:id="@+id/pet_avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/fox"
@@ -51,11 +51,9 @@
             android:lineSpacingExtra="6sp"
             android:text="Аришка"
             android:textColor="#000000"
-
             android:textSize="22sp"
             android:translationY="-2.96sp"
-            app:layout_constraintEnd_toStartOf="@+id/edit_button"
-            app:layout_constraintHorizontal_bias="0.635"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,15 +61,13 @@
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
             android:lineSpacingExtra="6sp"
             android:text="Колли, 3 года"
             android:textColor="#4F4F4F"
             android:textSize="15sp"
 
             android:translationY="-3.11sp"
-            app:layout_constraintEnd_toStartOf="@+id/edit_button"
-            app:layout_constraintHorizontal_bias="0.642"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 

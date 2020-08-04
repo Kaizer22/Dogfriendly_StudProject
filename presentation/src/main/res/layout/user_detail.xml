@@ -50,7 +50,7 @@
             android:id="@+id/age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
+            android:layout_below="@id/edit_pet_name"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="48dp"
             android:lineSpacingExtra="6sp"
@@ -62,7 +62,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintTop_toBottomOf="@+id/edit_pet_name"
             app:layout_constraintVertical_bias="0.1" />
 
         <ImageButton
@@ -212,6 +212,7 @@
                     android:translationY="-1.71sp" />
 
                 <ListView
+                    android:id="@+id/pet_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp" />

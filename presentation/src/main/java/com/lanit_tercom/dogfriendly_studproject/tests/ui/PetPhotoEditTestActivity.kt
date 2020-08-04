@@ -1,11 +1,14 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,7 +17,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 import kotlinx.android.synthetic.main.pet_character_element.view.*
 
+/**
+ *Это буду править когда с остальным разберусь
+ */
 class PetPhotoEditTestActivity : AppCompatActivity() {
+    private lateinit var data: Intent
+    private lateinit var backButton: ImageButton
+    private lateinit var readyButton: Button
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pet_photo_edit)
@@ -26,6 +37,20 @@ class PetPhotoEditTestActivity : AppCompatActivity() {
         val gridLayoutManager = GridLayoutManager(this, 3)
         photoList.layoutManager = gridLayoutManager
         photoList.adapter = photoAdapter
+
+        data = Intent(this, PetDetailTestActivity::class.java)
+        data.putExtras(intent)
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+
+        readyButton = findViewById(R.id.ready_button)
+        readyButton.setOnClickListener {
+            startActivity(data)
+        }
 
     }
 

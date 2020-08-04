@@ -11,7 +11,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,6 +41,7 @@
                 android:textSize="22dp" />
 
             <Button
+                android:id="@+id/ready_button"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,10 +66,10 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.5"
+        app:layout_constraintHeight_percent="0.45"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <ImageButton
             android:id="@+id/user_avatar"
@@ -146,6 +148,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />
 
@@ -166,6 +169,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_age"
                 android:layout_width="match_parent"
                 android:layout_height="48dp" />
 

@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
-import kotlinx.android.synthetic.main.pet_character_element.view.*
 
+/**
+ * pet_character_element используется на двух разных экранах - выбор характера и окно питомца
+ * При этом требуется, что бы выделение элементаа зеленой рамкой было только в выборе характера, но не в окне питомца
+ * Вот это пока не получилось - есть закомменченный вариант, который срабатывает везде и еще с косячком работает
+ */
 class CharacterAdapter(private val images: List<Int>, private val names: List<String>) : RecyclerView.Adapter<CharacterAdapter.ViewHolder>(){
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
