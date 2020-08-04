@@ -16,7 +16,7 @@ public class UserGeoFire {
     private static DatabaseReference referenceDatabase;
 
     public UserGeoFire(){
-        referenceDatabase = FirebaseDatabase.getInstance().getReference(CHILD_LOCATIONS);
+        referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_LOCATIONS);
         initialize();
     }
 

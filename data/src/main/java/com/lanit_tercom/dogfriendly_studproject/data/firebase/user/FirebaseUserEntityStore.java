@@ -33,7 +33,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
-        referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
     }
 
@@ -42,7 +42,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         referenceDatabase.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
+               for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                    if (id.equals(snapshot.getKey())) {
                        userEntity = snapshot.getValue(UserEntity.class);
                        userEntity.setId(id);
@@ -65,7 +65,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
                 List<String> keys = new ArrayList<>();
-                for (DataSnapshot keyNode: dataSnapshot.child(CHILD_USERS).getChildren()){
+                for (DataSnapshot keyNode: dataSnapshot.getChildren()){
                     keys.add(keyNode.getKey());
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
@@ -83,11 +83,11 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        String firebaseId = referenceDatabase.child(CHILD_USERS).push().getKey();
+        String firebaseId = referenceDatabase.push().getKey();
         user.setId(firebaseId);
         Map<String, Object> map = new HashMap<>();
         map.put(user.getId(), user);
-        referenceDatabase.child(CHILD_USERS).updateChildren(map)
+        referenceDatabase.updateChildren(map)
                 .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
                 .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
     }
@@ -96,7 +96,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     public void editUser(UserEntity user, UserEditCallback userEditCallback) {
         Map<String, Object> map = new HashMap<>();
         map.put(user.getId(), user);
-        referenceDatabase.child(CHILD_USERS).updateChildren(map)
+        referenceDatabase.updateChildren(map)
                 .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
                 .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
     }

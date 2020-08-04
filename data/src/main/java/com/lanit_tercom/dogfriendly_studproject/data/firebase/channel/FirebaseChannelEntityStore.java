@@ -34,7 +34,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
     public FirebaseChannelEntityStore(ChannelCache channelCache) {
         this.channelCache = channelCache;
-        this.referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        this.referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_CHANNELS);
     }
 
 
@@ -45,7 +45,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> snapshots = snapshot.child(CHILD_CHANNELS).child(userId).getChildren();
+                Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
                 for (DataSnapshot keyNode : snapshots) {
                     ChannelEntity channelEntity = keyNode.getValue(ChannelEntity.class);
                     channelEntity.setId(keyNode.getKey());
@@ -73,7 +73,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void addChannel(ChannelEntity channel, AddChannelCallback callback) {
         String[] userIDs = getUserIDs(channel.getMembers());
-        DatabaseReference dr = referenceDatabase.child(CHILD_CHANNELS);
+        DatabaseReference dr = referenceDatabase;
 
         String firebaseId = dr.push().getKey();
         for(String userId: userIDs){
@@ -90,7 +90,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback) {
         String[] users = getUserIDs(channel.getMembers());
-        DatabaseReference dr = referenceDatabase.child(CHILD_CHANNELS);
+        DatabaseReference dr = referenceDatabase;
         for(String id: users)
             if (userId.equals(id))
                 dr.child(id).child(channel.getId()).removeValue()

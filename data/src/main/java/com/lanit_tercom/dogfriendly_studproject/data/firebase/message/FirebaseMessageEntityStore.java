@@ -38,13 +38,13 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
 
     public FirebaseMessageEntityStore(MessageCache messageCache) {
         this.messageCache = messageCache;
-        referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_MESSAGES);
     }
 
     @Override
     public void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback) {
         final List<MessageEntity> messages = new ArrayList<>();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
+        referenceDatabase.child(channelId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -71,7 +71,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> snapshots = dataSnapshot.child(CHILD_MESSAGES).getChildren();
+                Iterable<DataSnapshot> snapshots = dataSnapshot.getChildren();
                 for (DataSnapshot snapshot : snapshots) {
                     if (id.equals(snapshot.getKey())) {
                         messageEntity = snapshot.getValue(MessageEntity.class);
@@ -91,7 +91,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback) {
 
         String channelId = messageEntity.getChannelId();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).push().setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
+        referenceDatabase.child(channelId).push().setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 messagePostCallback.onMessagePosted();
@@ -108,7 +108,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void editMessage(MessageEntity messageEntity, MessageEditCallback messageEditCallback) {
         String id = messageEntity.getId();
         String channelId = messageEntity.getChannelId();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
+        referenceDatabase.child(channelId).child(id).setValue(messageEntity).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 messageEditCallback.onMessageEdited();
@@ -125,7 +125,7 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void deleteMessage(MessageEntity messageEntity, MessageDeleteCallback messageDeleteCallback) {
         String id = messageEntity.getId();
         String channelId = messageEntity.getChannelId();
-        referenceDatabase.child(CHILD_MESSAGES).child(channelId).child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+        referenceDatabase.child(channelId).child(id).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 messageDeleteCallback.onMessageDeleted();
