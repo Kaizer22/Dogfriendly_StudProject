@@ -2,8 +2,6 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Context;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -24,10 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-enum ButtonsState {
-    GONE,
-    RIGHT_VISIBLE
-}
 
 public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchListener, OnActivityTouchListener {
     private static final String TAG = "RecyclerTouchListener";
@@ -93,11 +87,10 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
             mLongClickPerformed = true;
 
             if (!bgVisible && touchedPosition >= 0 && !unClickableRows.contains(touchedPosition) && !isRViewScrolling) {
-                if (longClickVibrate) {
-//                    Vibrator vibe = (Vibrator) act.getSystemService(Context.VIBRATOR_SERVICE);
-//                    vibe.vibrate(100); // do we really need to add vibrate service
+                if (!longClickVibrate) {
+                     mRowLongClickListener.onRowLongClicked(touchedPosition);
                 }
-                mRowLongClickListener.onRowLongClicked(touchedPosition);
+
             }
         }
     };
@@ -173,7 +166,7 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
         return this;
     }
 
-    public ChannelRecyclerTouchListener setClickable(boolean clickable) {
+    /*public ChannelRecyclerTouchListener setClickable(boolean clickable) {
         this.clickable = clickable;
         return this;
     }
@@ -203,7 +196,7 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
         ignoredViewTypes.clear();
         ignoredViewTypes.addAll(Arrays.asList(viewTypes));
         return this;
-    }
+    }*/
 
     //////////////// Swipeable ////////////////////
 

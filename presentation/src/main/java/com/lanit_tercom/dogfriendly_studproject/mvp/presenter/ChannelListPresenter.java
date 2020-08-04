@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelModelDtoMapper;
@@ -50,7 +51,21 @@ public class ChannelListPresenter extends BasePresenter {
         deleteChannel.execute(authManager.getCurrentUserId(), channelDto, new DeleteChannelUseCase.Callback() {
             @Override
             public void onChannelDeleted() {
-                //Действие после удалаения канала
+                refreshChannelsData();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                errorBundle.getException().printStackTrace();
+            }
+        });
+    }
+
+    public void getChannelList(){
+        this.getChannels.execute(authManager.getCurrentUserId(), new GetChannelsUseCase.Callback() {
+            @Override
+            public void onChannelsLoaded(List<ChannelDto> channels) {
+                ChannelListPresenter.this.showChannelListInView(channels);
             }
 
             @Override
@@ -87,20 +102,6 @@ public class ChannelListPresenter extends BasePresenter {
         this.channelListView.renderChannels((List<ChannelModel>) channelModelList);
     }
 
-
-    public void getChannelList(){
-        this.getChannels.execute(authManager.getCurrentUserId(), new GetChannelsUseCase.Callback() {
-            @Override
-            public void onChannelsLoaded(List<ChannelDto> channels) {
-                ChannelListPresenter.this.showChannelListInView(channels);
-            }
-
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                errorBundle.getException().printStackTrace();
-            }
-        });
-    }
 
     public void refreshChannelsData(){
         getChannelList();

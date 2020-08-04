@@ -84,6 +84,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         notifyDataSetChanged();
     }
 
+    public ChannelModel getChannelByID(int position){
+        return channels.get(position);
+    }
+
     private void validateChannelList(List<ChannelModel> channelList){
         if (channelList == null){
             throw new IllegalArgumentException("List of channels cannot be null... ChannelListAdapter");

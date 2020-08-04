@@ -134,9 +134,9 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
                     public void onSwipeOptionClicked(int viewID, int position) {
                         switch (viewID){
                             case R.id.delete_button:
-                                //taskList.remove(position);
-                                //recyclerviewAdapter.setTaskList(taskList);
-                                Toast.makeText(getContext(), "Delete item", Toast.LENGTH_LONG).show();
+                                ChannelModel channelModel = channelListAdapter.getChannelByID(position);
+                                channelListPresenter.deleteChannel(channelModel);
+                                Toast.makeText(getContext(), "Диалог удален", Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.turnOffNotification_button:
                                 Toast.makeText(getContext(),"Edit Not Available",Toast.LENGTH_SHORT).show();
