@@ -33,7 +33,6 @@ public interface MessageEntityStore {
 
     void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback);
 
-    void getMessage(String id, MessageDetailCallback messageDetailCallback);
 
     void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback);
 

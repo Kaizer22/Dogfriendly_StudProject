@@ -39,21 +39,17 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
-        referenceDatabase.addValueEventListener(new ValueEventListener() {
+        referenceDatabase.child(id).addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                   if (id.equals(snapshot.getKey())) {
-                       userEntity = snapshot.getValue(UserEntity.class);
-                       userEntity.setId(id);
-                   }
-               }
+               userEntity = dataSnapshot.getValue(UserEntity.class);
+               userEntity.setId(id);
                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
            }
 
            @Override
            public void onCancelled(@NonNull DatabaseError databaseError) {
-               Log.e(TAG, "onCancelled", databaseError.toException());
+               userByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
            }
        });
     }
@@ -64,9 +60,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
-                List<String> keys = new ArrayList<>();
                 for (DataSnapshot keyNode: dataSnapshot.getChildren()){
-                    keys.add(keyNode.getKey());
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
                     users.add(userEntity);
@@ -76,7 +70,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
+                userListCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
     }

@@ -41,11 +41,12 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void getChannels(String userId, GetChannelsCallback getChannelsCallback) {
         final List<ChannelEntity> channels = new ArrayList<>();
-        referenceDatabase.addValueEventListener(new ValueEventListener() {
+        referenceDatabase.child(userId).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
+                channels.clear();
+                Iterable<DataSnapshot> snapshots = snapshot.getChildren();
                 for (DataSnapshot keyNode : snapshots) {
                     ChannelEntity channelEntity = keyNode.getValue(ChannelEntity.class);
                     channelEntity.setId(keyNode.getKey());
@@ -56,7 +57,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
+                getChannelsCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
     }

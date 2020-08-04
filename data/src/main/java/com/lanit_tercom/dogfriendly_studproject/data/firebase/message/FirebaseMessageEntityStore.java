@@ -66,28 +66,6 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
-    public void getMessage(String id, MessageDetailCallback messageDetailCallback) {
-        referenceDatabase.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> snapshots = dataSnapshot.getChildren();
-                for (DataSnapshot snapshot : snapshots) {
-                    if (id.equals(snapshot.getKey())) {
-                        messageEntity = snapshot.getValue(MessageEntity.class);
-                        messageEntity.setId(id);
-                    }
-                }
-                messageDetailCallback.onMessageLoaded(messageEntity); // return MessageEntity
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                messageDetailCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
-            }
-        });
-    }
-    @Override
     public void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback) {
 
         String channelId = messageEntity.getChannelId();
