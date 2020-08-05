@@ -76,7 +76,7 @@
             android:layout_marginTop="@dimen/indent_medium_plus"
             android:text="@string/loading"
             android:textColor="@color/black"
-            android:textSize="@dimen/chat_user_name_text_size"
+            android:textSize="@dimen/font_size_16"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/chat_screen_user_avatar"
             app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loading"
-            android:textSize="@dimen/user_additional_info_text_size"
+            android:textSize="@dimen/font_size_13"
             app:layout_constraintStart_toStartOf="@+id/chat_screen_user_name"
             app:layout_constraintTop_toBottomOf="@+id/chat_screen_user_name" />
 

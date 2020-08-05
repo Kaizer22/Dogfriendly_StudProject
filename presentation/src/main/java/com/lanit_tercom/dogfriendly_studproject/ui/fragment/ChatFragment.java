@@ -251,6 +251,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         ImageView blur = root.findViewById(R.id.on_chat_menu_blur_effect);
         blur.setVisibility(View.VISIBLE);
         PopupMenu chatMenu = new PopupMenu(upperSpace.getContext(), upperSpace);
+        chatMenu.inflate(R.menu.chat_menu);
         chatMenu.setOnDismissListener(listener -> blur.setVisibility(View.GONE));
         chatMenu.setOnMenuItemClickListener(menuItem ->{
             switch (menuItem.getItemId()){

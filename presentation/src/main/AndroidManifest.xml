@@ -9,19 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.UserSignInActivity">
+        <activity android:name=".ui.activity.WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.ChatActivity"/>
-
-        <activity android:name=".ui.activity.UserSignUpActivity" />
+        <activity android:name=".ui.activity.UserSignInActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.UserSignUpActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.UserMapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
-
+        <activity android:name=".ui.activity.ChatActivity"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -29,5 +31,4 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6olvefAu4dgT02zRVG7UKVgTmfYdszBw" />
     </application>
-
 </manifest>

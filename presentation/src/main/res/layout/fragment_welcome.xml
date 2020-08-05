@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="45">
+            <ImageView
+                android:id="@+id/welcoming_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/indent_small_plus"
+                android:src="@drawable/app_welcome_vector"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="55"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/welcoming_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/indent_huge"
+                    android:layout_marginEnd="@dimen/indent_huge"
+                    android:gravity="center"
+                    android:minLines="2"
+                    android:text="@string/welcome_to_dogfriendly"
+                    android:textColor="@color/fiveGray"
+                    android:textSize="@dimen/font_size_23"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/welcome_extra_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minLines="2"
+                    android:layout_marginTop="@dimen/indent_medium"
+                    android:gravity="center"
+                    android:text="@string/welcome_text"
+                    android:layout_marginBottom="@dimen/indent_medium_plus" />
+                <Button
+                    android:id="@+id/button_go_to_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/basic_text_button_height"
+                    android:text="@string/sign_up"
+                    android:background="@drawable/dog_friendly_button_shape_1"
+                    android:textColor="@color/primaryLight"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/indent_medium"/>
+                <Button
+                    android:id="@+id/button_go_to_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/basic_text_button_height"
+                    android:text="@string/sign_in"
+                    android:background="@drawable/dog_friendly_button_shape_2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/font_size_16"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5">
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

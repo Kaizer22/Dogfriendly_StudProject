@@ -51,8 +51,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
                 e.printStackTrace();
                 Log.e("MESSAGE_ADAPTER_DEBUG", "Message without senderID (field userName)");
             }
-            boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
-            holder.bind(messageOnBind, isSentByCurrentUser, position);
         }else{
             Log.e("MESSAGE_ADAPTER_DEBUG", "NULL message");
         }

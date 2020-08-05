@@ -1,57 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:weightSum="100">
 
-    <EditText
-        android:id="@+id/enter_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Телефон или email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327" />
+    <LinearLayout
+        android:layout_width = "match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_signin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="48dp"
-        android:text="Войти"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button_signup"
-        app:layout_constraintTop_toBottomOf="@+id/enter_password" />
+            <TextView
+                android:id="@+id/sign_in_screen_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/indent_huge"
+                android:layout_marginEnd="@dimen/indent_huge"
+                android:layout_marginBottom="@dimen/indent_enormous"
+                android:text="@string/actual_app_name"
+                android:textColor="@color/fiveGray"
+                android:textSize="@dimen/font_size_36"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button_signup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="40dp"
-        android:text="Зарегистрироваться"
-        app:layout_constraintEnd_toStartOf="@+id/button_signin"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_password" />
+            <ImageButton
+                android:id="@+id/button_back_to_welcome_screen"
+                android:layout_width="@dimen/button_back_to_channel_list_width"
+                android:layout_height="@dimen/button_back_to_channel_list_height"
+                android:layout_marginStart="@dimen/indent_large"
+                android:layout_marginTop="@dimen/indent_large_plus_plus"
+                android:layout_marginBottom="@dimen/indent_large_plus_plus"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_button_back_to_channels"
+                app:layout_constraintBottom_toBottomOf="@+id/sign_in_screen_app_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/sign_in_screen_app_name" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="55">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/enter_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:hint="Пароль"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_email" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <EditText
+                android:id="@+id/enter_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_field_height"
+                android:layout_marginStart="@dimen/indent_huge"
+                android:layout_marginTop="@dimen/indent_medium"
+                android:layout_marginEnd="@dimen/indent_huge"
+                android:background="@drawable/edit_text_field_shape"
+                android:inputType="textPassword"
+                android:paddingStart="@dimen/indent_medium"
+                android:paddingEnd="@dimen/indent_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_password_hint" />
+
+            <EditText
+                android:id="@+id/enter_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edit_text_field_height"
+                android:layout_marginStart="@dimen/indent_huge"
+                android:layout_marginTop="@dimen/indent_medium"
+                android:layout_marginEnd="@dimen/indent_huge"
+                android:background="@drawable/edit_text_field_shape"
+                android:inputType="textEmailAddress"
+                android:paddingStart="@dimen/indent_medium"
+                android:paddingEnd="@dimen/indent_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_email_hint" />
+
+            <TextView
+                android:id="@+id/sign_in_email_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/indent_enormous"
+                android:textColor="@color/primaryMiddle"
+                android:text="@string/e_mail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sign_in_password_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/indent_enormous"
+                android:layout_marginTop="@dimen/indent_large"
+                android:textColor="@color/primaryMiddle"
+                android:text="@string/password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/enter_email" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/basic_text_button_height"
+                android:layout_marginStart="@dimen/indent_huge"
+                android:layout_marginEnd="@dimen/indent_huge"
+                android:textSize="@dimen/font_size_16"
+                android:background="@drawable/dog_friendly_button_shape_2"
+                android:text="@string/sign_in_action"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sign_in_screen_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/indent_medium"
+                android:text="@string/forgot_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
+
+            <TextView
+                android:id="@+id/to_reset_password_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/indent_medium"
+                android:text="@string/reset_password_here"
+                android:textColor="@color/primaryMiddle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sign_in_screen_forgot_password" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</LinearLayout>
+

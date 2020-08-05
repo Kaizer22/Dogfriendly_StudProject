@@ -32,8 +32,8 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userSignInPresenter?.setView(this)
-        button_signin.setOnClickListener(this)
-        button_signup.setOnClickListener(this)
+        button_sign_in.setOnClickListener(this)
+        //button_signup.setOnClickListener(this)
     }
 
     fun auth(){
@@ -45,10 +45,10 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.button_signin -> {
+            R.id.button_sign_in -> {
                 auth()
             }
-            R.id.button_signup ->
+            R.id.button_sign_up ->
                 (activity as UserSignInActivity).navigateToUserSignUp()
         }
     }

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Dogfriendly_StudProject</string>
+    <string name="actual_app_name">DogFriendly</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="new_message">Сообщение…</string>
     <string name="sending_message_event">Отправка сообщения…</string>
@@ -13,4 +14,18 @@
     <string name="add_user_to_chat">Добавить в чат</string>
     <string name="delete_all_messages">Очистить переписку</string>
     <string name="add_to_blacklist">Добавить в черный список</string>
+    <string name="welcome_to_dogfriendly">Добро пожаловать в DogFriendly!</string>
+    <string name="welcome_text">Здесь вы найдете компанию для прогулки с питомцем.</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Вход</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="reset_password_here">Сбросьте его здесь</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="password">Пароль</string>
+    <string name="e_mail">e-mail</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="are_you_already_have_an_account">Уже есть аккаунт?</string>
+    <string name="sign_in_here">Войдите здесь</string>
+    <string name="please_use_real_name">Пожалуйста, укажите реальное имя - оно будет использоваться при взаимодействии с другими пользователями</string>
+    <string name="what_is_your_name">Как Вас зовут?</string>
 </resources>

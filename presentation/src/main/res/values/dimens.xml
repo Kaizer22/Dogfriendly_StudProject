@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="basic_text_button_height">40dp</dimen>
+    <!-- Welcome screen start -->
+        <!-- Welcome vector -->
+        <dimen name="app_welcome_vector_width">400dp</dimen>
+        <dimen name="app_welcome_vector_height">305dp</dimen>
+    <!-- Welcome screen end -->
+
+    <!-- Sign in screen start -->
+    <!-- Sign in screen end -->
+
+    <!-- Sign up screen start -->
+        <dimen name="edit_text_field_height">40dp</dimen>
+    <!-- Sign up screen end -->
+
     <!-- Chat screen start -->
 
         <!-- Chat screen upper space -->
@@ -39,8 +53,13 @@
 
 
     <!-- Fonts sizes -->
-    <dimen name="user_additional_info_text_size">13sp</dimen>
-    <dimen name="chat_user_name_text_size">16sp</dimen>
+    <dimen name="font_size_11">11sp</dimen>
+    <dimen name="font_size_13">13sp</dimen>
+    <dimen name="font_size_14">14sp</dimen>
+    <dimen name="font_size_16">16sp</dimen>
+    <dimen name="font_size_23">23sp</dimen>
+    <dimen name="font_size_28">28sp</dimen>
+    <dimen name="font_size_36">36sp</dimen>
 
     <!-- Base indents -->
     <dimen name="indent_small">2dp</dimen>
