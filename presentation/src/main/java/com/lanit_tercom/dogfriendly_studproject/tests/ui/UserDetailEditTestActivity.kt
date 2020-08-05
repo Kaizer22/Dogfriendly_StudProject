@@ -1,20 +1,26 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui
 
 
+import android.R.attr
+import android.R.attr.data
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+
 
 /**
- * Тоже самое что и в UserDetail - надо как то поставить большую картинку в круг
+ * Клавиатура (в данный момент) сжимает toolbar соотв. тем самым гадит в разметке
+ * Добавлена загрузка и обрезка фото с помощью Android Image Cropper
  */
 class UserDetailEditTestActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
@@ -32,11 +38,11 @@ class UserDetailEditTestActivity : AppCompatActivity() {
         setContentView(R.layout.user_detail_edit)
 
         //Инициализации UI элементов, присвоение onClickListener'ов
-        editName =  findViewById(R.id.edit_name)
+        editName = findViewById(R.id.edit_name)
         editAge = findViewById(R.id.edit_age)
 
         avatar = findViewById(R.id.user_avatar)
-        avatar.setOnClickListener { openGallery() }
+        avatar.setOnClickListener { loadAvatar() }
 
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
@@ -58,20 +64,34 @@ class UserDetailEditTestActivity : AppCompatActivity() {
 
     }
 
-    //Открывает галлерею
-    private fun openGallery() {
-        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        startActivityForResult(gallery, PICK_IMAGE)
+    //Загрузка/создание/обрезание аватара
+    private fun loadAvatar() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setAspectRatio(1,1)
+                .setRequestedSize(320, 320)
+                .setActivityTitle("")
+                .start(this);
     }
 
     //Обратная связь с галлереей
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
-            val imageUri: Uri? =  data?.data
-            avatarUri = imageUri
-            avatar.setImageURI(imageUri)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+                val resultUri = result.uri
+                avatarUri = resultUri
+
+                Glide.with(this)
+                .load(avatarUri)
+                .circleCrop()
+                .into(avatar);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+            }
         }
 
     }

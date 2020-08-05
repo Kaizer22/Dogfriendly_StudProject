@@ -6,18 +6,20 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lanit_tercom.dogfriendly_studproject.R
 
 /**
- * КАК ВПАЯТЬ ОГРОМНУЮ ФОТКУ В КРУГЛЕНЬКИЙ ЭКРАНЧИК?
- * да еще и при этом нормально центр выставить (где надо).
+ * Клавиатура портит разметку, в остальном все вроде более менее норм.
+ * Фотка теперь берется из галереи с помощью image-cropper и обрезается в круг c помощбю glide
  */
 class UserDetailTestActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
@@ -57,6 +59,8 @@ class UserDetailTestActivity : AppCompatActivity() {
         btnToSettings = findViewById(R.id.to_settings_button)
         btnToSettings.setOnClickListener { toSettings() }
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         //Динамическое задание размера блоку "о себе"
         val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
         val bottomNav = findViewById<View>(R.id.bottom_nav) as BottomNavigationView
@@ -64,11 +68,11 @@ class UserDetailTestActivity : AppCompatActivity() {
         val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
         lp.height = heightDp.toInt()
 
+
         //Открытие/скрытие нижней панели
         appbar.addOnOffsetChangedListener(object : UserDetailTestActivity.AppBarStateChangeListener() {
 
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
-
                 if (state == State.EXPANDED)
                     bottomNav.visibility = View.GONE
                 if (state == State.COLLAPSED)
@@ -78,8 +82,8 @@ class UserDetailTestActivity : AppCompatActivity() {
         })
     }
 
-    //Методы для навигации и взаимодействия с другими экранами
 
+    //Методы для навигации и взаимодействия с другими экранами
     private fun toPetDetail() {
         val intent: Intent = Intent(this, PetDetailTestActivity::class.java)
         startActivity(intent)
@@ -105,7 +109,8 @@ class UserDetailTestActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    //ОБратная связь с UserDetailEdit(Test)Activity
+
+    //Обратная связь с UserDetailEdit(Test)Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
@@ -115,7 +120,10 @@ class UserDetailTestActivity : AppCompatActivity() {
                 val a: String? = data?.getStringExtra("avatarId")
                 avatarUri = Uri.parse(data?.getStringExtra("avatarUri"))
                 if (avatarUri != null)
-                    avatar.setImageURI(avatarUri)
+                    Glide.with(this)
+                            .load(avatarUri)
+                            .circleCrop()
+                            .into(avatar);
                 else
                     avatar.setImageResource(R.drawable.ic_set_avatar_green)
             }
@@ -124,6 +132,7 @@ class UserDetailTestActivity : AppCompatActivity() {
         }
 
     }
+
 
     //Класс для реализации открытия/скрытия нижней панели
     abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener {

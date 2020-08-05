@@ -12,13 +12,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 import kotlinx.android.synthetic.main.pet_character_element.view.*
 
 /**
- *Это буду править когда с остальным разберусь
+ * Добалено задаение размера через ItemDecoration.
+ * Функционал не тронут.
  */
 class PetPhotoEditTestActivity : AppCompatActivity() {
     private lateinit var data: Intent
@@ -36,6 +38,8 @@ class PetPhotoEditTestActivity : AppCompatActivity() {
         val photoAdapter = PhotoAdapter(images)
         val gridLayoutManager = GridLayoutManager(this, 3)
         photoList.layoutManager = gridLayoutManager
+        photoList.itemAnimator = DefaultItemAnimator()
+        photoList.addItemDecoration(SpacesItemDecoration(25))
         photoList.adapter = photoAdapter
 
         data = Intent(this, PetDetailTestActivity::class.java)

@@ -1,40 +1,51 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 
+
 /**
- * Элемент pet_character_element имеет фиксированную ширину 100dp, что приводит к некорректному отображению на разных экранах
- * Как сделать иначе тут не очень понятно, т.к. при wrap_content элементы будут разными в зависимости от текста ("активная","агрессивная", "добрая" - везде по разному будет)
+ * С выделением пока не разбирался
+ * Добавлено задание размера элементам через ItemDecoration
  */
 class PetCharacterEditTestActivity : AppCompatActivity() {
     private lateinit var data: Intent
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
+    private lateinit var onClickInterface: OnClickInterface
+    private val pickedElements: ArrayList<String> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pet_character_edit)
 
+        val characterList = findViewById<RecyclerView>(R.id.character_elements)
         val names = initializeNames()
         val images = initializeImages()
 
-        val characterList = findViewById<RecyclerView>(R.id.character_elements)
-        val characterAdapter = CharacterAdapter(images, names)
+        onClickInterface = object : OnClickInterface{
+            override fun setClick(i: Int) {
+                pickedElements.add(i.toString())
+
+                Toast.makeText(this@PetCharacterEditTestActivity, i.toString(), Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
+
+        val characterAdapter = CharacterAdapter(images, names, onClickInterface)
         val gridLayoutManager = GridLayoutManager(this, 3)
+        characterList.itemAnimator = DefaultItemAnimator()
+        characterList.addItemDecoration(SpacesItemDecoration(10))
         characterList.layoutManager = gridLayoutManager
         characterList.adapter = characterAdapter
 
@@ -46,9 +57,9 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
             finish()
         }
 
-
         readyButton = findViewById(R.id.ready_button)
         readyButton.setOnClickListener {
+            data.putStringArrayListExtra("character", pickedElements)
             startActivity(data)
         }
 
@@ -61,18 +72,14 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
         names.add("Добрая")
         names.add("Гордая")
         names.add("Трусливая")
-
-        names.add("Активная")
-        names.add("Добрая")
-        names.add("Гордая")
-        names.add("Трусливая")
-
-        names.add("Активная")
-        names.add("Добрая")
-        names.add("Гордая")
-        names.add("Трусливая")
-
-
+        names.add("Агрессивная")
+        names.add("Гроза белок")
+        names.add("Сорванец")
+        names.add("Веселая")
+        names.add("Боевая")
+        names.add("Спортивная")
+        names.add("Неусидчивая")
+        names.add("Застенчивая")
         return names
     }
 
@@ -82,12 +89,10 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
-
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
-
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)
         images.add(R.drawable.ic_round_circle)

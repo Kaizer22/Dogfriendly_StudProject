@@ -7,11 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 
 /**
- * Где взять кнопки муж/жен в невыделенном варианте? Чтобы только после нажатия выделялось зеленым.
+ * Пока кнопки не менял. Добавил  скролл для экранов где все не помещается.
+ * Изображение загружается через Android-Image-Cropper. Пока оно почему то открывается с большим зумом.
  */
 class PetDetailEditTestActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
@@ -53,7 +57,7 @@ class PetDetailEditTestActivity : AppCompatActivity() {
         }
 
         avatar = findViewById(R.id.pet_avatar)
-        avatar.setOnClickListener { openGallery() }
+        avatar.setOnClickListener { loadAvatar() }
 
         radioGroup = findViewById(R.id.sex_radio_group)
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -66,25 +70,31 @@ class PetDetailEditTestActivity : AppCompatActivity() {
 
     }
 
-    //Открывает галлерею
-    private fun openGallery() {
-        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        startActivityForResult(gallery, PICK_IMAGE)
+    //Загрузка/создание/обрезание аватара
+    private fun loadAvatar() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .setAspectRatio(1,1)
+                .setActivityTitle("")
+                .start(this);
     }
 
     //Обратная связь с галлереей
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE) {
-            val imageUri: Uri? =  data?.data
-            avatarUri = imageUri
-            avatar.setImageURI(imageUri)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == Activity.RESULT_OK) {
+                val resultUri = result.uri
+                avatarUri = resultUri
+                avatar.setImageURI(avatarUri)
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+            }
         }
 
     }
-
-
-
 
 }
