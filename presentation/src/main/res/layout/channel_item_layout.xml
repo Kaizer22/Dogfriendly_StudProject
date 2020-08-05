@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Удалить"
+                    android:text="@string/channel_delete_button"
                     android:textColor="#FFD688"/>
             </LinearLayout>
         </RelativeLayout>
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Выкл. звук"
+                    android:text="@string/channel_notification_turn_off_button"
                     android:textColor="#4F4F4F"/>
             </LinearLayout>
         </RelativeLayout>
@@ -110,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Открепить"
+                    android:text="@string/channel_hold_on_button"
                     android:textColor="#FFFFFF"/>
             </LinearLayout>
         </RelativeLayout>

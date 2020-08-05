@@ -8,4 +8,10 @@
     <string name="ok">Подтвердить</string>
     <string name="cancel">Отмена</string>
     <string name="loading">Загрузка…</string>
+
+
+    <!--ChannelList-->
+    <string name="channel_delete_button">Удалить</string>
+    <string name="channel_notification_turn_off_button">Выкл.звук</string>
+    <string name="channel_hold_on_button">Открепить</string>
 </resources>

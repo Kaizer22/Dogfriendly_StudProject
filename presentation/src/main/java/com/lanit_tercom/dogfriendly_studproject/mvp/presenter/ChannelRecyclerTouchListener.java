@@ -165,39 +165,7 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
         this.mRowClickListener = listener;
         return this;
     }
-
-    /*public ChannelRecyclerTouchListener setClickable(boolean clickable) {
-        this.clickable = clickable;
-        return this;
-    }
-
-    public ChannelRecyclerTouchListener setLongClickable(boolean vibrate, OnRowLongClickListener listener) {
-        this.longClickable = true;
-        this.mRowLongClickListener = listener;
-        this.longClickVibrate = vibrate;
-        return this;
-    }
-    public ChannelRecyclerTouchListener setLongClickable(boolean longClickable) {
-        this.longClickable = longClickable;
-        return this;
-    }
-
-    public ChannelRecyclerTouchListener setIndependentViews(Integer... viewIds) {
-        this.independentViews = new ArrayList<>(Arrays.asList(viewIds));
-        return this;
-    }
-
-    public ChannelRecyclerTouchListener setUnClickableRows(Integer... rows) {
-        this.unClickableRows = new ArrayList<>(Arrays.asList(rows));
-        return this;
-    }
-
-    public ChannelRecyclerTouchListener setIgnoredViewTypes(Integer... viewTypes) {
-        ignoredViewTypes.clear();
-        ignoredViewTypes.addAll(Arrays.asList(viewTypes));
-        return this;
-    }*/
-
+    
     //////////////// Swipeable ////////////////////
 
     public ChannelRecyclerTouchListener setSwipeable(int foregroundID, int backgroundID, OnSwipeOptionsClickListener listener) {
@@ -847,16 +815,9 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
                         if (bgView != null)
                             bgView.setVisibility(View.GONE);
 
-                        // swipe fg till width of bg. If swiped further, nothing happens (stalls at width of bg)
                         fgView.setTranslationX(translateAmount / 5);
                         if (fgView.getTranslationX() > 0) fgView.setTranslationX(0);
 
-                        // fades all the fadeViews gradually to 0 alpha as dragged
-//                        if (fadeViews != null) {
-//                            for (int viewID : fadeViews) {
-//                                touchedView.findViewById(viewID).setAlpha(1 - (Math.abs(translateAmount) / bgWidth));
-//                            }
-//                        }
                     }
                     return true;
                 }

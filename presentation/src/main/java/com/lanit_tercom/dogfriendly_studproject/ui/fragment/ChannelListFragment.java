@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +53,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     ChannelListPresenter channelListPresenter;
 
     RecyclerView channelListRecyclerView;
+    ConstraintLayout constraintLayout;
     ChannelListAdapter channelListAdapter;
 
     ChannelRecyclerTouchListener touchListener;
@@ -67,10 +69,9 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         View view = inflater.inflate(R.layout.fragment_channel_list, container, false);
 
         channelListPresenter.setView(this);
+        initEmptyChannelList(view);
         initRecycleView(view);
         initializeListener();
-
-        Log.i("RecycleTest", "onCreateView() was run");
 
         return view;
     }
@@ -185,7 +186,20 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
     @Override
     public void renderChannels(List<ChannelModel> channels){
+        if (channelListPresenter.isChannelListEmpty()){
+            constraintLayout.setVisibility(View.VISIBLE);
+            channelListRecyclerView.setVisibility(View.INVISIBLE);
+        }else{
+            constraintLayout.setVisibility(View.INVISIBLE);
+            channelListRecyclerView.setVisibility(View.VISIBLE);
+
         channelListAdapter.setChannels(channels);
+        }
+    }
+
+    private void initEmptyChannelList(View view){
+        constraintLayout = view.findViewById(R.id.empty_channellist_layout);
+
     }
 
 }

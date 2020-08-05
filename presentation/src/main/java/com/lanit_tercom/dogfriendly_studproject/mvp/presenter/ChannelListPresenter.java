@@ -22,8 +22,8 @@ public class ChannelListPresenter extends BasePresenter {
     private ChannelListView channelListView;
 
     private AuthManager authManager;
-
     private ChannelModelDtoMapper channelModelMapper;
+    private boolean isChannelListEmpty;
 
     private GetChannelsUseCase getChannels;
     private AddChannelUseCase addChannel;
@@ -66,6 +66,7 @@ public class ChannelListPresenter extends BasePresenter {
             @Override
             public void onChannelsLoaded(List<ChannelDto> channels) {
                 ChannelListPresenter.this.showChannelListInView(channels);
+                isChannelListEmpty = channels.size() == 0;
             }
 
             @Override
@@ -105,6 +106,10 @@ public class ChannelListPresenter extends BasePresenter {
 
     public void refreshChannelsData(){
         getChannelList();
+    }
+
+    public boolean isChannelListEmpty(){
+        return isChannelListEmpty;
     }
 
 }

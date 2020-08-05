@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.ChannelListFragment"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragment.ChannelListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/empty_channellist_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/empty_chat_background"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/empty_channellist_height"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/empty_channellist_hint"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_empty_channellist_background" />
+
+        <TextView
+            android:id="@+id/empty_channellist_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:minLines="2"
+            android:text="Диалогов пока нет"
+            android:textColor="#4F4F4F"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/empty_channellist_layout"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_channel"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
 
-</LinearLayout>
+</FrameLayout>
