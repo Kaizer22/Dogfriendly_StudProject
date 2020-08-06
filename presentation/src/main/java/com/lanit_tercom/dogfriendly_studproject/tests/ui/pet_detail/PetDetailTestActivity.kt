@@ -34,19 +34,19 @@ class PetDetailTestActivity : AppCompatActivity() {
         infoTextView = findViewById(R.id.info)
 
         //Тут берется вся информация, полученная в процессе создания нового питомца (пока кроме фоток)
-        if(intent!=null){
-            nameTextView.text = intent.getStringExtra("name")
-            val age: String? = intent.getStringExtra("age")
-            val breed: String? = intent.getStringExtra("breed")
-            val info: String? = breed+", "+age+" лет."
-            infoTextView.text = info
-            avatarUri = Uri.parse(intent?.getStringExtra("avatarUri"))
-            if (avatarUri != null)
-                avatar.setImageURI(avatarUri)
-            else
-                avatar.setImageResource(R.drawable.ic_set_avatar_green)
-            character = intent.getStringArrayListExtra("character")
-        }
+//        if(intent!=null){
+//            nameTextView.text = intent.getStringExtra("name")
+//            val age: String? = intent.getStringExtra("age")
+//            val breed: String? = intent.getStringExtra("breed")
+//            val info: String? = breed+", "+age+" лет."
+//            infoTextView.text = info
+//            avatarUri = Uri.parse(intent?.getStringExtra("avatarUri"))
+//            if (avatarUri != null)
+//                avatar.setImageURI(avatarUri)
+//            else
+//                avatar.setImageResource(R.drawable.ic_set_avatar_green)
+//            character = intent.getStringArrayListExtra("character")
+//        }
 
 
 
@@ -57,8 +57,10 @@ class PetDetailTestActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         photoList.layoutManager = linearLayoutManager
         photoList.adapter = photoAdapter
+        photoList.addItemDecoration(SpacesItemDecoration(10))
 
         //Все что связано с выводом характеров, работает криво из-за того что элемент теперь имеет ширину match_parent
+        character = mutableListOf("1", "2", "3")
         if(character!=null){
             val names = getCharacterNames(character!!)
             val characterImages = getCharacterImages(character!!)
@@ -77,15 +79,8 @@ class PetDetailTestActivity : AppCompatActivity() {
 
     fun initializePhotoImages(): ArrayList<Int> {
         val images = ArrayList<Int>()
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
-        images.add(R.drawable.ic_button_add_photo)
+        images.add(R.drawable.doggy)
+        images.add(R.drawable.fox)
         return images
     }
 

@@ -13,15 +13,18 @@
 
         </activity>
         <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignInActivity">
+
+        </activity>
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignUpActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignUpActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

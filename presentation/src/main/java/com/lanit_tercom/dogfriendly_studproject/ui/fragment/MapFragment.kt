@@ -123,16 +123,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
         // ВРЕМЕННЫЙ КОД!!!
-        var flag: Boolean = true
-        button_visibility.setOnClickListener {
-            if (!flag){
-                button_visibility.setImageDrawable(activity?.getDrawable(R.drawable.ic_visibility_inactive))
-                flag = true
-            } else if (flag){
-                button_visibility.setImageDrawable(activity?.getDrawable(R.drawable.ic_visibility_active))
-                flag = false
-            }
-        }
         button_radar.setOnClickListener {
             val bottomSheetDialog = BottomSheetDialog(activity as Context, R.style.BottomSheetDialogTheme)
             val bottomSheetView = LayoutInflater

@@ -15,16 +15,6 @@
         tools:context=".ui.activity.MapActivity" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_visibility"
-        android:src="@drawable/ic_visibility_inactive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="15dp"
-        app:backgroundTint="@null"
-        app:maxImageSize="56dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src = "@drawable/ic_button_location"
