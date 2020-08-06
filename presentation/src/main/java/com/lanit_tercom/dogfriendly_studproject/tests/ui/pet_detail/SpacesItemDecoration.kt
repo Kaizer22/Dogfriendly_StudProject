@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
 import android.graphics.Rect;
 import androidx.recyclerview.widget.RecyclerView

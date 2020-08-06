@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -32,7 +32,7 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
         val names = initializeNames()
         val images = initializeImages()
 
-        onClickInterface = object : OnClickInterface{
+        onClickInterface = object : OnClickInterface {
             override fun setClick(i: Int) {
                 pickedElements.add(i.toString())
 

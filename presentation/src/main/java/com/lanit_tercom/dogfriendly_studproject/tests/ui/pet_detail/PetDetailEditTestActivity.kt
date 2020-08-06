@@ -1,66 +1,70 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
-
-import android.R.attr
-import android.R.attr.data
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import android.os.Bundle
+import android.widget.*
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-
 /**
- * Клавиатура (в данный момент) сжимает toolbar соотв. тем самым гадит в разметке
- * Добавлена загрузка и обрезка фото с помощью Android Image Cropper
+ * Пока кнопки не менял. Добавил  скролл для экранов где все не помещается.
+ * Изображение загружается через Android-Image-Cropper. Пока оно почему то открывается с большим зумом.
  */
-class UserDetailEditTestActivity : AppCompatActivity() {
-    //Декларация UI элементов и переменных
+class PetDetailEditTestActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
-    private lateinit var editName: TextInputEditText
-    private lateinit var editAge: TextInputEditText
+    private lateinit var editPetName: TextInputEditText
+    private lateinit var editPetBreed: TextInputEditText
+    private lateinit var editPetAge: TextInputEditText
     private lateinit var avatar: ImageView
+    private lateinit var radioGroup: RadioGroup
     private var avatarUri: Uri? = null
     private val PICK_IMAGE = 100
-
+    private var sex: String? = null
+    private lateinit var data: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_detail_edit)
+        setContentView(R.layout.pet_detail_edit)
 
-        //Инициализации UI элементов, присвоение onClickListener'ов
-        editName = findViewById(R.id.edit_name)
-        editAge = findViewById(R.id.edit_age)
+        data = Intent(this, PetCharacterEditTestActivity::class.java)
 
-        avatar = findViewById(R.id.user_avatar)
-        avatar.setOnClickListener { loadAvatar() }
+        editPetName = findViewById(R.id.edit_pet_name)
+        editPetBreed = findViewById(R.id.edit_pet_breed)
+        editPetAge = findViewById(R.id.edit_pet_age)
 
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
-            setResult(Activity.RESULT_CANCELED)
             finish()
         }
 
 
         readyButton = findViewById(R.id.ready_button)
         readyButton.setOnClickListener {
-            setResult(Activity.RESULT_OK)
-            val data = Intent()
-            data.putExtra("name", editName.text.toString())
-            data.putExtra("age", editAge.text.toString())
+            data.putExtra("name", editPetName.text.toString())
+            data.putExtra("age", editPetAge.text.toString())
+            data.putExtra("breed", editPetBreed.text.toString())
+            data.putExtra("sex", sex)
             data.putExtra("avatarUri", avatarUri.toString())
-            setResult(Activity.RESULT_OK, data)
-            finish()
+            startActivity(data)
         }
+
+        avatar = findViewById(R.id.pet_avatar)
+        avatar.setOnClickListener { loadAvatar() }
+
+        radioGroup = findViewById(R.id.sex_radio_group)
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.man_radio_button -> sex = "men"
+                R.id.woman_radio_button -> sex = "woman"
+            }
+        }
+
 
     }
 
@@ -68,9 +72,8 @@ class UserDetailEditTestActivity : AppCompatActivity() {
     private fun loadAvatar() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1,1)
-                .setRequestedSize(320, 320)
                 .setActivityTitle("")
                 .start(this);
     }
@@ -84,17 +87,12 @@ class UserDetailEditTestActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
                 avatarUri = resultUri
-
-                Glide.with(this)
-                .load(avatarUri)
-                .circleCrop()
-                .into(avatar);
+                avatar.setImageURI(avatarUri)
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
             }
         }
 
     }
-
 
 }

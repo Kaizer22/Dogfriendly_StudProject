@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,7 @@ class PhotoAdapter(private val images: List<Int>) : RecyclerView.Adapter<PhotoAd
         var photoImage: ImageView = view.findViewById(R.id.photo_image)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.pet_photo_element, parent, false)
         return ViewHolder(view)
     }

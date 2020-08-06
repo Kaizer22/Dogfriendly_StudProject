@@ -1,15 +1,12 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
-import kotlinx.android.synthetic.main.pet_character_element.view.*
 
 /**
  * Когда элементу устанавливается ширина match_parent -
@@ -25,7 +22,7 @@ class CharacterAdapter(private val images: List<Int>, private val names: List<St
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.pet_character_element, parent, false)
         return ViewHolder(view)
     }
@@ -34,7 +31,7 @@ class CharacterAdapter(private val images: List<Int>, private val names: List<St
         return names.size
     }
 
-    override fun onBindViewHolder(holder: CharacterAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.characterImage.setImageResource(images[position])
         holder.characterName.text = names[position]
         if(onClickInterface != null){

@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailTestActivity
 
 /**
  * Прикручено получение характеров из PetCharacterEdit (пока без RecyclerView-selection)

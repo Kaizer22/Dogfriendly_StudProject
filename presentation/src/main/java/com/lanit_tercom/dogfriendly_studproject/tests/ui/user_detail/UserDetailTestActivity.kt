@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail
 
 import android.app.Activity
 import android.content.Intent
@@ -15,22 +15,24 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditTestActivity
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 
-/**
- * Клавиатура портит разметку, в остальном все вроде более менее норм.
- * Фотка теперь берется из галереи с помощью image-cropper и обрезается в круг c помощбю glide
- */
+
 class UserDetailTestActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
     private lateinit var btnToUserDetailEdit: ImageButton
-    private lateinit var btnAddPet: ImageButton
+    private lateinit var btnAddPet: MaterialButton
     private lateinit var btnToMap: ImageButton
     private lateinit var btnToChats: ImageButton
     private lateinit var btnToSettings: ImageButton
     private lateinit var petList: ListView
     private lateinit var nameTextView: TextView
     private lateinit var ageTextView: TextView
+    private lateinit var plansText: TextView
+    private lateinit var aboutText: TextView
     private lateinit var avatar: ImageView
     private var avatarUri: Uri? = null
 
@@ -59,7 +61,24 @@ class UserDetailTestActivity : AppCompatActivity() {
         btnToSettings = findViewById(R.id.to_settings_button)
         btnToSettings.setOnClickListener { toSettings() }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        plansText = findViewById(R.id.plans_text)
+        plansText.setOnClickListener {
+            val toEditPlanText = Intent(this, EditTextActivity::class.java)
+            toEditPlanText.putExtra("editText", "plans")
+            toEditPlanText.putExtra("title", "Планы на прогулку")
+            startActivityForResult(toEditPlanText, 2)
+
+        }
+
+        aboutText = findViewById(R.id.about_text)
+        aboutText.setOnClickListener {
+            val toEditAboutText = Intent(this, EditTextActivity::class.java)
+            toEditAboutText.putExtra("editText", "about")
+            toEditAboutText.putExtra("title", "О себе")
+            startActivityForResult(toEditAboutText, 3)
+        }
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         //Динамическое задание размера блоку "о себе"
         val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
@@ -70,7 +89,7 @@ class UserDetailTestActivity : AppCompatActivity() {
 
 
         //Открытие/скрытие нижней панели
-        appbar.addOnOffsetChangedListener(object : UserDetailTestActivity.AppBarStateChangeListener() {
+        appbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                 if (state == State.EXPANDED)
@@ -110,7 +129,7 @@ class UserDetailTestActivity : AppCompatActivity() {
     }
 
 
-    //Обратная связь с UserDetailEdit(Test)Activity
+    //Обратная связь с другими Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
@@ -127,10 +146,17 @@ class UserDetailTestActivity : AppCompatActivity() {
                 else
                     avatar.setImageResource(R.drawable.ic_set_avatar_green)
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
         }
-
+        if(requestCode == 2){
+            if(resultCode == Activity.RESULT_OK){
+                plansText.text = data?.getStringExtra("output")
+            }
+        }
+        if(requestCode == 3){
+            if(resultCode == Activity.RESULT_OK){
+                aboutText.text = data?.getStringExtra("output")
+            }
+        }
     }
 
 
