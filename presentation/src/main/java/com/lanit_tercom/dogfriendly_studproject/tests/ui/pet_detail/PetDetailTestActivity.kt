@@ -4,14 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.ShareActionProvider
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailTestActivity
+import kotlinx.android.synthetic.main.pet_detail_new.*
 
 /**
  * Пока это не нужно, раз Саша это делает
@@ -26,7 +31,9 @@ class PetDetailTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pet_detail)
+        setContentView(R.layout.pet_detail_new)
+        setSupportActionBar(toolbar as Toolbar)
+        supportActionBar?.title = null
 
 //        avatar = findViewById(R.id.pet_avatar)
 //        nameTextView = findViewById(R.id.name)
@@ -73,6 +80,7 @@ class PetDetailTestActivity : AppCompatActivity() {
 //        }
 
     }
+
 
 
     fun initializePhotoImages(): ArrayList<Int> {
