@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lanit_tercom.dogfriendly_studproject">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,22 +12,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.tests.ui.TestActivity">
-
-        </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignInActivity">
-
-        </activity>
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.SignUpActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity">
+        <activity android:name=".tests.ui.EditTextActivity"/>
+        <activity android:name=".tests.ui.pet_detail.PetCharacterEditTestActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
+        <activity android:name=".tests.ui.user_detail.UserDetailEditTestActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailEditTestActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity" />
+        <activity android:name=".tests.ui.user_detail.UserDetailTestActivity" />
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".tests.ui.TestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".tests.ui.activity.UserSignInActivity" />
+        <activity android:name=".tests.ui.activity.UserSignUpActivity" />
+        <activity android:name=".tests.ui.activity.UserMapActivity" />
+        <activity android:name=".tests.ui.activity.UserDetailActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"

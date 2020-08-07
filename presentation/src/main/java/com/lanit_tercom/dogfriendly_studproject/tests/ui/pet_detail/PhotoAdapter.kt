@@ -1,25 +1,47 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
-import android.graphics.drawable.ScaleDrawable
+
+import android.net.Uri
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.cardview.widget.CardView
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
-import kotlinx.android.synthetic.main.pet_photo_element.view.*
 
 
-class PhotoAdapter(private val images: List<Int>) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
+/**
+ * Не работает onClickListener кнопки удаления - onClickListener всего view перебивает эту кнопку.
+ * да и вообще не понятно как сделать ее как в примере - чтоб она наполовину наружу была.
+ */
+class PhotoAdapter(val images: ArrayList<Uri>, val onPhotoListener: OnPhotoListener) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val cardView: CardView) : RecyclerView.ViewHolder(cardView) {
+    class ViewHolder(private var view: View, private var onPhotoListener: OnPhotoListener) : RecyclerView.ViewHolder(view) , View.OnClickListener{
+        var photoImage: ImageView = view.findViewById(R.id.photo_image)
+        var photoBackground: ConstraintLayout = view.findViewById(R.id.photo_background)
+        val removePhoto: ImageView= view.findViewById(R.id.remove_photo)
+
+        init{
+            view.setOnClickListener(this)
+        }
+
+
+
+        override fun onClick(v: View?) {
+            if(adapterPosition == 0){
+                onPhotoListener.onPhotoClick(adapterPosition)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView: CardView = LayoutInflater.from(parent.context).inflate(R.layout.pet_photo_element, parent, false) as CardView
-        return ViewHolder(cardView)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoAdapter.ViewHolder {
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.pet_photo_element, parent, false)
+        return PhotoAdapter.ViewHolder(view, onPhotoListener)
     }
 
     override fun getItemCount(): Int {
@@ -27,11 +49,23 @@ class PhotoAdapter(private val images: List<Int>) : RecyclerView.Adapter<PhotoAd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val cardView = holder.cardView
-        val imageView = cardView.photo_image
-        val drawable = ContextCompat.getDrawable(cardView.context, images[position])
-        ScaleDrawable(drawable, 11, 50.0F, 50.0F)
-        imageView.setImageDrawable(drawable)
+        holder.photoImage.setImageURI(images[position])
+        if(position == 0){
+            holder.removePhoto.visibility = View.INVISIBLE
+            holder.photoBackground.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_gray_rectangle)
+
+
+            holder.removePhoto.setOnClickListener {
+                val temp = images[position]
+                images.removeAt(position)
+                images.add(temp)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    interface OnPhotoListener{
+        fun onPhotoClick(position: Int)
     }
 
 }

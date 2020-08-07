@@ -17,6 +17,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.EditTextActivity
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditTestActivity
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 

@@ -11,4 +11,8 @@
     <string name="about_dog">О собаке</string>
     <string name="photo">Фото</string>
     <string name="crop_image_menu_crop">Готово</string>
+    <string name="men_sign">/u2642</string>
+    <string name="woman_sign">/u2640</string>
+    <string name="men">\u2642 Муж.</string>
+    <string name="woman">\u2640 Жен.</string>
 </resources>

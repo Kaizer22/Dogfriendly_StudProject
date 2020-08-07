@@ -2,19 +2,18 @@ package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-/**
- * Пока кнопки не менял. Добавил  скролл для экранов где все не помещается.
- * Изображение загружается через Android-Image-Cropper. Пока оно почему то открывается с большим зумом.
- */
+
 class PetDetailEditTestActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
@@ -22,10 +21,11 @@ class PetDetailEditTestActivity : AppCompatActivity() {
     private lateinit var editPetBreed: TextInputEditText
     private lateinit var editPetAge: TextInputEditText
     private lateinit var avatar: ImageView
-    private lateinit var radioGroup: RadioGroup
+    private lateinit var menButton: MaterialButton
+    private lateinit var womanButton: MaterialButton
     private var avatarUri: Uri? = null
     private val PICK_IMAGE = 100
-    private var sex: String? = null
+    private var gender: String? = null
     private lateinit var data: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class PetDetailEditTestActivity : AppCompatActivity() {
             data.putExtra("name", editPetName.text.toString())
             data.putExtra("age", editPetAge.text.toString())
             data.putExtra("breed", editPetBreed.text.toString())
-            data.putExtra("sex", sex)
+            data.putExtra("gender", gender)
             data.putExtra("avatarUri", avatarUri.toString())
             startActivity(data)
         }
@@ -57,15 +57,29 @@ class PetDetailEditTestActivity : AppCompatActivity() {
         avatar = findViewById(R.id.pet_avatar)
         avatar.setOnClickListener { loadAvatar() }
 
-        radioGroup = findViewById(R.id.sex_radio_group)
-        radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId){
-                R.id.man_radio_button -> sex = "men"
-                R.id.woman_radio_button -> sex = "woman"
-            }
+        menButton = findViewById(R.id.men_button)
+        menButton.setOnClickListener{ setGender("men")}
+        womanButton = findViewById(R.id.woman_button)
+        womanButton.setOnClickListener { setGender("woman") }
+
+
+
+    }
+
+    private fun setGender(gender: String){
+        if(gender == "men"){
+            menButton.background.setTint(Color.parseColor("#B2BC24"))
+            menButton.setTextColor(Color.parseColor("#FFFFFF"))
+            womanButton.background.setTint(Color.parseColor("#FEFFF0"))
+            womanButton.setTextColor(Color.parseColor("#94A604"))
+            this.gender = "men"
+        } else {
+            womanButton.background.setTint(Color.parseColor("#B2BC24"))
+            womanButton.setTextColor(Color.parseColor("#FFFFFF"))
+            menButton.background.setTint(Color.parseColor("#FEFFF0"))
+            menButton.setTextColor(Color.parseColor("#94A604"))
+            this.gender = "woman"
         }
-
-
     }
 
     //Загрузка/создание/обрезание аватара

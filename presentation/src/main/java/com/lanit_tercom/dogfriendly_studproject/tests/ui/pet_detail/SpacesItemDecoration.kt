@@ -1,8 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
-import android.graphics.Rect;
+import android.graphics.Rect
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View;
 
 /**
  * Это для того чтоб таблицам через код размер задавать.
@@ -17,10 +17,15 @@ class SpacesItemDecoration(private var space: Int): RecyclerView.ItemDecoration(
         outRect.bottom = space
 
         if(parent.getChildLayoutPosition(view) == 0){
-            outRect.top = space;
+            outRect.top = space
         } else {
-            outRect.top = space;
+            outRect.top = space
         }
     }
 
+
 }
+
+
+
+
