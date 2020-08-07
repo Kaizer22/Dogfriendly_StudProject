@@ -11,16 +11,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 
-
 /**
- * С выделением пока не разбирался
- * Добавлено задание размера элементам через ItemDecoration
+ * Установка размеров через ItemDecoration работает кривовато
  */
-class PetCharacterEditTestActivity : AppCompatActivity() {
+class PetCharacterEditTestActivity : AppCompatActivity() , CharacterAdapter.OnCharacterListener{
     private lateinit var data: Intent
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
-    private lateinit var onClickInterface: OnClickInterface
+    private lateinit var elements: List<Character>
     private val pickedElements: ArrayList<String> = ArrayList()
 
 
@@ -29,20 +27,10 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
         setContentView(R.layout.pet_character_edit)
 
         val characterList = findViewById<RecyclerView>(R.id.character_elements)
-        val names = initializeNames()
-        val images = initializeImages()
-
-        onClickInterface = object : OnClickInterface {
-            override fun setClick(i: Int) {
-                pickedElements.add(i.toString())
-
-                Toast.makeText(this@PetCharacterEditTestActivity, i.toString(), Toast.LENGTH_SHORT).show()
-
-            }
-        }
+        elements =  Character.generateCharacters()
 
 
-        val characterAdapter = CharacterAdapter(images, names, onClickInterface)
+        val characterAdapter = CharacterAdapter(elements, this)
         val gridLayoutManager = GridLayoutManager(this, 3)
         characterList.itemAnimator = DefaultItemAnimator()
         characterList.addItemDecoration(SpacesItemDecoration(10))
@@ -63,42 +51,17 @@ class PetCharacterEditTestActivity : AppCompatActivity() {
             startActivity(data)
         }
 
-
     }
 
-    fun initializeNames(): ArrayList<String> {
-        val names = ArrayList<String>()
-        names.add("Активная")
-        names.add("Добрая")
-        names.add("Гордая")
-        names.add("Трусливая")
-        names.add("Агрессивная")
-        names.add("Гроза белок")
-        names.add("Сорванец")
-        names.add("Веселая")
-        names.add("Боевая")
-        names.add("Спортивная")
-        names.add("Неусидчивая")
-        names.add("Застенчивая")
-        return names
+    override fun onCharacterClick(position: Int) {
+        val element: Character = elements[position]
+        if(pickedElements.contains(element.getName()))
+            pickedElements.remove(element.getName())
+        else
+            pickedElements.add(element.getName())
+        Toast.makeText(this, pickedElements.size.toString(), Toast.LENGTH_SHORT).show()
     }
 
-    fun initializeImages(): ArrayList<Int> {
-        val images = ArrayList<Int>()
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        images.add(R.drawable.ic_round_circle)
-        return images
-    }
 
 }
 

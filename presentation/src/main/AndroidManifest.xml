@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tests.ui.user_detail.EditTextActivity"/>
+        <activity android:name=".tests.ui.EditTextActivity"/>
         <activity android:name=".tests.ui.pet_detail.PetCharacterEditTestActivity" />
         <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
         <activity android:name=".tests.ui.user_detail.UserDetailEditTestActivity" />

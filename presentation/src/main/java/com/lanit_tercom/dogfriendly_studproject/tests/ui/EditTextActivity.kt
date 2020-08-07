@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail
+package com.lanit_tercom.dogfriendly_studproject.tests.ui
 
 import android.app.Activity
 import android.content.Context
@@ -29,7 +29,7 @@ class EditTextActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.back_button)
         editText = findViewById(R.id.editText)
         titleText = findViewById(R.id.title_text)
-        titleText.setText(intent.getStringExtra("title"))
+        titleText.text = intent.getStringExtra("title")
         when(intent.getStringExtra("editText")){
             "plans" -> {
                 editText.filters = arrayOf<InputFilter>(LengthFilter(150))
@@ -44,7 +44,7 @@ class EditTextActivity : AppCompatActivity() {
         btnBack.setOnClickListener { finish() }
 
         btnReady.setOnClickListener {
-            val data: Intent = Intent()
+            val data = Intent()
             data.putExtra("output", editText.text.toString())
             setResult(Activity.RESULT_OK, data)
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

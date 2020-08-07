@@ -42,18 +42,20 @@
 
             <Button
                 android:id="@+id/ready_button"
-                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:background="#ffffff"
+                android:background="#FFFFFF"
                 android:lineSpacingExtra="1sp"
                 android:text="Готово"
                 android:textAllCaps="false"
                 android:textColor="#94A604"
                 android:textSize="14sp"
-                android:translationY="-0.71sp" />
+                android:translationY="-0.71sp"
+                app:backgroundTint="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </RelativeLayout>
 
 
@@ -91,20 +93,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.55"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_panel"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/top_panel">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        >
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/name_label"
                     android:layout_width="wrap_content"
@@ -138,7 +139,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_name"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp" />
+                        android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -176,7 +177,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_breed"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp" />
+                        android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -214,7 +215,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_age"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp" />
+                        android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -235,68 +236,44 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/age_input" />
 
-                <RadioGroup
-                    android:id="@+id/sex_radio_group"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sex_label">
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/men_button"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/men"
+                        android:textAllCaps="false"
+                        android:textColor="#94A604"
+                        app:backgroundTint="#FEFFF0"
+                        app:cornerRadius="30dp" />
 
-                        <RadioButton
-                            android:id="@+id/man_radio_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:background="@drawable/ic_button_men"
-                            android:button="@null" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/woman_button"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/woman"
+                        android:textAllCaps="false"
+                        android:textColor="#94A604"
+                        app:backgroundTint="#FEFFF0"
+                        app:cornerRadius="30dp" />
 
-                        <RadioButton
-                            android:id="@+id/woman_radio_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_button_woman"
-                            android:button="@null" />
-                    </LinearLayout>
+                </LinearLayout>
 
-
-                </RadioGroup>
 
             </LinearLayout>
 
 
-            <!--        <ImageButton-->
-            <!--            android:id="@+id/men_button"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_marginTop="8dp"-->
-            <!--            android:layout_marginEnd="24dp"-->
-            <!--            android:background="#ffffff"-->
-            <!--            android:src="@drawable/ic_button_men"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@+id/sex_label" />-->
-
-            <!--        <ImageButton-->
-            <!--            android:id="@+id/woman_button"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_marginStart="24dp"-->
-            <!--            android:layout_marginTop="8dp"-->
-            <!--            android:background="#ffffff"-->
-            <!--            android:src="@drawable/ic_button_woman"-->
-            <!--            app:layout_constraintStart_toStartOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@+id/sex_label" />-->
 
 
-
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
