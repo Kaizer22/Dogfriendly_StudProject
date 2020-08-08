@@ -14,4 +14,25 @@
     <string name="channel_delete_button">Удалить</string>
     <string name="channel_notification_turn_off_button">Выкл.звук</string>
     <string name="channel_hold_on_button">Открепить</string>
+
+    <!--Invitation Activity-->
+    <string name="invitation_headline">Приглашение</string>
+    <string name="invitation_title_name">Название</string>
+    <string name="invitation_name_hint">Укажите название, отражающее цель встречи.</string>
+    <string name="invitation_title_description">Описание</string>
+    <string name="invitation_title_description_hint">Расскажите о цели втречи...</string>
+    <string name="invitation_access_to_chat">Доступ в чат</string>
+    <string name="invitation_access_free">Свободный</string>
+    <string name="invitation_access_free_hint">Любой человек сможет сразу присоединиться к чату.</string>
+    <string name="invitation_access_request">По запросу</string>
+    <string name="invitation_access_request_hint">Только после подтверждения доступа создателем всречи.</string>
+    <string name="invitation_radius_title">Радиус видимости</string>
+    <string name="invitation_radius_hint">Приглашение будет видно на карте людям, находящимся в данном радисе от вас.</string>
+    <string name="invitation_visible_time">Время видимости</string>
+    <string name="invitation_visible_time_six">6 часов</string>
+    <string name="invitation_visible_time_twelve">12 часов</string>
+    <string name="invitation_visible_time_day">24 часа</string>
+    <string name="invitation_visible_time_hint">Приглашение автоматически исчезнет с карты, но его всегда можно будет активировать в настройках чата встречи.</string>
+    <string name="invitation_create_button">Создать</string>
+
 </resources>

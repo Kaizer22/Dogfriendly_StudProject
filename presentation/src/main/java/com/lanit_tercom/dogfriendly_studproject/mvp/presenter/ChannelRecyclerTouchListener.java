@@ -165,7 +165,7 @@ public class ChannelRecyclerTouchListener implements RecyclerView.OnItemTouchLis
         this.mRowClickListener = listener;
         return this;
     }
-    
+
     //////////////// Swipeable ////////////////////
 
     public ChannelRecyclerTouchListener setSwipeable(int foregroundID, int backgroundID, OnSwipeOptionsClickListener listener) {

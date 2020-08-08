@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Invitation Activity RadioGroup-->
+    <style name="InvitationRadioGroup" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/invitation_activity_elements_unchecked</item>
+        <item name="colorControlActivated">@color/invitation_activity_elements</item>
+    </style>
+
+    <!-- Invitation Activity SeekBar-->
+    <style name="invitationSeekBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorControlActivated">@color/invitation_activity_elements</item>
+        <item name="android:colorControlNormal">@color/invitation_activity_elements_unchecked</item>
+    </style>
+
 </resources>
