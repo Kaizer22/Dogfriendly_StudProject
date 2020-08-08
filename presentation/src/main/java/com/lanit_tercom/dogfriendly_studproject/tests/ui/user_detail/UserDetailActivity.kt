@@ -18,11 +18,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.EditTextActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditTestActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditActivity
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailActivity
 
 
-class UserDetailTestActivity : AppCompatActivity() {
+class UserDetailActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
     private lateinit var btnToUserDetailEdit: ImageButton
     private lateinit var btnAddPet: MaterialButton
@@ -105,7 +105,7 @@ class UserDetailTestActivity : AppCompatActivity() {
 
     //Методы для навигации и взаимодействия с другими экранами
     private fun toPetDetail() {
-        val intent: Intent = Intent(this, PetDetailTestActivity::class.java)
+        val intent: Intent = Intent(this, PetDetailActivity::class.java)
         startActivity(intent)
     }
 
@@ -120,12 +120,12 @@ class UserDetailTestActivity : AppCompatActivity() {
 
 
     private fun toUserEdit() {
-        val intent: Intent = Intent(this, UserDetailEditTestActivity::class.java)
+        val intent: Intent = Intent(this, UserDetailEditActivity::class.java)
         startActivityForResult(intent, 1)
     }
 
     private fun addPet() {
-        val intent: Intent = Intent(this, PetDetailEditTestActivity::class.java)
+        val intent: Intent = Intent(this, PetDetailEditActivity::class.java)
         startActivity(intent)
     }
 

@@ -11,6 +11,9 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
+/**
+ * Надо порефакторить
+ */
 class PetPhotoActivity : AppCompatActivity() {
     private lateinit var elements: ArrayList<Pair<ImageView, ImageView>>
     private lateinit var loadPhotoButton: ImageView
