@@ -28,7 +28,7 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
 
     private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
 
-        override fun OnSignInFinished(currentUserID: String?) {
+        override fun onSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
             ((view as UserSignInFragment)).hideLoading()
             if(currentUserId != null)
@@ -41,7 +41,7 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
                 ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))
         }
 
-        override fun OnError(e: Exception?) {}
+        override fun onError(e: Exception?) {}
 
     }
 

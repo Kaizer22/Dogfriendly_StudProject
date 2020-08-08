@@ -13,6 +13,8 @@ import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.WelcomeView;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.WelcomeActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 public class WelcomeFragment extends BaseFragment implements WelcomeView {
     @Override
     public void initializePresenter() {} //Кажется, тут нет необходимости создавать презентер-класс
@@ -32,5 +34,20 @@ public class WelcomeFragment extends BaseFragment implements WelcomeView {
 
         goToSignIn.setOnClickListener(v -> base.navigateToUserSignIn() );
         goToSignUp.setOnClickListener(v -> base.navigateToUserSignUp());
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(@NotNull String message) {
+
     }
 }

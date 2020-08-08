@@ -32,4 +32,12 @@ class Navigator {
             context.startActivity(
                     ChatActivity.getCallingIntent(context, channelID))
 
+    fun navigateToResetPassword(context: Context) =
+            context.startActivity(
+                    ResetPasswordActivity.getCallingIntent(context)
+            )
+    fun navigateToWelcomeScreen(context: Context) =
+            context.startActivity(
+                    WelcomeActivity.getCallingIntent(context)
+            )
 }

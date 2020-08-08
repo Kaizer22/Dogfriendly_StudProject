@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_sign_in.*
 /**
  * Фрагмент отображающий окно авторизации
  * @author nikolaygorokhov1@gmail.com
+ * @author dshebut@rambler.ru
  */
 class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener {
 
@@ -33,6 +34,8 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
         super.onViewCreated(view, savedInstanceState)
         userSignInPresenter?.setView(this)
         button_sign_in.setOnClickListener(this)
+        to_reset_password_link.setOnClickListener(this)
+        button_back_to_welcome_screen.setOnClickListener(this)
         //button_signup.setOnClickListener(this)
     }
 
@@ -48,8 +51,16 @@ class UserSignInFragment : BaseFragment(), UserSignInView, View.OnClickListener 
             R.id.button_sign_in -> {
                 auth()
             }
-            R.id.button_sign_up ->
+            R.id.button_sign_up -> {
                 (activity as UserSignInActivity).navigateToUserSignUp()
+            }
+            R.id.to_reset_password_link -> {
+                (activity as UserSignInActivity).navigateToResetPassword()
+            }
+            R.id.button_back_to_welcome_screen ->
+                (activity as UserSignInActivity).navigateToWelcomeScreen()
+
+
         }
     }
 

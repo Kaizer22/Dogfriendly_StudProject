@@ -10,6 +10,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
  * Активность авторизации.
  * Запускает фрагмент с авторизацией.
  * @author prostak.sasha111@mail.ru
+ * @author dshebut@rambler.ru
  */
 class UserSignInActivity : BaseActivity() {
 
@@ -31,10 +32,16 @@ class UserSignInActivity : BaseActivity() {
     fun navigateToUserMap() =
         navigator?.navigateToUserMap(this)
 
+    fun navigateToResetPassword() =
+            navigator?.navigateToResetPassword(this)
+
+    fun navigateToWelcomeScreen() =
+            navigator?.navigateToWelcomeScreen(this)
+
     //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
     // код и код в UserSignInPresenter
     fun navigateToChat() =
-            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" );
+            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)

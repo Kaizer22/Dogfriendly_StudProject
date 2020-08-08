@@ -37,6 +37,7 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
         super.onViewCreated(view, savedInstanceState)
         userSignUpPresenter?.setView(this)
         button_sign_up.setOnClickListener(this)
+        to_sign_in_link.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -52,6 +53,7 @@ class UserSignUpFragment : BaseFragment(), UserSignUpView, View.OnClickListener 
                 //} else
                     //showToastMessage("Пароли не совпадают!")
             }
+            R.id.to_sign_in_link -> (activity as UserSignUpActivity).navigateToUserSignIn()
         }
     }
 

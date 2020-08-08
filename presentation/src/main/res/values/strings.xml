@@ -28,4 +28,28 @@
     <string name="sign_in_here">Войдите здесь</string>
     <string name="please_use_real_name">Пожалуйста, укажите реальное имя - оно будет использоваться при взаимодействии с другими пользователями</string>
     <string name="what_is_your_name">Как Вас зовут?</string>
+    <string name="follow_the_link_and_create_a_new_password" formatted="true">Перейдите по ней и придумайте новый пароль, а потом войдите в <b>DogFriendly</b> как обычно.</string>
+    <string name="reset_password">Сбросить пароль</string>
+    <string name="reset_password_hint">Не страшно! Введите свою почту в поле ниже и мы пришлем вам ссылку для сброса пароля.</string>
+    <string name="password_successfully_reset">Пароль сброшен!</string>
+    <string name="ours_corgis_from_support">Наши корги из службы поддержки уже отправили вам ссылку для сброса пароля.</string>
+    <string name="forgot_your_password">Забыли пароль?</string>
+    <string name="pets_on_map">Питомцы на карте</string>
+    <string name="geolocation_hint_1">К сожалению, наше приложение не может работать без передачи геоданных.</string>
+    <string name="geolocation_hint_2">Другие пользователи смогут увидеть Ваше местоположение только когда вы активируете статус</string>
+    <string name="user_status">«На прогулке»</string>
+    <string name="turn_on_geolocation">Включить геолокацию</string>
+    <string name="invitations_and_chats">Приглашения и чаты</string>
+    <string name="invitations_and_chats_hint_1">Когда вам кто-то напишет или пригласит на прогулку, то вам придет уведомление.</string>
+    <string name="invitations_and_chats_hint_2">Позже вы всегда сможете отключить уведомления в настройках.</string>
+    <string name="skip">Пропустить</string>
+    <string name="turn_on_notifications">Включить уведомления</string>
+    <string name="hooray">Ура!</string>
+    <string name="continue_finish_registration">Продолжить</string>
+
+    <string name="user_with_that_email_address_not_found">Не найден пользователь с таким e-mail</string>
+    <string name="no_internet_connection">Не удается установить связь с сервером</string>
+    <string name="empty_email">Введите свою почту в это поле</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="on_sign_up_finished_hint">Все готово.Теперь расскажите о себе и своём питомце и скорее на прогулку!</string>
 </resources>

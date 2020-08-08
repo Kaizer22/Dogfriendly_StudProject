@@ -22,11 +22,11 @@ class UserSignUpPresenter(private val authManager: AuthManager?) : BasePresenter
 
     private val createUserCallback: AuthManager.CreateUserCallback = object : AuthManager.CreateUserCallback {
 
-        override fun OnCreateUserFinished(currentUserID: String?) {
+        override fun onCreateUserFinished(currentUserID: String?) {
             currentUserId = currentUserID
         }
 
-        override fun OnError(e: Exception?) {
+        override fun onError(e: Exception?) {
             //TODO("Not yet implemented")
         }
 

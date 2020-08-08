@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".ui.activity.UserSignInActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.ResetPasswordActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.UserSignUpActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.UserMapActivity" />
