@@ -37,7 +37,8 @@ class PetPhotoEditTestActivity : AppCompatActivity(), PhotoAdapter.OnPhotoListen
         val gridLayoutManager = GridLayoutManager(this, 3)
         photoList.layoutManager = gridLayoutManager
         photoList.itemAnimator = DefaultItemAnimator()
-        photoList.addItemDecoration(SpacesItemDecoration(10))
+        photoList.addItemDecoration(GridSpacingItemDecorator(3, resources.getDimensionPixelSize(R.dimen.recycler_view_item_width), true, 12))
+
         photoList.adapter = photoAdapter
 
         data = Intent(this, PetDetailTestActivity::class.java)

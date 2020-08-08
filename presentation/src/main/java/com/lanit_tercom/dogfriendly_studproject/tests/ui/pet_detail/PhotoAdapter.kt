@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -16,15 +18,15 @@ import com.lanit_tercom.dogfriendly_studproject.R
 
 
 /**
- * Не работает onClickListener кнопки удаления - onClickListener всего view перебивает эту кнопку.
- * да и вообще не понятно как сделать ее как в примере - чтоб она наполовину наружу была.
+ * Да ну его, это невозможно в данном случае
  */
 class PhotoAdapter(val images: ArrayList<Uri>, val onPhotoListener: OnPhotoListener) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
+
     class ViewHolder(private var view: View, private var onPhotoListener: OnPhotoListener) : RecyclerView.ViewHolder(view) , View.OnClickListener{
         var photoImage: ImageView = view.findViewById(R.id.photo_image)
-        var photoBackground: ConstraintLayout = view.findViewById(R.id.photo_background)
-        val removePhoto: ImageView= view.findViewById(R.id.remove_photo)
+        var photoBackground: CardView = view.findViewById(R.id.photo_background)
+        val removePhoto: ImageButton= view.findViewById(R.id.remove_photo)
 
         init{
             view.setOnClickListener(this)
@@ -54,14 +56,15 @@ class PhotoAdapter(val images: ArrayList<Uri>, val onPhotoListener: OnPhotoListe
             holder.removePhoto.visibility = View.INVISIBLE
             holder.photoBackground.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.ic_gray_rectangle)
 
-
+        } else {
             holder.removePhoto.setOnClickListener {
                 val temp = images[position]
                 images.removeAt(position)
-                images.add(temp)
+                images.add(Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail/" + R.drawable.ic_button_add_photo))
                 notifyDataSetChanged()
             }
         }
+
     }
 
     interface OnPhotoListener{

@@ -33,11 +33,14 @@ class PetCharacterEditTestActivity : AppCompatActivity() , CharacterAdapter.OnCh
         val characterAdapter = CharacterAdapter(elements, this)
         val gridLayoutManager = GridLayoutManager(this, 3)
         characterList.itemAnimator = DefaultItemAnimator()
-        characterList.addItemDecoration(SpacesItemDecoration(10))
+
+//        characterList.addItemDecoration(SpacesItemDecoration(10))
+        characterList.addItemDecoration(GridSpacingItemDecorator(3, resources.getDimensionPixelSize(R.dimen.recycler_view_item_width), true, 12))
+
         characterList.layoutManager = gridLayoutManager
         characterList.adapter = characterAdapter
 
-        data = Intent(this, PetPhotoEditTestActivity::class.java)
+        data = Intent(this, PetPhotoActivity::class.java)
         data.putExtras(intent)
 
         backButton = findViewById(R.id.back_button)
