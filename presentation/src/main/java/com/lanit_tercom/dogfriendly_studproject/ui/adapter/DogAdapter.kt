@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 import kotlinx.android.synthetic.main.near_list_item_view_test.view.*
 
-class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distances: Array<Int>): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
+class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distances: Array<Int>, val tag: String): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
 
@@ -28,9 +28,19 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distanc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardView = LayoutInflater.from(parent.context).inflate(R.layout.near_list_item_view_test,
-                parent,
-                false) as CardView
+        val cardView: CardView
+        cardView = if (tag == "map")
+            LayoutInflater.from(parent.context).inflate(R.layout.near_list_item_view_test,
+                    parent,
+                    false) as CardView
+        else if (tag == "map_settings")
+            LayoutInflater.from(parent.context).inflate(R.layout.settings_list_dog_view_test,
+                    parent,
+                    false) as CardView
+        else
+            LayoutInflater.from(parent.context).inflate(R.layout.near_list_item_view_test,
+                    parent,
+                    false) as CardView
         return ViewHolder(cardView)
     }
 
@@ -42,7 +52,10 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distanc
         val textViewDogName = cardView.textView_dog_name
         textViewDogName.text = names[position]
         val textViewDistance = cardView.textView_distance
-        textViewDistance.text = "${distances[position]} км от вас"
+        if (tag == "map")
+            textViewDistance.text = "${distances[position]} км от вас"
+        else
+            textViewDistance.text = "Колли, 3 месяца"
         cardView.setOnClickListener {
             listener?.onClick(position)
         }

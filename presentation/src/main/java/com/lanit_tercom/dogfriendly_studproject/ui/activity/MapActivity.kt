@@ -26,7 +26,7 @@ class MapActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        setSupportActionBar(toolbar as Toolbar)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

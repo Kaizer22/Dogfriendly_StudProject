@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lanit_tercom.dogfriendly_studproject">
+    package="com.lanit_tercom.dogfriendly_studproject" >
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,8 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".tests.ui.pet_detail.PetPhotoActivity"></activity>
+        android:theme="@style/AppTheme" >
+        <activity android:name=".tests.ui.map.MapSettingsActivity" >
+        </activity>
+        <activity android:name=".tests.ui.pet_detail.PetPhotoActivity" />
         <activity android:name=".tests.ui.EditTextActivity" />
         <activity android:name=".tests.ui.pet_detail.PetCharacterEditTestActivity" />
         <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
@@ -23,7 +25,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".tests.ui.TestActivity">
+        <activity android:name=".tests.ui.TestActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +34,7 @@
         </activity>
         <activity android:name=".tests.ui.activity.UserSignInActivity" />
         <activity android:name=".tests.ui.activity.UserSignUpActivity" />
-        <activity android:name=".tests.ui.activity.UserMapActivity" />
+        <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".tests.ui.activity.UserDetailActivity" />
 
         <meta-data

@@ -162,7 +162,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         val names = arrayOf("Катя", "Лена", "Маша", "Саша")
         val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
         val distances = arrayOf(3, 2, 5, 1)
-        val adapter = DogAdapter(names, imageIds, distances)
+        val adapter = DogAdapter(names, imageIds, distances, "map")
         adapter.setListener(object: DogAdapter.Listener{
             override fun onClick(position: Int) {
                 Snackbar.make(user_map_test,"Профиль ${names[position]} на расстоянии ${distances[position]} км", Snackbar.LENGTH_SHORT).show()
