@@ -40,7 +40,7 @@ class PetCharacterEditTestActivity : AppCompatActivity() , CharacterAdapter.OnCh
         characterList.layoutManager = gridLayoutManager
         characterList.adapter = characterAdapter
 
-        data = Intent(this, PetPhotoEditTestActivity::class.java)
+        data = Intent(this, PetPhotoActivity::class.java)
         data.putExtras(intent)
 
         backButton = findViewById(R.id.back_button)
