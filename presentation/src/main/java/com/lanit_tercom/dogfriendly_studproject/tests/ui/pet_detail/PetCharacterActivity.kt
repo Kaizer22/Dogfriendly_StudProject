@@ -1,6 +1,7 @@
 
 package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import com.google.android.material.card.MaterialCardView
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.theartofdev.edmodo.cropper.CropImage
 
 class PetCharacterActivity : AppCompatActivity() {
     private val selected: ArrayList<String> = ArrayList()
@@ -22,6 +24,10 @@ class PetCharacterActivity : AppCompatActivity() {
         initialize()
 
         toPetPhoto = Intent(this, PetPhotoActivity::class.java)
+        if(intent.extras != null){
+            toPetPhoto.putExtras(intent.extras!!)
+        }
+
 
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
@@ -33,12 +39,13 @@ class PetCharacterActivity : AppCompatActivity() {
         readyButton.setOnClickListener {
             toPetPhoto.putStringArrayListExtra("character", selected)
 
-            startActivity(toPetPhoto)
+            startActivityForResult(toPetPhoto, 4)
         }
 
     }
 
-    fun attachOnClick(characterView: MaterialCardView, characterName: String): MaterialCardView{
+    //Функция присваивающая onClickListener передаваемому CardView
+    private fun attachOnClick(characterView: MaterialCardView, characterName: String): MaterialCardView{
         characterView.setOnClickListener {
             if(!selected.contains(characterName)){
                 selected.add(characterName)
@@ -51,7 +58,8 @@ class PetCharacterActivity : AppCompatActivity() {
         return characterView
     }
 
-    fun initialize(): ArrayList<MaterialCardView>{
+    //Инициализация элементов экрана
+    private fun initialize(): ArrayList<MaterialCardView>{
         val output: ArrayList<MaterialCardView> = ArrayList()
 
         output.add(attachOnClick(findViewById(R.id.active), "active"))
@@ -70,5 +78,16 @@ class PetCharacterActivity : AppCompatActivity() {
         output.add(attachOnClick(findViewById(R.id.shy), "shy"))
 
         return output
+    }
+
+    //Проброска данных о питомце обратно в UserDetailActivity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 4){
+            val a = data?.extras?.size()
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+
     }
 }

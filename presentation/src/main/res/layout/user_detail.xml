@@ -202,7 +202,7 @@
                     android:textSize="14sp"
                     android:translationY="-1.71sp" />
 
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/pet_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

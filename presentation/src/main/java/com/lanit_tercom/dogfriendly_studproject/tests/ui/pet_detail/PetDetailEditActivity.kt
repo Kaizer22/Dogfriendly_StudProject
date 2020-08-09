@@ -50,7 +50,7 @@ class PetDetailEditActivity : AppCompatActivity() {
             toPetCharacter.putExtra("breed", editPetBreed.text.toString())
             toPetCharacter.putExtra("gender", gender)
             toPetCharacter.putExtra("avatarUri", avatarUri.toString())
-            startActivity(toPetCharacter)
+            startActivityForResult(toPetCharacter, 4)
         }
 
         avatar = findViewById(R.id.pet_avatar)
@@ -61,10 +61,9 @@ class PetDetailEditActivity : AppCompatActivity() {
         womanButton = findViewById(R.id.woman_button)
         womanButton.setOnClickListener { setGender("woman") }
 
-
-
     }
 
+    //Обработка нажатий кнопо выбора пола
     private fun setGender(gender: String){
         if(gender == "men"){
             menButton.background.setTint(Color.parseColor("#B2BC24"))
@@ -91,7 +90,7 @@ class PetDetailEditActivity : AppCompatActivity() {
                 .start(this)
     }
 
-    //Обратная связь с галлереей
+    //Обратная связь с галереей, проброс данных обратно в UserDetailActivity(4)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -103,6 +102,11 @@ class PetDetailEditActivity : AppCompatActivity() {
                 avatar.setImageURI(avatarUri)
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
+        }
+        if(requestCode == 4){
+            val a = data?.extras?.size()
+            setResult(Activity.RESULT_OK, data)
+            finish()
         }
 
     }
