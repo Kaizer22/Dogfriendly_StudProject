@@ -44,20 +44,19 @@
 
             <ImageView
                 android:id="@+id/invitations_hint_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/indent_enormous"
+                android:layout_width="180dp"
+                android:layout_height="75dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/ic_invitation_doggy" />
+                android:background="@drawable/ic_invitation_doggy" />
 
             <TextView
                 android:id="@+id/invitations_hint_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/indent_enormous"
-                android:layout_marginTop="@dimen/indent_enormous"
+                android:layout_marginTop="60dp"
                 android:layout_marginEnd="@dimen/indent_enormous"
                 android:gravity="center"
                 android:text="@string/invitations_and_chats_hint_1"

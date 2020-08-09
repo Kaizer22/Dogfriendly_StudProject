@@ -24,7 +24,7 @@ public class ResetPasswordPresenter extends BasePresenter {
                 new AuthManager.ResetPasswordCallback() {
                     @Override
                     public void onPasswordReset() {
-                        resetPasswordView.changeCondition(true);
+                        resetPasswordView.changeViewCondition(true);
                     }
 
                     @Override

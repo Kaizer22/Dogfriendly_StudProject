@@ -17,8 +17,11 @@ class Navigator {
                 UserSignInActivity.getCallingIntent(context))
 
     fun navigateToUserSignUp(context: Context) =
+        //context.startActivity(
+                //UserSignUpActivity.getCallingIntent(context))
         context.startActivity(
-                UserSignUpActivity.getCallingIntent(context))
+                TestSignUpActivity.getCallingIntent(context)
+        )
 
     fun navigateToUserMap(context: Context) =
         context.startActivity(

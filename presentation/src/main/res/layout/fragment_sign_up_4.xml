@@ -64,7 +64,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button_sign_up"
+                android:id="@+id/button_finish_registration"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/basic_text_button_height"
                 android:layout_marginStart="@dimen/indent_huge"

@@ -95,7 +95,7 @@ public class ResetPasswordFragment extends BaseFragment implements ResetPassword
     }
 
     @Override
-    public void changeCondition(boolean isFinished) {
+    public void changeViewCondition(boolean isFinished) {
         ResetPasswordFragment.isFinished = isFinished;
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
