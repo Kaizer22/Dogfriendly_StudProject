@@ -15,9 +15,13 @@ import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.user.AddPetUseCase
 import com.lanit_tercom.domain.interactor.user.CreateUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.DeleteUserDetailUseCase
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.AddPetUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.CreateUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.DeleteUserDetailUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
@@ -35,9 +39,10 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
+        button_delete.setOnClickListener(this)
         button_get.setOnClickListener(this)
         button_add.setOnClickListener(this)
-        button_delete.setOnClickListener(this)
+        button_del.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -99,10 +104,42 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
 
             }
             R.id.button_delete ->{
+                val pet =  PetDto()
+                pet.about = "qweq"
+                pet.age = 2
+                pet.breed ="rewd"
 
-                //If get and add works, let's assume that delete works too
+                val addPetUseCase = AddPetUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
 
+                val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback{
+                    override fun onError(errorBundle: ErrorBundle?) {
+                        Log.i("TEST_ACTIVITY", "ADDED_SUCCESFULLY")
+                    }
 
+                    override fun onPetAdded() {
+                        Log.i("TEST_ACTIVITY", "ERROR_WHILE_ADDING_NEW_PET")
+                    }
+
+                }
+
+                addPetUseCase.execute("-METfpuYxAGBZ8PH1hVz", pet, addPetCallback)
+
+            }
+            R.id.button_del ->{
+                val deleteUserDetailUseCase = DeleteUserDetailUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
+
+                val deleteUserCallback: DeleteUserDetailUseCase.Callback = object : DeleteUserDetailUseCase.Callback{
+                    override fun onUserDeleted() {
+                        Log.i("TEST_ACTIVITY", "DELETED_SUCCESFULLY")
+                    }
+
+                    override fun onError(errorBundle: ErrorBundle?) {
+                        Log.i("TEST_ACTIVITY", "ERROR_WHILE_DELETION")
+                    }
+
+                }
+
+                deleteUserDetailUseCase.execute("-MESEKY2TqR4MzM5wDgL", deleteUserCallback);
             }
 
         }

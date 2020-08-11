@@ -1,5 +1,6 @@
 package com.lanit_tercom.domain.repository;
 
+import com.lanit_tercom.domain.dto.PetDto;
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
@@ -22,8 +23,17 @@ public interface UserRepository {
     interface UserCreateCallback extends Error {
         void onUserCreated();
     }
+
     interface UserEditCallback extends Error {
         void onUserEdited();
+    }
+
+    interface UserDeleteCallback extends Error{
+        void onUserDeleted();
+    }
+
+    interface AddPetCallback extends Error{
+        void onPetAdded();
     }
 
 
@@ -35,4 +45,7 @@ public interface UserRepository {
 
     void editUser(UserDto userDto, UserEditCallback userCallback);
 
+    void deleteUser(String id, UserDeleteCallback userDeleteCallback);
+
+    void addPet(String id, PetDto pet, AddPetCallback addPetCallback);
 }
