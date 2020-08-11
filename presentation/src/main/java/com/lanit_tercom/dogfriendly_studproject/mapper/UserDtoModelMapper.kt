@@ -21,9 +21,9 @@ class UserDtoModelMapper {
         if (userDto == null) {
             return null
         }
-        val id = userDto.id
-        val name = userDto.name
-        val point = Point(Random.nextDouble(20.0, 50.0), Random.nextDouble(20.0, 50.0))
+        val id: String? = userDto.id
+        val name: String? = userDto.name
+        val point: Point? = Point(Random.nextDouble(20.0, 50.0), Random.nextDouble(20.0, 50.0))
         return UserModel(id, name, point = point, email = "martin@gmail.com", password = "12345678")
     }
 }

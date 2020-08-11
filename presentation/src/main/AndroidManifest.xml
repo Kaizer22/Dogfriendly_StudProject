@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -32,10 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".tests.ui.activity.UserSignInActivity" />
-        <activity android:name=".tests.ui.activity.UserSignUpActivity" />
+        <activity android:name=".ui.activity.SignInActivity" />
+        <activity android:name=".ui.activity.SignUpActivity" />
         <activity android:name=".ui.activity.MapActivity" />
-        <activity android:name=".tests.ui.activity.UserDetailActivity" />
+        <activity android:name=".ui.activity.UserDetailActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -44,5 +45,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6olvefAu4dgT02zRVG7UKVgTmfYdszBw" />
     </application>
+
 
 </manifest>

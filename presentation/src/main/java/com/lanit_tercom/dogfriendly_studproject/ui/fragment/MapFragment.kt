@@ -1,20 +1,32 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
@@ -35,8 +47,10 @@ import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
+import kotlinx.android.synthetic.main.activity_test.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
+import java.util.*
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -47,6 +61,14 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     private var userMapPresenter: MapPresenter? = null
     private var googleMap: GoogleMap? = null
+    private var apiKey: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.packageManager?.getApplicationInfo(context?.packageName, PackageManager.GET_META_DATA)?.apply {
+            apiKey = metaData.getString("com.google.android.geo.API_KEY")
+        }
+    }
 
     override fun initializePresenter() {
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
@@ -119,6 +141,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         }
     }
 
+    @SuppressLint("DefaultLocale")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
@@ -170,6 +193,48 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         })
         dogRecycler.adapter = adapter
         dogRecycler.layoutManager = LinearLayoutManager(activity)
+
+        // Initialize Places.
+        Places.initialize(activity?.applicationContext!!, apiKey!!)
+
+        // Create a new Places client instance.
+        val placesClient: PlacesClient = Places.createClient(context!!)
+
+        // Use fields to define the data types to return.
+
+        // Use fields to define the data types to return.
+        val placeFields: List<Place.Field> = listOf(Place.Field.NAME)
+
+        // Use the builder to create a FindCurrentPlaceRequest.
+
+        // Use the builder to create a FindCurrentPlaceRequest.
+        val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.builder(placeFields).build()
+
+        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+        if (ContextCompat.checkSelfPermission(context!!, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            placesClient.findCurrentPlace(request).addOnSuccessListener { response: FindCurrentPlaceResponse ->
+                for (placeLikelihood in response.placeLikelihoods) {
+                    Log.i(TAG, java.lang.String.format("Place '%s' has likelihood: %f",
+                            placeLikelihood.place.name,
+                            placeLikelihood.likelihood))
+                    textView.append(java.lang.String.format("Place '%s' has likelihood: %f\n",
+                            placeLikelihood.place.name,
+                            placeLikelihood.likelihood))
+                }
+            }.addOnFailureListener { exception: Exception ->
+                if (exception is ApiException) {
+                    val apiException: ApiException = exception as ApiException
+                    Log.e(TAG, "Place not found: " + apiException.statusCode)
+                }
+            }
+        } else {
+            // A local method to request required permissions;
+            // See https://developer.android.com/training/permissions/requesting
+            //getLocationPermission()
+        }
     }
+
+
+
 
 }

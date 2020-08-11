@@ -24,6 +24,7 @@
                 android:layout_marginStart="10dp"
                 android:backgroundTint="@color/colorPrimary"/>
             <Switch
+                android:id="@+id/switch_visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorPrimary"
