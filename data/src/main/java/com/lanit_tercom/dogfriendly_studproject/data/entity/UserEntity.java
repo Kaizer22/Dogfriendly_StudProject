@@ -3,53 +3,91 @@ package com.lanit_tercom.dogfriendly_studproject.data.entity;
 import java.util.List;
 
 public class UserEntity {
-
+    //Поля
     private String id;
-    private String userName;
+    private String name;
     private int age;
+    private String about;
+    private String plans;
+    private List<PetEntity> pets;
+    private String avatar;
 
+    //Конструктор
     public UserEntity(){}
 
-    public UserEntity(String name, int age){
+    public UserEntity(String id, String name, int age, String about, String plans, List<PetEntity> pets, String avatar) {
         this.id = id;
-        this.userName = name;
+        this.name = name;
         this.age = age;
+        this.about = about;
+        this.plans = plans;
+        this.pets = pets;
+        this.avatar = avatar;
     }
 
-    public UserEntity(String id, String name){
-        this.id = id;
-        this.userName = name;
-    }
-
-   public String getId() {
-        return id;
-    }
-
+    //Сеттеры
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getAge() {
-        return age;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setAge(int age) {
         this.age = age;
     }
 
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public void setPlans(String plans) {
+        this.plans = plans;
+    }
+
+    public void setPets(List<PetEntity> pets) {
+        this.pets = pets;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    //Геттеры
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public String getPlans() {
+        return plans;
+    }
+
+    public List<PetEntity> getPets() {
+        return pets;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
     @Override
     public String toString() {
         return "UserEntity{" +
                 "id='" + id + '\'' +
-                ", userName='" + userName + '\'' +
+                ", userName='" + name + '\'' +
                 ", userAge=" + age +
                 '}' + '\n';
     }

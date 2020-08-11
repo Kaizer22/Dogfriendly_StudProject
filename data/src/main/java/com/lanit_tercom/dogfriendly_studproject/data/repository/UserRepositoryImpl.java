@@ -69,7 +69,7 @@ public class UserRepositoryImpl implements UserRepository {
         userEntityStore.getAllUsers(new UserEntityStore.UserListCallback() {
             @Override
             public void onUsersListLoaded(List<UserEntity> users) {
-                List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList(users);
+                List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList2(users);
                 if (usersDtoList != null){
                     userListCallback.onUsersLoaded(usersDtoList);
                 } else {

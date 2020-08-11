@@ -21,7 +21,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(Intent(this, UserDetailActivity::class.java))
+        startActivity(Intent(this, UserTestActivity::class.java))
 
     }
 

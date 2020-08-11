@@ -84,7 +84,6 @@ class PetCharacterActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 4){
-            val a = data?.extras?.size()
             setResult(Activity.RESULT_OK, data)
             finish()
         }

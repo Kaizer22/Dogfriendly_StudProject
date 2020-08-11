@@ -104,7 +104,6 @@ class PetDetailEditActivity : AppCompatActivity() {
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
         }
         if(requestCode == 4){
-            val a = data?.extras?.size()
             setResult(Activity.RESULT_OK, data)
             finish()
         }
