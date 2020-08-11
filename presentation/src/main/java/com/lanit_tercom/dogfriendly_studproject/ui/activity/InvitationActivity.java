@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class InvitationActivity extends BaseActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,4 +24,6 @@ public class InvitationActivity extends BaseActivity {
             addFragment(R.id.ft_container, new InvitationFragment());
         }
     }
+
+
 }

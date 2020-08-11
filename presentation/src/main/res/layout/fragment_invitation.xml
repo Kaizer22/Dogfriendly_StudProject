@@ -124,9 +124,11 @@
                 android:textColor="@drawable/custom_radio_button_text"
                 android:layout_marginStart="87dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="4dp"
                 android:paddingStart="12dp"
                 android:checked="true"
-                android:button="@drawable/custom_radio_button"/>
+                android:theme="@style/radioButtonStyle"
+                android:button="@drawable/custom_radio_button" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -143,12 +145,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="87dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="4dp"
                 android:paddingStart="12dp"
                 android:text="@string/invitation_access_request"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@drawable/custom_radio_button_text"
                 android:checked="false"
+                android:theme="@style/radioButtonStyle"
                 android:button="@drawable/custom_radio_button"/>
 
             <TextView
@@ -171,31 +175,21 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"/>
 
-       <!-- <include layout="@layout/view_thumb_text_seekbar"/> -->
-
-
-        <TextView
-            android:id="@+id/tv_thumb"
-            android:layout_width="wrap_content"
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider_radius"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="9 км"
-            android:textColor="#4F4F4F"
-            android:textSize="16sp"
-            android:layout_marginTop="10dp"/>
-
-        <SeekBar
-            android:id="@+id/sb_radius"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:max="25"
-            android:progress="9"
-            android:theme="@style/invitationSeekBar"
-            android:thumb="@drawable/custom_radius_seekbar"/>
-
+            android:value="9.0"
+            android:valueFrom="0.0"
+            android:valueTo="25.0"
+            app:thumbRadius="@dimen/thumb_radius"
+            app:labelStyle="@style/labelBackgroundSlider"
+            app:trackColorActive="@color/invitation_activity_elements"
+            app:haloColor="@color/whiteTransparent"
+            app:trackColorInactive="@color/invitation_activity_elements_unchecked"
+            app:thumbColor="@color/invitation_activity_elements" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -238,6 +232,7 @@
                     android:layout_gravity="start"
                     android:paddingStart="12dp"
                     android:checked="true"
+                    android:theme="@style/radioButtonStyle"
                     android:button="@drawable/custom_radio_button"/>
                 <RadioButton
                     android:id="@+id/radius_twelve_hours"
@@ -250,6 +245,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_gravity="start"
                     android:paddingStart="12dp"
+                    android:theme="@style/radioButtonStyle"
                     android:checked="false"
                     android:button="@drawable/custom_radio_button"/>
                 <RadioButton
@@ -263,6 +259,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_gravity="start"
                     android:paddingStart="12dp"
+                    android:theme="@style/radioButtonStyle"
                     android:checked="false"
                     android:button="@drawable/custom_radio_button"/>
 
@@ -280,12 +277,15 @@
             android:layout_marginEnd="24dp"/>
 
 
+       <!--
         <Button
+            android:id="@+id/invention_create_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/invitation_create_button"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/invitation_activity_black_text"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:layout_marginTop="32dp"
@@ -293,15 +293,28 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:textAllCaps="false"
-            android:background="@drawable/custom_create_button"/>
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/buttonStyle"
+            android:background="@drawable/custom_create_button" />-->
 
-
-
-
-
-
-
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/invention_create_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/invitation_create_button"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/invitation_activity_black_text"
+            android:textAllCaps="false"
+            app:cornerRadius="50dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:theme="@style/buttonStyle"
+            />
 
     </LinearLayout>
 

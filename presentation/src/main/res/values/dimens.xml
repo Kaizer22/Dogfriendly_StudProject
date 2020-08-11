@@ -37,6 +37,9 @@
     <dimen name="empty_channellist_width">390dp</dimen>
     <dimen name ="empty_channellist_height">380dp</dimen>
 
+    <!-- Invitation screen -->
+    <dimen name="thumb_radius">14dp</dimen>
+
 
     <!-- Fonts sizes -->
     <dimen name="user_additional_info_text_size">13sp</dimen>

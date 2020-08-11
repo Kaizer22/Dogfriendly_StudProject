@@ -1,23 +1,43 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/invitation_activity_elements</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Invitation Activity RadioGroup-->
-    <style name="InvitationRadioGroup" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="InvitationRadioGroup" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorControlNormal">@color/invitation_activity_elements_unchecked</item>
         <item name="colorControlActivated">@color/invitation_activity_elements</item>
     </style>
 
-    <!-- Invitation Activity SeekBar-->
-    <style name="invitationSeekBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorControlActivated">@color/invitation_activity_elements</item>
-        <item name="android:colorControlNormal">@color/invitation_activity_elements_unchecked</item>
+    <style name="labelBackgroundSlider" parent="Widget.MaterialComponents.Tooltip">
+        <!-- background color of the Tooltip -->
+        <item name="backgroundTint">@color/whiteTransparent</item>
+        <item name="android:visible">true</item>
+        <item name="android:textAppearance">@style/slider.TextAppearance</item>
     </style>
+
+    <style name="slider.TextAppearance" parent="@style/TextAppearance.MaterialComponents.Tooltip">
+        <item name="colorPrimary">@color/invitation_activity_black_text</item>
+        <!-- color used by the text in the Tooltip -->
+        <item name="android:textColor">@color/invitation_activity_black_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="buttonStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/invitation_activity_elements</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="rippleColor">@color/colorAccent</item>
+    </style>
+
+    <style name="radioButtonStyle" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/invitation_activity_elements</item>
+    </style>
+
 
 </resources>
