@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/invitation_headline"
-                android:textColor="@color/invitation_activity_black_text"
+                android:textColor="@color/activity_black_text"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,13 +58,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/invitation_activity_title_text"
+            android:textColor="@color/activity_title_text"
             android:text="@string/invitation_title_name"
             android:layout_marginStart="24dp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/invitation_activity_textview_background"
+            android:background="@color/activity_textview_background"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="24dp"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:text="@string/invitation_name_hint"
             android:textSize="13sp"
-            android:textColor="@color/invitation_activity_grey_text"
+            android:textColor="@color/activity_grey_text"
             android:layout_marginStart="24dp"/>
 
         <TextView
@@ -82,13 +82,13 @@
             android:layout_height="wrap_content"
             android:text="@string/invitation_title_description"
             android:textSize="14sp"
-            android:textColor="@color/invitation_activity_title_text"
+            android:textColor="@color/activity_title_text"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/invitation_activity_textview_background"
+            android:background="@color/activity_textview_background"
             android:hint="@string/invitation_title_description_hint"
             android:textSize="15sp"
             android:gravity="start"
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invitation_access_to_chat"
-            android:textColor="@color/invitation_activity_title_text"
+            android:textColor="@color/activity_title_text"
             android:textSize="14sp"
             android:layout_marginStart="24dp"/>
 
@@ -170,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invitation_radius_title"
-            android:textColor="@color/invitation_activity_title_text"
+            android:textColor="@color/activity_title_text"
             android:textSize="14sp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"/>
@@ -186,16 +186,16 @@
             android:valueTo="25.0"
             app:thumbRadius="@dimen/thumb_radius"
             app:labelStyle="@style/labelBackgroundSlider"
-            app:trackColorActive="@color/invitation_activity_elements"
+            app:trackColorActive="@color/activity_elements"
             app:haloColor="@color/whiteTransparent"
-            app:trackColorInactive="@color/invitation_activity_elements_unchecked"
-            app:thumbColor="@color/invitation_activity_elements" />
+            app:trackColorInactive="@color/activity_elements_unchecked"
+            app:thumbColor="@color/activity_elements" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invitation_radius_hint"
-            android:textColor="@color/invitation_activity_grey_text"
+            android:textColor="@color/activity_grey_text"
             android:layout_marginTop="22dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"/>
@@ -204,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/invitation_visible_time"
-            android:textColor="@color/invitation_activity_title_text"
+            android:textColor="@color/activity_title_text"
             android:textSize="14sp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="24dp"/>
@@ -270,32 +270,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/invitation_visible_time_hint"
-            android:textColor="@color/invitation_activity_grey_text"
+            android:textColor="@color/activity_grey_text"
             android:textSize="13sp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"/>
-
-
-       <!--
-        <Button
-            android:id="@+id/invention_create_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/invitation_create_button"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/invitation_activity_black_text"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:textAllCaps="false"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:theme="@style/buttonStyle"
-            android:background="@drawable/custom_create_button" />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/invention_create_btn"
@@ -304,7 +283,7 @@
             android:text="@string/invitation_create_button"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/invitation_activity_black_text"
+            android:textColor="@color/activity_black_text"
             android:textAllCaps="false"
             app:cornerRadius="50dp"
             android:paddingBottom="10dp"
@@ -313,8 +292,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:theme="@style/buttonStyle"
-            />
+            android:theme="@style/buttonStyle" />
 
     </LinearLayout>
 

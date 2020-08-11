@@ -23,12 +23,13 @@
 
 
     <!-- Invitation Activity-->
-    <color name="invitation_activity_title_text">#94A604</color>
-    <color name="invitation_activity_grey_text">#828282</color>
-    <color name="invitation_activity_black_text">#202020</color>
-    <color name="invitation_activity_textview_background">#F5F5F5</color>
-    <color name="invitation_activity_elements">#C0D904</color>
-    <color name="invitation_activity_elements_unchecked">#BDBDBD</color>
+    <color name="activity_title_text">#94A604</color>
+    <color name="activity_grey_text">#828282</color>
+    <color name="activity_black_text">#202020</color>
+    <color name="activity_textview_background">#F5F5F5</color>
+    <color name="activity_elements">#C0D904</color>
+    <color name="activity_elements_unchecked">#BDBDBD</color>
     <color name="invitation_line">#E0E0E0</color>
+    <color name="walk_access_background">#FEFFF0</color>
 
 </resources>
