@@ -24,7 +24,7 @@ public class DeleteChannelUseCaseImpl extends UseCase implements DeleteChannelUs
 
     @Override
     public void execute(String userId, ChannelDto channelDto, Callback callback) {
-        if (userId.isEmpty() || channelDto == null || callback == null) {
+        if (channelDto == null || callback == null) {
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
@@ -54,12 +54,11 @@ public class DeleteChannelUseCaseImpl extends UseCase implements DeleteChannelUs
 
 
     private void notifyDeleteChannelSuccessfully() {
-        this.postExecutionThread.post(() -> callback.onChannelDeleted());
+        this.postExecutionThread.post(() -> callback.onChannelDeleted()); //channelDto
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
         this.postExecutionThread.post(() -> callback.onError(errorBundle));
     }
-
 
 }

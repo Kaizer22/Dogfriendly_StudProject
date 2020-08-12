@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.data.repository;
 
-
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.ChannelListException;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
@@ -102,3 +101,4 @@ public class ChannelRepositoryImpl implements ChannelRepository {
 
     }
 }
+

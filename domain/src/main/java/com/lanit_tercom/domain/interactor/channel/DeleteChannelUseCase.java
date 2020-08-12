@@ -9,10 +9,10 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 public interface DeleteChannelUseCase {
 
     interface Callback {
-        void onChannelDeleted();
+        void onChannelDeleted(); //ChannelDto channelDto
 
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String userId, ChannelDto channelDto, DeleteChannelUseCase.Callback callback);
+    void execute(String userID, ChannelDto channelDto, DeleteChannelUseCase.Callback callback);
 }

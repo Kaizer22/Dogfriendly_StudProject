@@ -6,7 +6,6 @@ import android.os.Looper;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 
 
-
 public class UIThread implements PostExecutionThread {
 
     private static class LazyHolder {
@@ -27,3 +26,4 @@ public class UIThread implements PostExecutionThread {
         handler.post(runnable);
     }
 }
+

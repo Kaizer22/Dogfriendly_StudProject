@@ -16,7 +16,7 @@ public interface ChannelEntityStore {
 
         void onError(ErrorBundle errorBundle);
     }
-    
+
     interface AddChannelCallback {
         void onChannelAdded();
 

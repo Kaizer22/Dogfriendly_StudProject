@@ -19,7 +19,7 @@ public class MessageEntityDtoMapper {
         messageEntity.setId(messageDto.getId());
         messageEntity.setUserName(messageDto.getUserName());
         messageEntity.setBody(messageDto.getBody());
-        messageEntity.setTimestamp(messageDto.getTimestamp());
+        messageEntity.setTimestamp(messageDto.getTimestamp().getTime());
         return messageEntity;
     }
     public MessageDto map2(MessageEntity messageEntity){
@@ -28,7 +28,7 @@ public class MessageEntityDtoMapper {
         MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
         messageDto.setChannelId(messageEntity.getChannelId());
         messageDto.setId(messageEntity.getId());
-        messageDto.setTimestamp(messageEntity.getTimestamp());
+        messageDto.setTimestamp(new Timestamp(messageEntity.getTimestamp()));
         return messageDto;
 
     }
@@ -40,7 +40,7 @@ public class MessageEntityDtoMapper {
             MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
             messageDto.setChannelId(messageEntity.getChannelId());
             messageDto.setId(messageEntity.getId());
-            messageDto.setTimestamp(messageEntity.getTimestamp());
+            messageDto.setTimestamp(new Timestamp(messageEntity.getTimestamp()));
             messagesDtoList.add(messageDto);
         }
         return messagesDtoList;

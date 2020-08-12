@@ -31,6 +31,11 @@ class UserSignInActivity : BaseActivity() {
     fun navigateToUserMap() =
         navigator?.navigateToUserMap(this)
 
+    //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
+    // код и код в UserSignInPresenter
+    fun navigateToChat() =
+            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" );
+
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
             addFragment(R.id.ft_container, UserSignInFragment())

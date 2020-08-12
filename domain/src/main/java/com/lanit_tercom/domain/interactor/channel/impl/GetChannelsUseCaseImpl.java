@@ -1,6 +1,5 @@
 package com.lanit_tercom.domain.interactor.channel.impl;
 
-
 import com.lanit_tercom.domain.dto.ChannelDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
@@ -11,16 +10,13 @@ import com.lanit_tercom.domain.repository.ChannelRepository;
 
 import java.util.List;
 
-/**
- * @author nikolaygorokhov1@gmail.com
- */
 public class GetChannelsUseCaseImpl extends UseCase implements GetChannelsUseCase {
     private String userId;
     private GetChannelsUseCase.Callback callback;
 
     public GetChannelsUseCaseImpl(ChannelRepository channelRepository,
-                                     ThreadExecutor threadExecutor,
-                                     PostExecutionThread postExecutionThread) {
+                                  ThreadExecutor threadExecutor,
+                                  PostExecutionThread postExecutionThread) {
         super(channelRepository, threadExecutor, postExecutionThread);
     }
 
@@ -63,3 +59,4 @@ public class GetChannelsUseCaseImpl extends UseCase implements GetChannelsUseCas
     }
 
 }
+

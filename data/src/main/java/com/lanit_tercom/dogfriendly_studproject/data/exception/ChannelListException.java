@@ -4,6 +4,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.exception;
  * @author nikolaygorokhov1@gmail.com
  */
 public class ChannelListException extends Exception {
+
     public ChannelListException(){
         super();
     }

@@ -11,6 +11,10 @@ import com.lanit_tercom.domain.repository.ChannelRepository;
 /**
  * @author nikolaygorokhov1@gmail.com
  */
+import com.lanit_tercom.domain.interactor.channel.UseCase;
+import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase;
+import com.lanit_tercom.domain.repository.ChannelRepository;
+
 public class AddChannelUseCaseImpl extends UseCase implements AddChannelUseCase {
     private ChannelDto channelDto;
     private AddChannelUseCase.Callback callback;
@@ -60,3 +64,4 @@ public class AddChannelUseCaseImpl extends UseCase implements AddChannelUseCase 
     }
 
 }
+
