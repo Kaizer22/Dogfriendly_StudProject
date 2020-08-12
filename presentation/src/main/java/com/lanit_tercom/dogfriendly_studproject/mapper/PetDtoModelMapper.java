@@ -4,6 +4,7 @@ import android.net.Uri;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel;
 import com.lanit_tercom.domain.dto.PetDto;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -43,22 +44,22 @@ public class PetDtoModelMapper {
                 petDto.getAvatar());
     }
 
-    public List<PetModel> fromDtoToModelList(List<PetDto> pets){
+    public List<PetModel> fromDtoToModelList(HashMap<String, PetDto> pets){
         if(pets == null) return null;
         List<PetModel> petModelList = new ArrayList<>();
-        for(PetDto petDto: pets){
+        for(PetDto petDto: pets.values()){
             petModelList.add(map2(petDto));
         }
         return petModelList;
     }
 
-    public List<PetDto> fromModelToDtoList(List<PetModel> pets){
+    public HashMap<String, PetDto> fromModelToDtoMap(List<PetModel> pets){
         if(pets == null) return null;
-        List<PetDto> petDtoList = new ArrayList<>();
+        HashMap<String, PetDto> petDtoMap = new HashMap<>();
         for(PetModel petModel: pets){
-            petDtoList.add(map1(petModel));
+            petDtoMap.put(petModel.getId(), map1(petModel));
         }
-        return petDtoList;
+        return petDtoMap;
     }
 }
 

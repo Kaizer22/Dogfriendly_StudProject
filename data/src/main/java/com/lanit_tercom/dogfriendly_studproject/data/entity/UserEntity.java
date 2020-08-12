@@ -1,6 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class UserEntity {
     //Поля
@@ -9,13 +9,13 @@ public class UserEntity {
     private int age;
     private String about;
     private String plans;
-    private List<PetEntity> pets;
+    private HashMap<String, PetEntity> pets;
     private String avatar;
 
     //Конструктор
     public UserEntity(){}
 
-    public UserEntity(String id, String name, int age, String about, String plans, List<PetEntity> pets, String avatar) {
+    public UserEntity(String id, String name, int age, String about, String plans, HashMap<String, PetEntity> pets, String avatar) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -46,7 +46,7 @@ public class UserEntity {
         this.plans = plans;
     }
 
-    public void setPets(List<PetEntity> pets) {
+    public void setPets(HashMap<String, PetEntity> pets) {
         this.pets = pets;
     }
 
@@ -75,7 +75,7 @@ public class UserEntity {
         return plans;
     }
 
-    public List<PetEntity> getPets() {
+    public HashMap<String, PetEntity> getPets() {
         return pets;
     }
 

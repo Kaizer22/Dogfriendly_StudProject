@@ -18,7 +18,7 @@ public class UserDtoModelMapper {
                 userModel.getAge(),
                 userModel.getAbout(),
                 userModel.getPlans(),
-                mapper.fromModelToDtoList(userModel.getPets()),
+                mapper.fromModelToDtoMap(userModel.getPets()),
                 userModel.getAvatar().toString());
     }
 

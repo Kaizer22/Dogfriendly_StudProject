@@ -1,7 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,32 +9,27 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
-
 import androidx.annotation.NonNull;
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 public class FirebaseUserEntityStore implements UserEntityStore {
 
     private static final String CHILD_USERS = "Users";
     private UserEntity userEntity = new UserEntity();
 
-    private UserCache userCache; //
+    private UserCache userCache;
 
     protected DatabaseReference referenceDatabase;
 
-    public FirebaseUserEntityStore(UserCache userCache){
+    public FirebaseUserEntityStore(UserCache userCache) {
         referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
     }
 
-
-    public void getUserById(final String id, final UserByIdCallback userByIdCallback){
+    public void getUserById(final String id, final UserByIdCallback userByIdCallback) {
         referenceDatabase.child(id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -52,13 +45,13 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
-    public void getAllUsers(final UserListCallback userListCallback){
+    public void getAllUsers(final UserListCallback userListCallback) {
         final List<UserEntity> users = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
-                for (DataSnapshot keyNode: dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
                     users.add(userEntity);
@@ -100,29 +93,21 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> userDeleteCallback.onError(new RepositoryErrorBundle(e)));
     }
 
-
-
     @Override
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
         String firebaseId = referenceDatabase.child(id).child("pets").push().getKey();
         pet.setId(firebaseId);
-
         Map<String, Object> map = new HashMap<>();
         map.put(firebaseId, pet);
-
-//        Map<String, Object> map = new HashMap<>();
-//        map.put(pet.getId(), pet);
         referenceDatabase.child(id).child("pets").updateChildren(map)
                 .addOnSuccessListener(aVoid -> addPetCallback.onPetAdded())
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));
     }
 
-    private void putUserEntityInCache(String userId, UserEntity userEntity){
-        if (userCache != null){
+    private void putUserEntityInCache(String userId, UserEntity userEntity) {
+        if (userCache != null) {
             this.userCache.saveUser(userId, userEntity);
         }
     }
-
-
 
 }
