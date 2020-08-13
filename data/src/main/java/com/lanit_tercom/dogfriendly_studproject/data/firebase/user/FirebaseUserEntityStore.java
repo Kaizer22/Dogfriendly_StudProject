@@ -8,13 +8,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -23,34 +26,50 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     private static final String CHILD_USERS = "Users";
     private UserEntity userEntity = new UserEntity();
 
-    private UserCache userCache; //
+    private UserCache userCache;
 
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
-        referenceDatabase = FirebaseDatabase.getInstance().getReference();
+        referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
     }
 
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
-        referenceDatabase.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               for (DataSnapshot snapshot: dataSnapshot.child(CHILD_USERS).getChildren()){
-                   if (id.equals(snapshot.getKey())) {
-                       userEntity = snapshot.getValue(UserEntity.class);
-                       userEntity.setId(id);
-                   }
-               }
-               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
-           }
+        referenceDatabase.child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userEntity = dataSnapshot.getValue(UserEntity.class);
+                userEntity.setId(id);
+                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+            }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-               Log.e(TAG, "onCancelled", databaseError.toException());
-           }
-       });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+            }
+        });
+    }
+
+    @Override
+    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
+        String firebaseId = referenceDatabase.push().getKey();
+        user.setId(firebaseId);
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
+                .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
+                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
     }
 
 
@@ -60,9 +79,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
-                List<String> keys = new ArrayList<>();
-                for (DataSnapshot keyNode: dataSnapshot.child(CHILD_USERS).getChildren()){
-                    keys.add(keyNode.getKey());
+                for (DataSnapshot keyNode: dataSnapshot.getChildren()){
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
                     users.add(userEntity);
@@ -72,7 +89,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancelled", databaseError.toException());
+                userListCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
     }

@@ -26,14 +26,14 @@ import static android.content.ContentValues.TAG;
  */
 public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
-    //private static final String CHILD_CHANNELS = "Channels";
+    private static final String CHILD_CHANNELS = "Channels";
     private ChannelCache channelCache;
     protected DatabaseReference referenceDatabase;
 
 
     public FirebaseChannelEntityStore(ChannelCache channelCache) {
         this.channelCache = channelCache;
-        this.referenceDatabase = FirebaseDatabase.getInstance().getReference().child("Channels");
+        this.referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_CHANNELS);
     }
 
 

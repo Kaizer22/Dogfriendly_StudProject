@@ -199,7 +199,6 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
     private void initEmptyChannelList(View view){
         constraintLayout = view.findViewById(R.id.empty_channellist_layout);
-
     }
 
 }

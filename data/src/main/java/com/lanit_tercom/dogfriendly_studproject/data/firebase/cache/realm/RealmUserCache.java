@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.realm;
 
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.realm.RealmUserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserListException;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
@@ -37,7 +38,7 @@ public class RealmUserCache implements UserCache {
             userListCallback.onUsersListLoaded(realmUserEntityMapper.mapForList(userEntityList));
         }
         else {
-            userListCallback.onError(new UserListException());
+            //userListCallback.onError(new UserListException());
         }
     }
 
@@ -50,7 +51,17 @@ public class RealmUserCache implements UserCache {
             userByIdCallback.onUserLoaded(realmUserEntityMapper.map2(userEntity));
         }
         else {
-            userByIdCallback.onError(new UserNotFoundException());
+            //userByIdCallback.onError(new RepositoryErrorBundle());
         }
+    }
+
+    @Override
+    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
+
+    }
+
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+
     }
 }

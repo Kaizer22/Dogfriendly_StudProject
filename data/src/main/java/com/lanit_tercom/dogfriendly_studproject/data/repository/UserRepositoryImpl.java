@@ -7,6 +7,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundExcep
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
 
@@ -43,6 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
         UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
 
         userEntityStore.getUserById(userId, new UserEntityStore.UserByIdCallback() {
+
             @Override
             public void onUserLoaded(UserEntity userEntity) {
                 UserDto userDto = UserRepositoryImpl.this.userEntityDtoMapper.map2(userEntity);
@@ -54,8 +56,8 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
             @Override
-            public void onError(Exception exception) {
-                userCallback.onError(new RepositoryErrorBundle(exception));
+            public void onError(ErrorBundle errorBundle) {
+                userCallback.onError(errorBundle);
             }
         });
     }
@@ -96,8 +98,8 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             }
             @Override
-            public void onError(Exception exception) {
-                userListCallback.onError(new RepositoryErrorBundle(exception));
+            public void onError(ErrorBundle errorBundle) {
+                userListCallback.onError(errorBundle);
             }
         });
     }
