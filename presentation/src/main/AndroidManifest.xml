@@ -13,15 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".tests.ui.UserTestActivity"></activity>
-        <activity android:name=".tests.ui.pet_detail.PetCharacterActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetPhotoActivity" />
-        <activity android:name=".tests.ui.EditTextActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetCharacterEditTestActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailEditActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailEditActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetCharacterActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetPhotoActivity" />
+        <activity android:name=".ui.activity.EditTextActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetCharacterEditTestActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetPhotoEditTestActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailEditActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetDetailEditActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetDetailActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

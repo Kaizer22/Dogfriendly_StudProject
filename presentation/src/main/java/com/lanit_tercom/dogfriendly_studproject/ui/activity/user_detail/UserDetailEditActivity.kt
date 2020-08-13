@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail
+package com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail
 
 
 import android.app.Activity

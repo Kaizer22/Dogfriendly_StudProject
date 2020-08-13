@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.navigation
 import android.content.Context
 import android.content.Intent
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.*
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailActivity
 
 /**
  * Класс для перехода к активностям

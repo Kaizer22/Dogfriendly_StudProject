@@ -2,12 +2,14 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.model
 
 import android.net.Uri
 
-data class PetModel(val id: String,
-                    val name: String,
-                    val age: Int,
-                    val breed: String,
-                    val gender: String,
-                    val about: String,
-                    val character: List<String>,
-                    val photos: List<Uri>,
-                    val avatar: String)
+data class PetModel(var id: String?,
+                    var name: String?,
+                    var age: Int?,
+                    var breed: String?,
+                    var gender: String?,
+                    var about: String?,
+                    var character: List<String>?,
+                    var photos: List<Uri>?,
+                    var avatar: Uri?){
+    constructor() : this(null, null, null, null, null, null, null, null, null)
+}

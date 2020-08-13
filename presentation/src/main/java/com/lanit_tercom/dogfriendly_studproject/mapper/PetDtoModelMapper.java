@@ -13,8 +13,11 @@ public class PetDtoModelMapper {
     public PetDto map1(PetModel petModel){
 
         List<String> photo = new ArrayList<>();
-        for(Uri uri: petModel.getPhotos())
-            photo.add(uri.toString());
+        if(petModel.getPhotos() != null){
+            for(Uri uri: petModel.getPhotos())
+                photo.add(uri.toString());
+        }
+
 
         return new PetDto(petModel.getId(),
                 petModel.getName(),
@@ -24,14 +27,20 @@ public class PetDtoModelMapper {
                 petModel.getAbout(),
                 petModel.getCharacter(),
                 photo,
-                petModel.getAvatar());
+                petModel.getAvatar().toString());
     }
 
     public PetModel map2(PetDto petDto){
-
         List<Uri> photo = new ArrayList<>();
-        for(String string: petDto.getPhotos())
-            photo.add(Uri.parse(string));
+        if(petDto.getPhotos() != null){
+
+            for(String string: petDto.getPhotos())
+                photo.add(Uri.parse(string));
+        }
+
+        Uri avatar = null;
+        if(petDto.getAvatar() != null)
+            avatar = Uri.parse(petDto.getAvatar());
 
         return new PetModel(petDto.getId(),
                 petDto.getName(),
@@ -41,7 +50,7 @@ public class PetDtoModelMapper {
                 petDto.getAbout(),
                 petDto.getCharacter(),
                 photo,
-                petDto.getAvatar());
+                avatar);
     }
 
     public List<PetModel> fromDtoToModelList(HashMap<String, PetDto> pets){

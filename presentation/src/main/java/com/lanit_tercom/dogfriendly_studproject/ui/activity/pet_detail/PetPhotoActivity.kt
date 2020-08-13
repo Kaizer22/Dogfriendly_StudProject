@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
+package com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail
 
 import android.app.Activity
 import android.content.Intent
@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlin.collections.ArrayList
@@ -24,7 +23,7 @@ class PetPhotoActivity : AppCompatActivity() {
     private lateinit var data: Intent
     private var nextImageSpace: Int = 0
     private var photos: Array<String> = Array(8) {"0"}
-    private val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail/" + R.drawable.ic_button_add_photo)
+    private val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail/" + R.drawable.ic_button_add_photo)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +50,9 @@ class PetPhotoActivity : AppCompatActivity() {
 
         readyButton = findViewById(R.id.ready_button)
         readyButton.setOnClickListener {
-            data.putStringArrayListExtra("photo",  ArrayList(listOf(*photos)))
-            val a = data.extras?.size()
+            val photoList = ArrayList<String>()
+            for(photo in photos) photoList.add(photo)
+            data.putStringArrayListExtra("photo",  photoList)
             setResult(Activity.RESULT_OK, data)
             finish()
         }

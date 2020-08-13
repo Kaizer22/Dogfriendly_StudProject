@@ -1,16 +1,13 @@
-package com.lanit_tercom.dogfriendly_studproject.ui.activity
+package com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 
-/**
- * Активность данных о пользователе.
- * Запускает фрагмент с данными о пользователе.
- * @author prostak.sasha111@mail.ru
- */
+
 class UserDetailActivity : BaseActivity() {
 
     private var userId: String? = null
@@ -32,10 +29,14 @@ class UserDetailActivity : BaseActivity() {
         setContentView(R.layout.activity_user_detail)
     }
 
+    //РАСКОМЕНТИТЬ СТРОЧКУ!!! ID ВВЕДЕН ДЛЯ ТЕСТА!!!
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null){
             userId = intent.extras?.getString(INTENT_EXTRA_PARAM_USER_ID)
-            addFragment(R.id.ft_container, UserDetailFragment(userId))
+//            addFragment(R.id.ft_container, UserDetailFragment(userId))
+            addFragment(R.id.ft_container, UserDetailFragment("-MEYGzlqgcVxSHRV5LQ9"))
+
+
         }
     }
 
