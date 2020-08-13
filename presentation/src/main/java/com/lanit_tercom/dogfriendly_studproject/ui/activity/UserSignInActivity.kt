@@ -43,6 +43,9 @@ class UserSignInActivity : BaseActivity() {
     fun navigateToChat() =
             navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
 
+    fun navigateToMainNavigation() =
+            navigator?.navigateToMainNavigation(this)
+
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
             addFragment(R.id.ft_container, UserSignInFragment())

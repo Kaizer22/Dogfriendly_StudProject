@@ -52,4 +52,8 @@
     <string name="empty_email">Введите свою почту в это поле</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="on_sign_up_finished_hint">Все готово.Теперь расскажите о себе и своём питомце и скорее на прогулку!</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_map">Карта</string>
+    <string name="title_channels">Сообщения</string>
+    <string name="title_options">Настройки</string>
 </resources>

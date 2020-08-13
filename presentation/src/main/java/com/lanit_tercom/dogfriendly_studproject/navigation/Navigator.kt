@@ -43,4 +43,9 @@ class Navigator {
             context.startActivity(
                     WelcomeActivity.getCallingIntent(context)
             )
+
+    fun navigateToMainNavigation(context: Context) =
+            context.startActivity(
+                    MainNavigationActivity.getCallingIntent(context)
+            )
 }

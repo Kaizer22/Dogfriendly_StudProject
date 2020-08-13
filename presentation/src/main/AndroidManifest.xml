@@ -25,6 +25,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.TestSignUpActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.MainNavigationActivity"/>
         <activity android:name=".ui.activity.UserMapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
         <activity android:name=".ui.activity.ChatActivity"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dogfriendly_navigation"
+    app:startDestination="@id/navigation_channels">
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/test_empty_fragment"/>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        android:label="@string/title_map"
+        tools:layout="@layout/test_empty_fragment"/>
+
+    <fragment
+        android:id="@+id/navigation_channels"
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        tools:layout="@layout/test_empty_fragment"
+        android:label="@string/title_options"/>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        tools:layout="@layout/test_empty_fragment"/>
+</navigation>
