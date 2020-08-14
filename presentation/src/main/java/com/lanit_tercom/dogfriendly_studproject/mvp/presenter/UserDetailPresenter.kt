@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.BasePresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.domain.dto.UserDto
@@ -25,7 +26,6 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
     private fun loadUserDetails() =
         getUserDetailsUseCase!!.execute(userId, userDetailsCallback)
-
 
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()

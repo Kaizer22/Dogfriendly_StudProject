@@ -36,6 +36,9 @@ public interface UserEntityStore {
         void onPetAdded();
     }
 
+    interface DeletePetCallback extends Error{
+        void onPetDeleted();
+    }
 
     void getAllUsers(UserListCallback userListCallback);
     void getUserById(String id, UserByIdCallback userByIdCallback);
@@ -43,4 +46,5 @@ public interface UserEntityStore {
     void editUser(UserEntity user, UserEditCallback userEditCallback);
     void deleteUser(String id, UserDeleteCallback userDeleteCallback);
     void addPet(String id, PetEntity pet, AddPetCallback addPetCallback);
+    void deletePet(String userId, String petId, DeletePetCallback deletePetCallback);
 }

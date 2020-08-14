@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -24,13 +25,16 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.EditTextActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail.PetDetailEditActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailEditActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
+import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
+import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -48,9 +52,10 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
     private lateinit var petListAdapter: PetListAdapter
+    private lateinit var deletePetUseCase: DeletePetUseCase
     private var pets: ArrayList<PetListItem> = ArrayList()
-    private var avatarUri: Uri? = null
     private var userDetailPresenter: UserDetailPresenter? = null
+
     private var user: UserModel? = null
 
     //Инициализация презентера
@@ -64,9 +69,25 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 userEntityDtoMapper)
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
+        val deletePetUseCase: DeletePetUseCase = DeletePetUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
 
+        this.deletePetUseCase = deletePetUseCase
         userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase)
     }
+
+    private fun deletePet(petId: String?) =
+            deletePetUseCase.execute(userId, petId, deletePetCallback)
+
+    private val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback{
+
+        override fun onPetDeleted() {}
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
+    }
+
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_user_detail, container, false)
@@ -77,6 +98,19 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         petListAdapter = PetListAdapter(pets)
         petList.adapter = petListAdapter
 
+        val callback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                deletePet(pets[viewHolder.adapterPosition].id)
+                pets.removeAt(viewHolder.adapterPosition)
+                petListAdapter.notifyDataSetChanged()
+            }
+        }
+
+        ItemTouchHelper(callback).attachToRecyclerView(petList)
         //Динамическое задание высоты блока
         val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
         val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
@@ -125,13 +159,12 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
     //Навигация
     private fun toUserEdit() {
-        val intent: Intent = Intent(context, UserDetailEditActivity::class.java)
-        startActivityForResult(intent, 1)
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailEditFragment(user))
     }
 
     private fun addPet() {
-        val intent: Intent = Intent(context, PetDetailEditActivity::class.java)
-        startActivityForResult(intent, 4)
+
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, PetDetailEditFragment(userId))
     }
 
     private fun toPetDetail() {}
@@ -181,7 +214,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     }
 
     //Функции для вывода данных на экран
-    fun ageDesc(age: Int?): String{
+    private fun ageDesc(age: Int?): String{
         if(age == null) return ""
         val ageLastNumber = age % 10
         val exclusion = age % 100 in 11..14
@@ -194,15 +227,22 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         return "$age $old"
     }
 
-    fun getPetListItem(petModel: PetModel): PetListItem{
-        return PetListItem(petModel.avatar.toString(),
+    private fun getPetListItem(petModel: PetModel): PetListItem{
+        return PetListItem(petModel.id,
+                petModel.avatar.toString(),
                 petModel.name,
                 petModel.age.toString()+" ,"+petModel.breed)
     }
 
     override fun renderCurrentUser(user: UserModel?) {
         this.user = user
-        user_avatar.setImageURI(user?.avatar)
+        if(user?.avatar != null){
+            Glide.with(this)
+                    .load(user.avatar)
+                    .circleCrop()
+                    .into(user_avatar)
+
+        }
         name.text = user?.name
         age.text = ageDesc(user?.age)
         plans_text.text = user?.plans
@@ -215,6 +255,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 if(!pets.contains(item)) pets.add(item)
             }
         }
+
         petListAdapter.notifyDataSetChanged()
 
     }
@@ -255,32 +296,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     //Обратная связь с другими Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        //Загрузка имени, возраста и аватара
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                //Имя
-                user?.name= data?.getStringExtra("name").toString()
-
-                //Возраст
-                if(data?.getStringExtra("age") != "")
-                    user?.age = data?.getStringExtra("age")?.toInt()
-
-                //Аватар
-                val a: String? = data?.getStringExtra("avatarId")
-                avatarUri = Uri.parse(data?.getStringExtra("avatarUri"))
-                user?.avatar = avatarUri
-                if (avatarUri != null)
-                    Glide.with(this)
-                            .load(avatarUri)
-                            .circleCrop()
-                            .into(user_avatar)
-                else
-                    user?.avatar = null
-                    user_avatar.setImageResource(R.drawable.ic_set_avatar_green)
-
-                renderCurrentUser(user)
-            }
-        }
         //Информация о прогулке из EditTextActivity
         if(requestCode == 2){
             if(resultCode == Activity.RESULT_OK){
@@ -308,10 +323,11 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 pet.character = data?.getStringArrayListExtra("character")
 
                 val photos = ArrayList<Uri>()
-                val uriStrings = data?.getStringArrayExtra("photo")
+                val uriStrings = data?.getStringArrayListExtra("photo")
                 if(uriStrings != null){
                     for(photo in uriStrings)
-                        photos.add(Uri.parse(photo))
+                        if(photo != "0")
+                            photos.add(Uri.parse(photo))
                     pet.photos = photos
                 }
 
@@ -320,13 +336,13 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 val name: String = data?.getStringExtra("name") ?: "1"
                 val breed: String = data?.getStringExtra("breed") ?: "2"
                 val age: String = data?.getStringExtra("age") ?: "3"
-                val desc: String = "$breed, $age лет"
-                pets.add(PetListItem(avatarUriString, name, desc))
+                val desc = "$breed, $age лет"
+                pets.add(PetListItem(null, avatarUriString, name, desc))
                 petListAdapter.notifyDataSetChanged()
             }
         }
     }
 
     //Класс представляющий список питомцев юзера
-    data class PetListItem(val uri: String?, val name: String?, val desc: String?)
+    data class PetListItem(val id: String?, val uri: String?, val name: String?, val desc: String?)
 }

@@ -18,6 +18,9 @@ public class PetDtoModelMapper {
                 photo.add(uri.toString());
         }
 
+        String avatar = null;
+        if(petModel.getAvatar() != null)
+            avatar = petModel.getAvatar().toString();
 
         return new PetDto(petModel.getId(),
                 petModel.getName(),
@@ -27,7 +30,7 @@ public class PetDtoModelMapper {
                 petModel.getAbout(),
                 petModel.getCharacter(),
                 photo,
-                petModel.getAvatar().toString());
+                avatar);
     }
 
     public PetModel map2(PetDto petDto){

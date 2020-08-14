@@ -1,22 +1,26 @@
-package com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail
+package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-
-class PetDetailEditActivity : AppCompatActivity() {
-    private lateinit var backButton: ImageButton
-    private lateinit var readyButton: Button
+class PetDetailEditFragment(private val userId: String?): BaseFragment() {
     private lateinit var editPetName: TextInputEditText
     private lateinit var editPetBreed: TextInputEditText
     private lateinit var editPetAge: TextInputEditText
@@ -25,43 +29,39 @@ class PetDetailEditActivity : AppCompatActivity() {
     private lateinit var womanButton: MaterialButton
     private var avatarUri: Uri? = null
     private var gender: String? = null
-    private lateinit var toPetCharacter: Intent
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.pet_detail_edit)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
+        val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container, false)
 
-        toPetCharacter = Intent(this, PetCharacterActivity::class.java)
+        editPetName = view.findViewById(R.id.edit_pet_name)
+        editPetBreed = view.findViewById(R.id.edit_pet_breed)
+        editPetAge = view.findViewById(R.id.edit_pet_age)
 
-        editPetName = findViewById(R.id.edit_pet_name)
-        editPetBreed = findViewById(R.id.edit_pet_breed)
-        editPetAge = findViewById(R.id.edit_pet_age)
-
-        backButton = findViewById(R.id.back_button)
-        backButton.setOnClickListener {
-            finish()
-        }
-
-
-        readyButton = findViewById(R.id.ready_button)
-        readyButton.setOnClickListener {
-            toPetCharacter.putExtra("name", editPetName.text.toString())
-            toPetCharacter.putExtra("age", editPetAge.text.toString())
-            toPetCharacter.putExtra("breed", editPetBreed.text.toString())
-            toPetCharacter.putExtra("gender", gender)
-            toPetCharacter.putExtra("avatarUri", avatarUri.toString())
-            startActivityForResult(toPetCharacter, 4)
-        }
-
-        avatar = findViewById(R.id.pet_avatar)
+        avatar = view.findViewById(R.id.pet_avatar)
         avatar.setOnClickListener { loadAvatar() }
 
-        menButton = findViewById(R.id.men_button)
-        menButton.setOnClickListener{ setGender("men")}
-        womanButton = findViewById(R.id.woman_button)
-        womanButton.setOnClickListener { setGender("woman") }
+        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
+        view.findViewById<Button>(R.id.ready_button).setOnClickListener {
+            val pet = PetModel()
+            pet.name = editPetName.text.toString()
+            pet.age = editPetAge.text.toString().toInt()
+            pet.breed = editPetBreed.text.toString()
+            pet.gender = gender
+            pet.avatar = avatarUri
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+        }
+
+        womanButton = view.findViewById(R.id.woman_button)
+        womanButton.setOnClickListener{ setGender("woman")}
+
+        menButton = view.findViewById(R.id.men_button)
+        menButton.setOnClickListener { setGender("men") }
+
+        return view
     }
+
+    override fun initializePresenter() {}
 
     //Обработка нажатий кнопо выбора пола
     private fun setGender(gender: String){
@@ -87,7 +87,7 @@ class PetDetailEditActivity : AppCompatActivity() {
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1,1)
                 .setActivityTitle("")
-                .start(this)
+                .start(context!!, this)
     }
 
     //Обратная связь с галереей, проброс данных обратно в UserDetailActivity(4)
@@ -103,11 +103,6 @@ class PetDetailEditActivity : AppCompatActivity() {
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
         }
-        if(requestCode == 4){
-            setResult(Activity.RESULT_OK, data)
-            finish()
-        }
 
     }
-
 }

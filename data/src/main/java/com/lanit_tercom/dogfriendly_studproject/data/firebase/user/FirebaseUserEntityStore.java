@@ -104,6 +104,13 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));
     }
 
+    @Override
+    public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
+        referenceDatabase.child(userId).child("pets").child(petId).removeValue()
+                .addOnSuccessListener(aVoid -> deletePetCallback.onPetDeleted())
+                .addOnFailureListener(e -> deletePetCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
     private void putUserEntityInCache(String userId, UserEntity userEntity) {
         if (userCache != null) {
             this.userCache.saveUser(userId, userEntity);
