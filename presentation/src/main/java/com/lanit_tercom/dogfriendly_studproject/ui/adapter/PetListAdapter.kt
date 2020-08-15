@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 
 class PetListAdapter(private val items: ArrayList<UserDetailFragment.PetListItem>): RecyclerView.Adapter<PetListAdapter.ViewHolder>() {

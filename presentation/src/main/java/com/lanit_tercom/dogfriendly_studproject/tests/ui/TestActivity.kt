@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 
 import androidx.appcompat.app.AppCompatActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 
 
 /**

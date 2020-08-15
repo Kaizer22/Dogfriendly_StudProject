@@ -1,10 +1,9 @@
-package com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail
+package com.lanit_tercom.dogfriendly_studproject.ui.activity
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 
 

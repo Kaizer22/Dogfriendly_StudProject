@@ -24,6 +24,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryIm
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.EditTextActivity
@@ -47,11 +48,12 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
     private lateinit var editName: TextInputEditText
     private lateinit var editAge: TextInputEditText
     private lateinit var avatar: ImageView
+    private var userDetailEditPresenter: UserDetailEditPresenter? = null
     private var avatarUri: Uri? = null
     private val mapper = UserDtoModelMapper()
-    private var editUserDetailsUseCase: EditUserDetailsUseCase
 
-    init{
+    //Инициализация презентера
+    override fun initializePresenter() {
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
@@ -61,20 +63,8 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
                 userEntityDtoMapper)
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        this.editUserDetailsUseCase = editUserDetailsUseCase
-    }
 
-    override fun initializePresenter() {}
-
-    private fun editUserDetails() =
-            editUserDetailsUseCase.execute(mapper.map1(user), editUserDetailsCallback)
-
-    private val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
-
-        override fun onUserDataEdited() {}
-
-        override fun onError(errorBundle: ErrorBundle?) {}
-
+        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,11 +78,12 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
+        //Изменяем модельку юзера, пушим ее в базу данных и возвращаеся обратно в экран юзера
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             user?.name = editName.text.toString()
             user?.age = editAge.text.toString().toInt()
             user?.avatar = avatarUri
-            editUserDetails()
+            userDetailEditPresenter?.editUserDetails(user)
             activity?.onBackPressed()
         }
 
@@ -126,6 +117,18 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) { }
         }
+
+    }
+
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading() {
+
+    }
+
+    override fun showError(message: String) {
 
     }
 

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Фото"
+                android:text="@string/photo"
                 android:textColor="#000000"
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -35,13 +35,15 @@
                 app:layout_constraintVertical_bias="0.5" />
 
             <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:id="@+id/ready_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="#FFFFFF"
                 android:lineSpacingExtra="1sp"
-                android:text="Готово"
+                android:text="@string/done"
+                android:padding="0dp"
                 app:backgroundTint="@null"
                 android:textAllCaps="false"
                 android:textColor="#94A604"
@@ -100,7 +102,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -121,7 +122,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo1"
                 android:layout_width="wrap_content"
@@ -129,11 +129,9 @@
 
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -155,7 +153,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo2"
                 android:layout_width="wrap_content"
@@ -163,11 +160,9 @@
 
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -189,18 +184,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -222,19 +214,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -256,19 +244,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -290,19 +274,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -324,19 +304,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 
@@ -358,19 +334,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <ImageView
                 android:id="@+id/remove_photo8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_alignTop="@+id/relativeLayout"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="top|end"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="12dp"
                 android:src="@drawable/ic_button_remove_photo" />
         </androidx.cardview.widget.CardView>
 

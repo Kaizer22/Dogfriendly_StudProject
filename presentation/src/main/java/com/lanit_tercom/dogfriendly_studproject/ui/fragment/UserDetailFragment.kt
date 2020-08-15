@@ -2,11 +2,14 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -23,16 +26,15 @@ import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryIm
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.EditTextActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
-import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
-import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
@@ -52,10 +54,8 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
     private lateinit var petListAdapter: PetListAdapter
-    private lateinit var deletePetUseCase: DeletePetUseCase
     private var pets: ArrayList<PetListItem> = ArrayList()
     private var userDetailPresenter: UserDetailPresenter? = null
-
     private var user: UserModel? = null
 
     //Инициализация презентера
@@ -72,19 +72,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val deletePetUseCase: DeletePetUseCase = DeletePetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
 
-        this.deletePetUseCase = deletePetUseCase
-        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase)
-    }
-
-    private fun deletePet(petId: String?) =
-            deletePetUseCase.execute(userId, petId, deletePetCallback)
-
-    private val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback{
-
-        override fun onPetDeleted() {}
-
-        override fun onError(errorBundle: ErrorBundle?) {}
-
+        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase)
     }
 
 
@@ -98,19 +86,25 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         petListAdapter = PetListAdapter(pets)
         petList.adapter = petListAdapter
 
-        val callback: ItemTouchHelper.SimpleCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                return false
-            }
+        //Это чтобы кнопка удаления в RecyclerView выезжала
+        val swipeHelper: SwipeHelper = object : SwipeHelper(context, petList) {
+            override fun instantiateUnderlayButton(viewHolder: RecyclerView.ViewHolder?, underlayButtons: ArrayList<UnderlayButton?>) {
+                underlayButtons.add(UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        UnderlayButtonClickListener {
+                            if (viewHolder != null) {
+                            userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id)
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                deletePet(pets[viewHolder.adapterPosition].id)
-                pets.removeAt(viewHolder.adapterPosition)
-                petListAdapter.notifyDataSetChanged()
+                                pets.removeAt(viewHolder.adapterPosition)
+                            }
+                            petListAdapter.notifyDataSetChanged()
+                        }
+                ))
             }
         }
 
-        ItemTouchHelper(callback).attachToRecyclerView(petList)
         //Динамическое задание высоты блока
         val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
         val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
@@ -118,28 +112,23 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
         lp.height = heightDp.toInt()
 
-        //Присвоение OnClickListener
+        //Присвоение OnClickListener кнопкам
         view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit() }
         view.findViewById<View>(R.id.add_pet_button).setOnClickListener { addPet() }
         view.findViewById<View>(R.id.to_map_button).setOnClickListener { toMap() }
         view.findViewById<View>(R.id.to_chats_button).setOnClickListener { toChats() }
         view.findViewById<View>(R.id.to_settings_button).setOnClickListener { toSettings() }
 
+        //Присвоение OnClickListener текстовым полям "о себе" и "планы на прогулку" - так будет открываться фрагмент для редактирования соотв полей
         plansText = view.findViewById(R.id.plans_text)
         plansText.setOnClickListener {
-            val toEditPlanText = Intent(context, EditTextActivity::class.java)
-            toEditPlanText.putExtra("editText", "plans")
-            toEditPlanText.putExtra("title", "Планы на прогулку")
-            startActivityForResult(toEditPlanText, 2)
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("plans", user))
 
         }
 
         aboutText = view.findViewById(R.id.about_text)
         aboutText.setOnClickListener {
-            val toEditAboutText = Intent(context, EditTextActivity::class.java)
-            toEditAboutText.putExtra("editText", "about")
-            toEditAboutText.putExtra("title", "О себе")
-            startActivityForResult(toEditAboutText, 3)
+            (activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("about", user))
         }
 
         //Открытие/скрытие нижней панели
@@ -234,19 +223,30 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 petModel.age.toString()+" ,"+petModel.breed)
     }
 
+    /**
+     * РЕНДЕРИТ ЮЗЕРА КАЖДЫЙ РАЗ ПРИ ОТКРЫТИИ ФРАГМЕНТА
+     * ИНОГДА ВЫЛЕТАЕТ ПО ПОКА НЕ ЯСНЫМ ПРИЧИНАМ
+     */
     override fun renderCurrentUser(user: UserModel?) {
         this.user = user
-        if(user?.avatar != null){
-            Glide.with(this)
-                    .load(user.avatar)
-                    .circleCrop()
-                    .into(user_avatar)
+        val avatar = view?.findViewById<ImageView>(R.id.user_avatar)
+        val name = view?.findViewById<TextView>(R.id.name)
+        val age = view?.findViewById<TextView>(R.id.age)
+        val plansText = view?.findViewById<TextView>(R.id.plans_text)
+        val aboutText = view?.findViewById<TextView>(R.id.about_text)
 
+        if (avatar != null) {
+            Glide.with(this)
+                    .load(user?.avatar)
+                    .circleCrop()
+                    .into(avatar)
         }
-        name.text = user?.name
-        age.text = ageDesc(user?.age)
-        plans_text.text = user?.plans
-        about_text.text = user?.about
+
+
+        name?.text = user?.name
+        age?.text = ageDesc(user?.age)
+        plansText?.text = user?.plans
+        aboutText?.text = user?.about
 
         val petModelList = user?.pets
         if (petModelList != null) {

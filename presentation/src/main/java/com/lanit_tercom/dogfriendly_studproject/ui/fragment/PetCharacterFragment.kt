@@ -25,6 +25,7 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
+        //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             pet.character = selected
             (activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
@@ -33,6 +34,7 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         return view
     }
 
+    //Рудимент от которого не избавится, если наследоваться от BaseFragment()
     override fun initializePresenter() {}
 
     //Функция присваивающая onClickListener передаваемому CardView

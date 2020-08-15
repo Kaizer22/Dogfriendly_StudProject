@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
@@ -16,14 +15,13 @@ import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntitySto
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
-import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailEditPresenter
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
-import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
-import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.AddPetUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -31,19 +29,15 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class PetPhotoFragment(private val userId: String?, private val pet: PetModel): BaseFragment() {
+class PetPhotoFragment(private val userId: String?, private val pet: PetModel): BaseFragment(), PetDetailEditView {
     private lateinit var elements: ArrayList<Pair<ImageView, ImageView>>
-    private lateinit var backButton: ImageButton
-    private lateinit var readyButton: Button
-    private lateinit var loadPhotoButton: ImageView
-    private lateinit var data: Intent
+    private var petDetailEditPresenter: PetDetailEditPresenter? = null
     private var nextImageSpace: Int = 0
     private var photos: Array<String> = Array(8) {"0"}
     private val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail/" + R.drawable.ic_button_add_photo)
-    private val mapper = PetDtoModelMapper()
-    private var addPetUseCase: AddPetUseCase
 
-    init{
+    //Инициализация презентера
+    override fun initializePresenter() {
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
@@ -53,24 +47,37 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
                 userEntityDtoMapper)
         val addPetUseCase: AddPetUseCase = AddPetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        this.addPetUseCase = addPetUseCase
+        this.petDetailEditPresenter = PetDetailEditPresenter(addPetUseCase)
     }
 
-    private fun addPet() =
-            addPetUseCase.execute(userId, mapper.map1(pet), addPetCallback)
+    //Lifecycle-методы
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        petDetailEditPresenter?.setView(this)
+    }
 
-    private val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        petDetailEditPresenter?.initialize(userId)
+    }
 
-        override fun onPetAdded() {
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
-        }
+    override fun onPause() {
+        super.onPause()
+        petDetailEditPresenter?.onPause()
+    }
 
-        override fun onError(errorBundle: ErrorBundle?) {}
+    override fun onResume() {
+        super.onResume()
+        petDetailEditPresenter?.onResume()
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        petDetailEditPresenter?.onDestroy()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.pet_photo, container, false)
+        val view = inflater.inflate(R.layout.fragment_pet_photo, container, false)
 
         elements = initialize(view)
         view.findViewById<ImageView>(R.id.photo_image).setOnClickListener {
@@ -78,21 +85,18 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
                 loadPhoto()
         }
 
-
-
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
+        //Преобразуем array в arrayList и добавляем питомца. По завершении презентер вызовет navigateToNext()
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             val photoList = ArrayList<Uri>()
             for(photo in photos) photoList.add(Uri.parse(photo))
             pet.photos = photoList
-            addPet()
+            petDetailEditPresenter?.addPet( pet)
 
         }
         return view
     }
-
-    override fun initializePresenter() {}
 
     //Инициализация элементов, присвоение им OnClickListener
     private fun initialize(view: View) : ArrayList<Pair<ImageView, ImageView>>{
@@ -166,5 +170,23 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) { }
         }
+    }
+
+    //Обратно в экран юзера
+    override fun navigateToNext() {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
+    }
+
+
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading() {
+
+    }
+
+    override fun showError(message: String) {
+
     }
 }

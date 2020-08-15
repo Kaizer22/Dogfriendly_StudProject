@@ -9,13 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -42,6 +40,7 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
+        //Присвоили модельке питомца что надо и пошли дальше в характеры
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             val pet = PetModel()
             pet.name = editPetName.text.toString()
@@ -61,6 +60,7 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
         return view
     }
 
+    //Рудимент от которого не избавится, если наследоваться от BaseFragment()
     override fun initializePresenter() {}
 
     //Обработка нажатий кнопо выбора пола
@@ -105,4 +105,6 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
         }
 
     }
+
+
 }

@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".tests.ui.UserTestActivity"></activity>
         <activity android:name=".ui.activity.EditTextActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.user_detail.UserDetailActivity" />
+        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

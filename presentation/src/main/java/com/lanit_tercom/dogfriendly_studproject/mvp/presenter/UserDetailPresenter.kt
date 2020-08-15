@@ -1,19 +1,16 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.BasePresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
+import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 
 /**
- * presenter класс для работы с конкретным пользователем
- * @author prostak.sasha111@mail.ru
- * @author nikolaygorokhov1@gmail.com
+ * Презентер с функцией загрузки юзера и удаления питомца
  */
-class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?) : BasePresenter() {
+class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?, private val deletePetUseCase: DeletePetUseCase) : BasePresenter() {
 
     private var userId: String? = null
 
@@ -25,12 +22,23 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     fun setView(view: UserDetailView){ this.view = view }
 
     private fun loadUserDetails() =
-        getUserDetailsUseCase!!.execute(userId, userDetailsCallback)
+        getUserDetailsUseCase?.execute(userId, userDetailsCallback)
+
+    fun deletePet(petId: String?) =
+            deletePetUseCase.execute(userId, petId, deletePetCallback)
 
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
         (view as UserDetailView).renderCurrentUser(userModel)
+    }
+
+    private val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback{
+
+        override fun onPetDeleted() {}
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
     }
 
     private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
