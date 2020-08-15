@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
@@ -43,12 +44,32 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
         //Присвоили модельке питомца что надо и пошли дальше в характеры
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             val pet = PetModel()
-            pet.name = editPetName.text.toString()
-            pet.age = editPetAge.text.toString().toInt()
-            pet.breed = editPetBreed.text.toString()
-            pet.gender = gender
-            pet.avatar = avatarUri
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+
+            //Валидатор введенных (или не введенных) значений.
+            fun validate(): Boolean{
+                if(editPetAge.text.isNullOrEmpty() || editPetAge.text.toString().intOrString() is String){
+                    Toast.makeText(context, "Возраст введен не корректно!", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                if(gender.isNullOrEmpty()){
+                    Toast.makeText(context, "Не выбран пол питомца!", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                if(editPetName.text.toString() == ""){
+                    Toast.makeText(context, "У питомца должно быть имя!", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+                return true
+            }
+
+            if(validate()){
+                pet.name = editPetName.text.toString()
+                pet.age = editPetAge.text.toString().toInt()
+                pet.breed = editPetBreed.text.toString()
+                pet.gender = gender
+                pet.avatar = avatarUri
+                (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+            }
         }
 
         womanButton = view.findViewById(R.id.woman_button)
@@ -59,6 +80,16 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
 
         return view
     }
+
+    override fun onResume() {
+        super.onResume()
+        editPetName.text?.clear()
+        editPetAge.text?.clear()
+        editPetBreed.text?.clear()
+    }
+
+    //Проверка на то является ли строка числом
+    private fun String.intOrString() = toIntOrNull() ?: this
 
     //Рудимент от которого не избавится, если наследоваться от BaseFragment()
     override fun initializePresenter() {}

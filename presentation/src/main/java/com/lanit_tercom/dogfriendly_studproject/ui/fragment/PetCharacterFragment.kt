@@ -1,18 +1,14 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import com.google.android.material.card.MaterialCardView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 
 class PetCharacterFragment(private val userId: String?, private val pet: PetModel): BaseFragment() {
@@ -23,6 +19,8 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         val view = inflater.inflate(R.layout.fragment_pet_character, container, false)
         initialize(view)
 
+        selected.clear()
+
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
         //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
@@ -32,6 +30,11 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        selected.clear()
     }
 
     //Рудимент от которого не избавится, если наследоваться от BaseFragment()
