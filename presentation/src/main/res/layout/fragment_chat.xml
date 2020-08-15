@@ -52,7 +52,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.555"
             app:srcCompat="@drawable/ic_button_back_to_channels" />
 
         <ImageView
@@ -126,13 +125,12 @@
             <EditText
                 android:id="@+id/edit_text_send_message"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/edit_text_field_height"
                 android:layout_marginStart="@dimen/indent_huge"
                 android:layout_marginTop="@dimen/indent_medium"
                 android:layout_marginEnd="@dimen/indent_huge"
                 android:layout_marginBottom="@dimen/indent_medium"
                 android:background="@drawable/edit_message_field_shape"
-                android:ems="10"
                 android:inputType="textAutoComplete"
                 android:paddingStart="@dimen/indent_huge"
                 android:paddingTop="@dimen/indent_medium"

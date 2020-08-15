@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  *  Модель данных - "Сообщение"
- *  Время в миллисекундах (System.currentTimeMillis())
  *  @author dshebut@rambler.ru
  */
 public class MessageModel {
@@ -31,7 +30,6 @@ public class MessageModel {
         this.senderID = senderID;
         this.chatID = chatID;
         this.text = text;
-
     }
 
 

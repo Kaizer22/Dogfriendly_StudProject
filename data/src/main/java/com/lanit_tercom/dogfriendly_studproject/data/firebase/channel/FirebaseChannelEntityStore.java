@@ -40,12 +40,12 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void getChannels(String userId, GetChannelsCallback getChannelsCallback) {
         final List<ChannelEntity> channels = new ArrayList<>();
-        referenceDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+        referenceDatabase.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 channels.clear();
-                Iterable<DataSnapshot> snapshots = snapshot.getChildren();
+                Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
                 for (DataSnapshot keyNode : snapshots) {
                     ChannelEntity channelEntity = keyNode.getValue(ChannelEntity.class);
                     channelEntity.setId(keyNode.getKey());
@@ -56,7 +56,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                getChannelsCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+                Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
     }
@@ -73,14 +73,12 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void addChannel(ChannelEntity channel, AddChannelCallback callback) {
         String[] userIDs = getUserIDs(channel.getMembers());
-        DatabaseReference dr = referenceDatabase;
 
-        String firebaseId = dr.push().getKey();
+        String firebaseId = referenceDatabase.push().getKey();
         for(String userId: userIDs){
             Map<String, Object> pair = new HashMap<>();
-            channel.setId(firebaseId);
             pair.put(firebaseId, channel);
-            dr.child(userId).updateChildren(pair)
+            referenceDatabase.child(userId).updateChildren(pair)
                     .addOnSuccessListener(aVoid -> callback.onChannelAdded())
                     .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
         }
@@ -90,10 +88,10 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback) {
         String[] users = getUserIDs(channel.getMembers());
-        DatabaseReference dr = referenceDatabase;
+
         for(String id: users)
             if (userId.equals(id))
-                dr.child(id).child(channel.getId()).removeValue()
+                referenceDatabase.child(id).child(channel.getId()).removeValue()
                         .addOnSuccessListener(aVoid -> callback.onChannelDeleted())
                         .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
     }

@@ -18,26 +18,17 @@ import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHol
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHolder> {
 
     private LayoutInflater inflater;
     private List<ChannelModel> channels;
     private Context context;
-    //private String currentUserID;
 
-    /*public interface OnItemClickListener{
-        void onChannelItemClicked(ChannelModel channelModel);
-    }*/
 
-    //private OnItemClickListener onItemClickListener;
-
-    public ChannelListAdapter(Context context){ //need channels?? TODO List<ChannelModel> channels
+    public ChannelListAdapter(Context context){
         this.channels = new LinkedList<>();
         this.context = context;
         inflater = LayoutInflater.from(context);
-        //currentUserID = authManager.getCurrentUserId();
     }
 
     @NonNull
@@ -56,35 +47,19 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         holder.setLastMessageTime(channelModel.getTimestamp().toString());
 
         holder.itemView.setOnClickListener(v -> {
-            Log.e("Click", "the item was clicked");
-            //TODO navigation to chosen chat (channelId)
             String channelId = channelModel.getId();
-            //TODO тестовый код
             if (context != null && context instanceof MainNavigationActivity){
-                ((MainNavigationActivity) context).navigateToChat("-MCqwIrhuEPqkgz1GV18"); // channelId
-            }
-
-            //if (context != null && context instanceof ChannelListActivity){
-                //((ChannelListActivity) context).navigateToChat(); // channelId
-            //}
-/*
-            if (ChannelListAdapter.this.onItemClickListener != null){
-                ChannelListAdapter.this.onItemClickListener.onChannelItemClicked(channelModel);
-                Log.e("Click", "the item was clicked");
-            }
-            else Log.e("Click", "onItemClickListener = null");*/
-        });
-
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.e("Click", "the item was clicked long");
-
-                Toast.makeText(context, "IT WAS LONG CLICK", Toast.LENGTH_LONG).show();
-                return false;
+                ((MainNavigationActivity) context).navigateToChat(channelId);
             }
         });
+    }
+
+    public void navigate(int position){
+        ChannelModel channelModel = channels.get(position);
+        String channelId = channelModel.getId();
+        if (context != null && context instanceof MainNavigationActivity){
+            ((MainNavigationActivity) context).navigateToChat(channelId);
+        }
     }
 
     @Override
@@ -103,17 +78,15 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     }
 
 
-
-    /*public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener = onItemClickListener;
-    }*/
-
-
     public void setChannels(List<ChannelModel> channelList){
-        this.validateChannelList(channelList);
-        this.channels.clear();
-        this.channels.addAll(channelList);
-        this.notifyDataSetChanged();
+        validateChannelList(channelList);
+        channels.clear();
+        channels.addAll(channelList);
+        notifyDataSetChanged();
+    }
+
+    public ChannelModel getChannelByID(int position){
+        return channels.get(position);
     }
 
     private void validateChannelList(List<ChannelModel> channelList){
@@ -121,12 +94,4 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
             throw new IllegalArgumentException("List of channels cannot be null... ChannelListAdapter");
         }
     }
-
-    /*static class ChannelViewHolder extends RecyclerView.ViewHolder{
-
-        public ChannelViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }*/
 }

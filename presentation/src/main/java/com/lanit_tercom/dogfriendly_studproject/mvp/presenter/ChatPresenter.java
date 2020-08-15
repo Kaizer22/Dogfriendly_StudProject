@@ -11,6 +11,7 @@ import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.message.PostMessageUseCase;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class ChatPresenter extends BasePresenter {
         MessageModel messageModel = new MessageModel();
         messageModel.setSenderID(authManager.getCurrentUserId());
         messageModel.setChatID(channelID);
-
+        messageModel.setTime(new Date(System.currentTimeMillis()));
         messageModel.setText(message);
 
         //Добавление сообщения в БД через domain слой

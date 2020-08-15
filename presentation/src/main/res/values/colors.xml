@@ -22,4 +22,23 @@
     <color name="whiteTransparent">#D8FFFFFF</color>
     <color name="colorOverlay">#78474747</color>
 
+    <color name="colorPrimaryGreen">#818D00</color>
+
+    <!-- ChannelList Activity-->
+    <color name="channellist_activity_name_text">#202020</color>
+    <color name="channellist_activity_message_text">#4F4F4F</color>
+    <color name="channellist_activity_unread_messages_icon">#C0D904</color>
+    <color name="channellist_activity_time">#94A604</color>
+
+
+    <!-- Invitation Activity-->
+    <color name="activity_title_text">#94A604</color>
+    <color name="activity_grey_text">#828282</color>
+    <color name="activity_black_text">#202020</color>
+    <color name="activity_textview_background">#F5F5F5</color>
+    <color name="activity_elements">#C0D904</color>
+    <color name="activity_elements_unchecked">#BDBDBD</color>
+    <color name="invitation_line">#E0E0E0</color>
+    <color name="walk_access_background">#FEFFF0</color>
+
 </resources>

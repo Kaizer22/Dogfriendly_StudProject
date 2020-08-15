@@ -49,6 +49,9 @@ class SignInActivity : BaseActivity() {
     fun navigateToMainNavigation() =
             navigator?.navigateToMainNavigation(this)
 
+    fun navigateToChannelList(userId: String?)=
+            navigator?.navigateToChannelList(this, userId)
+
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
             addFragment(R.id.ft_container, SignInFragment())

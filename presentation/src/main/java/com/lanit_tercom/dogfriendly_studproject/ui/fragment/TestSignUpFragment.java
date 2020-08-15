@@ -13,10 +13,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.MessageEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.MessageRepositoryImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.TestSignUpPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.TestSignUpView;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.TestSignUpActivity;
+import com.lanit_tercom.domain.executor.PostExecutionThread;
+import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.user.CreateUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.impl.CreateUserDetailsUseCaseImpl;
+import com.lanit_tercom.domain.repository.MessageRepository;
+import com.lanit_tercom.domain.repository.UserRepository;
+import com.lanit_tercom.library.data.manager.NetworkManager;
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +55,19 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
 
     @Override
     public void initializePresenter() {
-        presenter = new TestSignUpPresenter(new AuthManagerFirebaseImpl());
+        ThreadExecutor threadExecutor = JobExecutor.getInstance();
+        PostExecutionThread postExecutionThread = UIThread.getInstance();
+
+        NetworkManager networkManager = new NetworkManagerImpl(getContext());
+        UserEntityDtoMapper userEntityDtoMapper = new UserEntityDtoMapper();
+        UserCache userCache = null;
+        UserEntityStoreFactory userEntityStoreFactory =
+                new UserEntityStoreFactory(networkManager, userCache);
+        UserRepository userRepository = UserRepositoryImpl
+                .getInstance(userEntityStoreFactory, userEntityDtoMapper);
+        CreateUserDetailsUseCase createUser = new CreateUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread);
+        presenter = new TestSignUpPresenter(new AuthManagerFirebaseImpl(), createUser);
     }
 
     @Nullable
@@ -131,7 +162,8 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
         EditText name = root.findViewById(R.id.edit_name);
 
         presenter.registerUser(email.getText().toString(),
-                password.getText().toString());
+                password.getText().toString(),
+                name.getText().toString());
     }
 
     private void turnOnGeolocation(){
