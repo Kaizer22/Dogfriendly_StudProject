@@ -21,6 +21,8 @@ public class WalkEntityDtoMapper {
         walkEntity.setFreeAccess(walkDto.isFreeAccess());
         walkEntity.setCreator(walkDto.getCreator());
         walkEntity.setDescription(walkDto.getDescription());
+        walkEntity.setRadiusOfVisibility(walkDto.getRadiusOfVisibility());
+        walkEntity.setTimeOfVisibility(walkDto.getTimeOfVisibility());
 
         List<HashMap<String, String>> members = new ArrayList<>();
 
@@ -46,6 +48,8 @@ public class WalkEntityDtoMapper {
         walkDto.setFreeAccess(walkEntity.isFreeAccess());
         walkDto.setDescription(walkEntity.getDescription());
         walkDto.setCreator(walkEntity.getCreator());
+        walkDto.setRadiusOfVisibility(walkEntity.getRadiusOfVisibility());
+        walkDto.setTimeOfVisibility(walkEntity.getTimeOfVisibility());
 
         List<String> members = new ArrayList<>();
         for(HashMap<String, String> pair: walkEntity.getMembers())

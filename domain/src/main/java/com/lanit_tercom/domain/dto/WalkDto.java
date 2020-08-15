@@ -9,6 +9,8 @@ public class WalkDto {
     private boolean freeAccess;
     private String description;
     private String creator;
+    private int radiusOfVisibility;
+    private int timeOfVisibility;
     private List<String> members;
 
     public String getWalkId() {
@@ -49,6 +51,22 @@ public class WalkDto {
 
     public void setCreator(String creator) {
         this.creator = creator;
+    }
+
+    public int getRadiusOfVisibility() {
+        return radiusOfVisibility;
+    }
+
+    public void setRadiusOfVisibility(int radiusOfVisibility) {
+        this.radiusOfVisibility = radiusOfVisibility;
+    }
+
+    public int getTimeOfVisibility() {
+        return timeOfVisibility;
+    }
+
+    public void setTimeOfVisibility(int timeOfVisibility) {
+        this.timeOfVisibility = timeOfVisibility;
     }
 
     public List<String> getMembers() {

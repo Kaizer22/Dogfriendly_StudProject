@@ -39,6 +39,9 @@ class UserSignInActivity : BaseActivity() {
     fun navigateToChannelList(userId: String?)=
             navigator?.navigateToChannelList(this, userId)
 
+    fun navigateToInvitationScreen(userId: String?) =
+            navigator?.navigateToInvitationScreen(this, userId)
+
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)
             addFragment(R.id.ft_container, UserSignInFragment())

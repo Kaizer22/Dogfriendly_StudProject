@@ -42,7 +42,7 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
         initRecyclerView(view);
 
         //TODO test method
-        testWalkFirebase();
+        //testWalkFirebase();
 
         return view;
     }

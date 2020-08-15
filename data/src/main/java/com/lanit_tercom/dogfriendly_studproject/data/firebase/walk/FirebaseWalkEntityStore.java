@@ -32,6 +32,30 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
 
     public FirebaseWalkEntityStore(){
         this.databaseReference = FirebaseDatabase.getInstance().getReference().child(CHILD_WALKS);
+
+
+        /*List<HashMap<String, String >> members = new ArrayList<>();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("userId", "ZtVM6D0rX6Vygni8NgyGz6kf9dB3");
+        members.add(hashMap);
+        WalkEntity testWalkEntity = new WalkEntity("Прогулка в центре",
+                true,
+                "Собираемся на Дворцовой набережной",
+                "ZtVM6D0rX6Vygni8NgyGz6kf9dB3",
+                members);
+
+        addWalk(testWalkEntity, new AddWalkCallback() {
+            @Override
+            public void onWalkAdded() {
+                System.out.println("Walk was added");
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                System.out.println("ADD Error!!!");
+            }
+        });
+
         getWalk("ZtVM6D0rX6Vygni8NgyGz6kf9dB3", new GetWalkCallback() {
             @Override
             public void onWalkLoaded(WalkEntity walkEntity) {
@@ -42,7 +66,7 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
             public void onError(ErrorBundle errorBundle) {
                 System.out.println("ERROR!!!");
             }
-        });
+        });*/
     }
 
 
@@ -85,7 +109,7 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
         walkEntity.setWalkId(firebaseId);
         Map<String, Object> map = new HashMap<>();
         map.put(walkEntity.getWalkId(), walkEntity);
-        databaseReference.updateChildren(map)
+        databaseReference.child(walkEntity.getCreator()).updateChildren(map)
                 .addOnSuccessListener(aVoid -> addWalkCallback.onWalkAdded())
                 .addOnFailureListener(e -> addWalkCallback.onError(new RepositoryErrorBundle(e)));
     }
