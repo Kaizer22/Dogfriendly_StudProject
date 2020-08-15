@@ -33,4 +33,9 @@ public class TestSignUpPresenter extends BasePresenter {
                     }
                 });
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

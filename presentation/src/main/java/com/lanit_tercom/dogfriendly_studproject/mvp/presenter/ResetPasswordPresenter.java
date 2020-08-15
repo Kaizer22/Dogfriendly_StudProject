@@ -45,4 +45,9 @@ public class ResetPasswordPresenter extends BasePresenter {
                     }
                 });
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }

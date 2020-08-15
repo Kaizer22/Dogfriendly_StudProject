@@ -65,7 +65,7 @@ public class MessageViewHolder extends BaseViewHolder{
         //changeMessageShape(isSentByCurrentUser);
 
         setText(messageOnBind.getText());
-        setTime(messageOnBind.getTime());
+        setTime(messageOnBind.getTime().getTime());
 
         messageContainer.setOnClickListener(view ->{
             if (isSentByCurrentUser)

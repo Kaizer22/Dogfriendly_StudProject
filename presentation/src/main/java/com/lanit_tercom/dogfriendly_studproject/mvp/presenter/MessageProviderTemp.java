@@ -15,11 +15,11 @@ public class MessageProviderTemp {
     public static void initProvider(){
         messages = new LinkedList<>();
         messages.add(new MessageModel("1","g9C670M67cT00qnljCisnyWG3Tj2",
-                "2", "hello hello hello hello", System.currentTimeMillis()));
+                "2", "hello hello hello hello"));
         messages.add(new MessageModel("2","123",
-                "g9C670M67cT00qnljCisnyWG3Tj2", "bye bye bye bye bye", System.currentTimeMillis() + 1000000));
+                "g9C670M67cT00qnljCisnyWG3Tj2", "bye bye bye bye bye"));
         messages.add(new MessageModel("2","123",
-                "g9C670M67cT00qnljCisnyWG3Tj2", "bye", System.currentTimeMillis() + 1000000));
+                "g9C670M67cT00qnljCisnyWG3Tj2", "bye"));
     }
 
     public static List<MessageModel> getMessages(){

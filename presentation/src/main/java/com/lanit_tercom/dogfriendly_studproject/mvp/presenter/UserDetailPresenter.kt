@@ -13,6 +13,7 @@ import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
  */
 class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?) : BasePresenter() {
 
+    private var view: UserDetailsView? = null
     private var userId: String? = null
 
     fun initialize(userId: String?) {
@@ -29,7 +30,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
-        (view as UserDetailsView).renderCurrentUser(userModel)
+        view?.renderCurrentUser(userModel)
     }
 
     private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
@@ -39,5 +40,9 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         override fun onError(errorBundle: ErrorBundle?) {}
 
+    }
+
+    override fun onDestroy() {
+        this.view = null
     }
 }

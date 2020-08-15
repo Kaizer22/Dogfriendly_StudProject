@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/bottomSheetContainer"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Радиус поиска"
+        android:layout_gravity="start|top"
+        android:id="@+id/textView_radar"
+        android:layout_margin="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekbar_progress"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="3"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+/>
+
+</FrameLayout>

@@ -18,7 +18,7 @@ public class TestSignUpActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_sign_up);
+        setContentView(R.layout.activity_sign_up);
     }
 
     public void navigateToUserProfile(){ //Переход в пустой профиль нового

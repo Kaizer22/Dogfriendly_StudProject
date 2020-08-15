@@ -5,7 +5,6 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
 
-
 public interface MessageRepository {
 
     interface Error {

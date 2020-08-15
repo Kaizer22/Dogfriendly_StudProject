@@ -42,7 +42,7 @@ public class ChannelEntityDtoMapper {
         channelDto.setName(channelEntity.getName());
         channelDto.setLastMessage(channelEntity.getLastMessage());
         channelDto.setLastMessageOwner(channelEntity.getLastMessageOwner());
-        channelDto.setTimestamp(channelEntity.getTimestamp());
+        channelDto.setTimestamp(channelEntity.getTimestampForMapper());
 
         List<String> members = new ArrayList<>();
 

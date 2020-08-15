@@ -7,6 +7,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundExcep
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
 
@@ -27,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserEntityStoreFactory userEntityStoreFactory;
     private final UserEntityDtoMapper userEntityDtoMapper;
 
-    protected UserRepositoryImpl(UserEntityStoreFactory userEntityStoreFactory,
+    public UserRepositoryImpl(UserEntityStoreFactory userEntityStoreFactory,
                                  UserEntityDtoMapper userEntityDtoMapper) {
 
         if (userEntityStoreFactory == null || userEntityDtoMapper == null) {
@@ -54,30 +55,10 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
             @Override
-            public void onError(Exception exception) {
-                userCallback.onError(new RepositoryErrorBundle(exception));
+            public void onError(ErrorBundle errorBundle) {
+                userCallback.onError(errorBundle);
             }
         });
-    }
-
-
-    //TODO чтобы заработало пришлось закомментить эти методы
-    //Denis
-    //@Override
-    //public void createUser(UserDto userDto, CreateOrEditCallback userCallback) {
-    //}
-
-    //@Override
-    //public void editUserById(UserDto userDto, CreateOrEditCallback userCallback) {
-    //}
-    @Override
-    public void createUser(UserDto userDto, UserCreateCallback userCallback) {
-
-    }
-
-    @Override
-    public void editUser(UserDto userDto, UserEditCallback userCallback) {
-
     }
 
 
@@ -95,13 +76,50 @@ public class UserRepositoryImpl implements UserRepository {
                     userListCallback.onError(new RepositoryErrorBundle(new UserListException())); // ошибка для списка пользователей
                 }
             }
+
             @Override
-            public void onError(Exception exception) {
-                userListCallback.onError(new RepositoryErrorBundle(exception));
+            public void onError(ErrorBundle errorBundle) {
+                userListCallback.onError(errorBundle);
             }
         });
     }
 
+    @Override
+    public void createUser(UserDto userDto, UserCreateCallback userCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        UserEntity userEntity = userEntityDtoMapper.map1(userDto);
+
+        userEntityStore.createUser(userEntity , new UserEntityStore.UserCreateCallback() {
+            @Override
+            public void onUserCreated() {
+                userCallback.onUserCreated();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                userCallback.onError(errorBundle);
+            }
+        });
+    }
+
+    @Override
+    public void editUser(UserDto userDto, UserEditCallback userCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        UserEntity userEntity = userEntityDtoMapper.map1(userDto);
+
+        userEntityStore.editUser(userEntity , new UserEntityStore.UserEditCallback() {
+
+            @Override
+            public void onUserEdited() {
+                userCallback.onUserEdited();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                userCallback.onError(errorBundle);
+            }
+        });
+    }
 
 
 }

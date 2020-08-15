@@ -20,5 +20,6 @@
 
     <color name="blurTransparent">#A64F4F4F</color>
     <color name="whiteTransparent">#D8FFFFFF</color>
+    <color name="colorOverlay">#78474747</color>
 
 </resources>

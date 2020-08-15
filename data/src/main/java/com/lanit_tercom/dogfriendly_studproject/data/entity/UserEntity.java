@@ -1,10 +1,16 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
+
+import java.util.List;
+
 public class UserEntity {
 
     private String id;
     private String userName;
     private int age;
+    Long timestamp;
 
     public UserEntity(){}
 
@@ -42,6 +48,20 @@ public class UserEntity {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public java.util.Map<String, String> getTimestamp() {
+        return ServerValue.TIMESTAMP;
+    }
+
+    @Exclude
+    public Long getTimestampForMapper(){
+        return timestamp;
+    }
+
 
     @Override
     public String toString() {
