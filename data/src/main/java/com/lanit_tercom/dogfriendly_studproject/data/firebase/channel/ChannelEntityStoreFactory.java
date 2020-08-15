@@ -1,14 +1,12 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.channel;
 
-
 import android.util.Log;
 
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
-
-
 import com.lanit_tercom.library.data.manager.NetworkManager;
 
 public class ChannelEntityStoreFactory {
+
     private final NetworkManager networkManager;
     private final ChannelCache channelCache;
 

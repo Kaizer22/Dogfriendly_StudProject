@@ -1,19 +1,16 @@
-package com.lanit_tercom.dogfriendly_studproject.data.entity;
+package com.lanit_tercom.domain.dto;
 
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author nikolaygorokhov1@gmail.com
- */
-public class ChannelEntity {
+public class ChannelDto {
 
     private String id;
     private String name;
     private String lastMessage;
     private String lastMessageOwner;
     private Long timestamp;
-    private List<HashMap<String, String>> members;
+    private List<String> members;
 
     public void setId(String id) {
         this.id = id;
@@ -35,7 +32,7 @@ public class ChannelEntity {
         this.timestamp = timestamp;
     }
 
-    public void setMembers(List<HashMap<String, String>> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 
@@ -59,8 +56,7 @@ public class ChannelEntity {
         return timestamp;
     }
 
-    public List<HashMap<String, String>> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
-
 }

@@ -14,7 +14,6 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,3 +103,4 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         }
     }
 }
+

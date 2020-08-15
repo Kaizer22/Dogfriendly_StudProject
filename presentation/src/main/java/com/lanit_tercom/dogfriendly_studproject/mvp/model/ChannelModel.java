@@ -1,19 +1,33 @@
-package com.lanit_tercom.dogfriendly_studproject.data.entity;
+package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
-import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author nikolaygorokhov1@gmail.com
- */
-public class ChannelEntity {
+public class ChannelModel {
 
     private String id;
     private String name;
     private String lastMessage;
     private String lastMessageOwner;
     private Long timestamp;
-    private List<HashMap<String, String>> members;
+    private List<String> members; // Время последнего полученного сообщения
+
+    public ChannelModel() {
+    }
+
+    public ChannelModel(String channelID,
+                        String name,
+                        String lastMessage,
+                        String lastMessageOwner,
+                        Long timestamp,
+                        List<String> members){
+        this.id = channelID;
+        this.name = name;
+        this.lastMessage = lastMessage;
+        this.lastMessageOwner = lastMessageOwner;
+        this.timestamp = timestamp;
+        this.members = members;
+    }
+
 
     public void setId(String id) {
         this.id = id;
@@ -35,7 +49,7 @@ public class ChannelEntity {
         this.timestamp = timestamp;
     }
 
-    public void setMembers(List<HashMap<String, String>> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 
@@ -59,8 +73,7 @@ public class ChannelEntity {
         return timestamp;
     }
 
-    public List<HashMap<String, String>> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
-
 }

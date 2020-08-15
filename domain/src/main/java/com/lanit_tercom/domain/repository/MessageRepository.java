@@ -5,10 +5,7 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
 
-/**
- * Интерфейс представляющий функционал репозитория сообщений
- * @author nikolaygorokhov1@gmail.com
- */
+
 public interface MessageRepository {
 
     interface Error {
@@ -16,31 +13,31 @@ public interface MessageRepository {
     }
 
     //to delete message
-    interface MessageDeleteCallback{
+    interface MessageDeleteCallback extends Error{
         void onMessageDeleted();
 
-        void onError(ErrorBundle errorBundle);
+
     }
 
     //to edit message
-    interface MessageEditCallback{
+    interface MessageEditCallback extends Error{
         void onMessageEdited();
 
-        void onError(ErrorBundle errorBundle);
+
     }
 
     //to post message
-    interface MessagePostCallback{
+    interface MessagePostCallback extends Error{
         void onMessagePosted();
 
-        void onError(ErrorBundle errorBundle);
+
     }
 
     //to get messages
-    interface MessagesDetailCallback{
+    interface MessagesDetailCallback extends Error{
         void onMessagesLoaded(List<MessageDto> messages);
 
-        void onError(ErrorBundle errorBundle);
+
     }
 
     void getMessages(String channelId, MessagesDetailCallback callback);
