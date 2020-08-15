@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dogfriendly_navigation"
-    app:startDestination="@id/navigation_channels">
+    app:startDestination="@id/navigation_profile">
 
     <fragment
         android:id="@+id/navigation_profile"
@@ -19,12 +19,14 @@
 
     <fragment
         android:id="@+id/navigation_channels"
-        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
-        tools:layout="@layout/test_empty_fragment"
-        android:label="@string/title_options"/>
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment"
+        android:label="@string/title_channels"
+        tools:layout="@layout/fragment_channel_list"
+        />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        android:label="@string/title_options"
         tools:layout="@layout/test_empty_fragment"/>
 </navigation>

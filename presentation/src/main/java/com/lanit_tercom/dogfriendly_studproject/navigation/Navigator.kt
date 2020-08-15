@@ -48,4 +48,9 @@ class Navigator {
             context.startActivity(
                     MainNavigationActivity.getCallingIntent(context)
             )
+
+    //fun navigateToChannelList(context: Context, userId: String?) =
+            //context.startActivity(
+                    //ChannelListActivity.getCallingIntent(context, userId)
+            //)
 }

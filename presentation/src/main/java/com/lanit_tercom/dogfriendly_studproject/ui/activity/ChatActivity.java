@@ -38,7 +38,9 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
-    //public void navigateToDialogsActivity(){
-       // getNavigator().navigateToDialogsActivity(this);
-    //}
+    public void navigateToChannelsList(){
+        //TODO навигация обратно на фрагмент с каналами, а не на
+        // фрагмент по умолчанию
+       getNavigator().navigateToMainNavigation(this);
+    }
 }

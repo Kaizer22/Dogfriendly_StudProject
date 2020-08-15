@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserSignInView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserSignInActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserSignInFragment
 import java.lang.Exception
@@ -37,6 +38,7 @@ class UserSignInPresenter(private val authManager: AuthManager?) : BasePresenter
             // код и код в UserSignInActivity
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
                 ((view as UserSignInFragment).activity as UserSignInActivity).navigateToMainNavigation()
+                //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChannelList(currentUserId!!)
             else
                 //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
                 ((view as UserSignInFragment).showToastMessage("Неверный email или пароль"))

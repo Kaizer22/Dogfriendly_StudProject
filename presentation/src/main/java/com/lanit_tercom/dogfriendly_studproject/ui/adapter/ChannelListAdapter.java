@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity;
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,9 +59,14 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
             Log.e("Click", "the item was clicked");
             //TODO navigation to chosen chat (channelId)
             String channelId = channelModel.getId();
-            if (context != null && context instanceof ChannelListActivity){
-                ((ChannelListActivity) context).navigateToChat(); // channelId
+            //TODO тестовый код
+            if (context != null && context instanceof MainNavigationActivity){
+                ((MainNavigationActivity) context).navigateToChat("-MCqwIrhuEPqkgz1GV18"); // channelId
             }
+
+            //if (context != null && context instanceof ChannelListActivity){
+                //((ChannelListActivity) context).navigateToChat(); // channelId
+            //}
 /*
             if (ChannelListAdapter.this.onItemClickListener != null){
                 ChannelListAdapter.this.onItemClickListener.onChannelItemClicked(channelModel);

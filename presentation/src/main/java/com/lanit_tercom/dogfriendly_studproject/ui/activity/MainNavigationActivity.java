@@ -18,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class MainNavigationActivity extends BaseActivity {
 
+    //TODO получение ID текущекго пользователя для передачи в дочерние
+    // фрагменты данной навигационной activity
+
     public static Intent getCallingIntent(Context context){
         return new Intent(context, MainNavigationActivity.class);
     }
@@ -45,5 +48,9 @@ public class MainNavigationActivity extends BaseActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    public void navigateToChat(String channelID){
+        getNavigator().navigateToChat(this, channelID);
     }
 }

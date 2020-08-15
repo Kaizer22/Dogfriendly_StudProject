@@ -30,6 +30,7 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChatActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
@@ -230,6 +231,8 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     private void backToDialogsFragment(){
         //TODO возвращение к экрану диалогов с помощью Navigator
+        ChatActivity baseActivity = (ChatActivity) getActivity();
+        baseActivity.navigateToChannelsList();
     }
 
     private void showEditDialog(MessageModel message){

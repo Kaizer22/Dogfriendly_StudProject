@@ -43,6 +43,9 @@ class UserSignInActivity : BaseActivity() {
     fun navigateToChat() =
             navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
 
+    //fun navigateToChannelList(userID: String) =
+            //navigator?.navigateToChannelList(this, userID)
+
     fun navigateToMainNavigation() =
             navigator?.navigateToMainNavigation(this)
 
