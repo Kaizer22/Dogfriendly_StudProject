@@ -21,7 +21,6 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
     fun auth(email: String?, password: String?) {
 
         authManager?.signOut(signOutCallback)
-
         authManager?.signInEmail(email, password, signInCallback)
 
     }
