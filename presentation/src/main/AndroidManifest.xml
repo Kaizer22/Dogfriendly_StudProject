@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lanit_tercom.dogfriendly_studproject">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -14,18 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".tests.ui.map.MapSettingsActivity" >
-        </activity>
+        <activity android:name=".tests.ui.UserTestActivity"/>
+        <activity android:name=".tests.ui.pet_detail.PetCharacterActivity" />
         <activity android:name=".tests.ui.pet_detail.PetPhotoActivity" />
+
+        <activity android:name=".tests.ui.map.MapSettingsActivity" />
         <activity android:name=".tests.ui.EditTextActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetCharacterEditTestActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetCharacterEditActivity" />
         <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailEditTestActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailEditTestActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailTestActivity" />
+        <activity android:name=".tests.ui.user_detail.UserDetailEditActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailEditActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailActivity" />
+        <activity android:name=".tests.ui.user_detail.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

@@ -9,32 +9,34 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.ListView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.EditTextActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditTestActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailEditActivity
 
 
-class UserDetailTestActivity : AppCompatActivity() {
+class UserDetailActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
     private lateinit var btnToUserDetailEdit: ImageButton
     private lateinit var btnAddPet: MaterialButton
     private lateinit var btnToMap: ImageButton
     private lateinit var btnToChats: ImageButton
     private lateinit var btnToSettings: ImageButton
-    private lateinit var petList: ListView
+    private lateinit var petList: RecyclerView
     private lateinit var nameTextView: TextView
     private lateinit var ageTextView: TextView
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
     private lateinit var avatar: ImageView
+    private lateinit var petListAdapter: PetListAdapter
+    private var pets: ArrayList<PetListItem> = ArrayList()
     private var avatarUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +47,11 @@ class UserDetailTestActivity : AppCompatActivity() {
         nameTextView = findViewById(R.id.name)
         ageTextView = findViewById(R.id.age)
         avatar = findViewById(R.id.user_avatar)
+
         petList = findViewById(R.id.pet_list)
+        petList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        petListAdapter = PetListAdapter(pets)
+        petList.adapter = petListAdapter
 
         btnToUserDetailEdit = findViewById(R.id.edit_button)
         btnToUserDetailEdit.setOnClickListener { toUserEdit() }
@@ -79,7 +85,8 @@ class UserDetailTestActivity : AppCompatActivity() {
             startActivityForResult(toEditAboutText, 3)
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        //Чтобы клавиатура не открывалась там, где не надо/убиралась там где надо
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         //Динамическое задание размера блоку "о себе"
         val appbar = findViewById<View>(R.id.appbar) as AppBarLayout
@@ -103,11 +110,8 @@ class UserDetailTestActivity : AppCompatActivity() {
     }
 
 
-    //Методы для навигации и взаимодействия с другими экранами
-    private fun toPetDetail() {
-        val intent: Intent = Intent(this, PetDetailTestActivity::class.java)
-        startActivity(intent)
-    }
+    //todo
+    private fun toPetDetail() {}
 
     //todo
     private fun toMap() {}
@@ -120,19 +124,20 @@ class UserDetailTestActivity : AppCompatActivity() {
 
 
     private fun toUserEdit() {
-        val intent: Intent = Intent(this, UserDetailEditTestActivity::class.java)
+        val intent: Intent = Intent(this, UserDetailEditActivity::class.java)
         startActivityForResult(intent, 1)
     }
 
     private fun addPet() {
-        val intent: Intent = Intent(this, PetDetailEditTestActivity::class.java)
-        startActivity(intent)
+        val intent: Intent = Intent(this, PetDetailEditActivity::class.java)
+        startActivityForResult(intent, 4)
     }
 
 
     //Обратная связь с другими Activity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //Загрузка аватара юзера
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 nameTextView.text = data?.getStringExtra("name")
@@ -143,19 +148,33 @@ class UserDetailTestActivity : AppCompatActivity() {
                     Glide.with(this)
                             .load(avatarUri)
                             .circleCrop()
-                            .into(avatar);
+                            .into(avatar)
                 else
                     avatar.setImageResource(R.drawable.ic_set_avatar_green)
             }
         }
+        //Информация о прогулке из EditTextActivity
         if(requestCode == 2){
             if(resultCode == Activity.RESULT_OK){
                 plansText.text = data?.getStringExtra("output")
             }
         }
+        //Информация о себе из EditTextActivity
         if(requestCode == 3){
             if(resultCode == Activity.RESULT_OK){
                 aboutText.text = data?.getStringExtra("output")
+            }
+        }
+        //Информация получаемая в процессе создания профиля собаки (для создания ссылки на этот профиль)
+        if (requestCode == 4) {
+            if (resultCode == Activity.RESULT_OK) {
+                val avatarUriString: String? = data?.getStringExtra("avatarUri")
+                val name: String = data?.getStringExtra("name") ?: "1"
+                val breed: String = data?.getStringExtra("breed") ?: "2"
+                val age: String = data?.getStringExtra("age") ?: "3"
+                val desc: String = "$breed, $age лет"
+                pets.add(PetListItem(avatarUriString, name, desc))
+                petListAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -189,5 +208,8 @@ class UserDetailTestActivity : AppCompatActivity() {
 
         abstract fun onStateChanged(appBarLayout: AppBarLayout?, state: State?)
     }
+
+    //Класс представляющий список питомцев юзера
+    data class PetListItem(val uri: String?, val name: String?, val desc: String?)
 
 }

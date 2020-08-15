@@ -1,8 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
+import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
-
 import java.util.List;
 
 public interface UserEntityStore {
@@ -28,8 +28,19 @@ public interface UserEntityStore {
         void onUserEdited();
     }
 
+    interface UserDeleteCallback extends Error{
+        void onUserDeleted();
+    }
+
+    interface AddPetCallback extends Error{
+        void onPetAdded();
+    }
+
+
     void getAllUsers(UserListCallback userListCallback);
     void getUserById(String id, UserByIdCallback userByIdCallback);
     void createUser(UserEntity user, UserCreateCallback userCreateCallback);
     void editUser(UserEntity user, UserEditCallback userEditCallback);
+    void deleteUser(String id, UserDeleteCallback userDeleteCallback);
+    void addPet(String id, PetEntity pet, AddPetCallback addPetCallback);
 }

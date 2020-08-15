@@ -217,9 +217,10 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                     Log.i(TAG, java.lang.String.format("Place '%s' has likelihood: %f",
                             placeLikelihood.place.name,
                             placeLikelihood.likelihood))
-                    textView.append(java.lang.String.format("Place '%s' has likelihood: %f\n",
-                            placeLikelihood.place.name,
-                            placeLikelihood.likelihood))
+                    //TODO unresolved reference: textView
+                    //textView.append(java.lang.String.format("Place '%s' has likelihood: %f\n",
+                            //placeLikelihood.place.name,
+                            //placeLikelihood.likelihood))
                 }
             }.addOnFailureListener { exception: Exception ->
                 if (exception is ApiException) {

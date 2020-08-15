@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment"
+        android:name="com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/test_empty_fragment"/>
+        tools:layout="@layout/fragment_map"/>
 
     <fragment
         android:id="@+id/navigation_channels"

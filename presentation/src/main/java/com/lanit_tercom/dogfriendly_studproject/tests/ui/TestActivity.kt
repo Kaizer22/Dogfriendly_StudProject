@@ -3,13 +3,15 @@ package com.lanit_tercom.dogfriendly_studproject.tests.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 
 import androidx.appcompat.app.AppCompatActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
-import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailTestActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.SignInActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.PetListAdapter
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailActivity
+import kotlinx.android.synthetic.main.user_detail_edit.view.*
 
 
 /**
@@ -19,9 +21,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        startActivity(Intent(this, UserDetailTestActivity::class.java))
-        startActivity(Intent(this, MapActivity::class.java))
-
+        startActivity(Intent(this, UserTestActivity::class.java))
 
     }
 

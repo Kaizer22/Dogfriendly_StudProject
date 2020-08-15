@@ -2,13 +2,12 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 
 public class FirebaseUserEntityStore implements UserEntityStore {
 
@@ -40,18 +38,18 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback){
         referenceDatabase.child(id).addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               userEntity = dataSnapshot.getValue(UserEntity.class);
-               userEntity.setId(id);
-               userByIdCallback.onUserLoaded(userEntity); // return UserEntity
-           }
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userEntity = dataSnapshot.getValue(UserEntity.class);
+                userEntity.setId(id);
+                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+            }
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError databaseError) {
-               userByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
-           }
-       });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+            }
+        });
     }
 
     public void getAllUsers(final UserListCallback userListCallback){
@@ -95,10 +93,36 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
     }
 
+    @Override
+    public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
+        referenceDatabase.child(id).removeValue()
+                .addOnSuccessListener(aVoid -> userDeleteCallback.onUserDeleted())
+                .addOnFailureListener(e -> userDeleteCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
+
+
+    @Override
+    public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
+        String firebaseId = referenceDatabase.child(id).child("pets").push().getKey();
+        pet.setId(firebaseId);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put(firebaseId, pet);
+
+//        Map<String, Object> map = new HashMap<>();
+//        map.put(pet.getId(), pet);
+        referenceDatabase.child(id).child("pets").updateChildren(map)
+                .addOnSuccessListener(aVoid -> addPetCallback.onPetAdded())
+                .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
     private void putUserEntityInCache(String userId, UserEntity userEntity){
         if (userCache != null){
             this.userCache.saveUser(userId, userEntity);
         }
     }
+
+
 
 }

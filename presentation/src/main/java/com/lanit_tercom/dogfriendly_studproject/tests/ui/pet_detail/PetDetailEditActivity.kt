@@ -14,7 +14,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
 
-class PetDetailEditTestActivity : AppCompatActivity() {
+class PetDetailEditActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
     private lateinit var editPetName: TextInputEditText
@@ -24,15 +24,14 @@ class PetDetailEditTestActivity : AppCompatActivity() {
     private lateinit var menButton: MaterialButton
     private lateinit var womanButton: MaterialButton
     private var avatarUri: Uri? = null
-    private val PICK_IMAGE = 100
     private var gender: String? = null
-    private lateinit var data: Intent
+    private lateinit var toPetCharacter: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pet_detail_edit)
 
-        data = Intent(this, PetCharacterEditTestActivity::class.java)
+        toPetCharacter = Intent(this, PetCharacterActivity::class.java)
 
         editPetName = findViewById(R.id.edit_pet_name)
         editPetBreed = findViewById(R.id.edit_pet_breed)
@@ -46,12 +45,12 @@ class PetDetailEditTestActivity : AppCompatActivity() {
 
         readyButton = findViewById(R.id.ready_button)
         readyButton.setOnClickListener {
-            data.putExtra("name", editPetName.text.toString())
-            data.putExtra("age", editPetAge.text.toString())
-            data.putExtra("breed", editPetBreed.text.toString())
-            data.putExtra("gender", gender)
-            data.putExtra("avatarUri", avatarUri.toString())
-            startActivity(data)
+            toPetCharacter.putExtra("name", editPetName.text.toString())
+            toPetCharacter.putExtra("age", editPetAge.text.toString())
+            toPetCharacter.putExtra("breed", editPetBreed.text.toString())
+            toPetCharacter.putExtra("gender", gender)
+            toPetCharacter.putExtra("avatarUri", avatarUri.toString())
+            startActivityForResult(toPetCharacter, 4)
         }
 
         avatar = findViewById(R.id.pet_avatar)
@@ -62,10 +61,9 @@ class PetDetailEditTestActivity : AppCompatActivity() {
         womanButton = findViewById(R.id.woman_button)
         womanButton.setOnClickListener { setGender("woman") }
 
-
-
     }
 
+    //Обработка нажатий кнопо выбора пола
     private fun setGender(gender: String){
         if(gender == "men"){
             menButton.background.setTint(Color.parseColor("#B2BC24"))
@@ -89,10 +87,10 @@ class PetDetailEditTestActivity : AppCompatActivity() {
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1,1)
                 .setActivityTitle("")
-                .start(this);
+                .start(this)
     }
 
-    //Обратная связь с галлереей
+    //Обратная связь с галереей, проброс данных обратно в UserDetailActivity(4)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -102,9 +100,12 @@ class PetDetailEditTestActivity : AppCompatActivity() {
                 val resultUri = result.uri
                 avatarUri = resultUri
                 avatar.setImageURI(avatarUri)
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
             }
+//            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
+        }
+        if(requestCode == 4){
+            setResult(Activity.RESULT_OK, data)
+            finish()
         }
 
     }

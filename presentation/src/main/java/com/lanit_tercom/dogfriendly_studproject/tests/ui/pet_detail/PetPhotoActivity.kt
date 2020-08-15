@@ -6,31 +6,61 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import kotlin.collections.ArrayList
+
 
 class PetPhotoActivity : AppCompatActivity() {
     private lateinit var elements: ArrayList<Pair<ImageView, ImageView>>
+    private lateinit var backButton: ImageButton
+    private lateinit var readyButton: Button
     private lateinit var loadPhotoButton: ImageView
+    private lateinit var data: Intent
     private var nextImageSpace: Int = 0
-    val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail/" + R.drawable.ic_button_add_photo)
+    private var photos: Array<String> = Array(8) {"0"}
+    private val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail/" + R.drawable.ic_button_add_photo)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pet_photo)
         elements = initialize()
-
         loadPhotoButton = findViewById(R.id.photo_image)
         loadPhotoButton.setOnClickListener {
             if (nextImageSpace != 8)
                 loadPhoto()
         }
 
+        data= Intent()
+        if(intent.extras != null){
+            data.putExtras(intent.extras!!)
+        }
+
+
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+
+        readyButton = findViewById(R.id.ready_button)
+        readyButton.setOnClickListener {
+            data.putStringArrayListExtra("photo",  ArrayList(listOf(*photos)))
+            val a = data.extras?.size()
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+
     }
 
-    fun initialize() : ArrayList<Pair<ImageView, ImageView>>{
+    //Инициализация элементов, присвоение им OnClickListener
+    private fun initialize() : ArrayList<Pair<ImageView, ImageView>>{
         val output = ArrayList<Pair<ImageView,ImageView>>()
         output.add(Pair(findViewById(R.id.photo1),findViewById(R.id.remove_photo1)))
         output.add(Pair(findViewById(R.id.photo2),findViewById(R.id.remove_photo2)))
@@ -49,27 +79,33 @@ class PetPhotoActivity : AppCompatActivity() {
         return output
     }
 
+    //Удалить элемент не находящийся в конце
     private fun deleteMiddle(i: Int){
         for(j in (i..6)){
             elements[j].first.setImageDrawable(elements[j+1].first.drawable)
+            photos[i]=photos[i+1]
         }
         elements[7].first.setImageURI(emptyPhoto)
         nextImageSpace--
         elements[nextImageSpace].second.visibility = View.INVISIBLE
     }
 
+    //Удалить последний элемент
     private fun deleteLast(){
+        photos[7] = "0"
         elements[7].first.setImageURI(emptyPhoto)
         elements[7].second.visibility = View.INVISIBLE
         nextImageSpace--
         
     }
 
-    fun setPhoto(elements: ArrayList<Pair<ImageView, ImageView>>, position: Int, image: Uri){
+    //Вставить фото в элемент
+    private fun setPhoto(elements: ArrayList<Pair<ImageView, ImageView>>, position: Int, image: Uri){
         elements[position].first.setImageURI(image)
         elements[position].second.visibility = View.VISIBLE
     }
 
+    //Загрузка/создание/обрезание аватара
     private fun loadPhoto() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
@@ -79,7 +115,7 @@ class PetPhotoActivity : AppCompatActivity() {
                 .start(this)
     }
 
-
+    //Обратная связь с галереей
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -88,14 +124,13 @@ class PetPhotoActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
                 if(nextImageSpace != 8){
+                    photos[nextImageSpace] = result.toString()
                     setPhoto(elements, nextImageSpace++, resultUri)
+
                 }
-
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                val error = result.error
             }
+//            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) { }
         }
-
     }
+
 }

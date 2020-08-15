@@ -17,7 +17,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 
 
 
-class UserDetailEditTestActivity : AppCompatActivity() {
+class UserDetailEditActivity : AppCompatActivity() {
     //Декларация UI элементов и переменных
     private lateinit var backButton: ImageButton
     private lateinit var readyButton: Button
