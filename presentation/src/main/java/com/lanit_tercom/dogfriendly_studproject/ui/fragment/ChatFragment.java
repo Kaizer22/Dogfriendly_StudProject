@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +57,9 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private RecyclerView chat;
     private MessageAdapter messageAdapter;
 
+    private ImageView emptyChatBackground;
+    private TextView emptyChatHint;
+
     private String channelID;
 
     public ChatFragment(String channelID){
@@ -90,23 +95,26 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chatPresenter = new ChatPresenter(channelID, authManager,
                 deleteMessageUseCase, editMessageUseCase,
                 getMessagesUseCase, postMessageUseCase);
-        chatPresenter.refreshData();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
-        chatPresenter.setView(this);
-
         showLoading();
-
+        initEmptyChat(root);
         initRecyclerView(root);
         initInteractions(root);
-        renderMessages();
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        chatPresenter.setView(this);
+        chatPresenter.refreshData();
+        renderMessages();
+    }
 
     @Override
     public void showProgressMessage(@NotNull String event) {
@@ -133,10 +141,20 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     @Override
     public void renderMessages() {
-        messageAdapter.setMessages(
-                chatPresenter.getMessages());
-        chat.smoothScrollToPosition(
-                messageAdapter.getItemCount());
+        if (chatPresenter.isChannelEmpty()){
+            chat.setVisibility(View.INVISIBLE);
+            emptyChatBackground.setVisibility(View.VISIBLE);
+            emptyChatHint.setVisibility(View.VISIBLE);
+        }else{
+            chat.setVisibility(View.VISIBLE);
+            emptyChatBackground.setVisibility(View.INVISIBLE);
+            emptyChatHint.setVisibility(View.INVISIBLE);
+
+            messageAdapter.setMessages(
+                    chatPresenter.getMessages());
+            chat.smoothScrollToPosition(
+                    messageAdapter.getItemCount());
+        }
     }
 
     @Override
@@ -147,7 +165,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         boolean canBeEdited = message.getSenderID()
                 .equals(chatPresenter.getCurrentUserID())
                 && position == messageAdapter.getItemCount() -1; // Оставляем редактирование
-                                                                // только последнего сообщения?
+        // только последнего сообщения?
         messageMenu.getMenu().findItem(R.id.item_edit_message)
                 .setVisible(canBeEdited);
         messageMenu.setOnMenuItemClickListener(menuItem ->{
@@ -163,22 +181,30 @@ public class ChatFragment extends BaseFragment implements ChatView {
             }
         });
         messageMenu.show();
-
     }
-
     //endregion
 
     //region Initialisations
-
     private void initInteractions(@NotNull View root){
+        //TODO смена иконки кнопки "отправить сообщение" при вызове
+        // программной клавиатуры, согласно макету
         EditText messageText = root.findViewById(R.id.edit_text_send_message);
-
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
         sendMessage.setOnClickListener(v -> sendMessage(messageText));
 
         ImageButton backToDialogs = root.findViewById(R.id.button_back);
         backToDialogs.setOnClickListener(v -> backToDialogsFragment());
+
+        ImageButton chatMenu = root.findViewById(R.id.button_chat_menu);
+        ImageView chatMenuBlurEffect = root.findViewById(R.id.on_chat_menu_blur_effect);
+        chatMenuBlurEffect.setVisibility(View.GONE);
+
+        ConstraintLayout upperSpace = root.findViewById(R.id.upper_space); //Используем для корректного вызова
+        // и отображения PopupMenu
+        chatMenu.setOnClickListener(v -> showChatMenu(root, upperSpace));
     }
+
+
 
     private void initRecyclerView(@NotNull View root){
         chat = root.findViewById(R.id.chat);
@@ -186,17 +212,25 @@ public class ChatFragment extends BaseFragment implements ChatView {
         messageAdapter = new MessageAdapter(this, chatPresenter.getCurrentUserID());
         chat.setAdapter(messageAdapter);
     }
+
+
+    private void initEmptyChat(View root){
+        emptyChatBackground = root.findViewById(R.id.empty_chat_background);
+        emptyChatHint = root.findViewById(R.id.empty_chat_hint);
+    }
+
     //endregion
 
     //region Actions
     private void sendMessage(@NotNull EditText messageText){
         chatPresenter.sendMessage(messageText
                 .getText().toString());
-        messageText.setText(R.string.new_message);
     }
 
     private void backToDialogsFragment(){
         //TODO возвращение к экрану диалогов с помощью Navigator
+        ChatActivity baseActivity = (ChatActivity) getActivity();
+        baseActivity.navigateToChannelsList();
     }
 
     private void showEditDialog(MessageModel message){
@@ -211,6 +245,30 @@ public class ChatFragment extends BaseFragment implements ChatView {
         dialog.setNegativeButton(getString(R.string.cancel), (dialogInterface, i) -> {
         });
         dialog.show();
+    }
+
+    //TODO кастомизаця PopupMenu
+    private void showChatMenu(View root, ConstraintLayout upperSpace){
+        ImageView blur = root.findViewById(R.id.on_chat_menu_blur_effect);
+        blur.setVisibility(View.VISIBLE);
+        PopupMenu chatMenu = new PopupMenu(upperSpace.getContext(), upperSpace);
+        chatMenu.inflate(R.menu.chat_menu);
+        chatMenu.setOnDismissListener(listener -> blur.setVisibility(View.GONE));
+        chatMenu.setOnMenuItemClickListener(menuItem ->{
+            switch (menuItem.getItemId()){
+                case R.id.item_open_user_profile:
+                    return true;
+                case R.id.item_disable_notification:
+                    return true;
+                case R.id.item_add_user:
+                    return true;
+                case R.id.item_delete_all_messages:
+                    return true;
+                default:
+                    return false;
+            }
+        });
+        chatMenu.show();
     }
     //endregion
 }

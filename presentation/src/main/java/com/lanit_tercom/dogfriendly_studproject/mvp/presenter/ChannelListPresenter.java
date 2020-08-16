@@ -112,4 +112,8 @@ public class ChannelListPresenter extends BasePresenter {
         return isChannelListEmpty;
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
 }

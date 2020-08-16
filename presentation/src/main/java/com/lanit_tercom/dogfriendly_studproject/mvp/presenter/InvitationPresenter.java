@@ -58,4 +58,8 @@ public class InvitationPresenter extends BasePresenter {
     }
 
 
+    @Override
+    public void onDestroy() {
+
+    }
 }

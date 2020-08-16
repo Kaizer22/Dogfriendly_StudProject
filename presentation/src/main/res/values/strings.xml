@@ -15,7 +15,6 @@
     <string name="woman_sign">/u2640</string>
     <string name="men">\u2642 Муж.</string>
     <string name="woman">\u2640 Жен.</string>
-    <string name="new_message">Сообщение…</string>
     <string name="sending_message_event">Отправка сообщения…</string>
     <string name="edit_message">Редактировать</string>
     <string name="delete_message">Удалить для всех</string>

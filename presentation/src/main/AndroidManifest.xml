@@ -26,8 +26,8 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".tests.ui.TestActivity" >
-        android:theme="@style/AppTheme">
+        <activity android:name=".tests.ui.TestActivity"
+                    android:theme="@style/AppTheme"/>
         <activity android:name=".ui.activity.WalkActivity">
         </activity>
         <activity android:name=".ui.activity.InvitationActivity">
@@ -35,14 +35,13 @@
         </activity>
         <activity android:name=".ui.activity.ChannelListActivity" />
         <activity android:name=".ui.activity.ChatActivity" />
-        <activity android:name=".ui.activity.UserSignInActivity">
+        <activity android:name=".ui.activity.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.SignInActivity" />
         <activity android:name=".ui.activity.SignUpActivity" />
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />

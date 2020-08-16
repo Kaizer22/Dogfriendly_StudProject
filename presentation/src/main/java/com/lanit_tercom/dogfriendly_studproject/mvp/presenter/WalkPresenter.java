@@ -20,4 +20,9 @@ public class WalkPresenter extends BasePresenter {
     private void showWalkDetailInView(){
 
     }
+
+    @Override
+    public void onDestroy() {
+
+    }
 }
