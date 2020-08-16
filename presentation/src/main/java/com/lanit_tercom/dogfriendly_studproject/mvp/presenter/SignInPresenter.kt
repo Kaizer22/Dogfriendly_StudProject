@@ -21,7 +21,6 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
     fun auth(email: String?, password: String?) {
 
         authManager?.signOut(signOutCallback)
-
         authManager?.signInEmail(email, password, signInCallback)
 
     }
@@ -33,8 +32,8 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
             if(currentUserId != null)
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
-                //((view as SignInFragment).activity as SignInActivity).navigateToMainNavigation()
-                ((view as SignInFragment).activity as SignInActivity).navigateToUserDetail(currentUserId)
+                ((view as SignInFragment).activity as SignInActivity).navigateToMainNavigation()
+                //((view as SignInFragment).activity as SignInActivity).navigateToUserDetail(currentUserId)
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChannelList(currentUserId!!)
             else
                 //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху

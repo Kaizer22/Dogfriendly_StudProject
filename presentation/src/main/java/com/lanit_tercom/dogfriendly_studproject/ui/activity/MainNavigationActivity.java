@@ -53,4 +53,8 @@ public class MainNavigationActivity extends BaseActivity {
     public void navigateToChat(String channelID){
         getNavigator().navigateToChat(this, channelID);
     }
+
+    public void navigateToUserDetail(String userId){
+        getNavigator().navigateToUserDetail(this, userId);
+    }
 }
