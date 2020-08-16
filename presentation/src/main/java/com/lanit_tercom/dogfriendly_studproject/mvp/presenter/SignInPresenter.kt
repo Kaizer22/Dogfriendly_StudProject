@@ -27,13 +27,13 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
 
     private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
 
-        override fun OnSignInFinished(currentUserID: String?) {
+        override fun onSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
             view?.hideLoading()
             if(currentUserId != null)
                 ((view as SignInFragment).activity as SignInActivity).navigateToUserMap()
             else
-                //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
+            //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
                 ((view as SignInFragment).showToastMessage("Неверный email или пароль"))
         }
 

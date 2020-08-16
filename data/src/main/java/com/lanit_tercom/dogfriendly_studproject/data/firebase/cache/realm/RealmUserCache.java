@@ -16,10 +16,10 @@ import io.realm.Realm;
 
 public class RealmUserCache implements UserCache {
 
-    /*private RealmUserEntityMapper realmUserEntityMapper;
+    /*private RealmUserEntityMapper realmUserEntityMapper;*/
 
     public RealmUserCache(RealmUserEntityMapper realmUserEntityMapper) {
-        this.realmUserEntityMapper = realmUserEntityMapper;
+        //this.realmUserEntityMapper = realmUserEntityMapper;
     }
 
 
@@ -27,7 +27,7 @@ public class RealmUserCache implements UserCache {
     public void saveUser(String userId, UserEntity userEntity) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            realm.copyToRealmOrUpdate(realmUserEntityMapper.map1(userEntity));
+            //realm.copyToRealmOrUpdate(realmUserEntityMapper.map1(userEntity));
         });
     }
 
@@ -37,10 +37,10 @@ public class RealmUserCache implements UserCache {
         List<RealmUserEntity> userEntityList = realm.where(RealmUserEntity.class).findAll();
 
         if (userEntityList != null){
-            userListCallback.onUsersListLoaded(realmUserEntityMapper.mapForList(userEntityList));
+            //userListCallback.onUsersListLoaded(realmUserEntityMapper.mapForList(userEntityList));
         }
         else {
-            userListCallback.onError(new UserListException());
+            //userListCallback.onError(new UserListException());
         }
     }
 
@@ -50,10 +50,10 @@ public class RealmUserCache implements UserCache {
         RealmUserEntity userEntity = realm.where(RealmUserEntity.class).equalTo("id", id).findFirst();
 
         if (userEntity != null){
-            userByIdCallback.onUserLoaded(realmUserEntityMapper.map2(userEntity));
+            //userByIdCallback.onUserLoaded(realmUserEntityMapper.map2(userEntity));
         }
         else {
-            userByIdCallback.onError(new UserNotFoundException());
+            //userByIdCallback.onError(new UserNotFoundException());
         }
     }
 

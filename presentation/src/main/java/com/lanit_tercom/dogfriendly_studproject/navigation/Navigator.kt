@@ -49,6 +49,11 @@ class Navigator {
                     MainNavigationActivity.getCallingIntent(context)
             )
 
+    fun navigateToChannelList(context: Context, userID: String?) =
+            context.startActivity(
+                    ChannelListActivity.getCallingIntent(context, userID)
+            )
+
     fun navigateToInvitationScreen(context: Context, userId: String?) =
             context.startActivity(
                     InvitationActivity.getCallingIntent(context, userId)
