@@ -1,12 +1,15 @@
 package com.lanit_tercom.dogfriendly_studproject.data.repository;
 
+import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserListException;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStore;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.PetEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.domain.dto.PetDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.domain.dto.UserDto;
@@ -44,7 +47,6 @@ public class UserRepositoryImpl implements UserRepository {
         UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
 
         userEntityStore.getUserById(userId, new UserEntityStore.UserByIdCallback() {
-
             @Override
             public void onUserLoaded(UserEntity userEntity) {
                 UserDto userDto = UserRepositoryImpl.this.userEntityDtoMapper.map2(userEntity);
@@ -70,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
         userEntityStore.getAllUsers(new UserEntityStore.UserListCallback() {
             @Override
             public void onUsersListLoaded(List<UserEntity> users) {
-                List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList(users);
+                List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList2(users);
                 if (usersDtoList != null){
                     userListCallback.onUsersLoaded(usersDtoList);
                 } else {
@@ -122,5 +124,54 @@ public class UserRepositoryImpl implements UserRepository {
         });
     }
 
+    @Override
+    public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        userEntityStore.deleteUser(id, new UserEntityStore.UserDeleteCallback() {
+            @Override
+            public void onUserDeleted() {
+                userDeleteCallback.onUserDeleted();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                userDeleteCallback.onError(errorBundle);
+            }
+        });
+    }
+
+    @Override
+    public void addPet(String id, PetDto pet, AddPetCallback addPetCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        PetEntityDtoMapper petEntityDtoMapper = new PetEntityDtoMapper();
+        PetEntity petEntity = petEntityDtoMapper.map1(pet);
+        userEntityStore.addPet(id, petEntity, new UserEntityStore.AddPetCallback(){
+
+            @Override
+            public void onPetAdded() {
+                addPetCallback.onPetAdded();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                addPetCallback.onError(errorBundle);
+            }
+        });
+
+    }
+
+    @Override
+    public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        userEntityStore.deletePet(userId, petId, new UserEntityStore.DeletePetCallback(){
+
+            @Override
+            public void onPetDeleted() { deletePetCallback.onPetDeleted(); }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) { deletePetCallback.onError(errorBundle); }
+        });
+
+    }
 
 }

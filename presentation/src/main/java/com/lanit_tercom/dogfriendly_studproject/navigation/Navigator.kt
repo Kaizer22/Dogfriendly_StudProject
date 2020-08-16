@@ -17,8 +17,11 @@ class Navigator {
                 SignInActivity.getCallingIntent(context))
 
     fun navigateToUserSignUp(context: Context) =
+        //context.startActivity(
+                //UserSignUpActivity.getCallingIntent(context))
         context.startActivity(
-                SignUpActivity.getCallingIntent(context))
+                TestSignUpActivity.getCallingIntent(context)
+        )
 
     fun navigateToUserMap(context: Context) =
         context.startActivity(
@@ -32,9 +35,18 @@ class Navigator {
             context.startActivity(
                     ChatActivity.getCallingIntent(context, channelID))
 
-    fun navigateToChannelList(context: Context, userID: String?) =
+    fun navigateToResetPassword(context: Context) =
             context.startActivity(
-                    ChannelListActivity.getCallingIntent(context, userID)
+                    ResetPasswordActivity.getCallingIntent(context)
+            )
+    fun navigateToWelcomeScreen(context: Context) =
+            context.startActivity(
+                    WelcomeActivity.getCallingIntent(context)
+            )
+
+    fun navigateToMainNavigation(context: Context) =
+            context.startActivity(
+                    MainNavigationActivity.getCallingIntent(context)
             )
 
     fun navigateToInvitationScreen(context: Context, userId: String?) =

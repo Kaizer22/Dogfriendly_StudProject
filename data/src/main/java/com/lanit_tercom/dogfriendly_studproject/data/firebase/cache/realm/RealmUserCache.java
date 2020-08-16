@@ -1,11 +1,14 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.realm;
 
+import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.realm.RealmUserEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 //import com.lanit_tercom.dogfriendly_studproject.data.entity.realm.RealmUserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserListException;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.UserNotFoundException;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
-//import com.lanit_tercom.dogfriendly_studproject.data.mapper.realm.RealmUserEntityMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.realm.RealmUserEntityMapper;
 
 import java.util.List;
 
@@ -17,20 +20,20 @@ public class RealmUserCache implements UserCache {
 
     public RealmUserCache(RealmUserEntityMapper realmUserEntityMapper) {
         this.realmUserEntityMapper = realmUserEntityMapper;
-    }*/
+    }
 
 
     @Override
     public void saveUser(String userId, UserEntity userEntity) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            //realm.copyToRealmOrUpdate(realmUserEntityMapper.map1(userEntity));
+            realm.copyToRealmOrUpdate(realmUserEntityMapper.map1(userEntity));
         });
     }
 
     @Override
     public void getAllUsers(UserListCallback userListCallback) {
-        /*Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
         List<RealmUserEntity> userEntityList = realm.where(RealmUserEntity.class).findAll();
 
         if (userEntityList != null){
@@ -38,12 +41,12 @@ public class RealmUserCache implements UserCache {
         }
         else {
             userListCallback.onError(new UserListException());
-        }*/
+        }
     }
 
     @Override
     public void getUserById(String id, UserByIdCallback userByIdCallback) {
-        /*Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
         RealmUserEntity userEntity = realm.where(RealmUserEntity.class).equalTo("id", id).findFirst();
 
         if (userEntity != null){
@@ -51,7 +54,7 @@ public class RealmUserCache implements UserCache {
         }
         else {
             userByIdCallback.onError(new UserNotFoundException());
-        }*/
+        }
     }
 
     @Override
@@ -61,6 +64,21 @@ public class RealmUserCache implements UserCache {
 
     @Override
     public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+
+    }
+
+    @Override
+    public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
+
+    }
+
+    @Override
+    public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
+
+    }
+
+    @Override
+    public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
 
     }
 }

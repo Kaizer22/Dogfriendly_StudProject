@@ -10,7 +10,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SignUpPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.SignUpView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.SignUpActivity
 import kotlinx.android.synthetic.main.fragment_sign_up.*
-import kotlinx.android.synthetic.main.fragment_sign_up.button_signup
+import kotlinx.android.synthetic.main.fragment_sign_up.button_sign_up
 
 /**
  * Фрагмент отображающий окно регистрации
@@ -36,22 +36,24 @@ class SignUpFragment : BaseFragment(), SignUpView, View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userSignUpPresenter?.setView(this)
-        button_signup.setOnClickListener(this)
+        button_sign_up.setOnClickListener(this)
+        to_sign_in_link.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when(v?.id){
-            R.id.button_signup ->{
+            R.id.button_sign_up ->{
                 email = edit_email.text.toString()
                 password = edit_password.text.toString()
                 name = edit_name.text.toString()
-                passwordRepeat = edit_repeat_password.text.toString()
-                if (password == passwordRepeat) {
-                    userSignUpPresenter?.registerUser(email, password)
-                    (activity as SignUpActivity).navigateToUserSignIn()
-                } else
-                    showToastMessage("Пароли не совпадают!")
+                //passwordRepeat = edit_repeat_password.text.toString()
+                //if (password == passwordRepeat) {
+                userSignUpPresenter?.registerUser(email, password)
+                (activity as SignUpActivity).navigateToUserSignIn()
+                //} else
+                    //showToastMessage("Пароли не совпадают!")
             }
+            R.id.to_sign_in_link -> (activity as SignUpActivity).navigateToUserSignIn()
         }
     }
 

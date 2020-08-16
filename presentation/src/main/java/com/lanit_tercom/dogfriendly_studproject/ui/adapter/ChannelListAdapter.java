@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity;
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,8 +48,8 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
 
         holder.itemView.setOnClickListener(v -> {
             String channelId = channelModel.getId();
-            if (context != null && context instanceof ChannelListActivity){
-                ((ChannelListActivity) context).navigateToChat(channelId);
+            if (context != null && context instanceof MainNavigationActivity){
+                ((MainNavigationActivity) context).navigateToChat(channelId);
             }
         });
     }
@@ -56,8 +57,8 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     public void navigate(int position){
         ChannelModel channelModel = channels.get(position);
         String channelId = channelModel.getId();
-        if (context != null && context instanceof ChannelListActivity){
-            ((ChannelListActivity) context).navigateToChat(channelId);
+        if (context != null && context instanceof MainNavigationActivity){
+            ((MainNavigationActivity) context).navigateToChat(channelId);
         }
     }
 

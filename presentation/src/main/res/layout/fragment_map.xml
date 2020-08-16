@@ -79,7 +79,7 @@
 
         </LinearLayout>
     </FrameLayout>
-
+<!--
     <RelativeLayout
         android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
@@ -140,6 +140,7 @@
         </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     </RelativeLayout>
+    -->
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="200dp"

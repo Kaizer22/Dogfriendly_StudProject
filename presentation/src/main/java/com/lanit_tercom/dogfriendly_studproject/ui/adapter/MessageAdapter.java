@@ -1,6 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.adapter;
 
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,37 +22,58 @@ import java.util.List;
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
-    private List<MessageModel> messages;
+    private List<MessageModel> messages = new LinkedList<>();
     private String currentUserID;
-    private LayoutInflater inflater;
+    private ChatView chatView;
 
-    public MessageAdapter(Context context, List<MessageModel> messages, String currentUserID){
-        this.messages = messages;
+    public MessageAdapter(ChatView chatView, String currentUserID){
         this.currentUserID = currentUserID;
-        inflater = LayoutInflater.from(context);
+        this.chatView = chatView;
+        setHasStableIds(true);
     }
 
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_message, parent,false);
-        return new MessageViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_message, parent,false);
+        return new MessageViewHolder(view, chatView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MessageModel messageOnBind = messages.get(position);
-        boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
-
-        holder.changeMessagePosition(isSentByCurrentUser);
-        holder.changeMessageBackground(isSentByCurrentUser);
-
-        holder.setText(messageOnBind.getText());
-        holder.setTime(messageOnBind.getTime().getTime());
+        if (messageOnBind != null){
+            try{
+                boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
+                holder.bind(messageOnBind, isSentByCurrentUser, position);
+            }catch(NullPointerException e){
+                e.printStackTrace();
+                Log.e("MESSAGE_ADAPTER_DEBUG", "Message without senderID (field userName)");
+            }
+        }else{
+            Log.e("MESSAGE_ADAPTER_DEBUG", "NULL message");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return messages.size();
+        return (this.messages != null) ? this.messages.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public void setMessages(List<MessageModel> messages){
+        this.messages.clear();
+        this.messages.addAll(messages);
+        notifyDataSetChanged();
     }
 }

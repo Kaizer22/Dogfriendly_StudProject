@@ -5,5 +5,5 @@
         android:bottomRightRadius="@dimen/message_corner_radius_large"
         android:bottomLeftRadius="@dimen/message_corner_radius_small"
         android:topLeftRadius="@dimen/message_corner_radius_large"
-        android:topRightRadius="@dimen/message_corner_radius_small"/>
+        android:topRightRadius="@dimen/message_corner_radius_large"/>
 </shape>

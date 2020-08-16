@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChatActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;

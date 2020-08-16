@@ -1,6 +1,5 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.SignInView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.SignInActivity
@@ -22,13 +21,12 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
     fun auth(email: String?, password: String?) {
 
         authManager?.signOut(signOutCallback)
-
         authManager?.signInEmail(email, password, signInCallback)
 
     }
 
     private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
-        //TODO удалить тестовый код!!!
+
         override fun OnSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
             view?.hideLoading()
@@ -39,7 +37,7 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
                 ((view as SignInFragment).showToastMessage("Неверный email или пароль"))
         }
 
-        override fun OnError(e: Exception?) {}
+        override fun onError(e: Exception?) {}
 
     }
 

@@ -1,7 +1,61 @@
 <resources>
     <string name="app_name">Dogfriendly_StudProject</string>
+    <string name="actual_app_name">DogFriendly</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_message">New message…</string>
+
+    <string name="sending_message_event">Отправка сообщения…</string>
+    <string name="edit_message">Редактировать</string>
+    <string name="delete_message">Удалить для всех</string>
+    <string name="ok">Подтвердить</string>
+    <string name="cancel">Отмена</string>
+    <string name="loading">Загрузка…</string>
+    <string name="open_user_profile">Открыть профиль</string>
+    <string name="disable_notification">Отключить уведомления</string>
+    <string name="add_user_to_chat">Добавить в чат</string>
+    <string name="delete_all_messages">Очистить переписку</string>
+    <string name="add_to_blacklist">Добавить в черный список</string>
+    <string name="welcome_to_dogfriendly">Добро пожаловать в DogFriendly!</string>
+    <string name="welcome_text">Здесь вы найдете компанию для прогулки с питомцем.</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Вход</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="reset_password_here">Сбросьте его здесь</string>
+    <string name="sign_in_action">Войти</string>
+    <string name="password">Пароль</string>
+    <string name="e_mail">e-mail</string>
+    <string name="sign_up_action">Зарегистрироваться</string>
+    <string name="are_you_already_have_an_account">Уже есть аккаунт?</string>
+    <string name="sign_in_here">Войдите здесь</string>
+    <string name="please_use_real_name">Пожалуйста, укажите реальное имя - оно будет использоваться при взаимодействии с другими пользователями</string>
+    <string name="what_is_your_name">Как Вас зовут?</string>
+    <string name="follow_the_link_and_create_a_new_password" formatted="true">Перейдите по ней и придумайте новый пароль, а потом войдите в <b>DogFriendly</b> как обычно.</string>
+    <string name="reset_password">Сбросить пароль</string>
+    <string name="reset_password_hint">Не страшно! Введите свою почту в поле ниже и мы пришлем вам ссылку для сброса пароля.</string>
+    <string name="password_successfully_reset">Пароль сброшен!</string>
+    <string name="ours_corgis_from_support">Наши корги из службы поддержки уже отправили вам ссылку для сброса пароля.</string>
+    <string name="forgot_your_password">Забыли пароль?</string>
+    <string name="pets_on_map">Питомцы на карте</string>
+    <string name="geolocation_hint_1">К сожалению, наше приложение не может работать без передачи геоданных.</string>
+    <string name="geolocation_hint_2">Другие пользователи смогут увидеть Ваше местоположение только когда вы активируете статус</string>
+    <string name="user_status">«На прогулке»</string>
+    <string name="turn_on_geolocation">Включить геолокацию</string>
+    <string name="invitations_and_chats">Приглашения и чаты</string>
+    <string name="invitations_and_chats_hint_1">Когда вам кто-то напишет или пригласит на прогулку, то вам придет уведомление.</string>
+    <string name="invitations_and_chats_hint_2">Позже вы всегда сможете отключить уведомления в настройках.</string>
+    <string name="skip">Пропустить</string>
+    <string name="turn_on_notifications">Включить уведомления</string>
+    <string name="hooray">Ура!</string>
+    <string name="continue_finish_registration">Продолжить</string>
+
+    <string name="user_with_that_email_address_not_found">Не найден пользователь с таким e-mail</string>
+    <string name="no_internet_connection">Не удается установить связь с сервером</string>
+    <string name="empty_email">Введите свою почту в это поле</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="on_sign_up_finished_hint">Все готово.Теперь расскажите о себе и своём питомце и скорее на прогулку!</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_map">Карта</string>
+    <string name="title_channels">Сообщения</string>
+    <string name="title_options">Настройки</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
@@ -15,12 +69,6 @@
     <string name="woman_sign">/u2640</string>
     <string name="men">\u2642 Муж.</string>
     <string name="woman">\u2640 Жен.</string>
-    <string name="sending_message_event">Отправка сообщения…</string>
-    <string name="edit_message">Редактировать</string>
-    <string name="delete_message">Удалить для всех</string>
-    <string name="ok">Подтвердить</string>
-    <string name="cancel">Отмена</string>
-    <string name="loading">Загрузка…</string>
 
 
     <!--ChannelList-->
@@ -47,8 +95,8 @@
     <string name="invitation_visible_time_day">24 часа</string>
     <string name="invitation_visible_time_hint">Приглашение автоматически исчезнет с карты, но его всегда можно будет активировать в настройках чата встречи.</string>
     <string name="invitation_create_button">Создать</string>
-
-
+    
+    
     <!-- Walk Activity  -->
     <string name="walk_title">Прогулка</string>
     <string name="members_quantity_TEST">Количество учатников</string>
@@ -60,5 +108,11 @@
     <string name="creator_name_TEST">ИМЯ</string>
     <string name="creator_age_TEST">ВОЗРАСТ</string>
     <string name="member_list_title">Участники</string>
+    <string name="breed_label">Порода</string>
+
+    <string name="your_pet">Ваш питомец</string>
+    <string name="pet_name_label">Имя питомца</string>
+    <string name="pet_age_label">Возраст</string>
+    <string name="pet_gender_label">Пол питомца</string>
 
 </resources>

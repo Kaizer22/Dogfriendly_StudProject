@@ -11,6 +11,7 @@ import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.message.PostMessageUseCase;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class ChatPresenter extends BasePresenter {
     private MessageDtoModelMapper modelMapper;
 
     private ChatView view;
+
+    private boolean isChannelEmpty;
 
     public ChatPresenter(String channelID, AuthManager authManager, DeleteMessageUseCase deleteMessage,
                          EditMessageUseCase editMessage, GetMessagesUseCase getMessages,
@@ -68,7 +71,7 @@ public class ChatPresenter extends BasePresenter {
         MessageModel messageModel = new MessageModel();
         messageModel.setSenderID(authManager.getCurrentUserId());
         messageModel.setChatID(channelID);
-
+        messageModel.setTime(new Date(System.currentTimeMillis()));
         messageModel.setText(message);
 
         //Добавление сообщения в БД через domain слой
@@ -133,6 +136,10 @@ public class ChatPresenter extends BasePresenter {
         return messagesList;
     }
 
+    public boolean isChannelEmpty(){
+        return isChannelEmpty;
+    }
+
     //private void getChannel() {
         //getChat.execute(channelID);
     //}
@@ -145,9 +152,10 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessagesDataLoaded(List<MessageDto> messages) {
                 for (MessageDto message: messages) {
-                    messagesList.add(
+                   messagesList.add(
                             modelMapper.map2(message));
                 }
+                isChannelEmpty = messagesList.size() == 0;
                 view.renderMessages();
                 view.hideLoading();
             }

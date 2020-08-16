@@ -1,35 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/on_chat_menu_blur_effect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/upper_space"
+        app:srcCompat="@color/blurTransparent"
+        tools:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_space"
         android:paddingLeft="@dimen/chat_side_margin"
-        android:paddingRight="@dimen/chat_side_margin"
         android:paddingTop="@dimen/chat_upper_space_margin"
-        android:clipToPadding="false"/>
+        android:paddingRight="@dimen/chat_side_margin"
+        android:paddingBottom="@dimen/chat_top_bottom_margin"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_space"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/upper_space"
         android:layout_width="match_parent"
         android:layout_height="@dimen/chat_upper_space_width"
         android:background="@color/whiteTransparent"
+        android:elevation="@dimen/chat_upper_space_elevation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="@dimen/chat_upper_space_elevation">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/button_back_to_channel_list_width"
+            android:layout_height="@dimen/button_back_to_channel_list_height"
             android:layout_marginStart="@dimen/indent_large_plus_plus"
             android:layout_marginTop="@dimen/indent_large_plus_plus"
             android:layout_marginBottom="@dimen/indent_large_plus_plus"
@@ -37,7 +52,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.555"
             app:srcCompat="@drawable/ic_button_back_to_channels" />
 
         <ImageView
@@ -61,7 +75,7 @@
             android:layout_marginTop="@dimen/indent_medium_plus"
             android:text="@string/loading"
             android:textColor="@color/black"
-            android:textSize="@dimen/chat_user_name_text_size"
+            android:textSize="@dimen/font_size_16"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/chat_screen_user_avatar"
             app:layout_constraintTop_toTopOf="parent" />
@@ -71,14 +85,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loading"
-            android:textSize="@dimen/user_additional_info_text_size"
+            android:textSize="@dimen/font_size_13"
             app:layout_constraintStart_toStartOf="@+id/chat_screen_user_name"
             app:layout_constraintTop_toBottomOf="@+id/chat_screen_user_name" />
 
         <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/button_chat_menu"
+            android:layout_width="@dimen/button_chat_menu_width"
+            android:layout_height="@dimen/button_chat_menu_width"
             android:layout_marginTop="@dimen/indent_huge"
             android:layout_marginEnd="@dimen/indent_large_plus"
             android:layout_marginBottom="@dimen/indent_huge"
@@ -91,13 +105,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
     <LinearLayout
         android:id="@+id/bottom_space"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="horizontal"
+        android:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -111,20 +125,20 @@
             <EditText
                 android:id="@+id/edit_text_send_message"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/edit_text_field_height"
                 android:layout_marginStart="@dimen/indent_huge"
                 android:layout_marginTop="@dimen/indent_medium"
                 android:layout_marginEnd="@dimen/indent_huge"
                 android:layout_marginBottom="@dimen/indent_medium"
                 android:background="@drawable/edit_message_field_shape"
-                android:ems="10"
                 android:inputType="textAutoComplete"
                 android:paddingStart="@dimen/indent_huge"
                 android:paddingTop="@dimen/indent_medium"
-                android:paddingBottom="@dimen/indent_medium"
                 android:paddingEnd="@dimen/indent_enormous"
-                android:text="@string/new_message"
-                android:textColor="@color/colorPrimaryGreen"
+                android:paddingBottom="@dimen/indent_medium"
+                android:hint="@string/new_message"
+                android:textColorHint="@color/primaryLight"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,12 +151,37 @@
                 android:layout_marginTop="@dimen/indent_medium"
                 android:layout_marginEnd="@dimen/indent_huge"
                 android:layout_marginBottom="@dimen/indent_medium"
+                android:background="@drawable/ic_button_send_message_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@drawable/ic_button_send_message_background"
-                app:srcCompat="@drawable/ic_button_send_message_src"/>
+                app:srcCompat="@drawable/ic_button_send_message_src" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/empty_chat_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/indent_enormous"
+        android:layout_marginEnd="@dimen/indent_enormous"
+        android:layout_marginBottom="@dimen/indent_enormous"
+        android:gravity="center"
+        android:minLines="2"
+        android:text="Вы приняли приглашение USER_NAME, теперь договоритесь о встрече и в путь!"
+        app:layout_constraintBottom_toBottomOf="@+id/chat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/empty_chat_background"
+        android:layout_width="@dimen/empty_chat_image_width"
+        android:layout_height="@dimen/empty_chat_image_width"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/empty_chat_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_empty_chat_background" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

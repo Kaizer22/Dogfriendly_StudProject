@@ -31,13 +31,30 @@ class SignInActivity : BaseActivity() {
     fun navigateToUserMap() =
         navigator?.navigateToUserMap(this)
 
+    fun navigateToResetPassword() =
+            navigator?.navigateToResetPassword(this)
+
+    fun navigateToWelcomeScreen() =
+            navigator?.navigateToWelcomeScreen(this)
+
     //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
     // код и код в UserSignInPresenter
     fun navigateToChat() =
-            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" );
+            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
+
+    //fun navigateToChannelList(userID: String) =
+            //navigator?.navigateToChannelList(this, userID)
+
+    fun navigateToMainNavigation() =
+            navigator?.navigateToMainNavigation(this)
 
     fun navigateToChannelList(userId: String?)=
             navigator?.navigateToChannelList(this, userId)
+
+    fun navigateToUserDetail(userId: String?)=
+            navigator?.navigateToUserDetail(this, userId)
+
+
 
     fun navigateToInvitationScreen(userId: String?) =
             navigator?.navigateToInvitationScreen(this, userId)

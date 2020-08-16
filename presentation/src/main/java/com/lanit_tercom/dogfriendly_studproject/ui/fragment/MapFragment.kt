@@ -40,6 +40,7 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
@@ -169,7 +170,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as MapActivity).switch_visibility.setOnCheckedChangeListener(this)
+        //(activity as MainNavigationActivity).switch_visibility.setOnCheckedChangeListener(this)
+        //(activity as MapActivity).switch_visibility.setOnCheckedChangeListener(this)
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
@@ -218,7 +220,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        (activity as MapActivity).navigateToUserDetail(p0?.title)
+        //(activity as MapActivity).navigateToUserDetail(p0?.title)
+        (activity as MainNavigationActivity).navigateToUserDetail(p0?.title)
         return true
     }
 

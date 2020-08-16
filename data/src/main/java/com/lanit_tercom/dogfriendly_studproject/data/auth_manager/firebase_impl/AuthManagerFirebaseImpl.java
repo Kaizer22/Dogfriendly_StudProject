@@ -34,9 +34,9 @@ public class AuthManagerFirebaseImpl implements AuthManager {
                         Log.d("AUTH_MANAGER", "User has been created");
                         sendVerificationEmail();
                         createUserCallback
-                                .OnCreateUserFinished(firebaseAuth.getCurrentUser().getUid());
+                                .onCreateUserFinished(firebaseAuth.getCurrentUser().getUid());
                     }else{
-                        createUserCallback.OnError(task.getException());
+                        createUserCallback.onError(task.getException());
                     }
                 });
     }
@@ -47,32 +47,30 @@ public class AuthManagerFirebaseImpl implements AuthManager {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()){
                         Log.d("AUTH_MANAGER", "Successfully signed in");
-                        signInCallback.OnSignInFinished(firebaseAuth.getCurrentUser().getUid());
+                        signInCallback.onSignInFinished(firebaseAuth.getCurrentUser().getUid());
                     }else{
-                        signInCallback.OnError(task.getException());
+                        signInCallback.onError(task.getException());
                     }
                 });
 
     }
 
     @Override
-    public void restartPasswordWithEmail() {
-        String email = firebaseAuth.getCurrentUser()
-                .getEmail();
-
-        if (email != null){
+    public void resetPasswordWithEmail(String email, ResetPasswordCallback resetPasswordCallback) {
+        if (email != null && !email.equals("")){
             firebaseAuth.sendPasswordResetEmail(email)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()){
                             Log.d("AUTH_MANAGER", "Password reset email has been sent to "
                                     + email);
+                            resetPasswordCallback.onPasswordReset();
                         }else{
-                            Log.w("AUTH_MANAGER", task.getException().getMessage());
+                            resetPasswordCallback.onError(task.getException());
                         }
                     });
         }else{
-            Log.w("AUTH_MANAGER", "Can not restart password with email. " +
-                    "Current user is null");
+            Log.w("AUTH_MANAGER", "Can not reset password with email. " +
+                    "Auth manager got a Null or empty e-mail");
         }
     }
 
@@ -83,9 +81,9 @@ public class AuthManagerFirebaseImpl implements AuthManager {
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Log.d("AUTH_MANAGER", "Successfully signed in with Google");
-                signInCallback.OnSignInFinished(firebaseAuth.getCurrentUser().getUid());
+                signInCallback.onSignInFinished(firebaseAuth.getCurrentUser().getUid());
             }else {
-                signInCallback.OnError(task.getException());
+                signInCallback.onError(task.getException());
             }
         });
     }
@@ -93,7 +91,7 @@ public class AuthManagerFirebaseImpl implements AuthManager {
     @Override
     public void signOut(SignOutCallback signOutCallback) {
         firebaseAuth.signOut();
-        signOutCallback.OnSignOutFinished();
+        signOutCallback.onSignOutFinished();
 
         //deleteCache();
     }

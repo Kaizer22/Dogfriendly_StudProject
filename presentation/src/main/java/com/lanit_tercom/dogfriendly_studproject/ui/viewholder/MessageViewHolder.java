@@ -27,20 +27,26 @@ public class MessageViewHolder extends BaseViewHolder{
 
     private ConstraintSet constraintSet;
 
-    private final String MESSAGE_TIME_PATTERN = "dd.MM.YY HH:mm";
+    private final String MESSAGE_TIME_PATTERN = "HH:mm";
+
+    private ChatView parentView; //Передаем сюда ChatView, чтобы иметь
+                                //возможность отобразить контекстное меню
+                                //с действиями для одного сообщения
 
     private TextView textView;
     private TextView timeView;
     LinearLayout singleMessageLine; // Эта дополнительная обертка нужна, чтобы распологать
-    // сообщение справа или слева на экране чата, в зависимости от
-    // ID отправителя.
+                                    // сообщение справа или слева на экране чата, в зависимости от
+                                    // ID отправителя.
     LinearLayout messageStringSeparator; // Разделитель, чтобы сообщение не заполняло всю строку
 
     ConstraintLayout messageContainer;  // Контейнер сообщения для изменения фона и обработки
-    // пользовтаельского нажатия
+                                        // пользовтаельского нажатия
 
-    public MessageViewHolder(@NonNull View itemView) {
+    public MessageViewHolder(@NonNull View itemView,
+                             ChatView chatView) {
         super(itemView);
+
         constraintSet = new ConstraintSet();
 
         textView = itemView.findViewById(R.id.message_text);
@@ -49,15 +55,25 @@ public class MessageViewHolder extends BaseViewHolder{
         messageContainer = itemView.findViewById(R.id.message_container);
         messageStringSeparator = itemView.findViewById(R.id.message_string_separator);
 
-        messageContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO предложение пользователю удалить или отредактировать сообщение,
-                // предположительно, эта логика должна быть тут
-            }
-        });
-
+        parentView = chatView;
     }
+
+    public void bind(MessageModel messageOnBind,
+                     boolean isSentByCurrentUser, int position){
+        changeMessagePosition(isSentByCurrentUser);
+        changeMessageBackground(isSentByCurrentUser);
+        //changeMessageShape(isSentByCurrentUser);
+
+        setText(messageOnBind.getText());
+        setTime(messageOnBind.getTime().getTime());
+
+        messageContainer.setOnClickListener(view ->{
+            if (isSentByCurrentUser)
+                parentView.showMessageMenu(messageOnBind, position, itemView);
+        });
+    }
+
+
 
     public void setTime(long time){
         DateFormat df = new SimpleDateFormat(MESSAGE_TIME_PATTERN);
@@ -76,17 +92,17 @@ public class MessageViewHolder extends BaseViewHolder{
         if (isSentByCurrentUser){
             singleMessageLine.setGravity(Gravity.RIGHT);
             messageStringSeparator.setGravity(Gravity.RIGHT);
-            constraintSet.connect(R.id.message_text,ConstraintSet.RIGHT,
-                    R.id.message_container, ConstraintSet.RIGHT, 0 );
-            constraintSet.connect(R.id.message_time,ConstraintSet.RIGHT,
-                    R.id.message_container, ConstraintSet.RIGHT, 0);
+            //constraintSet.connect(R.id.message_text,ConstraintSet.RIGHT,
+                   // R.id.message_container, ConstraintSet.RIGHT, 0 );
+            //constraintSet.connect(R.id.message_time,ConstraintSet.RIGHT,
+                    //R.id.message_container, ConstraintSet.RIGHT, 0);
         } else {
             singleMessageLine.setGravity(Gravity.LEFT);
             messageStringSeparator.setGravity(Gravity.LEFT);
-            constraintSet.connect(R.id.message_text,ConstraintSet.LEFT,
-                    R.id.message_container, ConstraintSet.LEFT, 0);
-            constraintSet.connect(R.id.message_time,ConstraintSet.LEFT,
-                    R.id.message_container, ConstraintSet.LEFT, 0);
+            //constraintSet.connect(R.id.message_text,ConstraintSet.LEFT,
+                    //R.id.message_container, ConstraintSet.LEFT, 0);
+            //constraintSet.connect(R.id.message_time,ConstraintSet.LEFT,
+                    //R.id.message_container, ConstraintSet.LEFT, 0);
         }
         constraintSet.applyTo(messageContainer);
     }
@@ -94,10 +110,14 @@ public class MessageViewHolder extends BaseViewHolder{
     public void changeMessageBackground(boolean isSentByCurrentUser){
         if (isSentByCurrentUser){
             messageContainer.setBackgroundResource(
-                    R.drawable.current_user_message_background);
+                    R.drawable.current_user_message_shape);
+            //messageContainer.setBackgroundColor(
+                    //ContextCompat.getColor(itemView.getContext(),R.color.current_user_message_background));
         } else {
             messageContainer.setBackgroundResource(
-                    R.drawable.other_user_message_background);
+                    R.drawable.other_user_message_shape);
+            //messageContainer.setBackgroundColor(
+                    //ContextCompat.getColor(itemView.getContext(),R.color.other_user_message_background));
         }
     }
 }

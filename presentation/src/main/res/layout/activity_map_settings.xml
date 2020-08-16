@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Видимость моих питомцев"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryLight"
         android:layout_marginBottom="10dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Показывать на карте"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryLight"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"/>
 

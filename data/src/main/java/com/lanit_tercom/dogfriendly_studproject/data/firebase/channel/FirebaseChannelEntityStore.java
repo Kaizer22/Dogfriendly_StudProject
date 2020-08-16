@@ -14,7 +14,6 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,8 +73,8 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
     @Override
     public void addChannel(ChannelEntity channel, AddChannelCallback callback) {
         String[] userIDs = getUserIDs(channel.getMembers());
-        DatabaseReference dr = referenceDatabase;
 
+        DatabaseReference dr = referenceDatabase;
         String firebaseId = dr.push().getKey();
         for(String userId: userIDs){
             Map<String, Object> pair = new HashMap<>();
@@ -106,3 +105,4 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         }
     }
 }
+

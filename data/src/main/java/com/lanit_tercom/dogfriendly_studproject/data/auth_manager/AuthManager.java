@@ -9,17 +9,22 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 public interface AuthManager {
 
     interface SignInCallback{
-        void OnSignInFinished(String currentUserID);
-        void OnError(Exception e);
+        void onSignInFinished(String currentUserID);
+        void onError(Exception e);
     }
 
     interface CreateUserCallback{
-        void OnCreateUserFinished(String currentUserID);
-        void OnError(Exception e);
+        void onCreateUserFinished(String currentUserID);
+        void onError(Exception e);
     }
 
     interface SignOutCallback{
-        void OnSignOutFinished();
+        void onSignOutFinished();
+    }
+
+    interface ResetPasswordCallback{
+        void onPasswordReset();
+        void onError(Exception e);
     }
 
     void createUserWithEmailPassword(String email, String password,
@@ -28,7 +33,8 @@ public interface AuthManager {
     void signInEmail(String email, String password,
                      SignInCallback signInCallback);
 
-    void restartPasswordWithEmail();
+    void resetPasswordWithEmail(String email,
+                                ResetPasswordCallback resetPasswordCallback);
 
     void signInGoogle(GoogleSignInAccount account,
                       SignInCallback signInCallback);
