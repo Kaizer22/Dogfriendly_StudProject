@@ -100,8 +100,9 @@ class PetDetailTestActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        val toUserDetail: Intent = Intent(this, UserDetailTestActivity::class.java)
-        startActivity(toUserDetail)
+        super.onBackPressed()
+//        val toUserDetail: Intent = Intent(this, UserDetailTestActivity::class.java)
+//        startActivity(toUserDetail)
     }
 
 

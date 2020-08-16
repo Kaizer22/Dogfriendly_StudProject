@@ -2,7 +2,10 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.location.Location
 import android.os.Bundle
@@ -22,14 +25,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
@@ -40,6 +39,7 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
@@ -52,7 +52,6 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
-import java.lang.Exception
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -218,7 +217,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        (activity as MapActivity).navigateToUserDetail(p0?.title)
+        startActivity(Intent(activity, PetDetailTestActivity::class.java))
+        //(activity as MapActivity).navigateToUserDetail(p0?.title)
         return true
     }
 
@@ -374,9 +374,17 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
             addMarker(
                     MarkerOptions()
                             .position(point)
+                            .anchor(0.5F, 0.5F)
+                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIconsHalfSize(R.drawable.image_dog_icon)))
                             .title("${user?.id}")
+
             )
         }
+    }
+
+    fun resizeMapIconsHalfSize(iconId: Int): Bitmap? {
+        val imageBitmap: Bitmap = BitmapFactory.decodeResource(resources, iconId)
+        return Bitmap.createScaledBitmap(imageBitmap, imageBitmap.width / 2, imageBitmap.height / 2, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -425,7 +433,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         val adapter = DogAdapter(names, imageIds, distances, "map")
         adapter.setListener(object: DogAdapter.Listener{
             override fun onClick(position: Int) {
-                Snackbar.make(user_map_test,"Профиль ${names[position]} на расстоянии ${distances[position]} км", Snackbar.LENGTH_SHORT).show()
+                startActivity(Intent(activity, PetDetailTestActivity::class.java))
             }
         })
         dogRecycler.adapter = adapter
