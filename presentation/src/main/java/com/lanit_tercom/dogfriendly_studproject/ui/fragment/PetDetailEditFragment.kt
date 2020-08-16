@@ -68,7 +68,8 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
                 pet.breed = editPetBreed.text.toString()
                 pet.gender = gender
                 pet.avatar = avatarUri
-                (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+                //(activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+                (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, PetCharacterFragment(userId, pet))
             }
         }
 

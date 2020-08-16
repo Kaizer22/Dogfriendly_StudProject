@@ -49,6 +49,7 @@ import kotlin.math.abs
  * @author nikolaygorokhov1@gmail.com
  * @author prostak.sasha111@mail.ru
  */
+//Для профиля другого пользователя нужен другой экран UserDetails
 class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailView{
     private lateinit var petList: RecyclerView
     private lateinit var plansText: TextView
@@ -108,13 +109,17 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         //Динамическое задание высоты блока
         val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
         //val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
+        val bottomNav = (activity as BaseActivity).findViewById<View>(R.id.nav_view) as BottomNavigationView
+
         val heightDp = resources.displayMetrics.heightPixels * 0.5 - 10 * resources.displayMetrics.density
         val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
         lp.height = heightDp.toInt()
 
         //Присвоение OnClickListener кнопкам
-        view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit() }
-        view.findViewById<View>(R.id.add_pet_button).setOnClickListener { addPet() }
+        view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit()
+            bottomNav.visibility = View.GONE}
+        view.findViewById<View>(R.id.add_pet_button).setOnClickListener { addPet()
+            bottomNav.visibility = View.GONE}
         //view.findViewById<View>(R.id.to_map_button).setOnClickListener { toMap() }
         //view.findViewById<View>(R.id.to_chats_button).setOnClickListener { toChats() }
         //view.findViewById<View>(R.id.to_settings_button).setOnClickListener { toSettings() }
@@ -122,23 +127,25 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         //Присвоение OnClickListener текстовым полям "о себе" и "планы на прогулку" - так будет открываться фрагмент для редактирования соотв полей
         plansText = view.findViewById(R.id.plans_text)
         plansText.setOnClickListener {
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("plans", user))
+            //(activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("plans", user))
+            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("plans", user))
 
         }
 
         aboutText = view.findViewById(R.id.about_text)
         aboutText.setOnClickListener {
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("about", user))
+            //(activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("about", user))
+            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("about", user))
         }
 
         //Открытие/скрытие нижней панели
         view.findViewById<AppBarLayout>(R.id.appbar).addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
-                //if (state == State.EXPANDED)
-                    //bottomNav.visibility = View.GONE
-               // if (state == State.COLLAPSED)
-                    //bottomNav.visibility = View.VISIBLE
+                if (state == State.EXPANDED)
+                    bottomNav.visibility = View.GONE
+                if (state == State.COLLAPSED)
+                    bottomNav.visibility = View.VISIBLE
             }
 
         })
@@ -148,12 +155,15 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
     //Навигация
     private fun toUserEdit() {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailEditFragment(user))
+        //(activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailEditFragment(user))
+        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, UserDetailEditFragment(user))
+
     }
 
     private fun addPet() {
 
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, PetDetailEditFragment(userId))
+        //(activity as BaseActivity).replaceFragment(R.id.ft_container, PetDetailEditFragment(userId))
+        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, PetDetailEditFragment(userId))
     }
 
     private fun toPetDetail() {}

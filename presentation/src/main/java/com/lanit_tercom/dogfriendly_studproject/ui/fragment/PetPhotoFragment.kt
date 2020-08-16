@@ -174,7 +174,8 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
 
     //Обратно в экран юзера
     override fun navigateToNext() {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
+        //(activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
+        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, UserDetailFragment(userId))
     }
 
 
