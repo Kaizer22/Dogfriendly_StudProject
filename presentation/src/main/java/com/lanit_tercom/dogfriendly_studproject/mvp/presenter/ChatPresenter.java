@@ -70,7 +70,6 @@ public class ChatPresenter extends BasePresenter {
         messageModel.setChatID(channelID);
 
         messageModel.setText(message);
-        messageModel.setTime(System.currentTimeMillis());
 
         //Добавление сообщения в БД через domain слой
         MessageDto messageDto = modelMapper.map1(messageModel);
@@ -157,5 +156,10 @@ public class ChatPresenter extends BasePresenter {
                 errorBundle.getException().printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        //TODO Not yet implemented
     }
 }

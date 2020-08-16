@@ -17,6 +17,7 @@ public class UserEntityDtoMapper {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(userDto.getId());
         userEntity.setUserName(userDto.getName());
+        userEntity.setTimestamp(userDto.getTimestamp());
 //        userEntity.setAge(userDto.getAge());
         return userEntity;
     }
@@ -26,6 +27,7 @@ public class UserEntityDtoMapper {
             return null;
         }
         UserDto userDto = new UserDto(userEntity.getId(), userEntity.getUserName());
+        userDto.setTimestamp(userEntity.getTimestampForMapper());
         return userDto;
     }
 
@@ -36,6 +38,7 @@ public class UserEntityDtoMapper {
         List<UserDto> usersDtoList = new ArrayList<>();
         for (UserEntity userEntity: users){
             UserDto userDto = new UserDto(userEntity.getId(), userEntity.getUserName());
+            userDto.setTimestamp(userEntity.getTimestampForMapper());
             usersDtoList.add(userDto);
         }
         return usersDtoList;

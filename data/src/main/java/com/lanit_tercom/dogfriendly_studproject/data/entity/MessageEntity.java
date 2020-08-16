@@ -1,13 +1,18 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
+
 import java.sql.Timestamp;
+import java.util.Map;
+
 /**
  * @author prostak.sasha111@mail.ru
  */
 public class MessageEntity {
     String channelId;
     String id;
-    long timestamp;
+    Long timestamp;
     String userName;
     String body;
 
@@ -27,11 +32,16 @@ public class MessageEntity {
         this.id = id;
     }
 
-    public long getTimestamp() {
+    public java.util.Map<String, String> getTimestamp() {
+        return ServerValue.TIMESTAMP;
+    }
+
+    @Exclude
+    public Long getTimestampForMapper(){
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 

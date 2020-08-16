@@ -11,6 +11,7 @@ import java.util.List;
 
 public class MessageEntityDtoMapper {
     public MessageEntityDtoMapper(){}
+
     public MessageEntity map1(MessageDto messageDto){
         if (messageDto == null)
             return null;
@@ -19,7 +20,7 @@ public class MessageEntityDtoMapper {
         messageEntity.setId(messageDto.getId());
         messageEntity.setUserName(messageDto.getUserName());
         messageEntity.setBody(messageDto.getBody());
-        messageEntity.setTimestamp(messageDto.getTimestamp().getTime());
+        messageEntity.setTimestamp(messageDto.getTimestamp());
         return messageEntity;
     }
     public MessageDto map2(MessageEntity messageEntity){
@@ -28,7 +29,7 @@ public class MessageEntityDtoMapper {
         MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
         messageDto.setChannelId(messageEntity.getChannelId());
         messageDto.setId(messageEntity.getId());
-        messageDto.setTimestamp(new Timestamp(messageEntity.getTimestamp()));
+        messageDto.setTimestamp(messageEntity.getTimestampForMapper());
         return messageDto;
 
     }
@@ -40,7 +41,7 @@ public class MessageEntityDtoMapper {
             MessageDto messageDto = new MessageDto(messageEntity.getUserName(), messageEntity.getBody());
             messageDto.setChannelId(messageEntity.getChannelId());
             messageDto.setId(messageEntity.getId());
-            messageDto.setTimestamp(new Timestamp(messageEntity.getTimestamp()));
+            messageDto.setTimestamp(messageEntity.getTimestampForMapper());
             messagesDtoList.add(messageDto);
         }
         return messagesDtoList;

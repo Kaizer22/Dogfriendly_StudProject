@@ -5,7 +5,10 @@ import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
 
-
+/**
+ * Интерфейс представляющий функционал репозитория сообщений
+ * @author nikolaygorokhov1@gmail.com
+ */
 public interface MessageRepository {
 
     interface Error {

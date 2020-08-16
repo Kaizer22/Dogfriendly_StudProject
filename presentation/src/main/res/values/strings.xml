@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">Dogfriendly_StudProject</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_message">New message…</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="character">Характер</string>
+    <string name="done">Готово</string>
+    <string name="about_dog">О собаке</string>
+    <string name="photo">Фото</string>
+    <string name="crop_image_menu_crop">Готово</string>
+    <string name="men_sign">/u2642</string>
+    <string name="woman_sign">/u2640</string>
+    <string name="men">\u2642 Муж.</string>
+    <string name="woman">\u2640 Жен.</string>
     <string name="new_message">Сообщение…</string>
     <string name="sending_message_event">Отправка сообщения…</string>
     <string name="edit_message">Редактировать</string>
@@ -34,8 +48,8 @@
     <string name="invitation_visible_time_day">24 часа</string>
     <string name="invitation_visible_time_hint">Приглашение автоматически исчезнет с карты, но его всегда можно будет активировать в настройках чата встречи.</string>
     <string name="invitation_create_button">Создать</string>
-    
-    
+
+
     <!-- Walk Activity  -->
     <string name="walk_title">Прогулка</string>
     <string name="members_quantity_TEST">Количество учатников</string>

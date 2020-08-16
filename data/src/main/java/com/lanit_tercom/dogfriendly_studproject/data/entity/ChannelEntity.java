@@ -1,5 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.data.entity;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.ServerValue;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,12 +58,17 @@ public class ChannelEntity {
         return lastMessageOwner;
     }
 
-    public Long getTimestamp() {
+    public java.util.Map<String, String> getTimestamp() {
+        return ServerValue.TIMESTAMP;
+    }
+
+    @Exclude
+    public Long getTimestampForMapper(){
         return timestamp;
     }
+
 
     public List<HashMap<String, String>> getMembers() {
         return members;
     }
-
 }

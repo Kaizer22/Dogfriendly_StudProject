@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <dimen name="recycler_view_item_width">150dp</dimen>
+    <dimen name="single_message_padding">10dp</dimen>
+    <dimen name="chat_top_bottom_margin">12dp</dimen>
+    <dimen name="chat_side_margin">8dp</dimen>
     <!-- Chat screen start -->
 
         <!-- Chat screen upper space -->

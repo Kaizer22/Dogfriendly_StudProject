@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_panel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.5">
+
+
+        <ImageView
+            android:id="@+id/pet_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/fox"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/info_panel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_panel">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="6sp"
+            android:text="Аришка"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:translationY="-2.96sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="6sp"
+            android:text="Колли, 3 года"
+            android:textColor="#4F4F4F"
+            android:textSize="15sp"
+
+            android:translationY="-3.11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF"
+            android:src="@drawable/ic_button_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.955"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.611" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_panel">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/character_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:lineSpacingExtra="1sp"
+                    android:textSize="14sp"
+                    android:textColor="#94A604"
+                    android:translationY="-0.71sp"
+                    android:text="@string/character"
+                    android:gravity="top"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/character_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/about_dog_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginBottom="8dp"
+                    android:lineSpacingExtra="1sp"
+                    android:textSize="14sp"
+                    android:textColor="#94A604"
+                    android:translationY="-0.71sp"
+                    android:text="@string/about_dog"
+                    android:gravity="top"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardBackgroundColor="#f5f5f5">
+
+                    <TextView
+                        android:id="@+id/about_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:lineSpacingExtra="2sp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:text="@string/lorem"
+                        android:textColor="#333333"
+                        android:textSize="15sp"
+                        android:translationY="-1.11sp" />
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/photo_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginBottom="8dp"
+                    android:lineSpacingExtra="1sp"
+                    android:textSize="14sp"
+                    android:textColor="#94A604"
+                    android:translationY="-0.71sp"
+                    android:text="@string/photo"
+                    android:gravity="top"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/photo_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

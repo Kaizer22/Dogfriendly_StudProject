@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,22 +22,21 @@ import java.util.List;
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
-    private List<MessageModel> messages = new LinkedList<>();
+    private List<MessageModel> messages;
     private String currentUserID;
-    private ChatView chatView;
+    private LayoutInflater inflater;
 
-    public MessageAdapter(ChatView chatView, String currentUserID){
+    public MessageAdapter(Context context, List<MessageModel> messages, String currentUserID){
+        this.messages = messages;
         this.currentUserID = currentUserID;
-        this.chatView = chatView;
-        setHasStableIds(true);
+        inflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_message, parent,false);
-        return new MessageViewHolder(view, chatView);
+        View view = inflater.inflate(R.layout.item_message, parent,false);
+        return new MessageViewHolder(view);
     }
 
     @Override
@@ -44,27 +44,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         MessageModel messageOnBind = messages.get(position);
         boolean isSentByCurrentUser = messageOnBind.getSenderID().equals(currentUserID);
 
-        holder.bind(messageOnBind, isSentByCurrentUser, position);
+        holder.changeMessagePosition(isSentByCurrentUser);
+        holder.changeMessageBackground(isSentByCurrentUser);
+
+        holder.setText(messageOnBind.getText());
+        holder.setTime(messageOnBind.getTime().getTime());
     }
 
     @Override
     public int getItemCount() {
-        return (this.messages != null) ? this.messages.size() : 0;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-    public void setMessages(List<MessageModel> messages){
-        this.messages.clear();
-        this.messages.addAll(messages);
-        notifyDataSetChanged();
+        return messages.size();
     }
 }

@@ -1,5 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
+import java.util.Date;
+
 /**
  *  Модель данных - "Сообщение"
  *  Время в миллисекундах (System.currentTimeMillis())
@@ -14,7 +16,7 @@ public class MessageModel {
 
     private String text;
 
-    private long time;
+    private Date time;
 
     public MessageModel(){
 
@@ -24,13 +26,11 @@ public class MessageModel {
     public MessageModel(String messageID,
                         String senderID,
                         String chatID,
-                        String text,
-                        long time){
+                        String text){
         this.messageID = messageID;
         this.senderID = senderID;
         this.chatID = chatID;
         this.text = text;
-        this.time = time;
 
     }
 
@@ -67,11 +67,11 @@ public class MessageModel {
         return text;
     }
 
-    public void setTime(long time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
-    public long getTime() {
+    public Date getTime() {
         return time;
     }
 }

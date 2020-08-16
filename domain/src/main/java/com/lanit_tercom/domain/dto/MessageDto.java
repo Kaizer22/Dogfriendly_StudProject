@@ -12,7 +12,7 @@ public class MessageDto {
     private String id;
     private String userName;
     private String body;
-    private Timestamp timestamp;
+    private Long timestamp;
 
     public MessageDto(String userName, String body) {
         this.userName = userName;
@@ -51,11 +51,11 @@ public class MessageDto {
         this.body = body;
     }
 
-    public Timestamp getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 }
