@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lanit_tercom.dogfriendly_studproject">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -12,9 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".tests.ui.UserTestActivity"></activity>
+        <activity android:name=".tests.ui.PhotoTestActivity"></activity>
+        <activity android:name=".tests.ui.UserTestActivity" />
         <activity android:name=".ui.activity.EditTextActivity" />
-        <activity android:name="com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity" />
+        <activity android:name=".ui.activity.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
@@ -25,7 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="com.google.android.gms.version"
