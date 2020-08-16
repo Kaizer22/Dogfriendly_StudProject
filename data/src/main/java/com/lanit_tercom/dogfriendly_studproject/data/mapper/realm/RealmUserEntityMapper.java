@@ -7,6 +7,7 @@ import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.library.data.mapper.BaseMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class RealmUserEntityMapper extends BaseMapper<RealmUserEntity, UserEntit
                     realmUserEntity.getUserName(),
                     realmUserEntity.getAge(), "заглушка в RealmUserEntityMapper",
                     "заглушка в RealmUserEntityMapper",
-                    new LinkedList<PetEntity>(),"ссылка"); // getID, getUserName
+                    new HashMap<String, PetEntity>(),"ссылка"); // getID, getUserName
             usersEntityList.add(userEntity);
         }
         return usersEntityList;

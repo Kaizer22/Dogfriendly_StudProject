@@ -1,6 +1,6 @@
 package com.lanit_tercom.domain.dto;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class UserDto {
     //Поля
@@ -9,13 +9,13 @@ public class UserDto {
     private int age;
     private String about;
     private String plans;
-    private List<PetDto> pets;
+    private HashMap<String, PetDto> pets;
     private String avatar;
 
     //Конструктор
     public UserDto(){}
 
-    public UserDto(String id, String name, int age, String about, String plans, List<PetDto> pets, String avatar) {
+    public UserDto(String id, String name, int age, String about, String plans, HashMap<String, PetDto> pets, String avatar) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -46,7 +46,7 @@ public class UserDto {
         this.plans = plans;
     }
 
-    public void setPets(List<PetDto> pets) {
+    public void setPets(HashMap<String, PetDto> pets) {
         this.pets = pets;
     }
 
@@ -75,7 +75,7 @@ public class UserDto {
         return plans;
     }
 
-    public List<PetDto> getPets() {
+    public HashMap<String, PetDto> getPets() {
         return pets;
     }
 

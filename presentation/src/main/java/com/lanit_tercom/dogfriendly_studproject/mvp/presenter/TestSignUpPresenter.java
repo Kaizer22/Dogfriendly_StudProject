@@ -7,6 +7,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntitySto
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.TestSignUpView;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestSignUpFragment;
+import com.lanit_tercom.domain.dto.PetDto;
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.user.CreateUserDetailsUseCase;
@@ -15,6 +16,7 @@ import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class TestSignUpPresenter extends BasePresenter {
@@ -41,8 +43,8 @@ public class TestSignUpPresenter extends BasePresenter {
                         currentUserId = currentUserID;
                         view.changeSignUpStage(TestSignUpFragment.SignUpStage.GEOLOCATION_HINT);
                         UserDto userDto = new UserDto(currentUserId, name,
-                                0, "Расскажите о себе", "Ваши планы", new LinkedList<>(),
-                                "@drawable/fox");
+                                0, "Расскажите о себе", "Ваши планы",
+                                new HashMap<String, PetDto>(), "@drawable/fox");
                         createUser.execute(userDto, new CreateUserDetailsUseCase.Callback() {
                             @Override
                             public void onUserDataCreated() {

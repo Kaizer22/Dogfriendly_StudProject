@@ -18,7 +18,7 @@ public class UserDtoModelMapper {
                 userModel.getAge(),
                 userModel.getAbout(),
                 userModel.getPlans(),
-                mapper.fromModelToDtoList(userModel.getPets()),
+                mapper.fromModelToDtoMap(userModel.getPets()),
                 userModel.getAvatar().toString());
     }
 
@@ -28,6 +28,10 @@ public class UserDtoModelMapper {
         long x = 20 + (long) (Math.random() * (50 - 20));
         long y = 20 + (long) (Math.random() * (50 - 20));
 
+        Uri avatar = null;
+        if(userDto.getAvatar() != null)
+            avatar = Uri.parse(userDto.getAvatar());
+
         return new UserModel(userDto.getId(),
                 userDto.getName(),
                 userDto.getAge(),
@@ -35,7 +39,7 @@ public class UserDtoModelMapper {
                 "none",
                 userDto.getAbout(),
                 userDto.getPlans(),
-                Uri.parse(userDto.getAvatar()),
+                avatar,
                 mapper.fromDtoToModelList(userDto.getPets()),
                 new Point(x, y));
     }

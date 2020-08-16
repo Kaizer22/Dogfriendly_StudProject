@@ -36,18 +36,20 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/back_button"
-                android:text="Ваш питомец"
+                android:text="@string/your_pet"
                 android:textColor="#000000"
-                android:textSize="22dp" />
+                android:textSize="22sp" />
 
             <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:id="@+id/ready_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:background="#FFFFFF"
                 android:lineSpacingExtra="1sp"
-                android:text="Готово"
+                android:text="@string/done"
+                android:padding="0dp"
                 android:textAllCaps="false"
                 android:textColor="#94A604"
                 android:textSize="14sp"
@@ -110,12 +112,10 @@
                     android:id="@+id/name_label"
                     android:layout_width="wrap_content"
                     android:layout_height="18dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:layout_marginStart="24dp"
                     android:gravity="top"
                     android:lineSpacingExtra="1sp"
-                    android:text="Имя питомца"
+                    android:text="@string/pet_name_label"
                     android:textColor="#96a604"
                     android:textSize="14sp"
                     android:translationY="-0.71sp"
@@ -123,23 +123,29 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:background="#f5f5f5"
                     app:boxBackgroundColor="#f5f5f5"
                     app:endIconMode="clear_text"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/name_label">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_name"
+                        android:padding="0dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,13 +153,11 @@
                     android:id="@+id/breed_label"
                     android:layout_width="66dp"
                     android:layout_height="18dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:gravity="top"
                     android:lineSpacingExtra="1sp"
-                    android:text="Порода"
+                    android:text="@string/breed_label"
                     android:textColor="#96a604"
                     android:textSize="14sp"
                     android:translationY="-0.71sp"
@@ -161,13 +165,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/name_input" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:id="@+id/breed_input"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:background="#f5f5f5"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
                     app:boxBackgroundColor="#f5f5f5"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -176,8 +185,9 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_breed"
+                        android:padding="0dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,13 +195,11 @@
                     android:id="@+id/age_label"
                     android:layout_width="66dp"
                     android:layout_height="18dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:gravity="top"
                     android:lineSpacingExtra="1sp"
-                    android:text="Возраст"
+                    android:text="@string/pet_age_label"
                     android:textColor="#96a604"
                     android:textSize="14sp"
                     android:translationY="-0.71sp"
@@ -199,13 +207,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/breed_input" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:id="@+id/age_input"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:background="#f5f5f5"
+                    app:boxCornerRadiusBottomEnd="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusTopStart="8dp"
                     app:boxBackgroundColor="#f5f5f5"
                     app:endIconMode="clear_text"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -214,8 +227,9 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_pet_age"
+                        android:padding="0dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -223,13 +237,11 @@
                     android:id="@+id/sex_label"
                     android:layout_width="66dp"
                     android:layout_height="18dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
                     android:gravity="top"
                     android:lineSpacingExtra="1sp"
-                    android:text="Пол питомца"
+                    android:text="@string/pet_gender_label"
                     android:textColor="#96a604"
                     android:textSize="14sp"
                     android:translationY="-0.71sp"
@@ -269,9 +281,6 @@
 
 
             </LinearLayout>
-
-
-
 
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,4 +75,9 @@ public class RealmUserCache implements UserCache {
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
 
     }
+
+    @Override
+    public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
+
+    }
 }

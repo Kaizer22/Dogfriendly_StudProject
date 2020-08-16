@@ -1,4 +1,4 @@
-package com.lanit_tercom.dogfriendly_studproject.tests.ui
+package com.lanit_tercom.dogfriendly_studproject.ui.activity
 
 import android.app.Activity
 import android.content.Context
@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
 
 
 class EditTextActivity : AppCompatActivity() {
@@ -20,6 +21,7 @@ class EditTextActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
     private lateinit var titleText: TextView
     private lateinit var editText: EditText
+    private var userDetailEditPresenter: UserDetailEditPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +56,8 @@ class EditTextActivity : AppCompatActivity() {
 
 
     }
+
+
 
 
 

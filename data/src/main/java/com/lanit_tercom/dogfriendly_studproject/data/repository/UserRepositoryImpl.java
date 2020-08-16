@@ -160,5 +160,18 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+    @Override
+    public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+        userEntityStore.deletePet(userId, petId, new UserEntityStore.DeletePetCallback(){
+
+            @Override
+            public void onPetDeleted() { deletePetCallback.onPetDeleted(); }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) { deletePetCallback.onError(errorBundle); }
+        });
+
+    }
 
 }

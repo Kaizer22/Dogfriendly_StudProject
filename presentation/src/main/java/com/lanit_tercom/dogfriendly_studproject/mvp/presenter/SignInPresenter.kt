@@ -27,16 +27,14 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
     }
 
     private val signInCallback: AuthManager.SignInCallback = object : AuthManager.SignInCallback {
-        //TODO удалить тестовый код!!!
         override fun onSignInFinished(currentUserID: String?) {
             currentUserId = currentUserID
             view?.hideLoading()
             if(currentUserId != null)
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToUserMap()
-            //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
-            // код и код в UserSignInActivity
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChat()
-                ((view as SignInFragment).activity as SignInActivity).navigateToMainNavigation()
+                //((view as SignInFragment).activity as SignInActivity).navigateToMainNavigation()
+                ((view as SignInFragment).activity as SignInActivity).navigateToUserDetail(currentUserId)
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChannelList(currentUserId!!)
             else
                 //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху

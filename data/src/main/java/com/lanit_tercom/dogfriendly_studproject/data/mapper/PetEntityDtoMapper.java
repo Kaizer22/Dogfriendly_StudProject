@@ -6,7 +6,9 @@ import com.lanit_tercom.domain.dto.PetDto;
 import com.lanit_tercom.domain.dto.UserDto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PetEntityDtoMapper {
 
@@ -44,22 +46,22 @@ public class PetEntityDtoMapper {
         return petDto;
     }
 
-    public List<PetEntity> fromDtoToEntityList(List<PetDto> pets){
+    public HashMap<String, PetEntity> fromDtoToEntityMap(HashMap<String, PetDto> pets){
         if(pets == null) return null;
-        List<PetEntity> petEntityList = new ArrayList<>();
-        for(PetDto petDto: pets){
-            petEntityList.add(map1(petDto));
+        HashMap<String, PetEntity> petEntityHashMap = new HashMap<>();
+        for(Map.Entry<String, PetDto> entry: pets.entrySet()){
+            petEntityHashMap.put(entry.getKey(), map1(entry.getValue()));
         }
-        return petEntityList;
+        return petEntityHashMap;
     }
 
-    public List<PetDto> fromEntityToDtoList(List<PetEntity> pets){
+    public HashMap<String, PetDto> fromEntityToDtoMap(HashMap<String, PetEntity> pets){
         if(pets == null) return null;
-        List<PetDto> petDtoList = new ArrayList<>();
-        for(PetEntity petEntity: pets){
-            petDtoList.add(map2(petEntity));
+        HashMap<String, PetDto> petDtoHashMap = new HashMap<>();
+        for(Map.Entry<String, PetEntity> entry: pets.entrySet()){
+            petDtoHashMap.put(entry.getKey(), map2(entry.getValue()));
         }
-        return petDtoList;
+        return petDtoHashMap;
     }
 
 

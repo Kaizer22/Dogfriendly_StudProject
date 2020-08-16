@@ -48,6 +48,7 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
 
         when (p0?.id) {
+            //GET USERS
             R.id.button_get ->{
 
                 val getUsersDetailsUseCase = GetUsersDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
@@ -64,16 +65,9 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
 
                 getUsersDetailsUseCase.execute(getUsersCallback)
             }
+            //ADD USER
             R.id.button_add ->{
                 val user = UserDto()
-                val petList = ArrayList<PetDto>()
-                val pet = PetDto()
-
-                pet.id = "1"
-                pet.age = 2
-                pet.about="ofrmkfjdjke"
-
-                petList.add(pet)
 
 
                 user.id = "1"
@@ -82,7 +76,6 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
                 user.avatar = "qweqweqwe"
                 user.about = "ewqewqewq"
                 user.plans = "qweewqqwe"
-                user.pets = petList
 
 
 
@@ -103,6 +96,7 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
                 createUserUseCase.execute(user ,createUserCallback)
 
             }
+            //SUDDENLY ADD PET
             R.id.button_delete ->{
                 val pet =  PetDto()
                 pet.about = "qweq"
@@ -122,9 +116,10 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
 
-                addPetUseCase.execute("-METfpuYxAGBZ8PH1hVz", pet, addPetCallback)
+                addPetUseCase.execute("-MEYGzlqgcVxSHRV5LQ9", pet, addPetCallback)
 
             }
+            //DELETE_USER
             R.id.button_del ->{
                 val deleteUserDetailUseCase = DeleteUserDetailUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
 
@@ -139,7 +134,7 @@ class UserTestActivity : AppCompatActivity(), View.OnClickListener {
 
                 }
 
-                deleteUserDetailUseCase.execute("-MESEKY2TqR4MzM5wDgL", deleteUserCallback);
+                deleteUserDetailUseCase.execute("-MEYGoRyKodPu5MEEaqk", deleteUserCallback);
             }
 
         }

@@ -36,6 +36,10 @@ public interface UserRepository {
         void onPetAdded();
     }
 
+    interface DeletePetCallback extends Error{
+        void onPetDeleted();
+    }
+
 
     void getUserById(String userId, UserDetailsCallback userCallback);
 
@@ -48,4 +52,6 @@ public interface UserRepository {
     void deleteUser(String id, UserDeleteCallback userDeleteCallback);
 
     void addPet(String id, PetDto pet, AddPetCallback addPetCallback);
+
+    void deletePet(String userId, String petId, DeletePetCallback deletePetCallback);
 }

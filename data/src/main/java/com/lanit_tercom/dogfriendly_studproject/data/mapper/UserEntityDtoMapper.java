@@ -20,7 +20,7 @@ public class UserEntityDtoMapper {
         userEntity.setAge(userDto.getAge());
         userEntity.setAbout(userDto.getAbout());
         userEntity.setPlans(userDto.getPlans());
-        userEntity.setPets(petEntityDtoMapper.fromDtoToEntityList(userDto.getPets()));
+        userEntity.setPets(petEntityDtoMapper.fromDtoToEntityMap(userDto.getPets()));
         userEntity.setAvatar(userDto.getAvatar());
 
         return userEntity;
@@ -34,7 +34,7 @@ public class UserEntityDtoMapper {
         userDto.setAge(userEntity.getAge());
         userDto.setAbout(userEntity.getAbout());
         userDto.setPlans(userEntity.getPlans());
-        userDto.setPets(petEntityDtoMapper.fromEntityToDtoList(userEntity.getPets()));
+        userDto.setPets(petEntityDtoMapper.fromEntityToDtoMap(userEntity.getPets()));
         userDto.setAvatar(userEntity.getAvatar());
 
         return userDto;
