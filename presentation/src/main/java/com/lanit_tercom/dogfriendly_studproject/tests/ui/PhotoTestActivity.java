@@ -90,7 +90,12 @@ public class PhotoTestActivity extends AppCompatActivity {
             @Override
             public void onPhotoLoaded(String uriString) {
                 //Пока почему то не срабатывает, но завтра должно сработать!
-                imageView.setImageURI(Uri.parse(uriString));
+                Picasso.get()
+                        .load(Uri.parse(uriString))
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(imageView);
                 Log.i("TEST_ACTIVITY", "SUCCESS");
             }
 

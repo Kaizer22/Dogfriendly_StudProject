@@ -46,7 +46,7 @@ class EditTextFragment(private val fieldType: String?, private val user: UserMod
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
 
-        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase)
+        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase, null);
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
