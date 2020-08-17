@@ -26,6 +26,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPres
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.EditUserDetailsUseCaseImpl
@@ -63,9 +64,9 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val pushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+        val deletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
-
-        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase, pushPhotoUseCase)
+        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase, pushPhotoUseCase, deletePhotoUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -100,6 +101,13 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
                 user?.age = editAge.text.toString().toInt()
                 user?.avatar = avatarUri
                 userDetailEditPresenter?.editUserDetails(user)
+
+//                if(avatarUri != null){
+//                    userDetailEditPresenter?.pushPhoto(user?.id+"/avatar", avatarUri.toString());
+//                } else {
+//                    userDetailEditPresenter?.deletePhoto(user?.id+"/avatar")
+//                }
+
                 activity?.onBackPressed()
             }
         }
@@ -129,7 +137,7 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
-                userDetailEditPresenter?.pushPhoto(user?.id+"/avatar", resultUri.toString());
+                userDetailEditPresenter?.setAvatar(user, resultUri.toString());
                 avatarUri = resultUri
                 Glide.with(this)
                         .load(avatarUri)

@@ -34,23 +34,20 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     fun deletePet(petId: String?) =
             deletePetUseCase.execute(userId, petId, deletePetCallback)
 
-    //Вызывается при получении данных пользователя с UserDetailsCallback.
-    //Внутри вызывается ЕЩЕ ОДИН callback (GetPhotoCallback) для получения аватара юзера
-    //А этот callback уже после получения всех данных рендерит модельку на экран.
+
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
+        (view as UserDetailView).renderCurrentUser(userModel)
 
-        var getPhotoCallback: GetPhotoUseCase.Callback = object : GetPhotoUseCase.Callback {
-            override fun onPhotoLoaded(uriString: String?) {
-                userModel.avatar = Uri.parse(uriString)
-                (view as UserDetailView).renderCurrentUser(userModel)
-            }
-
-            override fun onError(errorBundle: ErrorBundle) {}
-        }
-
-        getPhotoUseCase.execute("$userId/avatar", getPhotoCallback)
+//        var getPhotoCallback: GetPhotoUseCase.Callback = object : GetPhotoUseCase.Callback {
+//            override fun onPhotoLoaded(uriString: String?) {
+//                userModel.avatar = Uri.parse(uriString)
+//            }
+//
+//            override fun onError(errorBundle: ErrorBundle) {}
+//        }
+//        getPhotoUseCase.execute("$userId/avatar", getPhotoCallback)
 
 
     }

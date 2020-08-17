@@ -10,13 +10,18 @@ public interface PhotoRepository {
 
     interface GetPhotoCallback extends Error {
         void onPhotoLoaded(String uriString);
-    };
+    }
 
     interface PushPhotoCallback extends Error {
-        void onPhotoPushed();
-    };
+        void onPhotoPushed(String downloadUri);
+    }
+
+    interface DeletePhotoCallback extends Error{
+        void onPhotoDeleted();
+    }
 
     void getPhoto(String fileName, GetPhotoCallback getPhotoCallback);
     void pushPhoto(String fileName, String uriString, PushPhotoCallback pushPhotoCallback);
+    void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback);
 
 }

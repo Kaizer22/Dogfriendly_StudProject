@@ -1,10 +1,14 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.photo;
 
 import android.net.Uri;
-import android.provider.ContactsContract;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -20,25 +24,38 @@ public class FirebasePhotoStore implements PhotoStore{
         storageReference = FirebaseStorage.getInstance().getReference().child(CHILD_PHOTOS);
     }
 
+    /**
+     * ВОТ ЭТОТ МЕТОД КАЖЕТСЯ НА САМОМ ДЕЛЕ СОВСЕМ НЕ НУЖЕН
+     * МОЯ ЦЕЛЬ - СДЕЛАТЬ БЕЗ НЕГО
+     */
     @Override
     public void getPhoto(String fileName, GetPhotoCallback getPhotoCallback) {
         storageReference.child(fileName).getDownloadUrl()
-                .addOnSuccessListener(uri ->
-                        getPhotoCallback.onPhotoLoaded(uri.toString()))
+                .addOnSuccessListener(uri -> getPhotoCallback.onPhotoLoaded(uri.toString()))
                 .addOnFailureListener(e -> getPhotoCallback.onError(new RepositoryErrorBundle(e)));
-        Log.i("TEST_ACTIVITY", "GET  "+ storageReference.child(fileName).getDownloadUrl().toString());
+
     }
 
+    /**
+     * ЭТОТ МЕТОД ДОЛЖЕН НЕ ТОЛЬКО ДОБАВИТЬ ФОТО В БАЗУ, НО И
+     * ПРОТАЩИТЬ НА ВЕРХНИЕ СЛОИ ССЫЛКУ НА ДОБАВЛЕННОЕ ФОТО
+     */
     @Override
     public void pushPhoto(String fileName, String uriString, PushPhotoCallback pushPhotoCallback) {
         StorageReference fileReference = storageReference.child(fileName);
-        fileReference.putFile(Uri.parse(uriString)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.i("TEST_ACTIVITY", "PUSH  "+fileReference.getDownloadUrl().toString());
-            }
-        })
+        fileReference.putFile(Uri.parse(uriString))
+                .addOnSuccessListener(taskSnapshot -> pushPhotoCallback.onPhotoPushed(fileReference.getDownloadUrl().toString()))
                 .addOnFailureListener(e -> pushPhotoCallback.onError(new RepositoryErrorBundle(e)));
 
+
     }
+
+    @Override
+    public void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback) {
+        storageReference.child(fileName).delete()
+                .addOnSuccessListener(aVoid -> deletePhotoCallback.onPhotoDeleted())
+                .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
+
 }

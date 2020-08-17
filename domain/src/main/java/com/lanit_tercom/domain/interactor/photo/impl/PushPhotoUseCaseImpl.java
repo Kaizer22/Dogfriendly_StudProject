@@ -37,8 +37,8 @@ public class PushPhotoUseCaseImpl extends UseCase implements PushPhotoUseCase {
     private final PhotoRepository.PushPhotoCallback repositoryCallback =
             new PhotoRepository.PushPhotoCallback() {
                 @Override
-                public void onPhotoPushed() {
-                    notifyPhotoPushedSuccessfully();
+                public void onPhotoPushed(String downloadUri) {
+                    notifyPhotoPushedSuccessfully(downloadUri);
                 }
 
                 @Override
@@ -49,8 +49,8 @@ public class PushPhotoUseCaseImpl extends UseCase implements PushPhotoUseCase {
 
 
 
-    private void notifyPhotoPushedSuccessfully() {
-        this.postExecutionThread.post(() -> callback.onPhotoPushed());
+    private void notifyPhotoPushedSuccessfully(String donwloadUri) {
+        this.postExecutionThread.post(() -> callback.onPhotoPushed(donwloadUri));
     }
 
     private void notifyError(final ErrorBundle errorBundle) {

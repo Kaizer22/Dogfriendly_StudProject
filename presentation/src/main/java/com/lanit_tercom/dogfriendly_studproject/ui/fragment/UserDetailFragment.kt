@@ -237,6 +237,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 petModel.age.toString()+" ,"+petModel.breed)
     }
 
+
     /**
      * РЕНДЕРИТ ЮЗЕРА КАЖДЫЙ РАЗ ПРИ ОТКРЫТИИ ФРАГМЕНТА
      * ИНОГДА ВЫЛЕТАЕТ ПО ПОКА НЕ ЯСНЫМ ПРИЧИНАМ
@@ -249,15 +250,18 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val plansText = view?.findViewById<TextView>(R.id.plans_text)
         val aboutText = view?.findViewById<TextView>(R.id.about_text)
 
-
         name?.text = user?.name
         age?.text = ageDesc(user?.age)
         plansText?.text = user?.plans
         aboutText?.text = user?.about
-        Glide.with(this)
-                .load(user?.avatar)
-                .circleCrop()
-                .into(user_avatar)
+
+        if(user?.avatar != null){
+            Glide.with(this)
+                    .load(user.avatar)
+                    .circleCrop()
+                    .into(user_avatar)
+        }
+
 
         val petModelList = user?.pets
         if (petModelList != null) {

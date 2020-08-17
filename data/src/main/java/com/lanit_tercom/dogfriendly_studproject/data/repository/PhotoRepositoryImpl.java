@@ -50,8 +50,8 @@ public class PhotoRepositoryImpl implements PhotoRepository {
         PhotoStore photoStore = this.photoStoreFactory.create();
         photoStore.pushPhoto(fileName, uriString, new PhotoStore.PushPhotoCallback() {
             @Override
-            public void onPhotoPushed() {
-                pushPhotoCallback.onPhotoPushed();
+            public void onPhotoPushed(String downloadUri) {
+                pushPhotoCallback.onPhotoPushed(downloadUri);
             }
 
             @Override
@@ -61,5 +61,20 @@ public class PhotoRepositoryImpl implements PhotoRepository {
         });
     }
 
+    @Override
+    public void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback) {
+        PhotoStore photoStore = this.photoStoreFactory.create();
+        photoStore.deletePhoto(fileName, new PhotoStore.DeletePhotoCallback() {
+            @Override
+            public void onPhotoDeleted() {
+                deletePhotoCallback.onPhotoDeleted();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                deletePhotoCallback.onError(errorBundle);
+            }
+        });
+    }
 
 }
