@@ -233,7 +233,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onMapReady(googleMap: GoogleMap?) {
         this.map = googleMap
         googleMap?.setOnMarkerClickListener(this)
-        userMapPresenter?.initialize()
 
         // Prompt the user for permission.
         getLocationPermission()
@@ -373,15 +372,15 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         }
     }
 
-    override fun renderUserOnMap(user: UserModel?) {
+    override fun renderUserOnMap(userId: String?, latitude: Double?, longitude: Double?) {
         map?.apply {
-            val point = LatLng(user?.point?.x ?: 0.0, user?.point?.y ?: 0.0)
+            val point = LatLng(latitude!!, longitude!!)
             addMarker(
                     MarkerOptions()
                             .position(point)
                             .anchor(0.5F, 0.5F)
                             .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIconsHalfSize(R.drawable.image_dog_icon)))
-                            .title("${user?.id}")
+                            .title(userId)
 
             )
 
@@ -404,7 +403,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                     .inflate(R.layout.test_layout_bottom_sheet, bottomSheetContainer)
             bottomSheetView.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = (seekBar?.progress?.div(10)).toString()
+                    bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = "${(seekBar?.progress?.times(50)).toString()} метров"
                     circle?.remove()
                     rectangle?.remove()
                     circle = map?.addCircle(CircleOptions()
@@ -413,12 +412,15 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                             .fillColor(Color.parseColor("#80808080"))
                             .strokeColor(Color.TRANSPARENT)
                     )
+
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    map?.clear()
                 }
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    userMapPresenter?.initialize("testId", seekBar?.progress?.times(0.05)!!)
                     bottomSheetDialog.dismiss()
                 }
             })
