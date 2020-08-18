@@ -60,6 +60,9 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
     private lateinit var petListAdapter: PetListAdapter
+    private lateinit var name: TextView
+    private lateinit var age: TextView
+    private lateinit var avatar: ImageView
     private var pets: ArrayList<PetListItem> = ArrayList()
     private var userDetailPresenter: UserDetailPresenter? = null
     private var user: UserModel? = null
@@ -99,6 +102,10 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         petList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         petListAdapter = PetListAdapter(pets)
         petList.adapter = petListAdapter
+
+        name = view.findViewById(R.id.name)
+        age = view.findViewById(R.id.age)
+        avatar = view.findViewById(R.id.user_avatar)
 
         //Это чтобы кнопка удаления в RecyclerView выезжала
         val swipeHelper: SwipeHelper = object : SwipeHelper(context, petList) {
@@ -244,22 +251,17 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
      */
     override fun renderCurrentUser(user: UserModel?) {
         this.user = user
-        val avatar = view?.findViewById<ImageView>(R.id.user_avatar)
-        val name = view?.findViewById<TextView>(R.id.name)
-        val age = view?.findViewById<TextView>(R.id.age)
-        val plansText = view?.findViewById<TextView>(R.id.plans_text)
-        val aboutText = view?.findViewById<TextView>(R.id.about_text)
 
-        name?.text = user?.name
-        age?.text = ageDesc(user?.age)
-        plansText?.text = user?.plans
-        aboutText?.text = user?.about
+        name.text = user?.name
+        age.text = ageDesc(user?.age)
+        plansText.text = user?.plans
+        aboutText.text = user?.about
 
         if(user?.avatar != null){
             Glide.with(this)
                     .load(user.avatar)
                     .circleCrop()
-                    .into(user_avatar)
+                    .into(avatar)
         }
 
 
@@ -306,56 +308,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         }
 
         abstract fun onStateChanged(appBarLayout: AppBarLayout?, state: State?)
-    }
-
-    //Обратная связь с другими Activity
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //Информация о прогулке из EditTextActivity
-        if(requestCode == 2){
-            if(resultCode == Activity.RESULT_OK){
-                plansText.text = data?.getStringExtra("output")
-                user?.plans = data?.getStringExtra("output")
-            }
-        }
-        //Информация о себе из EditTextActivity
-        if(requestCode == 3){
-            if(resultCode == Activity.RESULT_OK){
-                aboutText.text = data?.getStringExtra("output")
-                user?.about = data?.getStringExtra("output")
-            }
-        }
-        //Информация получаемая в процессе создания профиля собаки (для создания ссылки на этот профиль)
-        if (requestCode == 4) {
-            if (resultCode == Activity.RESULT_OK) {
-                val pet = PetModel()
-
-                pet.name = data?.getStringExtra("name")
-                pet.age = data?.getStringExtra("age")?.toInt()
-                pet.breed = data?.getStringExtra("breed")
-                pet.gender = data?.getStringExtra("gender")
-                pet.avatar = Uri.parse(data?.getStringExtra("avatarUri"))
-                pet.character = data?.getStringArrayListExtra("character")
-
-                val photos = ArrayList<Uri>()
-                val uriStrings = data?.getStringArrayListExtra("photo")
-                if(uriStrings != null){
-                    for(photo in uriStrings)
-                        if(photo != "0")
-                            photos.add(Uri.parse(photo))
-                    pet.photos = photos
-                }
-
-
-                val avatarUriString: String? = data?.getStringExtra("avatarUri")
-                val name: String = data?.getStringExtra("name") ?: "1"
-                val breed: String = data?.getStringExtra("breed") ?: "2"
-                val age: String = data?.getStringExtra("age") ?: "3"
-                val desc = "$breed, $age лет"
-                pets.add(PetListItem(null, avatarUriString, name, desc))
-                petListAdapter.notifyDataSetChanged()
-            }
-        }
     }
 
     //Класс представляющий список питомцев юзера

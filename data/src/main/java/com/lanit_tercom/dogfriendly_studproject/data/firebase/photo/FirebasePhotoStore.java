@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.photo;
 
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -10,9 +11,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
+
+import java.util.ArrayList;
 
 public class FirebasePhotoStore implements PhotoStore{
     private static final String CHILD_PHOTOS = "Uploads";
@@ -77,8 +81,43 @@ public class FirebasePhotoStore implements PhotoStore{
                 .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
     }
 
+    /**
+     * Идея такая - пока список локальных uri не пуст мы добавляем uri в базу данных.
+     * Как только он пуст - вызываем pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris) с uri на сервер
+     */
+    @Override
+    public void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback) {
+        ArrayList<String> downloadUris = new ArrayList<>();
+
+        while(!uriStrings.isEmpty()){
+            String uriString = uriStrings.get(0);
+            StorageReference dirReference = storageReference.child(dirName);
+            UploadTask uploadTask = dirReference.putFile(Uri.parse(uriString));
+
+            Task<Uri> urlTask = uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
+                }
+
+                return dirReference.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+
+                    downloadUris.add(downloadUri.toString());
+                    uriStrings.remove(0);
+                    if(uriStrings.isEmpty()){
+                        pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris);
+                    }
+                } else {
+                    pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
+                }
+            });
+
+        }
+
+    }
+
 
 }
 
-
-//"file:///data/user/0/com.lanit_tercom.dogfriendly_studproject/cache/cropped3621425840260292689.jpg"

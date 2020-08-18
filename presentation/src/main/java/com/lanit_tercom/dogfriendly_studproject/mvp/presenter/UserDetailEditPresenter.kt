@@ -4,7 +4,6 @@ import android.net.Uri
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailEditFragment
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
@@ -21,9 +20,7 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
 
     fun setView(view: UserDetailEditView){ this.view = view }
 
-    //Функции вызывающие соответствующие callbacks
-    fun editUserDetails(user: UserModel?){
-
+    fun editTextFields(user: UserModel?) {
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
             override fun onUserDataEdited() {}
@@ -33,41 +30,47 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
         }
 
         editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
-
     }
 
-    /**
-     * НАДО ЧТОБЫ ТУТ В downloadUri БЫЛА ССЫЛКА НА АВАТАР
-     */
-    fun setAvatar(userModel: UserModel?, uriString: String?){
-       var pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
+    fun editUserDetails(user: UserModel?, avatarUri: Uri?){
 
-            override fun onPhotoPushed(downloadUri: String?) {
-                userModel?.avatar = Uri.parse(downloadUri)
-            }
+        val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
-            override fun onError(errorBundle: ErrorBundle) {}
+            override fun onUserDataEdited() {(view as? UserDetailEditView)?.navigateBack()}
+
+            override fun onError(errorBundle: ErrorBundle?) {}
 
         }
 
-        pushPhotoUseCase?.execute(userModel?.id+"/avatar", uriString, pushPhotoCallback)
 
-    }
+        if(avatarUri != null){
+            var pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
 
+                override fun onPhotoPushed(downloadUri: String?) {
+                    user?.avatar = Uri.parse(downloadUri)
+                    editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
+                }
 
-    fun deleteAvatar(userModel: UserModel){
+                override fun onError(errorBundle: ErrorBundle) {}
 
-        var deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
-
-            override fun onPhotoDeleted() {
-                userModel.avatar = null
             }
 
-            override fun onError(errorBundle: ErrorBundle) {}
+            pushPhotoUseCase?.execute(user?.id+"/avatar", avatarUri.toString(), pushPhotoCallback)
+        } else {
 
+            var deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
+
+                override fun onPhotoDeleted() {
+                    user?.avatar = null
+                    editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
+                }
+
+                override fun onError(errorBundle: ErrorBundle) {}
+
+            }
+
+            deletePhotoUseCase?.execute(user?.id+"/avatar", deletePhotoCallback)
         }
-
-        deletePhotoUseCase?.execute(userModel.id+"/avatar", deletePhotoCallback)
     }
 
 }

@@ -2,6 +2,8 @@ package com.lanit_tercom.domain.repository;
 
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
+import java.util.ArrayList;
+
 public interface PhotoRepository {
 
     interface Error {
@@ -20,8 +22,13 @@ public interface PhotoRepository {
         void onPhotoDeleted();
     }
 
+    interface PushPhotoArrayCallback extends Error{
+        void onPhotoArrayPushed(ArrayList<String> downloadUris);
+    }
+
     void getPhoto(String fileName, GetPhotoCallback getPhotoCallback);
     void pushPhoto(String fileName, String uriString, PushPhotoCallback pushPhotoCallback);
     void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback);
+    void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback);
 
 }

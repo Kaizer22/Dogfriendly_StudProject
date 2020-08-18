@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
@@ -99,16 +101,14 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
             if(validate()){
                 user?.name = editName.text.toString()
                 user?.age = editAge.text.toString().toInt()
-                user?.avatar = avatarUri
-                userDetailEditPresenter?.editUserDetails(user)
-
+                userDetailEditPresenter?.editUserDetails(user, avatarUri)
 //                if(avatarUri != null){
 //                    userDetailEditPresenter?.pushPhoto(user?.id+"/avatar", avatarUri.toString());
 //                } else {
 //                    userDetailEditPresenter?.deletePhoto(user?.id+"/avatar")
 //                }
-
                 activity?.onBackPressed()
+
             }
         }
 
@@ -137,7 +137,8 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
-                userDetailEditPresenter?.setAvatar(user, resultUri.toString());
+
+
                 avatarUri = resultUri
                 Glide.with(this)
                         .load(avatarUri)
@@ -148,6 +149,10 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) { }
         }
 
+    }
+
+    override fun navigateBack() {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(user?.id))
     }
 
     override fun showLoading() {

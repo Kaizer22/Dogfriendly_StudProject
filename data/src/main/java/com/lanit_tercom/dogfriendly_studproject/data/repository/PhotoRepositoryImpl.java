@@ -6,6 +6,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFa
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.repository.PhotoRepository;
 
+import java.util.ArrayList;
+
 public class PhotoRepositoryImpl implements PhotoRepository {
 
     private static PhotoRepositoryImpl INSTANCE;
@@ -73,6 +75,22 @@ public class PhotoRepositoryImpl implements PhotoRepository {
             @Override
             public void onError(ErrorBundle errorBundle) {
                 deletePhotoCallback.onError(errorBundle);
+            }
+        });
+    }
+
+    @Override
+    public void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback) {
+        PhotoStore photoStore = this.photoStoreFactory.create();
+        photoStore.pushPhotoArray(dirName, uriStrings, new PhotoStore.PushPhotoArrayCallback() {
+            @Override
+            public void onPhotoArrayPushed(ArrayList<String> downloadUris) {
+                pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris);
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                pushPhotoArrayCallback.onError(errorBundle);
             }
         });
     }
