@@ -25,7 +25,7 @@ public interface WalkRepository {
         void onWalkDeleted();
     }
 
-    void getWalkDetails(String userId, GetWalkDetailsCallback getWalkDetailsCallback);
+    void getWalkDetails(String userId, String walkId, GetWalkDetailsCallback getWalkDetailsCallback);
 
     void addWalk(WalkDto walkDto, WalkAddCallback walkAddCallback);
 

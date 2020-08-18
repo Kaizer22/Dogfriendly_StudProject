@@ -50,7 +50,6 @@ public class WalkEntityDtoMapper {
         walkDto.setCreator(walkEntity.getCreator());
         walkDto.setRadiusOfVisibility(walkEntity.getRadiusOfVisibility());
         walkDto.setTimeOfVisibility(walkEntity.getTimeOfVisibility());
-
         List<String> members = new ArrayList<>();
         for(HashMap<String, String> pair: walkEntity.getMembers())
             members.add(pair.get("userId"));

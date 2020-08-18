@@ -1,13 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
-import android.widget.Toast;
-
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
-import com.lanit_tercom.dogfriendly_studproject.mapper.WalkModelDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.mapper.WalkDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.WalkModel;
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.InvitationView;
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.InvitationActivity;
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.InvitationFragment;
 import com.lanit_tercom.domain.dto.WalkDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.walk.AddWalkUseCase;
@@ -21,14 +16,14 @@ public class InvitationPresenter extends BasePresenter {
     //private InvitationView invitationView;
 
     private AddWalkUseCase addWalkUseCase;
-    private WalkModelDtoMapper walkModelDtoMapper;
+    private WalkDtoModelMapper walkModelDtoMapper;
 
     public InvitationPresenter(AuthManager authManager,
                                AddWalkUseCase addWalkUseCase){
         this.authManager = authManager;
         this.addWalkUseCase = addWalkUseCase;
 
-        walkModelDtoMapper = new WalkModelDtoMapper();
+        walkModelDtoMapper = new WalkDtoModelMapper();
     }
 
     /*public void setView(InvitationView view){

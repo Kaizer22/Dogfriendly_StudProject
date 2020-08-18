@@ -79,6 +79,7 @@
             android:background="@color/walk_access_background">
 
                 <TextView
+                    android:id="@+id/walk_access_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/access_request_description"

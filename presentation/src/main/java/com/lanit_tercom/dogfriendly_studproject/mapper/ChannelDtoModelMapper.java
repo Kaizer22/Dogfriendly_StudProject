@@ -9,9 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class ChannelModelDtoMapper {
+public class ChannelDtoModelMapper {
 
-    public ChannelModelDtoMapper(){}
+    public ChannelDtoModelMapper(){}
 
     /**
      * Transform a {@link ChannelDto} into an {@link ChannelModel}.

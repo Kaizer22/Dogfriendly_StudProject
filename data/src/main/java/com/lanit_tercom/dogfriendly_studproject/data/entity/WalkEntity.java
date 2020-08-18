@@ -9,24 +9,13 @@ public class WalkEntity {
     private String name;
     private boolean freeAccess;
     private String description;
-    private String creator;
+    private String creator; //UserEntity
     private int radiusOfVisibility;
     private int timeOfVisibility;
     private List<HashMap<String, String>> members;
 
     public WalkEntity(){}
 
-    public WalkEntity(String name,
-                      boolean freeAccess,
-                      String description,
-                      String creator,
-                      List<HashMap<String, String>> members){
-        this.name = name;
-        this.freeAccess = freeAccess;
-        this.description = description;
-        this.creator = creator;
-        this.members = members;
-    }
 
     public String getWalkId() {
         return walkId;

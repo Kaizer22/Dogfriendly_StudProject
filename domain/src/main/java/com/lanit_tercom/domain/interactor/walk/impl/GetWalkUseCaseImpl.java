@@ -11,28 +11,30 @@ import com.lanit_tercom.domain.repository.WalkRepository;
 public class GetWalkUseCaseImpl extends UseCase implements GetWalkUseCase {
 
     private String userId;
+    private String walkId;
     private GetWalkUseCase.Callback callback;
 
 
-    protected GetWalkUseCaseImpl(WalkRepository walkRepository,
+    public GetWalkUseCaseImpl(WalkRepository walkRepository,
                                  ThreadExecutor threadExecutor,
                                  PostExecutionThread postExecutionThread) {
         super(walkRepository, threadExecutor, postExecutionThread);
     }
 
     @Override
-    public void execute(String userId, Callback callback) {
-        if (userId.isEmpty() || callback == null){
+    public void execute(String userId, String walkId, Callback callback) {
+        if (userId.isEmpty() || walkId.isEmpty() || callback == null){
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
         this.userId = userId;
+        this.walkId = walkId;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.walkRepository.getWalkDetails(userId, walkDetailsCallback);
+        this.walkRepository.getWalkDetails(userId, walkId, walkDetailsCallback);
     }
 
     private WalkRepository.GetWalkDetailsCallback walkDetailsCallback =

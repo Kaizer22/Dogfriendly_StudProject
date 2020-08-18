@@ -11,23 +11,10 @@ public class WalkModel {
     private String creatorId;
     private int radiusOfVisibility;
     private int timeOfVisibility;
+    private Point location;
     private List<String> members;
 
     public WalkModel(){
-    }
-
-    public WalkModel(String id,
-                     String walkName,
-                     boolean freeAccess,
-                     String description,
-                     String creatorId,
-                     List<String> members){
-        this.id = id;
-        this.walkName =walkName;
-        this.freeAccess = freeAccess;
-        this.description = description;
-        this.creatorId = creatorId;
-        this.members = members;
     }
 
     public String getId() {
@@ -86,6 +73,14 @@ public class WalkModel {
         this.timeOfVisibility = timeOfVisibility;
     }
 
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
     public List<String> getMembers() {
         return members;
     }
@@ -93,4 +88,5 @@ public class WalkModel {
     public void setMembers(List<String> members) {
         this.members = members;
     }
+
 }

@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -25,22 +24,18 @@ import com.lanit_tercom.dogfriendly_studproject.data.firebase.walk.WalkEntitySto
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.WalkEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.WalkRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
-import com.lanit_tercom.dogfriendly_studproject.mapper.WalkModelDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.WalkModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.InvitationPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.InvitationView;
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.LoadDataView;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.walk.AddWalkUseCase;
 import com.lanit_tercom.domain.interactor.walk.impl.AddWalkUseCaseImpl;
-import com.lanit_tercom.domain.repository.WalkRepository;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class InvitationFragment extends BaseFragment implements InvitationView {
