@@ -13,8 +13,11 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.FirebasePhotoStore
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
@@ -91,6 +94,7 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDet
             }
 
             if(validate()){
+                pet.id = FirebaseDatabase.getInstance().reference.child("Users").child(userId!!).child("pets").push().key
                 pet.name = editPetName.text.toString()
                 pet.age = editPetAge.text.toString().toInt()
                 pet.breed = editPetBreed.text.toString()

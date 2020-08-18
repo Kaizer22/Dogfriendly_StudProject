@@ -95,10 +95,8 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
-        String firebaseId = referenceDatabase.child(id).child("pets").push().getKey();
-        pet.setId(firebaseId);
         Map<String, Object> map = new HashMap<>();
-        map.put(firebaseId, pet);
+        map.put(pet.getId(), pet);
         referenceDatabase.child(id).child("pets").updateChildren(map)
                 .addOnSuccessListener(aVoid -> addPetCallback.onPetAdded())
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));

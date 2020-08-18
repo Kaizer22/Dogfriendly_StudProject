@@ -43,7 +43,9 @@ class PetDetailEditPresenter(private val userId: String?,
                     (view as? PetDetailEditFragment)?.navigateToNext()
                 }
 
-                override fun onError(errorBundle: ErrorBundle) {}
+                override fun onError(errorBundle: ErrorBundle) {
+                    (view as? PetDetailEditFragment)?.navigateToNext()
+                }
 
             }
 

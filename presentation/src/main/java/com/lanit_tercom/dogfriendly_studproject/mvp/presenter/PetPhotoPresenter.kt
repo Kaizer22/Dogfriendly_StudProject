@@ -43,24 +43,24 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val p
      * После успешного получения ссылки в базу добавляется уже вся модель вместе с полученной ссылкой
      */
     fun addPet(pet: PetModel?, uriStrings: ArrayList<String>) {
-
-        val pushPhotoArrayCallback: PushPhotoArrayUseCase.Callback = object : PushPhotoArrayUseCase.Callback {
-
-            override fun onPhotoArrayPushed(downloadUris: ArrayList<String>?) {
-                val photos = ArrayList<Uri>()
-                for(downloadUri in downloadUris!!) photos.add(Uri.parse(downloadUri))
-                pet?.photos = photos
-                addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
-            }
-
-            override fun onError(errorBundle: ErrorBundle?) {
-                val s = errorBundle?.exception?.message
-                Log.i("TEST_ACTIVITY", s)
-            }
-
-        }
-
-        pushPhotoArrayUseCase.execute("$userId/pet_photos", uriStrings, pushPhotoArrayCallback)
+        addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
+//        val pushPhotoArrayCallback: PushPhotoArrayUseCase.Callback = object : PushPhotoArrayUseCase.Callback {
+//
+//            override fun onPhotoArrayPushed(downloadUris: ArrayList<String>?) {
+//                val photos = ArrayList<Uri>()
+//                for(downloadUri in downloadUris!!) photos.add(Uri.parse(downloadUri))
+//                pet?.photos = photos
+//
+//            }
+//
+//            override fun onError(errorBundle: ErrorBundle?) {
+//                val s = errorBundle?.exception?.message
+//                Log.i("TEST_ACTIVITY", s)
+//            }
+//
+//        }
+//
+//        pushPhotoArrayUseCase.execute("$userId/pet_photos", uriStrings, pushPhotoArrayCallback)
     }
 
 
