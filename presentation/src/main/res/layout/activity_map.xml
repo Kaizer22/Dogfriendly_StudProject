@@ -18,6 +18,7 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/button_create_walk"
                 app:fabCustomSize="30dp"
                 android:layout_gravity="start|center_vertical"
                 android:src="@drawable/ic_add"
@@ -32,6 +33,7 @@
                 app:layout_anchorGravity="center"/>
 
             <ImageButton
+                android:id="@+id/button_map_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_map_settings"
