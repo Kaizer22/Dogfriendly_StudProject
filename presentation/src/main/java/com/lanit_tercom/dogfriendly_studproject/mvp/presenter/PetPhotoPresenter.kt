@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import android.net.Uri
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
@@ -30,14 +31,16 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val d
             (view as PetDetailEditView).navigateToNext()
         }
 
-        override fun onError(errorBundle: ErrorBundle?) {}
+        override fun onError(errorBundle: ErrorBundle?) {
+            Log.i("TEST_ACTIVITY", "PROBLEM1")
+        }
 
     }
 
     /**
      * Если pet.photo == null - сначала отправляем фото, затем присваеваем модели массив ссылок на фото и уже потом пушим ее в бд
      * Иначе (если редачим существующего юзера уже с фотками) - стираем старые фото и добавляем новые, как если бы pet.photo было null.
-     * Пока недотестировано.
+     * Иногда глючит, разбираюсь.
      */
     fun addPet(pet: PetModel?, uriStrings: ArrayList<String>) {
 
@@ -51,21 +54,33 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val d
 
             }
 
-            override fun onError(errorBundle: ErrorBundle?) {}
+            override fun onError(errorBundle: ErrorBundle?) {
+                Log.i("TEST_ACTIVITY", "PROBLEM2")
+            }
 
         }
 
 
         if(pet?.photos.isNullOrEmpty()){
-            pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+
+            if(uriStrings.isNotEmpty())
+                pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+            else
+                addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
+
         } else {
             val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback{
 
                 override fun onPhotoDeleted() {
-                    pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+                    if(uriStrings.isNotEmpty())
+                        pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+                    else
+                        addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
                 }
 
-                override fun onError(errorBundle: ErrorBundle?) {}
+                override fun onError(errorBundle: ErrorBundle?) {
+                    Log.i("TEST_ACTIVITY", "PROBLEM3")
+                }
 
             }
 

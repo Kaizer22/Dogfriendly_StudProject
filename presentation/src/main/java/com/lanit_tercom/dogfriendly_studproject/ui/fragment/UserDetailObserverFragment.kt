@@ -1,16 +1,16 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import android.view.Window
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.AppBarLayout
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
@@ -71,10 +71,26 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         age = view.findViewById(R.id.age)
         avatar = view.findViewById(R.id.user_avatar)
 
+        view.findViewById<ImageButton>(R.id.edit_button).setOnClickListener {
+            val dialog = Dialog(context!!)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
+            dialog.setContentView(R.layout.dialog_user_detail_observer)
+            val btnHide: View = dialog.findViewById(R.id.linearLayout2)
+            val btnReport: View = dialog.findViewById(R.id.linearLayout)
+            val btnBlackList: View = dialog.findViewById(R.id.linearLayout3)
+
+            btnHide.setOnClickListener{/*todo*/}
+            btnReport.setOnClickListener {/*todo*/}
+            btnBlackList.setOnClickListener {/*todo*/}
+
+            dialog.show()
+        }
+
         //Динамическое задание высоты блока
-        val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
+        val appbar = view.findViewById<View>(R.id.top_panel) as ConstraintLayout
         val heightDp = resources.displayMetrics.heightPixels * 0.5 -  resources.displayMetrics.density
-        val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
+        val lp = appbar.layoutParams as LinearLayout.LayoutParams
         lp.height = heightDp.toInt()
 
         plansText = view.findViewById(R.id.plans_text)
@@ -155,6 +171,7 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         if(user?.avatar != null){
             Glide.with(this)
                     .load(user.avatar)
+                    .circleCrop()
                     .into(avatar)
         }
 

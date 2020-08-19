@@ -1,10 +1,13 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -88,9 +91,21 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                         Color.parseColor("#FF3C30"),
                         UnderlayButtonClickListener {
                             if (viewHolder != null) {
-                            userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id)
+                                val dialog = Dialog(context!!)
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-                                pets.removeAt(viewHolder.adapterPosition)
+                                dialog.setContentView(R.layout.dialog_user_detail)
+                                val btnCancel: Button = dialog.findViewById(R.id.cancel)
+                                val btnDelete: Button = dialog.findViewById(R.id.delete)
+
+                                btnCancel.setOnClickListener{dialog.dismiss()}
+                                btnDelete.setOnClickListener {
+                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id)
+                                    pets.removeAt(viewHolder.adapterPosition)
+                                    dialog.dismiss()
+                                }
+
+                                dialog.show()
                             }
                             petListAdapter.notifyDataSetChanged()
                         }
