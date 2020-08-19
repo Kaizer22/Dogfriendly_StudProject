@@ -8,6 +8,6 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  */
 interface MapView : LoadDataView{
 
-    fun renderUserOnMap(user: UserModel?)
+    fun renderUserOnMap(userId: String?, latitude: Double?, longitude: Double?)
 
 }

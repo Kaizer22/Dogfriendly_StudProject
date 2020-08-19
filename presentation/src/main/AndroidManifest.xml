@@ -41,6 +41,7 @@
         <activity android:name=".ui.activity.MainNavigationActivity"/>
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
+        <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity" />
         <activity android:name=".ui.activity.WalkActivity">
 
         </activity>

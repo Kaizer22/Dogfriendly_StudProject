@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
@@ -70,6 +69,8 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.3.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.0.3'
+
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
