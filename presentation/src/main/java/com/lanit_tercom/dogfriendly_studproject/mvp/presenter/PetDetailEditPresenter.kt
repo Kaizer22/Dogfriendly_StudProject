@@ -1,38 +1,56 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
-import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
+import android.net.Uri
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.SignInView
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.user.AddPetUseCase
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 
-/**
- * Презентер с функцией изменения добавления питомца
- */
-class PetDetailEditPresenter(private val addPetUseCase: AddPetUseCase?): BasePresenter() {
 
+class PetDetailEditPresenter(private val userId: String?,
+                             private val pushPhotoUseCase: PushPhotoUseCase?,
+                             private val deletePhotoUseCase: DeletePhotoUseCase?): BasePresenter(){
     private var view: PetDetailEditView? = null
-    private var userId: String? = null
-    private val mapper = PetDtoModelMapper()
-
-    fun initialize(userId: String?) {
-        this.userId = userId
-    }
 
     fun setView(view: PetDetailEditView){ this.view = view }
 
-    fun addPet(pet: PetModel?) =
-            addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
+    /**
+     * Если локальный uri не null - отправляем в базу аватар
+     * Если нет - делаем запрос на удаление имеющегося
+     */
+    fun setAvatar(pet: PetModel?, avatarUri: Uri?){
 
-    private val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback {
+        if(avatarUri != null){
+            var pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
 
-        override fun onPetAdded() {
-            (view as PetDetailEditView).navigateToNext()
+                override fun onPhotoPushed(downloadUri: String?) {
+                    pet?.avatar = Uri.parse(downloadUri);
+                    (view as? PetDetailEditFragment)?.navigateToNext()
+                }
+
+                override fun onError(errorBundle: ErrorBundle) {}
+
+            }
+
+            pushPhotoUseCase?.execute(userId+"/"+pet?.id+"/avatar", avatarUri.toString(), pushPhotoCallback)
+        } else {
+
+            var deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
+
+                override fun onPhotoDeleted() {
+                    pet?.avatar = null
+                    (view as? PetDetailEditFragment)?.navigateToNext()
+                }
+
+                override fun onError(errorBundle: ErrorBundle) {}
+
+            }
+
+            deletePhotoUseCase?.execute(userId+"/"+pet?.id+"/avatar", deletePhotoCallback)
         }
-
-        override fun onError(errorBundle: ErrorBundle?) {}
-
     }
 
     override fun onDestroy() {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lanit_tercom.dogfriendly_studproject">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -16,14 +16,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".tests.ui.UserTestActivity"/>
         <activity android:name=".tests.ui.map.MapSettingsActivity" />
+        <activity android:name=".tests.ui.PhotoTestActivity" />
+        <activity android:name=".ui.activity.EditTextActivity" />
+        <activity android:name=".ui.activity.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".tests.ui.TestActivity"
-                    android:theme="@style/AppTheme"/>
-
-        <activity android:name=".ui.activity.WelcomeActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".ui.activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +39,6 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.MainNavigationActivity"/>
         <activity android:name=".ui.activity.MapActivity" />
-        <activity android:name=".ui.activity.UserDetailActivity" />
         <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity" />
         <activity android:name=".ui.activity.WalkActivity">
 

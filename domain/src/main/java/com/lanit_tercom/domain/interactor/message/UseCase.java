@@ -6,7 +6,6 @@ import com.lanit_tercom.domain.interactor.Interactor;
 import com.lanit_tercom.domain.repository.MessageRepository;
 
 public abstract class UseCase implements Interactor {
-
     protected final MessageRepository messageRepository;
     protected final PostExecutionThread postExecutionThread;
     private final ThreadExecutor threadExecutor;

@@ -13,13 +13,17 @@ public class UserDtoModelMapper {
     PetDtoModelMapper mapper = new PetDtoModelMapper();
 
     public UserDto map1(UserModel userModel){
+        String avatar = null;
+        if(userModel.getAvatar() != null)
+            avatar = userModel.getAvatar().toString();
+
         return new UserDto(userModel.getId(),
                 userModel.getName(),
                 userModel.getAge(),
                 userModel.getAbout(),
                 userModel.getPlans(),
                 mapper.fromModelToDtoMap(userModel.getPets()),
-                userModel.getAvatar().toString());
+                avatar);
     }
 
     public UserModel map2(UserDto userDto){

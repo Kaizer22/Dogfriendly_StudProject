@@ -25,7 +25,7 @@ class EditTextActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_text)
+        setContentView(R.layout.fragment_edit_text)
 
         btnReady = findViewById(R.id.ready_button)
         btnBack = findViewById(R.id.back_button)

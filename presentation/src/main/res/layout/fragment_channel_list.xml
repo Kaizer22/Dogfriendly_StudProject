@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragment.ChannelListFragment">
+    tools:context=".ui.fragment.ChannelListFragment"
+    android:layout_marginBottom="@dimen/navigation_bar_height">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/empty_channellist_layout"
