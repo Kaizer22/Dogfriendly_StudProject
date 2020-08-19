@@ -23,7 +23,9 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoArrayUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
 import com.lanit_tercom.domain.interactor.user.impl.AddPetUseCaseImpl
@@ -47,7 +49,7 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
         val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
-        val photoStoreFactory: PhotoStoreFactory = PhotoStoreFactory(networkManager)
+        val photoStoreFactory = PhotoStoreFactory(networkManager)
         val userEntityDtoMapper = UserEntityDtoMapper()
 
         val photoRepository: PhotoRepository = PhotoRepositoryImpl.getInstance(photoStoreFactory)
@@ -56,8 +58,9 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
 
         val addPetUseCase: AddPetUseCase = AddPetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
+        val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoArrayUseCase: PushPhotoArrayUseCase = PushPhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
-        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, pushPhotoArrayUseCase)
+        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, deletePhotoUseCase, pushPhotoArrayUseCase)
     }
 
     //Lifecycle-методы
@@ -172,7 +175,7 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
                 if(nextImageSpace != 8){
-                    photos[nextImageSpace] = result.toString()
+                    photos[nextImageSpace] = resultUri.toString()
                     setPhoto(elements, nextImageSpace++, resultUri)
 
                 }

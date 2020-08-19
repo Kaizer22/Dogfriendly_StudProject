@@ -17,15 +17,15 @@ class PetDetailEditPresenter(private val userId: String?,
 
     /**
      * Если локальный uri не null - отправляем в базу аватар
-     * Если нет - делаем запрос на удаление имеющегося
+     * Если нет - делаем запрос на удаление имеющегося  (в случае, если мы редачим юзера, а не созадем)
      */
     fun setAvatar(pet: PetModel?, avatarUri: Uri?){
 
         if(avatarUri != null){
-            var pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
+            val pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
 
                 override fun onPhotoPushed(downloadUri: String?) {
-                    pet?.avatar = Uri.parse(downloadUri);
+                    pet?.avatar = Uri.parse(downloadUri)
                     (view as? PetDetailEditFragment)?.navigateToNext()
                 }
 
@@ -34,25 +34,23 @@ class PetDetailEditPresenter(private val userId: String?,
             }
 
             pushPhotoUseCase?.execute(userId+"/"+pet?.id+"/avatar", avatarUri.toString(), pushPhotoCallback)
-        } else {
 
-            var deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
+        } else {
+            val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
 
                 override fun onPhotoDeleted() {
                     pet?.avatar = null
                     (view as? PetDetailEditFragment)?.navigateToNext()
                 }
 
-                override fun onError(errorBundle: ErrorBundle) {
-                    (view as? PetDetailEditFragment)?.navigateToNext()
-                }
+                override fun onError(errorBundle: ErrorBundle)
+                    { (view as? PetDetailEditFragment)?.navigateToNext() }
 
             }
 
             deletePhotoUseCase?.execute(userId+"/"+pet?.id+"/avatar", deletePhotoCallback)
         }
+
     }
-
-
 
 }

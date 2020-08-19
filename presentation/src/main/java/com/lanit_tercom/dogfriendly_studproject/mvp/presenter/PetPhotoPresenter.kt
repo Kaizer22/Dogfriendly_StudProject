@@ -1,17 +1,17 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import android.net.Uri
-import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.domain.exception.ErrorBundle
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
 import java.util.ArrayList
 
 
-class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val pushPhotoArrayUseCase: PushPhotoArrayUseCase) : BasePresenter() {
+class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val deletePhotoUseCase: DeletePhotoUseCase, private val pushPhotoArrayUseCase: PushPhotoArrayUseCase) : BasePresenter() {
 
     private var userId: String? = null
     private val mapper = PetDtoModelMapper()
@@ -30,37 +30,51 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val p
             (view as PetDetailEditView).navigateToNext()
         }
 
-        override fun onError(errorBundle: ErrorBundle?) {
-            val s = errorBundle?.exception?.message
-            Log.i("TEST_ACTIVITY", s)
-        }
+        override fun onError(errorBundle: ErrorBundle?) {}
 
     }
 
     /**
-     * Вызываем addPet
-     * addPet отправляет фото и получает ссылку
-     * После успешного получения ссылки в базу добавляется уже вся модель вместе с полученной ссылкой
+     * Если pet.photo == null - сначала отправляем фото, затем присваеваем модели массив ссылок на фото и уже потом пушим ее в бд
+     * Иначе (если редачим существующего юзера уже с фотками) - стираем старые фото и добавляем новые, как если бы pet.photo было null.
+     * Пока недотестировано.
      */
     fun addPet(pet: PetModel?, uriStrings: ArrayList<String>) {
-        addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
-//        val pushPhotoArrayCallback: PushPhotoArrayUseCase.Callback = object : PushPhotoArrayUseCase.Callback {
-//
-//            override fun onPhotoArrayPushed(downloadUris: ArrayList<String>?) {
-//                val photos = ArrayList<Uri>()
-//                for(downloadUri in downloadUris!!) photos.add(Uri.parse(downloadUri))
-//                pet?.photos = photos
-//
-//            }
-//
-//            override fun onError(errorBundle: ErrorBundle?) {
-//                val s = errorBundle?.exception?.message
-//                Log.i("TEST_ACTIVITY", s)
-//            }
-//
-//        }
-//
-//        pushPhotoArrayUseCase.execute("$userId/pet_photos", uriStrings, pushPhotoArrayCallback)
+
+        val pushPhotoArrayCallback: PushPhotoArrayUseCase.Callback = object : PushPhotoArrayUseCase.Callback {
+
+            override fun onPhotoArrayPushed(downloadUris: ArrayList<String>?) {
+                val photos = ArrayList<Uri>()
+                for(downloadUri in downloadUris!!) photos.add(Uri.parse(downloadUri))
+                pet?.photos = photos
+                addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
+
+            }
+
+            override fun onError(errorBundle: ErrorBundle?) {}
+
+        }
+
+
+        if(pet?.photos.isNullOrEmpty()){
+            pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+        } else {
+            val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback{
+
+                override fun onPhotoDeleted() {
+                    pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+                }
+
+                override fun onError(errorBundle: ErrorBundle?) {}
+
+            }
+
+            deletePhotoUseCase.execute(userId+"/"+pet?.id+"/pet_photos",  deletePhotoCallback)
+
+        }
+
+
+
     }
 
 

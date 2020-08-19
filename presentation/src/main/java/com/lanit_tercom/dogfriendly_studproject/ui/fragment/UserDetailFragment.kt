@@ -1,18 +1,13 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,10 +15,8 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
-import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
@@ -32,29 +25,18 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.EditTextActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
-import com.lanit_tercom.domain.interactor.photo.impl.GetPhotoUseCaseImpl
-import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
-import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_user_detail.*
 import kotlin.math.abs
 
-/**
- * Фрагмент отображающий окно пользователя
- * @author nikolaygorokhov1@gmail.com
- * @author prostak.sasha111@mail.ru
- */
 class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailView{
     private lateinit var petList: RecyclerView
     private lateinit var plansText: TextView
@@ -72,27 +54,17 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
-
         val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
-        val photoStoreFactory = PhotoStoreFactory(networkManager)
         val userEntityDtoMapper = UserEntityDtoMapper()
-
-
         val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
                 userEntityDtoMapper)
-        val photoRepository: PhotoRepository = PhotoRepositoryImpl.getInstance(photoStoreFactory)
-
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val deletePetUseCase: DeletePetUseCase = DeletePetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        val getPhotoUseCase = GetPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
-
-        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase, getPhotoUseCase)
+        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase)
     }
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_user_detail, container, false)
@@ -244,11 +216,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
                 petModel.age.toString()+" ,"+petModel.breed)
     }
 
-
-    /**
-     * РЕНДЕРИТ ЮЗЕРА КАЖДЫЙ РАЗ ПРИ ОТКРЫТИИ ФРАГМЕНТА
-     * ИНОГДА ВЫЛЕТАЕТ ПО ПОКА НЕ ЯСНЫМ ПРИЧИНАМ
-     */
     override fun renderCurrentUser(user: UserModel?) {
         this.user = user
 

@@ -14,10 +14,8 @@ import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.FirebasePhotoStore
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
@@ -117,7 +115,6 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDet
         petDetailEditPresenter?.setView(this)
     }
 
-
     override fun onResume() {
         super.onResume()
         editPetName.text?.clear()
@@ -127,8 +124,6 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDet
 
     //Проверка на то является ли строка числом
     private fun String.intOrString() = toIntOrNull() ?: this
-
-
 
     //Обработка нажатий кнопо выбора пола
     private fun setGender(gender: String){
