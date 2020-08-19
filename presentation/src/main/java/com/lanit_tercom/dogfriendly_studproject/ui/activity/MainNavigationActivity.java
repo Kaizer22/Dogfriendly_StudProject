@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -14,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lanit_tercom.dogfriendly_studproject.R;
@@ -27,6 +29,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment;
 import org.jetbrains.annotations.Nullable;
 
 public class MainNavigationActivity extends BaseActivity {
+    private int DEFAULT_CHECKED_ITEM = R.id.navigation_settings;
 
     //TODO подсвечивать выбранный элемент навигационной панели
 
@@ -45,6 +48,8 @@ public class MainNavigationActivity extends BaseActivity {
         setContentView(R.layout.main_navigation_activity);
         AuthManager authManager = new AuthManagerFirebaseImpl();
 
+        AppBarLayout mapTopBar = findViewById(R.id.map_app_bar);
+
         MapFragment mapFragment = new MapFragment();
         UserDetailFragment userDetailFragment = new UserDetailFragment(
                 authManager.getCurrentUserId());
@@ -54,28 +59,37 @@ public class MainNavigationActivity extends BaseActivity {
 
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED);
+        navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navView.setItemIconTintList(ContextCompat
                 .getColorStateList(this, R.color.bottom_navigation_colors_list));
+        navView.getMenu().findItem(DEFAULT_CHECKED_ITEM).setChecked(true);
 
         navView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.navigation_profile:
-                   getSupportFragmentManager().beginTransaction()
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_profile).setChecked(true);
+                    getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, userDetailFragment)
                            .commit();
                     break;
                case R.id.navigation_map:
+                   mapTopBar.setVisibility(View.VISIBLE);
+                   navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, mapFragment)
                             .commit();
                     break;
                case R.id.navigation_channels:
+                   mapTopBar.setVisibility(View.GONE);
+                   navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, channelListFragment)
                             .commit();
                     break;
                 case R.id.navigation_settings:
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_settings).setChecked(true);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, testEmptyFragment)
                             .commit();

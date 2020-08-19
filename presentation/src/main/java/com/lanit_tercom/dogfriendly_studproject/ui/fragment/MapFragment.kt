@@ -174,7 +174,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //(activity as MainNavigationActivity).switch_visibility.setOnCheckedChangeListener(this)
+        (activity as MainNavigationActivity).switch_visibility.setOnCheckedChangeListener(this)
         //(activity as MapActivity).switch_visibility.setOnCheckedChangeListener(this)
     }
 
