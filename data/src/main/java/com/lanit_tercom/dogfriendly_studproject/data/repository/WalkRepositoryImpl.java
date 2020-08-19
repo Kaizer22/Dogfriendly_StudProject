@@ -37,10 +37,10 @@ public class WalkRepositoryImpl implements WalkRepository {
     }
 
     @Override
-    public void getWalkDetails(String userId, GetWalkDetailsCallback getWalkDetailsCallback) {
+    public void getWalkDetails(String userId, String walkId, GetWalkDetailsCallback getWalkDetailsCallback) {
         WalkEntityStore walkEntityStore = this.walkEntityStoreFactory.create();
 
-        walkEntityStore.getWalk(userId, new WalkEntityStore.GetWalkCallback() {
+        walkEntityStore.getWalk(userId, walkId, new WalkEntityStore.GetWalkCallback() {
             @Override
             public void onWalkLoaded(WalkEntity walkEntity) {
                 WalkDto walkDto = walkEntityDtoMapper.mapEntityToDto(walkEntity);

@@ -1,10 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
-import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelModelDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChannelListView;
 import com.lanit_tercom.domain.dto.ChannelDto;
@@ -22,7 +19,7 @@ public class ChannelListPresenter extends BasePresenter {
     private ChannelListView channelListView;
 
     private AuthManager authManager;
-    private ChannelModelDtoMapper channelModelMapper;
+    private ChannelDtoModelMapper channelModelMapper;
     private boolean isChannelListEmpty;
 
     private GetChannelsUseCase getChannels;
@@ -38,7 +35,7 @@ public class ChannelListPresenter extends BasePresenter {
         this.addChannel = addChannelUseCase;
         this.deleteChannel = deleteChannelUseCase;
 
-        channelModelMapper = new ChannelModelDtoMapper();
+        channelModelMapper = new ChannelDtoModelMapper();
     }
 
     public void setView(ChannelListView view){

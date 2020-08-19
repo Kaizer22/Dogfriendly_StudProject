@@ -3,7 +3,6 @@ package com.lanit_tercom.dogfriendly_studproject.navigation
 import android.content.Context
 import android.content.Intent
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.*
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 
 /**
  * Класс для перехода к активностям
@@ -50,7 +49,19 @@ class Navigator {
                     MainNavigationActivity.getCallingIntent(context)
             )
 
-    fun navigateToChannelList(context: Context, userId: String?) =
+    fun navigateToChannelList(context: Context, userID: String?) =
             context.startActivity(
-                    ChannelListActivity.getCallingIntent(context, userId))
+                    ChannelListActivity.getCallingIntent(context, userID)
+            )
+
+    fun navigateToInvitationScreen(context: Context, userId: String?) =
+            context.startActivity(
+                    InvitationActivity.getCallingIntent(context, userId)
+            )
+
+    fun navigateToWalkDetails(context: Context, userId: String?) =
+            context.startActivity(
+                    WalkActivity.getCallingIntent(context, userId)
+            )
+
 }

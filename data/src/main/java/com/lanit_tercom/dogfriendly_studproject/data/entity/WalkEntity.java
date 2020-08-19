@@ -9,10 +9,13 @@ public class WalkEntity {
     private String name;
     private boolean freeAccess;
     private String description;
-    private String creator;
+    private String creator; //UserEntity
+    private int radiusOfVisibility;
+    private int timeOfVisibility;
     private List<HashMap<String, String>> members;
 
     public WalkEntity(){}
+
 
     public String getWalkId() {
         return walkId;
@@ -54,6 +57,22 @@ public class WalkEntity {
         this.creator = creator;
     }
 
+    public int getRadiusOfVisibility() {
+        return radiusOfVisibility;
+    }
+
+    public void setRadiusOfVisibility(int radiusOfVisibility) {
+        this.radiusOfVisibility = radiusOfVisibility;
+    }
+
+    public int getTimeOfVisibility() {
+        return timeOfVisibility;
+    }
+
+    public void setTimeOfVisibility(int timeOfVisibility) {
+        this.timeOfVisibility = timeOfVisibility;
+    }
+
     public List<HashMap<String, String>> getMembers() {
         return members;
     }
@@ -73,4 +92,6 @@ public class WalkEntity {
                 ", members = { " + members + " }"+
                 '}' + '\n';
     }
+
+
 }

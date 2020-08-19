@@ -3,6 +3,7 @@
     <dimen name="navigation_bar_height">50dp</dimen>
     <dimen name="basic_text_button_height">40dp</dimen>
     <dimen name="recycler_view_item_width">150dp</dimen>
+
     <!-- Welcome screen start -->
     <!-- Welcome vector -->
     <dimen name="app_welcome_vector_width">400dp</dimen>
@@ -83,4 +84,5 @@
     <dimen name="indent_huge">24dp</dimen>
     <dimen name="indent_huge_plus">26dp</dimen>
     <dimen name="indent_enormous">32dp</dimen>
+
 </resources>

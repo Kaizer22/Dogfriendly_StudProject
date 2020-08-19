@@ -32,7 +32,31 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
 
     public FirebaseWalkEntityStore(){
         this.databaseReference = FirebaseDatabase.getInstance().getReference().child(CHILD_WALKS);
-        getWalk("ZtVM6D0rX6Vygni8NgyGz6kf9dB3", new GetWalkCallback() {
+
+
+        /*List<HashMap<String, String >> members = new ArrayList<>();
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("userId", "ZtVM6D0rX6Vygni8NgyGz6kf9dB3");
+        members.add(hashMap);
+        WalkEntity testWalkEntity = new WalkEntity("Прогулка в центре",
+                true,
+                "Собираемся на Дворцовой набережной",
+                "ZtVM6D0rX6Vygni8NgyGz6kf9dB3",
+                members);
+
+        addWalk(testWalkEntity, new AddWalkCallback() {
+            @Override
+            public void onWalkAdded() {
+                System.out.println("Walk was added");
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                System.out.println("ADD Error!!!");
+            }
+        });*/
+
+        getWalk("ZtVM6D0rX6Vygni8NgyGz6kf9dB3", "-MEx6IqCa4EEynKcz3gB",  new GetWalkCallback() { //-MEx6IqCa4EEynKcz3gB -MEnwIuW7ATZ1CsiganB
             @Override
             public void onWalkLoaded(WalkEntity walkEntity) {
                 System.out.println("Walk was loaded");
@@ -47,29 +71,21 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
 
 
     @Override
-    public void getWalk(String userId, GetWalkCallback getWalkCallback) {
-
-        //TODO подкорректировать метод для вывода одной прогулки!!!
-        //databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
-        List<WalkEntity> walks = new ArrayList<>();
+    public void getWalk(String userId, String walkId,  GetWalkCallback getWalkCallback) {
+        
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
+                /*Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
                 for (DataSnapshot keyNode: snapshots){
                     WalkEntity walkEntity = keyNode.getValue(WalkEntity.class);
                     walkEntity.setWalkId(keyNode.getKey());
                     walks.add(walkEntity);
-                }
-
-
-                //walkEntity = snapshot.getValue(WalkEntity.class);
-                //walkEntity.setWalkId(walkId);
+                }*/
+                walkEntity = snapshot.child(userId).child(walkId).getValue(WalkEntity.class);
+                walkEntity.setWalkId(walkId);
                 getWalkCallback.onWalkLoaded(walkEntity);
-                //TODO for test
-                for (WalkEntity walkEntityList: walks) {
-                    System.out.println(walkEntityList.toString());
-                }
+
             }
 
             @Override
@@ -85,7 +101,7 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
         walkEntity.setWalkId(firebaseId);
         Map<String, Object> map = new HashMap<>();
         map.put(walkEntity.getWalkId(), walkEntity);
-        databaseReference.updateChildren(map)
+        databaseReference.child(walkEntity.getCreator()).updateChildren(map)
                 .addOnSuccessListener(aVoid -> addWalkCallback.onWalkAdded())
                 .addOnFailureListener(e -> addWalkCallback.onError(new RepositoryErrorBundle(e)));
     }

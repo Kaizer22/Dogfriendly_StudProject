@@ -7,7 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,21 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".tests.ui.UserTestActivity"/>
-        <activity android:name=".tests.ui.pet_detail.PetCharacterActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetPhotoActivity" />
-
         <activity android:name=".tests.ui.map.MapSettingsActivity" />
-        <activity android:name=".tests.ui.EditTextActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetCharacterEditActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetPhotoEditTestActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailEditActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailEditActivity" />
-        <activity android:name=".tests.ui.pet_detail.PetDetailActivity" />
-        <activity android:name=".tests.ui.user_detail.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".tests.ui.TestActivity"/>
+        <activity android:name=".tests.ui.TestActivity"
+                    android:theme="@style/AppTheme"/>
 
         <activity android:name=".ui.activity.WelcomeActivity"
             android:screenOrientation="portrait">
@@ -51,11 +41,14 @@
         <activity android:name=".ui.activity.MainNavigationActivity"/>
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
-        <activity android:name=".ui.activity.ChannelListActivity"/>
-        <activity android:name=".ui.activity.ChatActivity"/>
+        <activity android:name=".ui.activity.WalkActivity">
 
-        <activity android:name=".ui.activity.WalkActivity"/>
-        <activity android:name=".ui.activity.InvitationActivity"/>
+        </activity>
+        <activity android:name=".ui.activity.InvitationActivity">
+
+        </activity>
+        <activity android:name=".ui.activity.ChannelListActivity" />
+        <activity android:name=".ui.activity.ChatActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -64,5 +57,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6olvefAu4dgT02zRVG7UKVgTmfYdszBw" />
     </application>
+
 
 </manifest>

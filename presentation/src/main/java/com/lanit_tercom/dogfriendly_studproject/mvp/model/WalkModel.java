@@ -8,24 +8,13 @@ public class WalkModel {
     private String walkName;
     private boolean freeAccess;
     private String description;
-    private UserModel creator;
-    private List<UserModel> members;
+    private String creatorId;
+    private int radiusOfVisibility;
+    private int timeOfVisibility;
+    private Point location;
+    private List<String> members;
 
     public WalkModel(){
-    }
-
-    public WalkModel(String id,
-                     String walkName,
-                     boolean freeAccess,
-                     String description,
-                     UserModel creator,
-                     List<UserModel> members){
-        this.id = id;
-        this.walkName =walkName;
-        this.freeAccess = freeAccess;
-        this.description = description;
-        this.creator = creator;
-        this.members = members;
     }
 
     public String getId() {
@@ -60,19 +49,44 @@ public class WalkModel {
         this.description = description;
     }
 
-    public UserModel getCreator() {
-        return creator;
+    public String getCreator() {
+        return creatorId;
     }
 
-    public void setCreator(UserModel creator) {
-        this.creator = creator;
+    public void setCreator(String creator) {
+        this.creatorId = creator;
     }
 
-    public List<UserModel> getMembers() {
+    public int getRadiusOfVisibility() {
+        return radiusOfVisibility;
+    }
+
+    public void setRadiusOfVisibility(int radiusOfVisibility) {
+        this.radiusOfVisibility = radiusOfVisibility;
+    }
+
+    public int getTimeOfVisibility() {
+        return timeOfVisibility;
+    }
+
+    public void setTimeOfVisibility(int timeOfVisibility) {
+        this.timeOfVisibility = timeOfVisibility;
+    }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(List<UserModel> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
+
 }

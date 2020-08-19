@@ -15,7 +15,9 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.Point;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.WalkModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.WalkMemberListViewHolder;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -26,6 +28,8 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
     LayoutInflater inflater;
     List<UserModel> walkMembers;
     Context context;
+
+
 
     public WalkMemberListAdapter(Context context){
         this.context = context;
@@ -43,12 +47,9 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
     @Override
     public void onBindViewHolder(@NonNull WalkMemberListViewHolder holder, int position) {
         UserModel userModel = walkMembers.get(position);
-        holder.setMemberImage(R.drawable.ic_user_profile_image);
+        holder.setMemberImage(userModel.getAvatar());
         holder.setMemberName(userModel.getName());
-
-
-        //TODO сделать что-то с возрастом пользователя
-        holder.setMemberAge("20");
+        holder.setMemberAge(userModel.getAge().toString());
 
     }
 
@@ -78,17 +79,16 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
         walkMembers = new ArrayList<>();
         walkMembers.add(new UserModel("1", "Mark", 22, "mark@mail.ru", "123456",
                 "заглушка в WalkMemberListAdapter","заглушка в WalkMemberListAdapter",
-                Uri.parse("@drawable/fox"),
+                //Uri.parse("@drawable/ic_user_profile_image.jpg"),
+                Uri.parse(context.getResources().getResourcePackageName(R.drawable.ic_user_profile_image)),
                 new LinkedList<PetModel>(), new Point(1.0, 1.0)));
         walkMembers.add(new UserModel("2", "Ivan", 22, "ivan@mail.ru", "123456",
                 "заглушка в WalkMemberListAdapter","заглушка в WalkMemberListAdapter",
-                Uri.parse("@drawable/fox"),
+                Uri.parse("@drawable/ic_user_profile_image.jpg"),
                 new LinkedList<PetModel>(), new Point(1.0, 10.0)));
         walkMembers.add(new UserModel("3", "Ben", 22, "ben@mail.ru", "123456",
                 "заглушка в WalkMemberListAdapter","заглушка в WalkMemberListAdapter",
-                Uri.parse("@drawable/fox"),
+                Uri.parse("@drawable/ic_user_profile_image.jpg"),
                 new LinkedList<PetModel>(), new Point(1.0, 54.0)));
-
-
     }
 }

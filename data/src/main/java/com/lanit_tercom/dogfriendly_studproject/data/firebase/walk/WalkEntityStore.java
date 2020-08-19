@@ -25,7 +25,7 @@ public interface WalkEntityStore {
         void onWalkDeleted();
     }
 
-    void getWalk(String userId, GetWalkCallback getWalkCallback);
+    void getWalk(String userId, String walkId, GetWalkCallback getWalkCallback);
 
     void addWalk(WalkEntity walkEntity, AddWalkCallback addWalkCallback);
 

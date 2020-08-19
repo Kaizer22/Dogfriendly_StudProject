@@ -11,5 +11,5 @@ public interface GetWalkUseCase {
         void onError(ErrorBundle errorBundle);
     }
 
-    void execute(String userId, GetWalkUseCase.Callback callback);
+    void execute(String userId, String walkId, GetWalkUseCase.Callback callback);
 }

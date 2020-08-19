@@ -13,7 +13,7 @@ public class EditWalkUseCaseImpl extends UseCase implements EditWalkUseCase {
     private WalkDto walkDto;
     private EditWalkUseCase.Callback callback;
 
-    protected EditWalkUseCaseImpl(WalkRepository walkRepository,
+    public EditWalkUseCaseImpl(WalkRepository walkRepository,
                                   ThreadExecutor threadExecutor,
                                   PostExecutionThread postExecutionThread) {
         super(walkRepository, threadExecutor, postExecutionThread);

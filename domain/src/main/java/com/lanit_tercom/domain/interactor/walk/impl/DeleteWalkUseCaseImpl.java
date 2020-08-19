@@ -14,7 +14,7 @@ public class DeleteWalkUseCaseImpl extends UseCase implements DeleteWalkUseCase 
     private WalkDto walkDto;
     private DeleteChannelUseCase.Callback callback;
 
-    protected DeleteWalkUseCaseImpl(WalkRepository walkRepository,
+    public DeleteWalkUseCaseImpl(WalkRepository walkRepository,
                                     ThreadExecutor threadExecutor,
                                     PostExecutionThread postExecutionThread) {
         super(walkRepository, threadExecutor, postExecutionThread);

@@ -1,5 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,11 +15,16 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
+
 import androidx.annotation.NonNull;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class FirebaseUserEntityStore implements UserEntityStore {
 

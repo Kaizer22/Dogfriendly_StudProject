@@ -2,8 +2,9 @@
     <string name="app_name">Dogfriendly_StudProject</string>
     <string name="actual_app_name">DogFriendly</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_message">Сообщение…</string>
+
     <string name="sending_message_event">Отправка сообщения…</string>
+    <string name="new_message">Сообщение…</string>
     <string name="edit_message">Редактировать</string>
     <string name="delete_message">Удалить для всех</string>
     <string name="ok">Подтвердить</string>
@@ -95,8 +96,8 @@
     <string name="invitation_visible_time_day">24 часа</string>
     <string name="invitation_visible_time_hint">Приглашение автоматически исчезнет с карты, но его всегда можно будет активировать в настройках чата встречи.</string>
     <string name="invitation_create_button">Создать</string>
-
-
+    
+    
     <!-- Walk Activity  -->
     <string name="walk_title">Прогулка</string>
     <string name="members_quantity_TEST">Количество учатников</string>

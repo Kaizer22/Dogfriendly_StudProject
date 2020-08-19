@@ -10,7 +10,6 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.SignInFragment
  * Активность авторизации.
  * Запускает фрагмент с авторизацией.
  * @author prostak.sasha111@mail.ru
- * @author dshebut@rambler.ru
  */
 class SignInActivity : BaseActivity() {
 
@@ -56,6 +55,9 @@ class SignInActivity : BaseActivity() {
             navigator?.navigateToUserDetail(this, userId)
 
 
+
+    fun navigateToInvitationScreen(userId: String?) =
+            navigator?.navigateToInvitationScreen(this, userId)
 
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null)

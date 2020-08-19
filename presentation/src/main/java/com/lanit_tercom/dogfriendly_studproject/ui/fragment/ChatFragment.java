@@ -167,7 +167,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         boolean canBeEdited = message.getSenderID()
                 .equals(chatPresenter.getCurrentUserID())
                 && position == messageAdapter.getItemCount() -1; // Оставляем редактирование
-                                                                // только последнего сообщения?
+        // только последнего сообщения?
         messageMenu.getMenu().findItem(R.id.item_edit_message)
                 .setVisible(canBeEdited);
         messageMenu.setOnMenuItemClickListener(menuItem ->{

@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.viewholder;
 
+import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class WalkMemberListViewHolder extends BaseViewHolder {
         memberAge = itemView.findViewById(R.id.walk_member_age);
     }
 
-    public void setMemberImage(int imageID) {  this.memberImage.setImageResource(imageID); }
+    public void setMemberImage(Uri imageID) {  this.memberImage.setImageURI(imageID); }
 
     public void setMemberName(String memberName) {this.memberName.setText(memberName);}
 
