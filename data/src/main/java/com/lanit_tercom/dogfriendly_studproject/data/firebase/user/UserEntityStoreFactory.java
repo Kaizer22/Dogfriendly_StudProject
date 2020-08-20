@@ -20,6 +20,14 @@ public class UserEntityStoreFactory {
         this.userCache = userCache;
     }
 
+    public UserEntityStoreFactory(NetworkManager networkManager){
+        if (networkManager == null) {
+            throw new IllegalArgumentException("Constructor parameters cannot be null");
+        }
+        this.networkManager = networkManager;
+        this.userCache = null;
+    }
+
     public UserEntityStore create(){
         UserEntityStore userEntityStore;
 

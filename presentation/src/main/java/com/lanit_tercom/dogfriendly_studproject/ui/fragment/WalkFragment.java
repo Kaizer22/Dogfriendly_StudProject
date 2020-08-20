@@ -18,20 +18,31 @@ import android.widget.TextView;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.WalkEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.WalkCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.walk.FirebaseWalkEntityStore;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.walk.WalkEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.WalkEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.WalkRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.WalkModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.WalkPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.WalkDetailsView;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.WalkMemberListAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl;
+import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl;
 import com.lanit_tercom.domain.interactor.walk.AddWalkUseCase;
 import com.lanit_tercom.domain.interactor.walk.DeleteWalkUseCase;
 import com.lanit_tercom.domain.interactor.walk.EditWalkUseCase;
@@ -43,6 +54,8 @@ import com.lanit_tercom.library.data.manager.NetworkManager;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,9 +79,10 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
     private boolean walkAccess;
     private String walkAccessDescription;
     private String walkDescription;
-    private String creatorAvatar; //TODO change to Uri
+    private Uri creatorAvatar; //TODO change to Uri
     private String creatorName;
     private String creatorAge;
+    private List<String> membersId;
 
 
     public WalkFragment() {
@@ -79,16 +93,11 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_walk, container, false);
 
         walkPresenter.setView(this);
         initRecyclerView(view);
         initElements(view);
-
-        //TODO test method
-        testWalkFirebase();
-
         return view;
     }
 
@@ -115,21 +124,40 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
             }
         };
 
+        UserEntityDtoMapper userEntityDtoMapper = new UserEntityDtoMapper();
+        /*UserCache userCache = new UserCache() {
+            @Override
+            public void saveUser(String userId, UserEntity userEntity) {
+
+            }
+        };*/
+
         WalkEntityStoreFactory walkEntityStoreFactory = new WalkEntityStoreFactory(networkManager, walkCache);
         WalkRepositoryImpl walkRepository = WalkRepositoryImpl.getInstance(walkEntityStoreFactory, walkEntityDtoMapper);
+
+        UserEntityStoreFactory userEntityStoreFactory = new UserEntityStoreFactory(networkManager);
+        UserRepositoryImpl userRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory, userEntityDtoMapper);
 
         GetWalkUseCase getWalkUseCase = new GetWalkUseCaseImpl(walkRepository, threadExecutor, postExecutionThread);
         EditWalkUseCase editWalkUseCase = new EditWalkUseCaseImpl(walkRepository, threadExecutor, postExecutionThread);
         DeleteWalkUseCase deleteWalkUseCase = new DeleteWalkUseCaseImpl(walkRepository, threadExecutor, postExecutionThread);
+        GetUserDetailsUseCase getUserDetailsUseCase = new GetUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
-        this.walkPresenter = new WalkPresenter(authManager, getWalkUseCase, editWalkUseCase, deleteWalkUseCase);
+        GetUsersDetailsUseCase getUsersDetailsUseCase = new GetUsersDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
+
+        this.walkPresenter = new WalkPresenter(authManager,
+                getWalkUseCase,
+                editWalkUseCase,
+                deleteWalkUseCase,
+                getUserDetailsUseCase,
+                getUsersDetailsUseCase);
     }
 
     private void initRecyclerView(@NotNull View view){
         walkMemberListRecyclerView = view.findViewById(R.id.rv_walk_members);
         walkMemberListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         walkMemberListAdapter = new WalkMemberListAdapter(getContext());
-        walkMemberListAdapter.setWalkMembers();
+        //walkMemberListAdapter.setWalkMembers();
         walkMemberListRecyclerView.setAdapter(walkMemberListAdapter);
     }
 
@@ -146,14 +174,13 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
 
     @Override
     public void renderCurrentWalk(WalkModel walkModel) {
+        //this.walkPresenter.getCreatorDetails(walkModel.getCreator(), walkModel.getMembers());
+        //this.walkPresenter.getWalkMembersDetails(walkModel.getMembers());
+
         this.walkName = walkModel.getWalkName();
         this.membersQuantity = walkModel.getMembers().size() + " участник(ов)";
         this.walkAccess = walkModel.isFreeAccess();
         this.walkDescription = walkModel.getDescription();
-        //TODO доделать !!!
-        //this.creatorAvatar = walkModel.get;
-        this.creatorName = walkModel.getCreator();
-        this.creatorAge = "20";
 
         walkNameView.setText(walkName);
         membersQuantityView.setText(membersQuantity);
@@ -166,11 +193,26 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
             walkAccessDescriptionView.setText(R.string.access_request_description);
         }
         walkDescriptionView.setText(walkDescription);
+
+        //TODO change
+        //walkMemberListAdapter.setWalkMembers();
+    }
+
+    @Override
+    public void renderWalkCreator(UserModel userModel) {
+        this.creatorName = userModel.getName();
+        this.creatorAge = userModel.getAge().toString();
+        this.creatorAvatar = userModel.getAvatar();
         creatorAvatarView.setImageResource(R.drawable.ic_user_profile_image); //TODO change
         creatorNameView.setText(creatorName);
         creatorAgeView.setText(creatorAge);
-        walkMemberListAdapter.setWalkMembers();
     }
+
+    @Override
+    public void renderWalkMembers(List<UserModel> members) {
+        walkMemberListAdapter.setWalkMembers(members);
+    }
+
 
     private void loadWalkDetails(){
         this.walkPresenter.initialize();
