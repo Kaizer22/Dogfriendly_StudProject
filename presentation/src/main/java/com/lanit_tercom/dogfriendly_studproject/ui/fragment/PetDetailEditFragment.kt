@@ -8,9 +8,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.FirebaseDatabase
@@ -69,6 +71,8 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDet
         avatar = view.findViewById(R.id.pet_avatar)
         avatar.setOnClickListener { loadAvatar() }
 
+        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
+
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
         //Присвоили модельке питомца что надо и пошли дальше в характеры
@@ -120,6 +124,11 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDet
         editPetName.text?.clear()
         editPetAge.text?.clear()
         editPetBreed.text?.clear()
+    }
+
+    private fun hideKeyboard(){
+        val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     //Проверка на то является ли строка числом

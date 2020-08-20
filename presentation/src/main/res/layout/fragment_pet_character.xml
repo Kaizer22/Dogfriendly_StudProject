@@ -106,7 +106,7 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/active"/>
 
                 <TextView
                     android:id="@+id/character_name"
@@ -114,7 +114,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="активная"
+                    android:text="Активный"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -144,14 +144,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/naturalist" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="добрая"
+                    android:text="Натуралист"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -181,14 +181,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/sqirell_hater" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="гордая"
+                    android:text="Гроза белок"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -224,7 +224,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="трусливая"
+                    android:text="Ищет клады"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -254,14 +254,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/gourmet" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="агрессивная"
+                    android:text="Гурман"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -291,14 +291,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/cat_lover" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="гроза белок"
+                    android:text="Кошатник"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -327,14 +327,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/shy" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="сорванец"
+                    android:text="Стесняшка"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -364,14 +364,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/swimmer" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="веселая"
+                    android:text="Пловец"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -401,14 +401,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/sherlock" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="боевая"
+                    android:text="Шерлок"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -437,14 +437,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/fighter" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="спортивная"
+                    android:text="Драчун"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -474,14 +474,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/fidget" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="неусидчивая"
+                    android:text="Непоседа"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 
@@ -510,14 +510,14 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/angel" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="застенчивая"
+                    android:text="Ангел"
                     android:textColor="#000000"
                     android:textSize="15sp" />
 

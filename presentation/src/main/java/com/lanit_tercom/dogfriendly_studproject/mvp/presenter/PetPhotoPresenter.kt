@@ -60,14 +60,14 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val d
 
         }
 
-
         if(pet?.photos.isNullOrEmpty()){
-
-            if(uriStrings.isNotEmpty())
-                pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
-            else
+            if(uriStrings.isEmpty()){
                 addPetUseCase?.execute(userId, mapper.map1(pet), addPetCallback)
-
+                return
+            } else {
+                pushPhotoArrayUseCase.execute(userId+"/"+pet?.id+"/pet_photos", uriStrings, pushPhotoArrayCallback)
+                return
+            }
         } else {
             val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback{
 
@@ -87,8 +87,6 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase?, private val d
             deletePhotoUseCase.execute(userId+"/"+pet?.id+"/pet_photos",  deletePhotoCallback)
 
         }
-
-
 
     }
 

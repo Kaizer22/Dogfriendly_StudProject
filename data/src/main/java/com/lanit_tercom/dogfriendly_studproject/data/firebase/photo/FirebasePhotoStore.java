@@ -1,6 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.photo;
 
 import android.net.Uri;
+import android.util.Log;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -64,7 +66,6 @@ public class FirebasePhotoStore implements PhotoStore {
     @Override
     public void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback) {
 
-        storageReference.child(dirName).delete();
 
         ArrayList<String> downloadUris = new ArrayList<>();
         boolean[] booleanArray = new boolean[uriStrings.size()];
@@ -78,6 +79,7 @@ public class FirebasePhotoStore implements PhotoStore {
 
             uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
+                    Log.i("TEST_ACTIVITY", "ERROR1");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
 
@@ -91,9 +93,11 @@ public class FirebasePhotoStore implements PhotoStore {
 
 
                     if(syncFunction(booleanArray))
+                        Log.i("TEST_ACTIVITY", "SUCCESS");
                         pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris);
 
                 } else {
+                    Log.i("TEST_ACTIVITY", "ERROR2");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
             });

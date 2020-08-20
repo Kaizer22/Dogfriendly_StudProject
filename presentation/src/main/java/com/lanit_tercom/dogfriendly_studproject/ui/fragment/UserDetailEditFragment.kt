@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
@@ -77,6 +79,8 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
 
         avatar.setOnClickListener{ loadAvatar() }
 
+        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
+
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
         //Изменяем модельку юзера, пушим ее в базу данных и возвращаеся обратно в экран юзера
@@ -104,6 +108,11 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
         }
 
         return view
+    }
+
+    private fun hideKeyboard(){
+        val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     //Проверка на то является ли строка числом

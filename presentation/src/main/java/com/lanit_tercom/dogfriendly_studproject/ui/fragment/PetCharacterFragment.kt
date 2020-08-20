@@ -22,7 +22,6 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         selected.clear()
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
-
         //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             pet.character = selected
@@ -59,19 +58,19 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         val output: ArrayList<MaterialCardView> = ArrayList()
 
         output.add(attachOnClick(view.findViewById(R.id.active), "active"))
-        output.add(attachOnClick(view.findViewById(R.id.kind), "kind"))
-        output.add(attachOnClick(view.findViewById(R.id.proud), "proud"))
-        output.add(attachOnClick(view.findViewById(R.id.coward), "coward"))
+        output.add(attachOnClick(view.findViewById(R.id.kind), "naturalist"))
+        output.add(attachOnClick(view.findViewById(R.id.proud), "sqirell_hater"))
+        output.add(attachOnClick(view.findViewById(R.id.coward), "searcher"))
 
-        output.add(attachOnClick(view.findViewById(R.id.aggressive), "aggressive"))
-        output.add(attachOnClick(view.findViewById(R.id.squirell_hater), "squirell_hater"))
-        output.add(attachOnClick(view.findViewById(R.id.tomboy), "tomboy"))
-        output.add(attachOnClick(view.findViewById(R.id.funny), "funny"))
+        output.add(attachOnClick(view.findViewById(R.id.aggressive), "gourmet"))
+        output.add(attachOnClick(view.findViewById(R.id.squirell_hater), "cat_lover"))
+        output.add(attachOnClick(view.findViewById(R.id.tomboy), "shy"))
+        output.add(attachOnClick(view.findViewById(R.id.funny), "swimmer"))
 
-        output.add(attachOnClick(view.findViewById(R.id.fighnting), "fighting"))
-        output.add(attachOnClick(view.findViewById(R.id.sporty), "sporty"))
-        output.add(attachOnClick(view.findViewById(R.id.restless), "restless"))
-        output.add(attachOnClick(view.findViewById(R.id.shy), "shy"))
+        output.add(attachOnClick(view.findViewById(R.id.fighnting), "sherlock"))
+        output.add(attachOnClick(view.findViewById(R.id.sporty), "fighter"))
+        output.add(attachOnClick(view.findViewById(R.id.restless), "fidget"))
+        output.add(attachOnClick(view.findViewById(R.id.shy), "angel"))
 
         return output
     }
