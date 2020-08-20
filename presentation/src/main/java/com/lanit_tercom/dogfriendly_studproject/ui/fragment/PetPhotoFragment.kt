@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
@@ -25,10 +26,14 @@ import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
+import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoArrayUseCaseImpl
+import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.AddPetUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -36,7 +41,7 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class PetPhotoFragment(private val userId: String?, private val pet: PetModel): BaseFragment(), PetDetailEditView {
+class PetPhotoFragment(private val userId: String?, override var pet: PetModel): BaseFragment(), PetDetailEditView {
     private lateinit var elements: ArrayList<Pair<ImageView, ImageView>>
     private var petPhotoPresenter: PetPhotoPresenter? = null
     private var nextImageSpace: Int = 0
@@ -56,11 +61,22 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
         val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
                 userEntityDtoMapper)
 
+        val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
         val addPetUseCase: AddPetUseCase = AddPetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoArrayUseCase: PushPhotoArrayUseCase = PushPhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
-        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, deletePhotoUseCase, pushPhotoArrayUseCase)
+        val pushPhotoUseCase: PushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+        this.petPhotoPresenter = PetPhotoPresenter(getUserDetailsUseCase, addPetUseCase, deletePhotoUseCase, pushPhotoUseCase, pushPhotoArrayUseCase)
+    }
+
+    //Отображает скачанную презентером модель(фото)
+    fun initializeView(pet: PetModel?){
+        if(pet!=null)
+            if(pet.photos != null)
+                for((index, photo) in pet.photos!!.withIndex())
+                    photos[index] = photo.toString()
     }
 
     //Lifecycle-методы
@@ -71,7 +87,7 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        petPhotoPresenter?.initialize(userId)
+        petPhotoPresenter?.initialize(userId, pet.id)
     }
 
     override fun onPause() {
@@ -152,7 +168,7 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
 
     //Вставить фото в элемент
     private fun setPhoto(elements: ArrayList<Pair<ImageView, ImageView>>, position: Int, image: Uri){
-        elements[position].first.setImageURI(image)
+        Glide.with(this).load(image).into(elements[position].first)
         elements[position].second.visibility = View.VISIBLE
     }
 
@@ -184,11 +200,9 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
         }
     }
 
-    //Обратно в экран юзера
-    override fun navigateToNext() {
+    override fun navigateToNext(pet: PetModel) {
         (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
     }
-
 
     override fun showLoading() {
 
@@ -201,4 +215,6 @@ class PetPhotoFragment(private val userId: String?, private val pet: PetModel): 
     override fun showError(message: String) {
 
     }
+
+
 }

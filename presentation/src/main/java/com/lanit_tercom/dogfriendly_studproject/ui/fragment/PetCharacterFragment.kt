@@ -9,9 +9,10 @@ import android.widget.ImageView
 import com.google.android.material.card.MaterialCardView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 
-class PetCharacterFragment(private val userId: String?, private val pet: PetModel): BaseFragment() {
+class PetCharacterFragment(private val userId: String?, override var pet: PetModel): BaseFragment(), PetDetailEditView{
     private val selected: ArrayList<String> = ArrayList()
     private lateinit var elements: ArrayList<MaterialCardView>
 
@@ -73,6 +74,22 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         output.add(attachOnClick(view.findViewById(R.id.shy), "angel"))
 
         return output
+    }
+
+    override fun navigateToNext(pet: PetModel) {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
     }
 
 }

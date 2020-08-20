@@ -217,7 +217,7 @@
                     android:layout_height="64dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_round_circle" />
+                    android:src="@drawable/searcher" />
 
                 <TextView
                     android:layout_width="match_parent"
