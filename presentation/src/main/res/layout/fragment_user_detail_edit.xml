@@ -36,6 +36,7 @@
                 app:layout_constraintVertical_bias="0.5" />
 
             <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:id="@+id/ready_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,6 +44,7 @@
                 android:background="#FFFFFF"
                 android:lineSpacingExtra="1sp"
                 android:text="Готово"
+                android:padding="0dp"
                 app:backgroundTint="@null"
                 android:textAllCaps="false"
                 android:textColor="#94A604"
@@ -142,45 +144,56 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout1" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/textInputLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:background="#f5f5f5"
                 app:boxBackgroundColor="#f5f5f5"
                 app:endIconMode="clear_text"
-
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_name"
+                    android:padding="0dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/textInputLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 android:background="#f5f5f5"
                 app:boxBackgroundColor="#f5f5f5"
                 app:endIconMode="clear_text"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusTopStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/age_label">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_age"
+                    android:padding="0dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

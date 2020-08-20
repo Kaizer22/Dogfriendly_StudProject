@@ -9,5 +9,4 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 interface UserDetailView : LoadDataView{
 
     fun renderCurrentUser(user: UserModel?)
-
 }

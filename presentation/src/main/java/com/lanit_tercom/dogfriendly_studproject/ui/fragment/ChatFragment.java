@@ -230,7 +230,6 @@ public class ChatFragment extends BaseFragment implements ChatView {
     }
 
     private void backToDialogsFragment(){
-        //TODO возвращение к экрану диалогов с помощью Navigator
         ChatActivity baseActivity = (ChatActivity) getActivity();
         baseActivity.navigateToChannelsList();
     }

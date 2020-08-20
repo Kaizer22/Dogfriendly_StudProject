@@ -1,22 +1,22 @@
-package com.lanit_tercom.domain.interactor.user;
+package com.lanit_tercom.domain.interactor.photo;
 
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.Interactor;
-import com.lanit_tercom.domain.repository.UserRepository;
+import com.lanit_tercom.domain.repository.PhotoRepository;
 
 public abstract class UseCase implements Interactor {
-    protected final UserRepository userRepository;
+    protected final PhotoRepository photoRepository;
     protected final PostExecutionThread postExecutionThread;
     private final ThreadExecutor threadExecutor;
 
-    protected UseCase(UserRepository userRepository,
+    protected UseCase(PhotoRepository photoRepository,
                       ThreadExecutor threadExecutor,
                       PostExecutionThread postExecutionThread) {
-        if (userRepository == null || threadExecutor == null || postExecutionThread == null) {
+        if (photoRepository == null || threadExecutor == null || postExecutionThread == null) {
             throw new IllegalArgumentException("Constructor parameters cannot be null");
         }
-        this.userRepository = userRepository;
+        this.photoRepository = photoRepository;
         this.threadExecutor = threadExecutor;
         this.postExecutionThread = postExecutionThread;
     }

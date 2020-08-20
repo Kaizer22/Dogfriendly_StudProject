@@ -19,6 +19,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryIm
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
@@ -27,7 +29,7 @@ import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 
-class EditTextFragment(private val fieldType: String?, private val user: UserModel?): BaseFragment() {
+class EditTextFragment(private val fieldType: String?, private val user: UserModel?): BaseFragment(), UserDetailEditView {
     private lateinit var btnReady: Button
     private lateinit var btnBack: ImageButton
     private lateinit var titleText: TextView
@@ -46,11 +48,11 @@ class EditTextFragment(private val fieldType: String?, private val user: UserMod
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
 
-        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase)
+        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase, null, null)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.activity_edit_text, container, false)
+        val view = inflater.inflate(R.layout.fragment_edit_text, container, false)
         btnReady = view.findViewById(R.id.ready_button)
         btnBack = view.findViewById(R.id.back_button)
         editText = view.findViewById(R.id.editText)
@@ -76,7 +78,7 @@ class EditTextFragment(private val fieldType: String?, private val user: UserMod
                 "plans" -> user?.plans = editText.text.toString()
                 "about" -> user?.about = editText.text.toString()
             }
-            userDetailEditPresenter?.editUserDetails(user)
+            userDetailEditPresenter?.editTextFields(user)
 
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -85,6 +87,22 @@ class EditTextFragment(private val fieldType: String?, private val user: UserMod
 
         return view
 
+    }
+
+    override fun navigateBack() {
+        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(user?.id))
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
     }
 
 

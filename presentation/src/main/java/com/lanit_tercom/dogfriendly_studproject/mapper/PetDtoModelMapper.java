@@ -12,7 +12,7 @@ public class PetDtoModelMapper {
 
     public PetDto map1(PetModel petModel){
 
-        List<String> photo = new ArrayList<>();
+        ArrayList<String> photo = new ArrayList<>();
         if(petModel.getPhotos() != null){
             for(Uri uri: petModel.getPhotos())
                 photo.add(uri.toString());
@@ -34,7 +34,7 @@ public class PetDtoModelMapper {
     }
 
     public PetModel map2(PetDto petDto){
-        List<Uri> photo = new ArrayList<>();
+        ArrayList<Uri> photo = new ArrayList<>();
         if(petDto.getPhotos() != null){
 
             for(String string: petDto.getPhotos())

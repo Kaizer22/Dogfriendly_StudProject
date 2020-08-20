@@ -14,20 +14,49 @@ import android.widget.Toast
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailEditPresenter
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
+import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
+import com.lanit_tercom.domain.repository.PhotoRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class PetDetailEditFragment(private val userId: String?): BaseFragment() {
+class PetDetailEditFragment(private val userId: String?): BaseFragment(), PetDetailEditView {
     private lateinit var editPetName: TextInputEditText
     private lateinit var editPetBreed: TextInputEditText
     private lateinit var editPetAge: TextInputEditText
     private lateinit var avatar: ImageView
     private lateinit var menButton: MaterialButton
     private lateinit var womanButton: MaterialButton
+    private var petDetailEditPresenter: PetDetailEditPresenter? = null
     private var avatarUri: Uri? = null
     private var gender: String? = null
+    private val pet = PetModel()
+
+    override fun initializePresenter() {
+        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+        val networkManager: NetworkManager = NetworkManagerImpl(context)
+
+        val photoStoreFactory = PhotoStoreFactory(networkManager)
+        val photoRepository: PhotoRepository = PhotoRepositoryImpl.getInstance(photoStoreFactory)
+
+        val pushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+        val deletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+
+        petDetailEditPresenter = PetDetailEditPresenter(userId, pushPhotoUseCase, deletePhotoUseCase)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
         val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container, false)
@@ -43,7 +72,6 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
 
         //Присвоили модельке питомца что надо и пошли дальше в характеры
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
-            val pet = PetModel()
 
             //Валидатор введенных (или не введенных) значений.
             fun validate(): Boolean{
@@ -67,8 +95,7 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
                 pet.age = editPetAge.text.toString().toInt()
                 pet.breed = editPetBreed.text.toString()
                 pet.gender = gender
-                pet.avatar = avatarUri
-                (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+                petDetailEditPresenter?.setAvatar(pet, avatarUri)
             }
         }
 
@@ -81,6 +108,12 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        petDetailEditPresenter?.setView(this)
+    }
+
+
     override fun onResume() {
         super.onResume()
         editPetName.text?.clear()
@@ -91,8 +124,6 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
     //Проверка на то является ли строка числом
     private fun String.intOrString() = toIntOrNull() ?: this
 
-    //Рудимент от которого не избавится, если наследоваться от BaseFragment()
-    override fun initializePresenter() {}
 
     //Обработка нажатий кнопо выбора пола
     private fun setGender(gender: String){
@@ -135,6 +166,22 @@ class PetDetailEditFragment(private val userId: String?): BaseFragment() {
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
         }
 
+    }
+
+    override fun navigateToNext() {
+        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, PetCharacterFragment(userId, pet))
+    }
+
+    override fun showLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoading() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
     }
 
 

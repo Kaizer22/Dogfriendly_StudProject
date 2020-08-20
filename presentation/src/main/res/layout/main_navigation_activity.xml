@@ -19,13 +19,57 @@
         app:itemIconTint="@color/threeGray"
         android:backgroundTint="@color/white"/>
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/map_app_bar"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/primaryLight"
+                android:src="@drawable/ic_add"
+                app:fabCustomSize="30dp" />
+
+            <Switch
+                android:id="@+id/switch_visibility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/primaryLight"
+                app:layout_anchorGravity="center" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="10dp"
+                android:background="@null"
+                android:src="@drawable/ic_map_settings"
+                app:layout_anchorGravity="end|center_vertical" />
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        android:layout_marginBottom="@dimen/navigation_bar_height"
+        android:layout_marginBottom="0dp"
         app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

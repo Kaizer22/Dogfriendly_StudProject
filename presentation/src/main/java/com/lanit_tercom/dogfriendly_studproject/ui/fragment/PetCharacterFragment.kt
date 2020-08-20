@@ -26,7 +26,8 @@ class PetCharacterFragment(private val userId: String?, private val pet: PetMode
         //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             pet.character = selected
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
+            //(activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
+            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, PetPhotoFragment(userId, pet))
         }
 
         return view

@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.PetEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
@@ -31,11 +33,14 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     private UserCache userCache;
 
+    private AuthManager authManager;
+
     protected DatabaseReference referenceDatabase;
 
     public FirebaseUserEntityStore(UserCache userCache){
         referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
+        authManager = new AuthManagerFirebaseImpl();
     }
 
     public void getUserById(final String id, final UserByIdCallback userByIdCallback) {
@@ -102,8 +107,8 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        String firebaseId = referenceDatabase.push().getKey();
-        user.setId(firebaseId);
+        //String firebaseId = referenceDatabase.push().getKey();
+        //user.setId(firebaseId);
         Map<String, Object> map = new HashMap<>();
         map.put(user.getId(), user);
         referenceDatabase.updateChildren(map)

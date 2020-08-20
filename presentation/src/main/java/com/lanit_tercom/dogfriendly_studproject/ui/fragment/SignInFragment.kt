@@ -42,8 +42,10 @@ class SignInFragment : BaseFragment(), SignInView, View.OnClickListener {
     fun auth(){
         email = enter_email.text.toString()
         password = enter_password.text.toString()
-        userSignInPresenter?.auth(email, password)
-        showLoading()
+        if (email != "" && password != ""){
+            userSignInPresenter?.auth(email, password)
+            showLoading()
+        }
     }
 
     override fun onClick(v: View?) {

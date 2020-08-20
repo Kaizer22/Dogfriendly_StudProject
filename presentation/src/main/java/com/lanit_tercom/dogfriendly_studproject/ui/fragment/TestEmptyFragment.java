@@ -24,8 +24,7 @@ public class TestEmptyFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.test_empty_fragment, container, false);
         TextView testText = root.findViewById(R.id.test_text_view);
-        Random r = new Random();
-        testText.setText(Integer.toString(r.nextInt(100)));
+        testText.setText("");
         return root;
     }
 }
