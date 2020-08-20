@@ -11,6 +11,7 @@ import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.dto.WalkDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.GetUsersByIdUseCase;
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase;
 import com.lanit_tercom.domain.interactor.walk.DeleteWalkUseCase;
 import com.lanit_tercom.domain.interactor.walk.EditWalkUseCase;
@@ -38,6 +39,7 @@ public class WalkPresenter extends BasePresenter {
 
     //TODO just for test
     private GetUsersDetailsUseCase getUsersDetailsUseCase;
+    private GetUsersByIdUseCase getMembersUseCase;
 
 
     public WalkPresenter(AuthManager authManager,
@@ -45,13 +47,15 @@ public class WalkPresenter extends BasePresenter {
                          EditWalkUseCase editWalkUseCase,
                          DeleteWalkUseCase deleteWalkUseCase,
                          GetUserDetailsUseCase getUserDetailsUseCase,
-                         GetUsersDetailsUseCase getUsersDetailsUseCase){
+                         //GetUsersDetailsUseCase getUsersDetailsUseCase,
+                         GetUsersByIdUseCase getMembersUseCase){
         this.authManager = authManager;
         this.getWalkUseCase = getWalkUseCase;
         this.editWalkUseCase = editWalkUseCase;
         this.deleteWalkUseCase = deleteWalkUseCase;
         this.getUserDetailsUseCase = getUserDetailsUseCase;
-        this.getUsersDetailsUseCase = getUsersDetailsUseCase;
+        //this.getUsersDetailsUseCase = getUsersDetailsUseCase;
+        this.getMembersUseCase = getMembersUseCase;
 
         walkDtoModelMapper = new WalkDtoModelMapper();
         userDtoModelMapper = new UserDtoModelMapper();
@@ -61,18 +65,11 @@ public class WalkPresenter extends BasePresenter {
         this.walkDetailsView = view;
     }
 
-    public void initialize(){
-       List<String> membersTest = new LinkedList<>();
-        membersTest.add("ZtVM6D0rX6Vygni8NgyGz6kf9dB3");
-        membersTest.add("JurrTX2vrYWWX4Svo9CO42xFrnk2");
-        membersTest.add("liaGICAfbGWBfFTm9YTfNfHLrLv1");
-        membersTest.add("ZtVM6D0rX6Vygni8NgyGz6kf9dC8");
+    public void initialize(String walkId){
         hideViewRetry();
         showViewLoading();
         //TODO change id
-        getWalkDetails(authManager.getCurrentUserId(), "-MEnwIuW7ATZ1CsiganB"); //"ZtVM6D0rX6Vygni8NgyGz6kf9dB3"
-        getCreatorDetails(authManager.getCurrentUserId());
-        getWalkMembersDetails(membersTest);
+        getWalkDetails(authManager.getCurrentUserId(), walkId); //"ZtVM6D0rX6Vygni8NgyGz6kf9dB3" -MEx6IqCa4EEynKcz3gB -MEnwIuW7ATZ1CsiganB
     }
 
     public void getWalkDetails(String userId, String walkId){ //TODO изменить на walkID
@@ -93,7 +90,6 @@ public class WalkPresenter extends BasePresenter {
         this.getUserDetailsUseCase.execute(userId, new GetUserDetailsUseCase.Callback() {
             @Override
             public void onUserDataLoaded(UserDto userDto) {
-
                 showUserDetailsInView(userDto);
             }
 
@@ -107,34 +103,17 @@ public class WalkPresenter extends BasePresenter {
 
 
     public void getWalkMembersDetails(@NotNull List<String> membersId){
-        this.getUsersDetailsUseCase.execute(new GetUsersDetailsUseCase.Callback() {
+        this.getMembersUseCase.execute(membersId, new GetUsersByIdUseCase.Callback() {
             @Override
-                public void onUsersDataLoaded(List<UserDto> users) {
-                showMembersInView(users, membersId);
-            }
-
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                  errorBundle.getException().printStackTrace();
-            }
-        });
-
-
-
-
-            /*@Override
-            public void onUserDataLoaded(UserDto userDto) {
-                if (id.equals(membersId.get(0))){
-                    showUserDetailsInView(userDto);
-                }
-                addWalkMember(userDto, membersId);
+            public void onUsersDataLoaded(List<UserDto> users) {
+                showWalkMembersInView(users);
             }
 
             @Override
             public void onError(ErrorBundle errorBundle) {
                 errorBundle.getException().printStackTrace();
-            }*/
-
+            }
+        });
     }
 
 
@@ -149,24 +128,10 @@ public class WalkPresenter extends BasePresenter {
         this.walkDetailsView.renderWalkCreator(userModel);
     }
 
-    private void showMembersInView(List<UserDto> members, List<String> membersId){ //List<UserDto> members
-        List<UserDto> walkMembers = new LinkedList<>();
-        for (UserDto userDto: members){
-            if (membersId.contains(userDto.getId())){
-                walkMembers.add(userDto);
-            }
-        }
-        final List<UserModel> membersModel = this.userDtoModelMapper.fromDtoToModelList(walkMembers);
+    private void showWalkMembersInView(List<UserDto> users){
+        final List<UserModel> membersModel = this.userDtoModelMapper.fromDtoToModelList(users);
         this.walkDetailsView.renderWalkMembers(membersModel);
     }
-
-   /* private void addWalkMember(UserDto userDto, List<String> membersId){
-        members.add(userDto);
-        if (members.size() == membersId.size()){
-            showMembersInView(members);
-        }
-    }*/
-
 
 
     public void hideViewRetry(){

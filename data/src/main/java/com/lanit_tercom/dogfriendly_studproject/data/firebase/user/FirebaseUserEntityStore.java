@@ -54,27 +54,6 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
-    @Override
-    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        String firebaseId = referenceDatabase.push().getKey();
-        user.setId(firebaseId);
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
-                .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
-
-    @Override
-    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
-                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
     public void getAllUsers(final UserListCallback userListCallback) {
         final List<UserEntity> users = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
@@ -96,7 +75,51 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
+    @Override
+    public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
+        final List<UserEntity> users = new ArrayList<>();
+        referenceDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                users.clear();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    UserEntity userEntity = keyNode.getValue(UserEntity.class);
+                    userEntity.setId(keyNode.getKey());
+                    if (usersId.contains(userEntity.getId())) {
+                        users.add(userEntity);
+                    }
+                }
+                userListByIdCallback.onUserListByIdLoaded(users);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userListByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+            }
+        });
+    }
+
+
+    @Override
+    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
+        String firebaseId = referenceDatabase.push().getKey();
+        user.setId(firebaseId);
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
+                .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
+
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
+                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
+    }
 
 
     @Override

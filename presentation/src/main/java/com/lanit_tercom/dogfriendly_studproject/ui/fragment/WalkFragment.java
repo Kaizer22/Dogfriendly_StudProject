@@ -40,8 +40,10 @@ import com.lanit_tercom.dogfriendly_studproject.ui.adapter.WalkMemberListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.GetUsersByIdUseCase;
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase;
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl;
+import com.lanit_tercom.domain.interactor.user.impl.GetUsersByIdUseCaseImpl;
 import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl;
 import com.lanit_tercom.domain.interactor.walk.AddWalkUseCase;
 import com.lanit_tercom.domain.interactor.walk.DeleteWalkUseCase;
@@ -142,22 +144,20 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
         EditWalkUseCase editWalkUseCase = new EditWalkUseCaseImpl(walkRepository, threadExecutor, postExecutionThread);
         DeleteWalkUseCase deleteWalkUseCase = new DeleteWalkUseCaseImpl(walkRepository, threadExecutor, postExecutionThread);
         GetUserDetailsUseCase getUserDetailsUseCase = new GetUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
-
-        GetUsersDetailsUseCase getUsersDetailsUseCase = new GetUsersDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
+        GetUsersByIdUseCase getMembersUseCase = new GetUsersByIdUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
 
         this.walkPresenter = new WalkPresenter(authManager,
                 getWalkUseCase,
                 editWalkUseCase,
                 deleteWalkUseCase,
                 getUserDetailsUseCase,
-                getUsersDetailsUseCase);
+                getMembersUseCase);
     }
 
     private void initRecyclerView(@NotNull View view){
         walkMemberListRecyclerView = view.findViewById(R.id.rv_walk_members);
         walkMemberListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         walkMemberListAdapter = new WalkMemberListAdapter(getContext());
-        //walkMemberListAdapter.setWalkMembers();
         walkMemberListRecyclerView.setAdapter(walkMemberListAdapter);
     }
 
@@ -174,8 +174,8 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
 
     @Override
     public void renderCurrentWalk(WalkModel walkModel) {
-        //this.walkPresenter.getCreatorDetails(walkModel.getCreator(), walkModel.getMembers());
-        //this.walkPresenter.getWalkMembersDetails(walkModel.getMembers());
+        this.walkPresenter.getCreatorDetails(walkModel.getCreator());
+        this.walkPresenter.getWalkMembersDetails(walkModel.getMembers());
 
         this.walkName = walkModel.getWalkName();
         this.membersQuantity = walkModel.getMembers().size() + " участник(ов)";
@@ -215,7 +215,7 @@ public class WalkFragment extends BaseFragment implements WalkDetailsView {
 
 
     private void loadWalkDetails(){
-        this.walkPresenter.initialize();
+        this.walkPresenter.initialize("-MEnwIuW7ATZ1CsiganB");
     }
 
     @Override

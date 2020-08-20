@@ -101,7 +101,7 @@
     <!-- Walk Activity  -->
     <string name="walk_title">Прогулка</string>
     <string name="members_quantity_TEST">Количество учатников</string>
-    <string name="access_request_description">Доступ в чат этой встречи осуществляется <i>По запросу</i>. Ответьте на приглашение, чтобы создатель чата смог добавить вас в чат.</string>
+    <string name="access_request_description">Доступ в чат этой встречи осуществляется <b>По запросу</b>. Ответьте на приглашение, чтобы создатель чата смог добавить вас в чат.</string>
     <string name="access_free_description">Доступ в чат этой встречи <b>Свободный</b>. Ответьте на приглашение, чтобы создатель чата смог добавить вас в чат.</string>
     <string name="description_title">Описание</string>
     <string name="description_text_TEST">Встречаемся, чтобы прогуляться в лесу со своимим собачками, можно поискать ещё грибы и ягоды.</string>

@@ -56,6 +56,11 @@ public class RealmUserCache implements UserCache {
         }
     }
 
+    @Override
+    public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
+
+    }
+
 
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
 

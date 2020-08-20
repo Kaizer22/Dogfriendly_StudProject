@@ -20,6 +20,10 @@ public interface UserEntityStore {
         void onUsersListLoaded(List<UserEntity> users);
     }
 
+    interface UserListByIdCallback extends Error{
+        void onUserListByIdLoaded(List<UserEntity> users);
+    }
+
     interface UserCreateCallback extends Error{
         void onUserCreated();
     }
@@ -42,6 +46,7 @@ public interface UserEntityStore {
 
     void getAllUsers(UserListCallback userListCallback);
     void getUserById(String id, UserByIdCallback userByIdCallback);
+    void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback);
     void createUser(UserEntity user, UserCreateCallback userCreateCallback);
     void editUser(UserEntity user, UserEditCallback userEditCallback);
     void deleteUser(String id, UserDeleteCallback userDeleteCallback);
