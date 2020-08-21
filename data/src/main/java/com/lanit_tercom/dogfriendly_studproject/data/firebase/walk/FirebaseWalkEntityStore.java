@@ -32,41 +32,6 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
 
     public FirebaseWalkEntityStore(){
         this.databaseReference = FirebaseDatabase.getInstance().getReference().child(CHILD_WALKS);
-
-
-        /*List<HashMap<String, String >> members = new ArrayList<>();
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("userId", "ZtVM6D0rX6Vygni8NgyGz6kf9dB3");
-        members.add(hashMap);
-        WalkEntity testWalkEntity = new WalkEntity("Прогулка в центре",
-                true,
-                "Собираемся на Дворцовой набережной",
-                "ZtVM6D0rX6Vygni8NgyGz6kf9dB3",
-                members);
-
-        addWalk(testWalkEntity, new AddWalkCallback() {
-            @Override
-            public void onWalkAdded() {
-                System.out.println("Walk was added");
-            }
-
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                System.out.println("ADD Error!!!");
-            }
-        });*/
-
-        getWalk("ZtVM6D0rX6Vygni8NgyGz6kf9dB3", "-MEx6IqCa4EEynKcz3gB",  new GetWalkCallback() { //-MEx6IqCa4EEynKcz3gB -MEnwIuW7ATZ1CsiganB
-            @Override
-            public void onWalkLoaded(WalkEntity walkEntity) {
-                System.out.println("Walk was loaded");
-            }
-
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                System.out.println("ERROR!!!");
-            }
-        });
     }
 
 
@@ -76,12 +41,6 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                /*Iterable<DataSnapshot> snapshots = snapshot.child(userId).getChildren();
-                for (DataSnapshot keyNode: snapshots){
-                    WalkEntity walkEntity = keyNode.getValue(WalkEntity.class);
-                    walkEntity.setWalkId(keyNode.getKey());
-                    walks.add(walkEntity);
-                }*/
                 walkEntity = snapshot.child(userId).child(walkId).getValue(WalkEntity.class);
                 walkEntity.setWalkId(walkId);
                 getWalkCallback.onWalkLoaded(walkEntity);

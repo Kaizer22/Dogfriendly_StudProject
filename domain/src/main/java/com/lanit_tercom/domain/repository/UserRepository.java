@@ -20,6 +20,10 @@ public interface UserRepository {
         void onUsersLoaded(List<UserDto> users);
     }
 
+    interface UsersListDetailsCallback extends Error{
+        void onUsersListLoaded(List<UserDto> users);
+    }
+
     interface UserCreateCallback extends Error {
         void onUserCreated();
     }
@@ -41,9 +45,12 @@ public interface UserRepository {
     }
 
 
+
     void getUserById(String userId, UserDetailsCallback userCallback);
 
     void getUsers(UsersDetailsCallback userCallback);
+
+    void getUserListById(List<String> usersId, UsersListDetailsCallback usersListDetailsCallback);
 
     void createUser(UserDto userDto, UserCreateCallback userCallback);
 

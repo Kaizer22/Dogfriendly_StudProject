@@ -88,6 +88,29 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void getUserListById(List<String> usersId, UsersListDetailsCallback usersListDetailsCallback) {
+        UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
+
+        userEntityStore.getUserListById(usersId, new UserEntityStore.UserListByIdCallback() {
+            @Override
+            public void onUserListByIdLoaded(List<UserEntity> users) {
+                List<UserDto> usersDtoList = UserRepositoryImpl.this.userEntityDtoMapper.mapForList2(users);
+                if (usersDtoList != null){
+                    usersListDetailsCallback.onUsersListLoaded(usersDtoList);
+                } else {
+                    usersListDetailsCallback.onError(new RepositoryErrorBundle(new UserListException()));
+                }
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                usersListDetailsCallback.onError(errorBundle);
+            }
+        });
+    }
+
+
+    @Override
     public void createUser(UserDto userDto, UserCreateCallback userCallback) {
         UserEntityStore userEntityStore = this.userEntityStoreFactory.create();
         UserEntity userEntity = userEntityDtoMapper.map1(userDto);

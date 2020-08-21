@@ -31,8 +31,7 @@ public class RealmUserCache implements UserCache {
         });
     }
 
-    @Override
-    public void getAllUsers(UserListCallback userListCallback) {
+    public void getAllUsers(UserListCallback userListCallback) { //
         Realm realm = Realm.getDefaultInstance();
         List<RealmUserEntity> userEntityList = realm.where(RealmUserEntity.class).findAll();
 
@@ -44,7 +43,7 @@ public class RealmUserCache implements UserCache {
         }
     }
 
-    @Override
+
     public void getUserById(String id, UserByIdCallback userByIdCallback) {
         Realm realm = Realm.getDefaultInstance();
         RealmUserEntity userEntity = realm.where(RealmUserEntity.class).equalTo("id", id).findFirst();
@@ -58,26 +57,31 @@ public class RealmUserCache implements UserCache {
     }
 
     @Override
+    public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
+
+    }
+
+
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
 
     }
 
-    @Override
+
     public void editUser(UserEntity user, UserEditCallback userEditCallback) {
 
     }
 
-    @Override
+
     public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
 
     }
 
-    @Override
+
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
 
     }
 
-    @Override
+
     public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
 
     }

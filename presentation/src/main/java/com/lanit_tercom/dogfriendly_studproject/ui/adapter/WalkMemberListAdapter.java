@@ -32,6 +32,7 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
 
 
     public WalkMemberListAdapter(Context context){
+        this.walkMembers = new LinkedList<>();
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
@@ -65,9 +66,9 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
         notifyDataSetChanged();
     }
 
-    public UserModel getWalkMemberById(int position){
+   /* public UserModel getWalkMemberById(int position){
         return walkMembers.get(position);
-    }
+    }*/
 
     private void validateMemberList(List<UserModel> members){
         if (members == null){
@@ -75,7 +76,9 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
         }
     }
 
-    public void setWalkMembers(){
+
+    //TODO delete method
+    /*public void setWalkMembers(){
         walkMembers = new ArrayList<>();
         walkMembers.add(new UserModel("1", "Mark", 22, "mark@mail.ru", "123456",
                 "заглушка в WalkMemberListAdapter","заглушка в WalkMemberListAdapter",
@@ -90,5 +93,5 @@ public class WalkMemberListAdapter extends RecyclerView.Adapter<WalkMemberListVi
                 "заглушка в WalkMemberListAdapter","заглушка в WalkMemberListAdapter",
                 Uri.parse("@drawable/ic_user_profile_image.jpg"),
                 new LinkedList<PetModel>(), new Point(1.0, 54.0)));
-    }
+    }*/
 }

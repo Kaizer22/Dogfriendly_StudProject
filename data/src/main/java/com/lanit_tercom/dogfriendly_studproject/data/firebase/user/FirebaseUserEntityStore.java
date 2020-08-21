@@ -81,6 +81,30 @@ public class FirebaseUserEntityStore implements UserEntityStore {
     }
 
     @Override
+    public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
+        final List<UserEntity> users = new ArrayList<>();
+        referenceDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                users.clear();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    UserEntity userEntity = keyNode.getValue(UserEntity.class);
+                    userEntity.setId(keyNode.getKey());
+                    if (usersId.contains(userEntity.getId())) {
+                        users.add(userEntity);
+                    }
+                }
+                userListByIdCallback.onUserListByIdLoaded(users);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userListByIdCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+            }
+        });
+    }
+
+    @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
         //String firebaseId = referenceDatabase.push().getKey();
         //user.setId(firebaseId);
