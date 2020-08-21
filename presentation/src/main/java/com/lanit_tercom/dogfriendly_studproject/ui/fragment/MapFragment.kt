@@ -60,7 +60,7 @@ import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, CompoundButton.OnCheckedChangeListener {
+class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private var userMapPresenter: MapPresenter? = null
     private var map: GoogleMap? = null
@@ -68,7 +68,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     private var cameraPosition: CameraPosition? = null
     private var requestingLocationUpdates = true
     private var circle: Circle? = null
-    private var rectangle: Polygon? = null
+
     // The entry point to the Places API.
     private lateinit var placesClient: PlacesClient
 
@@ -396,83 +396,70 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         return Bitmap.createScaledBitmap(imageBitmap, imageBitmap.width / 2, imageBitmap.height / 2, false)
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id){
+            R.id.button_radar -> {
+                val bottomSheetDialog = BottomSheetDialog(activity as Context, R.style.BottomSheetDialogTheme)
+                val bottomSheetView = LayoutInflater
+                        .from(activity?.applicationContext)
+                        .inflate(R.layout.test_layout_bottom_sheet, bottomSheetContainer)
+                bottomSheetView.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = "${(seekBar?.progress?.times(50)).toString()} метров"
+                        circle?.remove()
+                        circle = map?.addCircle(CircleOptions()
+                                .center(LatLng(currentLocation!!.latitude, currentLocation!!.longitude))
+                                .radius((seekBar!!.progress * 50).toDouble())
+                                .fillColor(Color.parseColor("#80808080"))
+                                .strokeColor(Color.TRANSPARENT)
+                        )
+
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                        map?.clear()
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        // нахождение пользователей в радиусе
+                        userMapPresenter?.initialize("testId", seekBar?.progress?.times(0.05)!!)
+                        bottomSheetDialog.dismiss()
+                    }
+                })
+                bottomSheetDialog.setContentView(bottomSheetView)
+                bottomSheetDialog.show()
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
-        // ВРЕМЕННЫЙ КОД!!!
-        button_radar.setOnClickListener {
-            val bottomSheetDialog = BottomSheetDialog(activity as Context, R.style.BottomSheetDialogTheme)
-            val bottomSheetView = LayoutInflater
-                    .from(activity?.applicationContext)
-                    .inflate(R.layout.test_layout_bottom_sheet, bottomSheetContainer)
-            bottomSheetView.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = "${(seekBar?.progress?.times(50)).toString()} метров"
-                    circle?.remove()
-                    rectangle?.remove()
-                    circle = map?.addCircle(CircleOptions()
-                            .center(LatLng(currentLocation!!.latitude, currentLocation!!.longitude))
-                            .radius((seekBar!!.progress * 50).toDouble())
-                            .fillColor(Color.parseColor("#80808080"))
-                            .strokeColor(Color.TRANSPARENT)
-                    )
+        button_radar.setOnClickListener(this)
 
-                }
+        // Код ниже устанавливает размер выдвижной панели
+        val point = Point()
+        activity?.windowManager?.defaultDisplay?.getSize(point)
+        val params = bottom_sheet.layoutParams
+        val halfScreenHeight = point.y / 2
+        params.height = halfScreenHeight
+        bottom_sheet.layoutParams = params
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    map?.clear()
-                }
+        //Заполнение RecyclerView с собаками поблизости (пока собак брать неоткуда - заглушка из хардкода)
+        val dogRecycler = near_list_recycler_view
+        dogRecycler.layoutManager = LinearLayoutManager(activity)
 
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    userMapPresenter?.initialize("testId", seekBar?.progress?.times(0.05)!!)
-                    bottomSheetDialog.dismiss()
-                }
-            })
-            bottomSheetDialog.setContentView(bottomSheetView)
-            bottomSheetDialog.show()
-        }
-        button_location.setOnClickListener {
-            button_search.visibility = View.VISIBLE
-            button_search.setOnClickListener {
-                rectangle?.remove()
-                circle?.remove()
-                val bounds = map?.projection?.visibleRegion?.latLngBounds
-                val polygonOptions = PolygonOptions()
-                        .add(LatLng(bounds!!.northeast.latitude, bounds.northeast.longitude))
-                        .add(LatLng(bounds.southwest.latitude, bounds.northeast.longitude))
-                        .add(LatLng(bounds.southwest.latitude, bounds.southwest.longitude))
-                        .add(LatLng(bounds.northeast.latitude, bounds.southwest.longitude))
-                        .fillColor(Color.parseColor("#80808080"))
-                        .strokeColor(Color.TRANSPARENT)
-
-                rectangle = map?.addPolygon(polygonOptions)
-                button_search.visibility = View.GONE
+        //Код ниже надо заменить на собак в ближайшем радиусе
+        val names = arrayOf("Катя", "Лена", "Маша", "Саша")
+        val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
+        val distances = arrayOf(3, 2, 5, 1)
+        val adapter = DogAdapter(names, imageIds, distances, "map")
+        adapter.setListener(object : DogAdapter.Listener {
+            override fun onClick(position: Int) {
+                startActivity(Intent(activity, PetDetailTestActivity::class.java))
             }
-
-            val point = Point()
-            activity?.windowManager?.defaultDisplay?.getSize(point)
-            val params = bottom_sheet.layoutParams
-            val halfScreenHeight = point.y / 2
-            params.height = halfScreenHeight
-            bottom_sheet.layoutParams = params
-
-            near_list_recycler_view.layoutManager = LinearLayoutManager(activity)
-
-            val dogRecycler = near_list_recycler_view
-
-            val names = arrayOf("Катя", "Лена", "Маша", "Саша")
-            val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
-            val distances = arrayOf(3, 2, 5, 1)
-            val adapter = DogAdapter(names, imageIds, distances, "map")
-            adapter.setListener(object : DogAdapter.Listener {
-                override fun onClick(position: Int) {
-                    startActivity(Intent(activity, PetDetailTestActivity::class.java))
-                }
-            })
-            dogRecycler.adapter = adapter
-            dogRecycler.layoutManager = LinearLayoutManager(activity)
-
-        }
-
+        })
+        dogRecycler.adapter = adapter
+        dogRecycler.layoutManager = LinearLayoutManager(activity)
     }
 }
