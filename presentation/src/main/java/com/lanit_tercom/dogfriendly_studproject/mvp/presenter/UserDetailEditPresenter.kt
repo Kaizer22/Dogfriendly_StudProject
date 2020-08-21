@@ -10,9 +10,6 @@ import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 
-/**
- * Презентер с функцией изменения юзера
- */
 class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetailsUseCase?,
                               private val pushPhotoUseCase: PushPhotoUseCase?,
                               private val deletePhotoUseCase: DeletePhotoUseCase?): BasePresenter() {
@@ -22,6 +19,9 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
 
     fun setView(view: UserDetailEditView){ this.view = view }
 
+    /**
+     * Это функция только для экрана редактирования "о себе" и "планы на прогулку".
+     */
     fun editTextFields(user: UserModel?) {
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
@@ -34,6 +34,10 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
         editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
     }
 
+    /**
+     * А это уже для редактирования оставльных частей модели.
+     * Если avatar null - удаляем фото, если не null - добавляем.
+     */
     fun editUserDetails(user: UserModel?, avatarUri: Uri?){
 
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
@@ -46,7 +50,7 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
 
 
         if(avatarUri != null){
-            var pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
+            val pushPhotoCallback: PushPhotoUseCase.Callback = object : PushPhotoUseCase.Callback {
 
                 override fun onPhotoPushed(downloadUri: String?) {
                     user?.avatar = Uri.parse(downloadUri)
@@ -60,7 +64,7 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
             pushPhotoUseCase?.execute(user?.id+"/avatar", avatarUri.toString(), pushPhotoCallback)
         } else {
 
-            var deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
+            val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
 
                 override fun onPhotoDeleted() {
                     user?.avatar = null
