@@ -23,8 +23,13 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     fun initialize(userId: String, radius: Double) = this.loadUsersCoordinates(userId, radius)
 
 
+
     private fun loadUsersCoordinates(userId: String, radius: Double){
         UserGeoFire().userQueryAtLocation(userId, radius, this.userQueryAtLocationCallback)
+    }
+
+    fun getUsersDetails(getUsersDetailsUseCaseCallback: GetUsersDetailsUseCase.Callback){
+        getUsersDetailsUseCase.execute(getUsersDetailsUseCaseCallback)
     }
 
 

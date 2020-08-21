@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Point
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -31,6 +32,7 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
@@ -44,9 +46,13 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivi
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
+import com.lanit_tercom.domain.dto.PetDto
+import com.lanit_tercom.domain.dto.UserDto
+import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -54,6 +60,9 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -102,6 +111,9 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         // Keys for storing activity state.
         private const val KEY_CAMERA_POSITION = "camera_position"
         private const val KEY_LOCATION = "location"
+        val currentId: String = AuthManagerFirebaseImpl().currentUserId
+        var currentUser: UserDto? = null
+
     }
 
 
@@ -132,7 +144,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 locationResult ?: return
                 for (location in locationResult.locations) {
                     currentLocation = location
-                    UserGeoFire().userSetLocation("testId", location.latitude, location.longitude, object : UserGeoFire.UserLocationCallback {
+                    UserGeoFire().userSetLocation(currentId, location.latitude, location.longitude, object : UserGeoFire.UserLocationCallback {
                         override fun onError(exception: Exception?) {
                         }
 
@@ -290,7 +302,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                     LatLng(lastKnownLocation!!.latitude,
                                             lastKnownLocation!!.longitude), DEFAULT_ZOOM.toFloat()))
                             currentLocation = lastKnownLocation
-                            UserGeoFire().userSetLocation("testId", lastKnownLocation!!.latitude, lastKnownLocation!!.longitude, object : UserGeoFire.UserLocationCallback {
+                            UserGeoFire().userSetLocation(currentId, lastKnownLocation!!.latitude, lastKnownLocation!!.longitude, object : UserGeoFire.UserLocationCallback {
                                 override fun onError(exception: Exception?) {
                                 }
 
@@ -422,7 +434,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                         // нахождение пользователей в радиусе
-                        userMapPresenter?.initialize("testId", seekBar?.progress?.times(0.05)!!)
+                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
                         bottomSheetDialog.dismiss()
                     }
                 })
@@ -450,10 +462,53 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         dogRecycler.layoutManager = LinearLayoutManager(activity)
 
         //Код ниже надо заменить на собак в ближайшем радиусе
-        val names = arrayOf("Катя", "Лена", "Маша", "Саша")
-        val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
-        val distances = arrayOf(3, 2, 5, 1)
-        val adapter = DogAdapter(names, imageIds, distances, "map")
+        val nearUsers = mutableMapOf<String?, List<Double?>>()
+        var allUsers: MutableList<UserDto>? = null
+        UserGeoFire().userQueryAtLocation(currentId, 1.0, object: UserGeoFire.UserQueryAtLocationCallback{
+            override fun onError(exception: java.lang.Exception?) {
+
+            }
+
+            override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
+                nearUsers[key] = listOf(latitude, longitude)
+            }
+        })
+
+        userMapPresenter?.getUsersDetails(object: GetUsersDetailsUseCase.Callback{
+            override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
+                allUsers = users
+            }
+
+            override fun onError(errorBundle: ErrorBundle?) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        val names = mutableListOf<String>()
+        val imageIds = mutableListOf<String>()
+        val distances = mutableListOf<Double>()
+        val breeds = mutableListOf<String>()
+        val ages = mutableListOf<Int>()
+
+        allUsers?.forEach {user ->
+            if (nearUsers.keys.contains(user.id) && user.id != currentId){
+                user.pets.forEach { pet ->
+                    names.add(pet.value.name)
+                    imageIds.add(pet.value.avatar)
+                    breeds.add(pet.value.breed)
+                    ages.add(pet.value.age)
+                    val lat1 = currentLocation?.latitude!!
+                    val long1 = currentLocation?.longitude!!
+                    val lat2 = nearUsers[user.id]?.get(0)!!
+                    val long2 = nearUsers[user.id]?.get(1)!!
+                    val distance = sqrt((lat2 - lat1).pow(2) + (long2 - long1).pow(2))
+                    distances.add(distance)
+                }
+            }
+            if (user.id == currentId) currentUser = user
+        }
+
+        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(),"map")
         adapter.setListener(object : DogAdapter.Listener {
             override fun onClick(position: Int) {
                 startActivity(Intent(activity, PetDetailTestActivity::class.java))
