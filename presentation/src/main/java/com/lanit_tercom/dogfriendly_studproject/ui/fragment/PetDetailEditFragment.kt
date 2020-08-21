@@ -209,7 +209,10 @@ class PetDetailEditFragment(private val userId: String?, override var pet: PetMo
             if (resultCode == Activity.RESULT_OK) {
                 val resultUri = result.uri
                 avatarUri = resultUri
-                avatar.setImageURI(avatarUri)
+                Glide.with(this)
+                        .load(avatarUri)
+                        .circleCrop()
+                        .into(avatar)
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {}
         }

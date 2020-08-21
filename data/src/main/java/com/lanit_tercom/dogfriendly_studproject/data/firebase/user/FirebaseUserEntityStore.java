@@ -1,5 +1,8 @@
 package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
+import android.util.Log;
+
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -10,6 +13,8 @@ import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +52,12 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     public void getAllUsers(final UserListCallback userListCallback) {
         final List<UserEntity> users = new ArrayList<>();
+
         referenceDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
+                Log.i("TEST_ACTIVITY", "GET_ALL_USERS");
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
@@ -61,6 +68,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.i("TEST_ACTIVITY", "GET_ALL_USERS_ERROR");
                 userListCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
             }
         });
@@ -95,11 +103,14 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(pet.getId(), pet);
-        referenceDatabase.child(id).child("pets").updateChildren(map)
-                .addOnSuccessListener(aVoid -> addPetCallback.onPetAdded())
+
+        String firebaseId = referenceDatabase.child(id).child("pets").push().getKey();
+        pet.setId(firebaseId);
+
+        referenceDatabase.child(id).child("pets").child(pet.getId()).setValue(pet)
+                .addOnSuccessListener(aVoid -> {addPetCallback.onPetAdded();})
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));
+
     }
 
     @Override

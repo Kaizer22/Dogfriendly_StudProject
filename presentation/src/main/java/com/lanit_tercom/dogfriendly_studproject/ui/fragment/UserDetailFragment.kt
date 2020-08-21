@@ -113,12 +113,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
             }
         }
 
-        //Динамическое задание высоты блока
-        val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
         val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
-        val heightDp = resources.displayMetrics.heightPixels * 0.5 - 10 * resources.displayMetrics.density
-        val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
-        lp.height = heightDp.toInt()
 
         //Присвоение OnClickListener кнопкам
         view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit() }

@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.domain.dto.UserDto
@@ -14,6 +15,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
     fun initialize(userId: String?) {
         this.userId = userId
+        Log.i("TEST_ACTIVITY", "LOAD USER DETAILS")
         this.loadUserDetails()
     }
 
@@ -30,6 +32,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
+        Log.i("TEST_ACTIVITY","RENDER USER FROM PRESENTER")
         (view as UserDetailView).renderCurrentUser(userModel)
 
     }
@@ -37,7 +40,9 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     //Callbacks для загрузки данных пользователя и удаления питомца
     private val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback{
 
-        override fun onPetDeleted() {}
+        override fun onPetDeleted() {
+            Log.i("TEST_ACTIVITY","PET DELETED")
+        }
 
         override fun onError(errorBundle: ErrorBundle?) {}
 
