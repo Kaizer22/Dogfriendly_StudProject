@@ -6,7 +6,6 @@ import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
-import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
@@ -18,8 +17,7 @@ import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import java.util.ArrayList
 
 
-class PetPhotoPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase,
-                        private val addPetUseCase: AddPetUseCase,
+class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
                         private val deletePhotoUseCase: DeletePhotoUseCase,
                         private val pushPhotoUseCase: PushPhotoUseCase,
                         private val pushPhotoArrayUseCase: PushPhotoArrayUseCase) : BasePresenter() {
@@ -31,43 +29,12 @@ class PetPhotoPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase
     fun initialize(userId: String?, petId: String?) {
         this.userId = userId
         this.petId = petId
-        loadPetDetails()
     }
 
     fun setView(view: PetDetailEditView) {
         this.view = view
     }
 
-    //Запрашивает у бд модельку юзера
-    fun loadPetDetails() =
-            getUserDetailsUseCase.execute(userId, userDetailsCallback)
-
-    //Ищет есть ли в массиве питомцев питомец с определенным id
-    private fun findPet(id: String?, pets: ArrayList<PetModel>): PetModel?{
-        for(pet in pets)
-            if(pet.id == id) return pet
-        return null
-    }
-
-    //Если питомец с таким id уже есть - грузим его фото с firebase
-    private fun showPetDetailsInView(userDto: UserDto?) {
-        val userDtoModelMapper = UserDtoModelMapper()
-        val userModel = userDtoModelMapper.map2(userDto)
-        if(userModel.pets!=null){
-            val model = findPet(petId, userModel.pets as ArrayList)
-            (view as PetPhotoFragment).initializeView(model)
-        }
-
-
-    }
-
-    private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
-
-        override fun onUserDataLoaded(userDto: UserDto?) = showPetDetailsInView(userDto)
-
-        override fun onError(errorBundle: ErrorBundle?) {}
-
-    }
 
     /**
      * тут твориться полнейший ад, все беды этого кода рождаются тут
@@ -77,7 +44,7 @@ class PetPhotoPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase
      * 3)добавляем новую/обновленную модель
      */
     fun addPet(pet: PetModel ,uriStrings: ArrayList<String>) {
-
+        Log.i("PHOTO_PRESENTER", "ADDPET")
         //3
         val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback {
 
@@ -132,9 +99,11 @@ class PetPhotoPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase
         fun pushPhotoArray(){
             if(uriStrings.isEmpty()){
                 if(pet.photos == null){
+                    Log.i("PHOTO_PRESENTER", "PUSH_AVATAR_FINISHED")
                     addPetUseCase.execute(userId, mapper.map1(pet), addPetCallback)
                 } else{
                     deletePhotoArray(pet)
+                    Log.i("PHOTO_PRESENTER", "PUSH_AVATAR_FINISHED")
                     addPetUseCase.execute(userId, mapper.map1(pet), addPetCallback)
                 }
             } else {

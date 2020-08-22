@@ -4,39 +4,46 @@ import android.net.Uri
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
+import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 
-class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetailsUseCase?,
+class UserDetailEditPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?,
+                              private val editUserDetailsUseCase: EditUserDetailsUseCase?,
                               private val pushPhotoUseCase: PushPhotoUseCase?,
                               private val deletePhotoUseCase: DeletePhotoUseCase?): BasePresenter() {
 
+    private var userId: String? = null
+    var user: UserModel? = null
     private var mapper = UserDtoModelMapper()
+
+    fun initialize(userId: String?) {
+        this.userId = userId
+        this.loadUserDetails()
+    }
+
 
     fun setView(view: UserDetailEditView){ this.view = view }
 
-    /**
-     * Это функция только для экрана редактирования "о себе" и "планы на прогулку".
-     */
-    fun editTextFields(user: UserModel?) {
-        val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
+    private fun loadUserDetails() =
+            getUserDetailsUseCase?.execute(userId, userDetailsCallback)
 
-            override fun onUserDataEdited() {}
+    private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
 
-            override fun onError(errorBundle: ErrorBundle?) {}
-
+        override fun onUserDataLoaded(userDto: UserDto?){
+            user = mapper.map2(userDto)
+            (view as UserDetailEditView).renderCurrentUser(user)
         }
 
-        editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
     }
 
-    /**
-     * А это уже для редактирования оставльных частей модели.
-     * Если avatar null - удаляем фото, если не null - добавляем.
-     */
-    fun editUserDetails(user: UserModel?, avatarUri: Uri?){
+    fun editUserDetails(avatarUri: Uri?){
 
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
@@ -69,11 +76,19 @@ class UserDetailEditPresenter(private val editUserDetailsUseCase: EditUserDetail
                     editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
                 }
 
-                override fun onError(errorBundle: ErrorBundle) {}
+                override fun onError(errorBundle: ErrorBundle) {
+                    editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
+                }
 
             }
 
-            deletePhotoUseCase?.execute(user?.id+"/avatar", deletePhotoCallback)
+            if(user?.avatar != null){
+                deletePhotoUseCase?.execute(user?.id+"/avatar", deletePhotoCallback)
+            } else {
+                editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
+            }
+
+
         }
     }
 

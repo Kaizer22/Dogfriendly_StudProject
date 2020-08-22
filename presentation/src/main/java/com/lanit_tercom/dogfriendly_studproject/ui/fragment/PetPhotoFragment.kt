@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetPhotoPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
@@ -41,12 +43,20 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class PetPhotoFragment(private val userId: String?, override var pet: PetModel): BaseFragment(), PetDetailEditView {
+class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEditView {
     private lateinit var elements: ArrayList<Pair<ImageView, ImageView>>
     private var petPhotoPresenter: PetPhotoPresenter? = null
     private var nextImageSpace: Int = 0
+    private lateinit var pet: PetModel
     private var photos: Array<String> = Array(8) {"0"}
     private val emptyPhoto = Uri.parse("android.resource://com.lanit_tercom.dogfriendly_studproject.ui.activity.pet_detail/" + R.drawable.ic_button_add_photo)
+
+    fun initializePet(pet: PetModel){
+        this.pet = pet
+        if(pet.photos!=null)
+            for((index, photo) in pet.photos!!.withIndex())
+                photos[index] = photo.toString()
+    }
 
     //Инициализация презентера
     override fun initializePresenter() {
@@ -61,22 +71,12 @@ class PetPhotoFragment(private val userId: String?, override var pet: PetModel):
         val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
                 userEntityDtoMapper)
 
-        val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
-                threadExecutor, postExecutionThread)
         val addPetUseCase: AddPetUseCase = AddPetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoArrayUseCase: PushPhotoArrayUseCase = PushPhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoUseCase: PushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
-        this.petPhotoPresenter = PetPhotoPresenter(getUserDetailsUseCase, addPetUseCase, deletePhotoUseCase, pushPhotoUseCase, pushPhotoArrayUseCase)
-    }
-
-    //Отображает скачанную презентером модель(фото)
-    fun initializeView(pet: PetModel?){
-        if(pet!=null)
-            if(pet.photos != null)
-                for((index, photo) in pet.photos!!.withIndex())
-                    photos[index] = photo.toString()
+        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, deletePhotoUseCase, pushPhotoUseCase, pushPhotoArrayUseCase)
     }
 
     //Lifecycle-методы
@@ -114,7 +114,9 @@ class PetPhotoFragment(private val userId: String?, override var pet: PetModel):
                 loadPhoto()
         }
 
-        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
+        view.findViewById<ImageView>(R.id.back_button).setOnClickListener {
+            activity?.onBackPressed()
+        }
 
         //Преобразуем array в arrayList и добавляем питомца. По завершении презентер вызовет navigateToNext()
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
@@ -201,7 +203,7 @@ class PetPhotoFragment(private val userId: String?, override var pet: PetModel):
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(userId))
+        (activity as UserDetailActivity).startUserDetail()
     }
 
     override fun showLoading() {

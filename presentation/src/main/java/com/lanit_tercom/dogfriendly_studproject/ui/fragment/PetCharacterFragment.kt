@@ -11,10 +11,16 @@ import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 
-class PetCharacterFragment(private val userId: String?, override var pet: PetModel): BaseFragment(), PetDetailEditView{
+class PetCharacterFragment(private val userId: String?): BaseFragment(), PetDetailEditView{
     private val selected: ArrayList<String> = ArrayList()
     private lateinit var elements: ArrayList<MaterialCardView>
+    private lateinit var pet: PetModel
+
+    fun initializePet(pet: PetModel){
+        this.pet = pet
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_pet_character, container, false)
@@ -26,7 +32,7 @@ class PetCharacterFragment(private val userId: String?, override var pet: PetMod
         //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             pet.character = selected
-            (activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
+            navigateToNext(pet)
         }
 
         return view
@@ -77,7 +83,7 @@ class PetCharacterFragment(private val userId: String?, override var pet: PetMod
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, PetPhotoFragment(userId, pet))
+        (activity as UserDetailActivity).startPetPhotoEdit(pet)
     }
 
     override fun showError(message: String) {

@@ -18,85 +18,45 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.FirebaseDatabase
 import com.lanit_tercom.dogfriendly_studproject.R
-import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
-import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
-import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
-import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
-import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
-import com.lanit_tercom.domain.executor.PostExecutionThread
-import com.lanit_tercom.domain.executor.ThreadExecutor
-import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
-import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
-import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
-import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
-import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
-import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
-import com.lanit_tercom.domain.repository.PhotoRepository
-import com.lanit_tercom.domain.repository.UserRepository
-import com.lanit_tercom.library.data.manager.NetworkManager
-import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class PetDetailEditFragment(private val userId: String?, override var pet: PetModel = PetModel()) : BaseFragment(), PetDetailEditView {
+class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDetailEditView {
     private lateinit var editPetName: TextInputEditText
     private lateinit var editPetBreed: TextInputEditText
     private lateinit var editPetAge: TextInputEditText
     private lateinit var avatar: ImageView
     private lateinit var menButton: MaterialButton
     private lateinit var womanButton: MaterialButton
-    private var petDetailEditPresenter: PetDetailEditPresenter? = null
     private var avatarUri: Uri? = null
     private var gender: String? = null
+    private lateinit var pet: PetModel
 
-    override fun initializePresenter() {
-        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
-        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
-        val networkManager: NetworkManager = NetworkManagerImpl(context)
-        val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
-        val userEntityDtoMapper = UserEntityDtoMapper()
-        val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
-                userEntityDtoMapper)
-        val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
-                threadExecutor, postExecutionThread)
-
-        petDetailEditPresenter = PetDetailEditPresenter(userId, pet, getUserDetailsUseCase)
-    }
-
-    //Отображает скачанную презентером модель
-    fun initializeView(pet: PetModel?) {
-        if(pet!=null){
-            if (pet.name != null) {
-                editPetName.setText(pet.name)
-                this.pet.name = pet.name
-            }
-            if (pet.breed != null) {
-                editPetBreed.setText(pet.breed)
-                this.pet.breed = pet.breed
-            }
-            if (pet.age != null) {
-                editPetAge.setText(pet.age.toString())
-                this.pet.age = pet.age
-            }
-            if (pet.avatar != null) {
-                Glide.with(this)
-                        .load(pet.avatar)
-                        .circleCrop()
-                        .into(avatar)
-                this.pet.avatar = pet.avatar
-            }
+    fun initializePet(pet: PetModel){
+        this.pet = pet
+        if (pet.name != null) {
+            editPetName.setText(pet.name)
+        }
+        if (pet.breed != null) {
+            editPetBreed.setText(pet.breed)
+        }
+        if (pet.age != null) {
+            editPetAge.setText(pet.age.toString())
+        }
+        if (pet.avatar != null) {
+            Glide.with(this)
+                    .load(pet.avatar)
+                    .circleCrop()
+                    .into(avatar)
         }
     }
 
     //Lifecycle методы
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container, false)
+        val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container,false)
         editPetName = view.findViewById(R.id.edit_pet_name)
         editPetBreed = view.findViewById(R.id.edit_pet_breed)
         editPetAge = view.findViewById(R.id.edit_pet_age)
@@ -148,15 +108,6 @@ class PetDetailEditFragment(private val userId: String?, override var pet: PetMo
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        petDetailEditPresenter?.setView(this)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        petDetailEditPresenter?.loadPetDetails()
-    }
 
     override fun onResume() {
         super.onResume()
@@ -200,6 +151,8 @@ class PetDetailEditFragment(private val userId: String?, override var pet: PetMo
                 .start(context!!, this)
     }
 
+    override fun initializePresenter() {}
+
     //Обратная связь с галереей, проброс данных обратно в UserDetailActivity(4)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -220,7 +173,7 @@ class PetDetailEditFragment(private val userId: String?, override var pet: PetMo
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as BaseActivity).replaceFragment(R.id.ft_container, PetCharacterFragment(userId, pet))
+        (activity as UserDetailActivity).startPetCharacterEdit(pet)
     }
 
     override fun showLoading() {
