@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Point
 import android.location.Location
-import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -39,20 +38,16 @@ import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
-import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
-import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUsersDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -60,8 +55,6 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
-import kotlin.math.abs
-import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -133,10 +126,10 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
         // Construct a PlacesClient
         Places.initialize(activity?.applicationContext!!, mapsApiKey!!)
-        placesClient = Places.createClient(activity!!)
+        placesClient = Places.createClient(requireActivity())
 
         // Construct a FusedLocationProviderClient.
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity!!)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         locationRequest = createLocationRequest()
 
         locationCallback = object : LocationCallback() {
@@ -293,7 +286,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         try {
             if (locationPermissionGranted) {
                 val locationResult = fusedLocationProviderClient.lastLocation
-                locationResult.addOnCompleteListener(activity!!) { task ->
+                locationResult.addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         // Set the map's camera position to the current location of the device.
                         lastKnownLocation = task.result
@@ -341,7 +334,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true
         } else {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
         }
     }
@@ -448,7 +441,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
         button_radar.setOnClickListener(this)
-
         // Код ниже устанавливает размер выдвижной панели
         val point = Point()
         activity?.windowManager?.defaultDisplay?.getSize(point)
@@ -457,64 +449,87 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         params.height = halfScreenHeight
         bottom_sheet.layoutParams = params
 
-        //Заполнение RecyclerView с собаками поблизости (пока собак брать неоткуда - заглушка из хардкода)
+        //Заполнение RecyclerView с собаками поблизости
         val dogRecycler = near_list_recycler_view
         dogRecycler.layoutManager = LinearLayoutManager(activity)
 
-        //Код ниже надо заменить на собак в ближайшем радиусе
         val nearUsers = mutableMapOf<String?, List<Double?>>()
         var allUsers: MutableList<UserDto>? = null
-        UserGeoFire().userQueryAtLocation(currentId, 1.0, object: UserGeoFire.UserQueryAtLocationCallback{
+        UserGeoFire().userQueryAtLocation(currentId, 5.0, object : UserGeoFire.UserQueryAtLocationCallback {
             override fun onError(exception: java.lang.Exception?) {
 
             }
 
             override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
+
                 nearUsers[key] = listOf(latitude, longitude)
+                userMapPresenter?.getUsersDetails(object : GetUsersDetailsUseCase.Callback {
+                    override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
+                        allUsers = users
+
+                        val names = mutableListOf<String>()
+                        val imageIds = mutableListOf<String>()
+                        val distances = mutableListOf<Double>()
+                        val breeds = mutableListOf<String>()
+                        val ages = mutableListOf<Int>()
+
+                        allUsers?.forEach { user ->
+                            if (nearUsers.keys.contains(user.id) && user.id != currentId) {
+                                user.pets.forEach { pet ->
+                                    names.add(pet.value.name)
+                                    imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
+                                    breeds.add(pet.value.breed)
+                                    ages.add(pet.value.age)
+                                    val lat1 = currentLocation?.latitude!!
+                                    val long1 = currentLocation?.longitude!!
+                                    val lat2 = nearUsers[user.id]?.get(0)!!
+                                    val long2 = nearUsers[user.id]?.get(1)!!
+                                    val distance = distance(lat1, lat2, long1, long2, 0.0, 0.0)
+                                    distances.add(distance)
+                                }
+                            }
+                            if (user.id == currentId) currentUser = user
+                        }
+
+                        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                        adapter.setListener(object : DogAdapter.Listener {
+                            override fun onClick(position: Int) {
+                                startActivity(Intent(activity, PetDetailTestActivity::class.java))
+                            }
+                        })
+                        dogRecycler.adapter = adapter
+                        dogRecycler.layoutManager = LinearLayoutManager(activity)
+                    }
+
+                    override fun onError(errorBundle: ErrorBundle?) {
+                        TODO("Not yet implemented")
+                    }
+                })
             }
         })
+    }
 
-        userMapPresenter?.getUsersDetails(object: GetUsersDetailsUseCase.Callback{
-            override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
-                allUsers = users
-            }
-
-            override fun onError(errorBundle: ErrorBundle?) {
-                TODO("Not yet implemented")
-            }
-        })
-
-        val names = mutableListOf<String>()
-        val imageIds = mutableListOf<String>()
-        val distances = mutableListOf<Double>()
-        val breeds = mutableListOf<String>()
-        val ages = mutableListOf<Int>()
-
-        allUsers?.forEach {user ->
-            if (nearUsers.keys.contains(user.id) && user.id != currentId){
-                user.pets.forEach { pet ->
-                    names.add(pet.value.name)
-                    imageIds.add(pet.value.avatar)
-                    breeds.add(pet.value.breed)
-                    ages.add(pet.value.age)
-                    val lat1 = currentLocation?.latitude!!
-                    val long1 = currentLocation?.longitude!!
-                    val lat2 = nearUsers[user.id]?.get(0)!!
-                    val long2 = nearUsers[user.id]?.get(1)!!
-                    val distance = sqrt((lat2 - lat1).pow(2) + (long2 - long1).pow(2))
-                    distances.add(distance)
-                }
-            }
-            if (user.id == currentId) currentUser = user
-        }
-
-        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(),"map")
-        adapter.setListener(object : DogAdapter.Listener {
-            override fun onClick(position: Int) {
-                startActivity(Intent(activity, PetDetailTestActivity::class.java))
-            }
-        })
-        dogRecycler.adapter = adapter
-        dogRecycler.layoutManager = LinearLayoutManager(activity)
+    /**
+     * Calculate distance between two points in latitude and longitude taking
+     * into account height difference. If you are not interested in height
+     * difference pass 0.0. Uses Haversine method as its base.
+     *
+     * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
+     * el2 End altitude in meters
+     * @returns Distance in Meters
+     */
+    fun distance(lat1: Double, lat2: Double, lon1: Double,
+                 lon2: Double, el1: Double, el2: Double): Double {
+        val R = 6371 // Radius of the earth
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + (Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2)))
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        var distance = R * c * 1000 // convert to meters
+        val height = el1 - el2
+        distance = Math.pow(distance, 2.0) + Math.pow(height, 2.0)
+        return Math.sqrt(distance)
     }
 }

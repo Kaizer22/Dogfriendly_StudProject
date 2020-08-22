@@ -53,7 +53,7 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val dist
         textViewDogName.text = names[position]
         val textViewDistance = cardView.textView_distance
         if (tag == "map")
-            textViewDistance.text = "${distances[position]} км от вас"
+            textViewDistance.text = "${distances[position]} м от вас"
         else
             textViewDistance.text = "${breeds[position]}, ${ages[position]} года"
         cardView.setOnClickListener {
