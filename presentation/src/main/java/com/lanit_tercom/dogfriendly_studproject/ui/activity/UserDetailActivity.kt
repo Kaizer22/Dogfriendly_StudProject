@@ -37,51 +37,35 @@ class UserDetailActivity : BaseActivity() {
     //Перейти на экран пользователя
     fun startUserDetail(){
         Log.i("TEST_ACTIVITY", "STARTING_USER_DETAIL")
-        if(userDetailFragment.isAdded){
-            replaceFragment(R.id.ft_container, userDetailFragment)
-        } else {
-            addFragment(R.id.ft_container, userDetailFragment)
-        }
+        replaceFragment(R.id.ft_container, userDetailFragment)
+
     }
 
     //Перейти на экран редактирования пользователя
     fun startUserDetailEdit(){
         Log.i("TEST_ACTIVITY", "STARTING_USER_DETAIL_EDIT")
-        if(userDetailEditFragment.isAdded){
-            replaceFragment(R.id.ft_container, userDetailEditFragment)
-        } else {
-            addFragment(R.id.ft_container, userDetailEditFragment)
-        }
+        replaceFragment(R.id.ft_container, userDetailEditFragment)
     }
 
     fun startPetDetailEdit(pet: PetModel){
         Log.i("TEST_ACTIVITY", "STARTING_PET_DETAIL_EDIT")
         petDetailEditFragment.initializePet(pet)
-        if(petDetailEditFragment.isAdded){
-            replaceFragment(R.id.ft_container, petDetailEditFragment)
-        } else {
-            addFragment(R.id.ft_container, petDetailEditFragment)
-        }
+        replaceFragment(R.id.ft_container, petDetailEditFragment)
+
     }
 
     fun startPetCharacterEdit(pet: PetModel){
         Log.i("TEST_ACTIVITY", "STARTING_PET_CHARACTER_EDIT")
         petCharacterFragment.initializePet(pet)
-        if(petCharacterFragment.isAdded){
-            replaceFragment(R.id.ft_container, petCharacterFragment)
-        } else {
-            addFragment(R.id.ft_container, petCharacterFragment)
-        }
+        replaceFragment(R.id.ft_container, petCharacterFragment)
+
     }
 
     fun startPetPhotoEdit(pet: PetModel){
         Log.i("TEST_ACTIVITY", "STARTING_PET_PHOTO_EDIT")
         petPhotoFragment.initializePet(pet)
-        if(petPhotoFragment.isAdded){
-            replaceFragment(R.id.ft_container, petPhotoFragment)
-        } else {
-            addFragment(R.id.ft_container, petPhotoFragment)
-        }
+        replaceFragment(R.id.ft_container, petPhotoFragment)
+
     }
 
     //РАСКОМЕНТИТЬ СТРОЧКУ!!! ID ВВЕДЕН ДЛЯ ТЕСТА!!!

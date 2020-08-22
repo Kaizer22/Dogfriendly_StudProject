@@ -44,7 +44,6 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
      * 3)добавляем новую/обновленную модель
      */
     fun addPet(pet: PetModel ,uriStrings: ArrayList<String>) {
-        Log.i("PHOTO_PRESENTER", "ADDPET")
         //3
         val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback {
 

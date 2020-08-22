@@ -8,6 +8,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirebasePhotoStore implements PhotoStore {
     private static final String CHILD_PHOTOS = "Uploads";
@@ -57,6 +58,15 @@ public class FirebasePhotoStore implements PhotoStore {
     }
 
 
+    /**
+     насчет фото, скорее всего там такая ситуация,
+     несколько фото примерно в один момент загрузились и одновременно получили добро от syncFunction.
+     Поэтому нужно сделать, чтобы колбэки вызывала syncFunction.
+     А еще использовать не массив, а счетчик загруженных и сфейленных файлов типа atomicInteger,
+     чтобы потоки не могли одновременно к этим переменным обращатся. И syncFunction каждый раз будет проврять сумму загруженных и сфейленных файлов.
+     Если все сумма равна общему колву файлов - она вызывает соответсвующий колбэк
+     */
+
     private boolean syncFunction(boolean[] array) {
         for(boolean b: array) if(!b) return false;
         return true;
@@ -66,6 +76,7 @@ public class FirebasePhotoStore implements PhotoStore {
     @Override
     public void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback) {
 
+        storageReference.child(dirName).delete();
 
         ArrayList<String> downloadUris = new ArrayList<>();
         boolean[] booleanArray = new boolean[uriStrings.size()];
@@ -79,7 +90,6 @@ public class FirebasePhotoStore implements PhotoStore {
 
             uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
-                    Log.i("TEST_ACTIVITY", "ERROR1");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
 
@@ -93,11 +103,9 @@ public class FirebasePhotoStore implements PhotoStore {
 
 
                     if(syncFunction(booleanArray))
-                        Log.i("TEST_ACTIVITY", "SUCCESS");
                         pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris);
 
                 } else {
-                    Log.i("TEST_ACTIVITY", "ERROR2");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
             });

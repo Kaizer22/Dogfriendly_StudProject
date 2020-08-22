@@ -123,6 +123,7 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
             val photoList = ArrayList<String>()
             for(photo in photos) if(photo != "0") photoList.add(photo)
             petPhotoPresenter?.addPet(pet, photoList)
+            pet = PetModel()
 
         }
         return view
