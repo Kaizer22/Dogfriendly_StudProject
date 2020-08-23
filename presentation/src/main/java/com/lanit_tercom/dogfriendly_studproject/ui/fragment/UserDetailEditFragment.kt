@@ -4,13 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.lanit_tercom.dogfriendly_studproject.R
@@ -21,7 +22,6 @@ import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
-import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
@@ -46,7 +46,6 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
     private lateinit var avatar: ImageView
     private var userDetailEditPresenter: UserDetailEditPresenter? = null
     private var avatarUri: Uri? = null
-    private val mapper = UserDtoModelMapper()
 
     //Инициализация презентера
     override fun initializePresenter() {
@@ -80,6 +79,8 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
 
         avatar.setOnClickListener{ loadAvatar() }
 
+        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
+
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
         //Изменяем модельку юзера, пушим ее в базу данных и возвращаеся обратно в экран юзера
@@ -102,17 +103,16 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
                 user?.name = editName.text.toString()
                 user?.age = editAge.text.toString().toInt()
                 userDetailEditPresenter?.editUserDetails(user, avatarUri)
-//                if(avatarUri != null){
-//                    userDetailEditPresenter?.pushPhoto(user?.id+"/avatar", avatarUri.toString());
-//                } else {
-//                    userDetailEditPresenter?.deletePhoto(user?.id+"/avatar")
-//                }
                 activity?.onBackPressed()
-
             }
         }
 
         return view
+    }
+
+    private fun hideKeyboard(){
+        val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     //Проверка на то является ли строка числом
@@ -126,7 +126,7 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
                 .setAspectRatio(1,1)
                 .setRequestedSize(320, 320)
                 .setActivityTitle("")
-                .start(context!!, this);
+                .start(context!!, this)
     }
 
     //Обратная связь с галлереей
@@ -143,7 +143,7 @@ class UserDetailEditFragment(private val user: UserModel?): BaseFragment(), User
                 Glide.with(this)
                         .load(avatarUri)
                         .circleCrop()
-                        .into(avatar);
+                        .into(avatar)
 
             }
 //            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) { }

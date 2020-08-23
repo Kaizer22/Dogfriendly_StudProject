@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment
 import kotlinx.android.synthetic.main.activity_map_settings.*
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -17,11 +18,20 @@ class MapSettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+        val user = MapFragment.currentUser
+        val pets = user?.pets
+        val names = mutableListOf<String>()
+        val imageIds = mutableListOf<String>()
+        val distances = mutableListOf<Double>()
+        val breeds = mutableListOf<String>()
+        val ages = mutableListOf<Int>()
+        pets?.forEach {
+            names.add(it.value.name)
+            imageIds.add(it.value.avatar)
+        }
         val dogRecycler = map_settings_recycler_view
-        val names = arrayOf("Катя", "Лена", "Маша", "Саша")
-        val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
-        val distances = arrayOf(3, 2, 5, 1)
-        val adapter = DogAdapter(names, imageIds, distances, "map_settings")
+
+        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map_settings")
         dogRecycler.adapter = adapter
         dogRecycler.layoutManager = LinearLayoutManager(this)
 

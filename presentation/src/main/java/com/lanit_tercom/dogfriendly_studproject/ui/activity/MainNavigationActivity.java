@@ -3,8 +3,10 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -21,6 +23,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment;
@@ -31,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 public class MainNavigationActivity extends BaseActivity {
     private int DEFAULT_CHECKED_ITEM = R.id.navigation_settings;
 
-    //TODO подсвечивать выбранный элемент навигационной панели
 
     public static Intent getCallingIntent(Context context){
         return new Intent(context, MainNavigationActivity.class);
@@ -104,11 +106,24 @@ public class MainNavigationActivity extends BaseActivity {
                 R.id.navigation_settings,
                 R.id.navigation_channels)
                 .build();
-
+        initInteractions();
         //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupWithNavController(navView, navController);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_map, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void initInteractions(){
+        ImageButton mapSettings = findViewById(R.id.button_map_settings);
+        mapSettings.setOnClickListener(l ->
+                startActivity(new Intent(this, MapSettingsActivity.class)));
+    }
+
 
     public void navigateToChat(String channelID){
         getNavigator().navigateToChat(this, channelID);
@@ -117,7 +132,4 @@ public class MainNavigationActivity extends BaseActivity {
     public void navigateToUserDetail(String userId){
         getNavigator().navigateToUserDetail(this, userId);
     }
-
-
-
 }

@@ -1,5 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.view
 
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+
 interface PetDetailEditView: LoadDataView {
-    fun navigateToNext()
+    var pet: PetModel
+
+    fun navigateToNext(pet: PetModel)
 }

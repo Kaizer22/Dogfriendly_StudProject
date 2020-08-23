@@ -31,19 +31,20 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
+import com.lanit_tercom.domain.dto.UserDto
+import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
@@ -54,13 +55,14 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
+import kotlin.math.sqrt
 
 /**
  * Фрагмент работающий с API googleMaps
  * @author prostak.sasha111@mail.ru
  * @author nikolaygorokhov1@gmail.com
  */
-class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, CompoundButton.OnCheckedChangeListener {
+class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMarkerClickListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private var userMapPresenter: MapPresenter? = null
     private var map: GoogleMap? = null
@@ -68,7 +70,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     private var cameraPosition: CameraPosition? = null
     private var requestingLocationUpdates = true
     private var circle: Circle? = null
-    private var rectangle: Polygon? = null
+
     // The entry point to the Places API.
     private lateinit var placesClient: PlacesClient
 
@@ -102,6 +104,9 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         // Keys for storing activity state.
         private const val KEY_CAMERA_POSITION = "camera_position"
         private const val KEY_LOCATION = "location"
+        val currentId: String = AuthManagerFirebaseImpl().currentUserId
+        var currentUser: UserDto? = null
+
     }
 
 
@@ -132,7 +137,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 locationResult ?: return
                 for (location in locationResult.locations) {
                     currentLocation = location
-                    UserGeoFire().userSetLocation("testId", location.latitude, location.longitude, object : UserGeoFire.UserLocationCallback {
+                    UserGeoFire().userSetLocation(currentId, location.latitude, location.longitude, object : UserGeoFire.UserLocationCallback {
                         override fun onError(exception: Exception?) {
                         }
 
@@ -290,7 +295,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                     LatLng(lastKnownLocation!!.latitude,
                                             lastKnownLocation!!.longitude), DEFAULT_ZOOM.toFloat()))
                             currentLocation = lastKnownLocation
-                            UserGeoFire().userSetLocation("testId", lastKnownLocation!!.latitude, lastKnownLocation!!.longitude, object : UserGeoFire.UserLocationCallback {
+                            UserGeoFire().userSetLocation(currentId, lastKnownLocation!!.latitude, lastKnownLocation!!.longitude, object : UserGeoFire.UserLocationCallback {
                                 override fun onError(exception: Exception?) {
                                 }
 
@@ -396,83 +401,135 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         return Bitmap.createScaledBitmap(imageBitmap, imageBitmap.width / 2, imageBitmap.height / 2, false)
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id){
+            R.id.button_radar -> {
+                val bottomSheetDialog = BottomSheetDialog(activity as Context, R.style.BottomSheetDialogTheme)
+                val bottomSheetView = LayoutInflater
+                        .from(activity?.applicationContext)
+                        .inflate(R.layout.test_layout_bottom_sheet, bottomSheetContainer)
+                bottomSheetView.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = "${(seekBar?.progress?.times(50)).toString()} метров"
+                        circle?.remove()
+                        circle = map?.addCircle(CircleOptions()
+                                .center(LatLng(currentLocation!!.latitude, currentLocation!!.longitude))
+                                .radius((seekBar!!.progress * 50).toDouble())
+                                .fillColor(Color.parseColor("#80808080"))
+                                .strokeColor(Color.TRANSPARENT)
+                        )
+
+                    }
+
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                        map?.clear()
+                    }
+
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        // нахождение пользователей в радиусе
+                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
+                        bottomSheetDialog.dismiss()
+                    }
+                })
+                bottomSheetDialog.setContentView(bottomSheetView)
+                bottomSheetDialog.show()
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userMapPresenter?.setView(this)
-        // ВРЕМЕННЫЙ КОД!!!
-        button_radar.setOnClickListener {
-            val bottomSheetDialog = BottomSheetDialog(activity as Context, R.style.BottomSheetDialogTheme)
-            val bottomSheetView = LayoutInflater
-                    .from(activity?.applicationContext)
-                    .inflate(R.layout.test_layout_bottom_sheet, bottomSheetContainer)
-            bottomSheetView.findViewById<SeekBar>(R.id.seekBar).setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    bottomSheetView.findViewById<TextView>(R.id.seekbar_progress).text = "${(seekBar?.progress?.times(50)).toString()} метров"
-                    circle?.remove()
-                    rectangle?.remove()
-                    circle = map?.addCircle(CircleOptions()
-                            .center(LatLng(currentLocation!!.latitude, currentLocation!!.longitude))
-                            .radius((seekBar!!.progress * 50).toDouble())
-                            .fillColor(Color.parseColor("#80808080"))
-                            .strokeColor(Color.TRANSPARENT)
-                    )
+        button_radar.setOnClickListener(this)
+        // Код ниже устанавливает размер выдвижной панели
+        val point = Point()
+        activity?.windowManager?.defaultDisplay?.getSize(point)
+        val params = bottom_sheet.layoutParams
+        val halfScreenHeight = point.y / 2
+        params.height = halfScreenHeight
+        bottom_sheet.layoutParams = params
 
-                }
+        //Заполнение RecyclerView с собаками поблизости
+        val dogRecycler = near_list_recycler_view
+        dogRecycler.layoutManager = LinearLayoutManager(activity)
 
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    map?.clear()
-                }
+        val nearUsers = mutableMapOf<String?, List<Double?>>()
+        var allUsers: MutableList<UserDto>? = null
+        UserGeoFire().userQueryAtLocation(currentId, 5.0, object : UserGeoFire.UserQueryAtLocationCallback {
+            override fun onError(exception: java.lang.Exception?) {
 
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    userMapPresenter?.initialize("testId", seekBar?.progress?.times(0.05)!!)
-                    bottomSheetDialog.dismiss()
-                }
-            })
-            bottomSheetDialog.setContentView(bottomSheetView)
-            bottomSheetDialog.show()
-        }
-        button_location.setOnClickListener {
-            button_search.visibility = View.VISIBLE
-            button_search.setOnClickListener {
-                rectangle?.remove()
-                circle?.remove()
-                val bounds = map?.projection?.visibleRegion?.latLngBounds
-                val polygonOptions = PolygonOptions()
-                        .add(LatLng(bounds!!.northeast.latitude, bounds.northeast.longitude))
-                        .add(LatLng(bounds.southwest.latitude, bounds.northeast.longitude))
-                        .add(LatLng(bounds.southwest.latitude, bounds.southwest.longitude))
-                        .add(LatLng(bounds.northeast.latitude, bounds.southwest.longitude))
-                        .fillColor(Color.parseColor("#80808080"))
-                        .strokeColor(Color.TRANSPARENT)
-
-                rectangle = map?.addPolygon(polygonOptions)
-                button_search.visibility = View.GONE
             }
 
-            val point = Point()
-            activity?.windowManager?.defaultDisplay?.getSize(point)
-            val params = bottom_sheet.layoutParams
-            val halfScreenHeight = point.y / 2
-            params.height = halfScreenHeight
-            bottom_sheet.layoutParams = params
+            override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
 
-            near_list_recycler_view.layoutManager = LinearLayoutManager(activity)
+                nearUsers[key] = listOf(latitude, longitude)
+                userMapPresenter?.getUsersDetails(object : GetUsersDetailsUseCase.Callback {
+                    override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
+                        allUsers = users
 
-            val dogRecycler = near_list_recycler_view
+                        val names = mutableListOf<String>()
+                        val imageIds = mutableListOf<String>()
+                        val distances = mutableListOf<Double>()
+                        val breeds = mutableListOf<String>()
+                        val ages = mutableListOf<Int>()
 
-            val names = arrayOf("Катя", "Лена", "Маша", "Саша")
-            val imageIds = arrayOf(R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon, R.drawable.image_dog_icon)
-            val distances = arrayOf(3, 2, 5, 1)
-            val adapter = DogAdapter(names, imageIds, distances, "map")
-            adapter.setListener(object : DogAdapter.Listener {
-                override fun onClick(position: Int) {
-                    startActivity(Intent(activity, PetDetailTestActivity::class.java))
-                }
-            })
-            dogRecycler.adapter = adapter
-            dogRecycler.layoutManager = LinearLayoutManager(activity)
+                        allUsers?.forEach { user ->
+                            if (nearUsers.keys.contains(user.id) && user.id != currentId) {
+                                user.pets.forEach { pet ->
+                                    names.add(pet.value.name)
+                                    imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
+                                    breeds.add(pet.value.breed)
+                                    ages.add(pet.value.age)
+                                    val lat1 = currentLocation?.latitude!!
+                                    val long1 = currentLocation?.longitude!!
+                                    val lat2 = nearUsers[user.id]?.get(0)!!
+                                    val long2 = nearUsers[user.id]?.get(1)!!
+                                    val distance = distance(lat1, lat2, long1, long2, 0.0, 0.0)
+                                    distances.add(distance)
+                                }
+                            }
+                            if (user.id == currentId) currentUser = user
+                        }
 
-        }
+                        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                        adapter.setListener(object : DogAdapter.Listener {
+                            override fun onClick(position: Int) {
+                                startActivity(Intent(activity, PetDetailTestActivity::class.java))
+                            }
+                        })
+                        dogRecycler.adapter = adapter
+                        dogRecycler.layoutManager = LinearLayoutManager(activity)
+                    }
 
+                    override fun onError(errorBundle: ErrorBundle?) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+        })
+    }
+
+    /**
+     * Calculate distance between two points in latitude and longitude taking
+     * into account height difference. If you are not interested in height
+     * difference pass 0.0. Uses Haversine method as its base.
+     *
+     * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
+     * el2 End altitude in meters
+     * @returns Distance in Meters
+     */
+    fun distance(lat1: Double, lat2: Double, lon1: Double,
+                 lon2: Double, el1: Double, el2: Double): Double {
+        val R = 6371 // Radius of the earth
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + (Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2)))
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        var distance = R * c * 1000 // convert to meters
+        val height = el1 - el2
+        distance = Math.pow(distance, 2.0) + Math.pow(height, 2.0)
+        return Math.sqrt(distance)
     }
 }

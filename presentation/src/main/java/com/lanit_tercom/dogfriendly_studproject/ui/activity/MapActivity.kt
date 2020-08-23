@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment
 import kotlinx.android.synthetic.main.activity_map.*
 
@@ -14,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_map.*
  * Запускает фрагмент с картой.
  * @author prostak.sasha111@mail.ru
  */
-class MapActivity : BaseActivity() {
+class MapActivity : BaseActivity(), View.OnClickListener {
 
     companion object{
 
@@ -26,6 +28,7 @@ class MapActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
+        button_map_settings.setOnClickListener(this)
 
     }
 
@@ -45,5 +48,11 @@ class MapActivity : BaseActivity() {
     }
 
     override fun onBackPressed() { return }
-
+    override fun onClick(v: View?) {
+        when (v?.id){
+            R.id.button_map_settings -> {
+                startActivity(Intent(this, MapSettingsActivity::class.java))
+            }
+        }
+    }
 }

@@ -80,7 +80,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
-    @Override
+
     public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
         final List<UserEntity> users = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
@@ -104,7 +104,6 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
-
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
         //String firebaseId = referenceDatabase.push().getKey();
@@ -116,6 +115,25 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
     }
 
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
+                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
+    @Override
+    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
+        String firebaseId = referenceDatabase.push().getKey();
+        user.setId(firebaseId);
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
+                .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
+    }
 
     @Override
     public void editUser(UserEntity user, UserEditCallback userEditCallback) {
@@ -136,10 +154,8 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void addPet(String id, PetEntity pet, AddPetCallback addPetCallback) {
-        String firebaseId = referenceDatabase.child(id).child("pets").push().getKey();
-        pet.setId(firebaseId);
         Map<String, Object> map = new HashMap<>();
-        map.put(firebaseId, pet);
+        map.put(pet.getId(), pet);
         referenceDatabase.child(id).child("pets").updateChildren(map)
                 .addOnSuccessListener(aVoid -> addPetCallback.onPetAdded())
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));

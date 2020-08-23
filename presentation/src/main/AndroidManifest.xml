@@ -17,6 +17,7 @@
         <activity android:name=".tests.ui.UserTestActivity"/>
         <activity android:name=".tests.ui.map.MapSettingsActivity" />
         <activity android:name=".tests.ui.PhotoTestActivity" />
+        <activity android:name=".ui.activity.UserDetailObserverActivity"></activity>
         <activity android:name=".ui.activity.EditTextActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
         <activity
@@ -56,6 +57,5 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB6olvefAu4dgT02zRVG7UKVgTmfYdszBw" />
     </application>
-
 
 </manifest>
