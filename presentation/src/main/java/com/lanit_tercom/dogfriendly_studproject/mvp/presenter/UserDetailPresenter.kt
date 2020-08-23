@@ -4,6 +4,7 @@ import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
+import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
@@ -15,6 +16,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
                           private val deletePhotoUseCase: DeletePhotoUseCase) : BasePresenter() {
 
     private var userId: String? = null
+    private var userDto: UserDto? = null
 
     fun initialize(userId: String?) {
         this.userId = userId
@@ -44,8 +46,6 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         }
 
-
-
         val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
 
             override fun onPhotoDeleted() {}
@@ -56,8 +56,18 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         //Удаляем питомца -> его фото -> его аватар
         deletePetUseCase.execute(userId, petId, deletePetCallback)
-        deletePhotoUseCase.execute("$userId/$petId/pet_photos", deletePhotoCallback)
-        deletePhotoUseCase.execute("$userId/$petId/avatar", deletePhotoCallback)
+        val petDto: PetDto? = userDto?.pets?.get(petId)
+        val avatar: String? = petDto?.avatar
+        val photos: List<String>? = petDto?.photos
+
+        deletePhotoUseCase.execute(avatar, deletePhotoCallback)
+
+        if (photos != null) {
+            for(photo in photos){
+                deletePhotoUseCase.execute(photo, deletePhotoCallback)
+            }
+        }
+
 
     }
 
@@ -73,8 +83,11 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     //Callbacks для загрузки данных пользователя
     private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
 
-        override fun onUserDataLoaded(userDto: UserDto?) =
-                this@UserDetailPresenter.showUserDetailsInView(userDto)
+        override fun onUserDataLoaded(userDto: UserDto?){
+            this@UserDetailPresenter.userDto = userDto
+            this@UserDetailPresenter.showUserDetailsInView(userDto)
+        }
+
 
         override fun onError(errorBundle: ErrorBundle?) {}
 

@@ -32,9 +32,8 @@ class UserDetailActivity : BaseActivity() {
 
     override fun onBackPressed() {
         val currentFragment: Fragment? = supportFragmentManager.findFragmentById(R.id.ft_container)
-        if (currentFragment is UserDetailFragment) {
-
-        } else super.onBackPressed()
+        if (currentFragment is UserDetailFragment) {}
+        else super.onBackPressed()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +57,7 @@ class UserDetailActivity : BaseActivity() {
 
     fun startPetDetailEdit(pet: PetModel){
         Log.i("TEST_ACTIVITY", "STARTING_PET_DETAIL_EDIT")
+        petDetailEditFragment = PetDetailEditFragment(userId) //вынужденная мера, тут иначе никак - нужен чистый фрагмент
         petDetailEditFragment.initializePet(pet)
         replaceFragment(R.id.ft_container, petDetailEditFragment)
 

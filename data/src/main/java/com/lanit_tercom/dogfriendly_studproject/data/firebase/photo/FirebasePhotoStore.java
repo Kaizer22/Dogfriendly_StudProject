@@ -49,10 +49,11 @@ public class FirebasePhotoStore implements PhotoStore {
         });
     }
 
-
+    //ВОТ КАЗАЛОСЬ БЫ - ЧТО ТУТ МОЖЕТ ПОЙТИ НЕ ТАК?
     @Override
-    public void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback) {
-        storageReference.child(fileName).delete()
+    public void deletePhoto(String uriString, DeletePhotoCallback deletePhotoCallback) {
+        StorageReference s = FirebaseStorage.getInstance().getReferenceFromUrl(uriString);
+        s.delete()
                 .addOnSuccessListener(aVoid -> deletePhotoCallback.onPhotoDeleted())
                 .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
     }

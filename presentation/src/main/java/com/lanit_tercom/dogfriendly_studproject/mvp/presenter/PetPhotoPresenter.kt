@@ -3,17 +3,14 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import android.net.Uri
 import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
-import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment
-import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
-import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import java.util.ArrayList
 
 
@@ -85,7 +82,9 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
         }
 
         fun deletePhotoArray(pet:PetModel){
-            deletePhotoUseCase.execute(userId+"/"+pet.id+"/pet_photos", deletePhotoArrayCallback)
+            if(pet.photos != null)
+                for(photo in pet.photos!!)
+                    deletePhotoUseCase.execute(photo.toString(), deletePhotoArrayCallback)
         }
 
         fun pushPhotoArray(){

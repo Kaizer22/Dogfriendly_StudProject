@@ -34,12 +34,31 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
     private lateinit var womanButton: MaterialButton
     private var avatarUri: Uri? = null
     private var gender: String? = null
-    private lateinit var pet: PetModel
+    lateinit var pet: PetModel
 
     //Прикручиваем питомца к фрагменту - если он пустой значит мы его добавляем, если нет - редактируем
     fun initializePet(pet: PetModel){
-
         this.pet = pet
+    }
+
+    //Lifecycle методы
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container,false)
+        editPetName = view.findViewById(R.id.edit_pet_name)
+        editPetBreed = view.findViewById(R.id.edit_pet_breed)
+        editPetAge = view.findViewById(R.id.edit_pet_age)
+
+        avatar = view.findViewById(R.id.pet_avatar)
+        avatar.setOnClickListener { loadAvatar() }
+
+        womanButton = view.findViewById(R.id.woman_button)
+        womanButton.setOnClickListener { setGender("woman") }
+
+        menButton = view.findViewById(R.id.men_button)
+        menButton.setOnClickListener { setGender("men") }
+
+        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
+
         if (pet.name != null) {
             editPetName.setText(pet.name)
         }
@@ -56,20 +75,17 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
                     .circleCrop()
                     .into(avatar)
         }
-    }
+        if(pet.gender != null){
+            if (pet.gender == "men") {
+                menButton.background.setTint(Color.parseColor("#B2BC24"))
+                menButton.setTextColor(Color.parseColor("#FFFFFF"))
+            } else {
+                womanButton.background.setTint(Color.parseColor("#B2BC24"))
+                womanButton.setTextColor(Color.parseColor("#FFFFFF"))
+            }
 
-    //Lifecycle методы
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_pet_detail_edit, container,false)
-        editPetName = view.findViewById(R.id.edit_pet_name)
-        editPetBreed = view.findViewById(R.id.edit_pet_breed)
-        editPetAge = view.findViewById(R.id.edit_pet_age)
+        }
 
-        avatar = view.findViewById(R.id.pet_avatar)
-        avatar.setOnClickListener { loadAvatar() }
-
-        avatarUri = pet.avatar
-        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
@@ -104,21 +120,12 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
             }
         }
 
-        womanButton = view.findViewById(R.id.woman_button)
-        womanButton.setOnClickListener { setGender("woman") }
 
-        menButton = view.findViewById(R.id.men_button)
-        menButton.setOnClickListener { setGender("men") }
 
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        editPetName.text?.clear()
-        editPetAge.text?.clear()
-        editPetBreed.text?.clear()
-    }
+
 
     //Причем клавиатуру
     private fun hideKeyboard() {
