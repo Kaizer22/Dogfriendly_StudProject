@@ -98,6 +98,7 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
 
             editTextPresenter.editTextFields()
 
+            //Прячем клавиатуру при выходе из метода
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
             activity?.onBackPressed()
@@ -107,6 +108,7 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
 
     }
 
+    //Lifecycle - методы
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         editTextPresenter.setView(this)

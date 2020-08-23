@@ -22,7 +22,6 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetPhotoPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
@@ -53,9 +52,6 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
 
     fun initializePet(pet: PetModel){
         this.pet = pet
-        if(pet.photos!=null)
-            for((index, photo) in pet.photos!!.withIndex())
-                photos[index] = photo.toString()
     }
 
     //Инициализация презентера
@@ -108,6 +104,13 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_pet_photo, container, false)
 
+        photos = Array(8) {"0"}
+        nextImageSpace = 0
+
+        if(pet.photos!=null)
+            for(photo in pet.photos!!)
+                setPhoto(elements, nextImageSpace++, photo)
+
         elements = initialize(view)
         view.findViewById<ImageView>(R.id.photo_image).setOnClickListener {
             if (nextImageSpace != 8)
@@ -123,8 +126,6 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
             val photoList = ArrayList<String>()
             for(photo in photos) if(photo != "0") photoList.add(photo)
             petPhotoPresenter?.addPet(pet, photoList)
-            pet = PetModel()
-
         }
         return view
     }

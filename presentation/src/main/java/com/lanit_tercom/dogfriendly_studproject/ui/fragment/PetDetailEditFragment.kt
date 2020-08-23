@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +36,9 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
     private var gender: String? = null
     private lateinit var pet: PetModel
 
+    //Прикручиваем питомца к фрагменту - если он пустой значит мы его добавляем, если нет - редактируем
     fun initializePet(pet: PetModel){
+
         this.pet = pet
         if (pet.name != null) {
             editPetName.setText(pet.name)
@@ -47,6 +50,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
             editPetAge.setText(pet.age.toString())
         }
         if (pet.avatar != null) {
+            avatarUri = pet.avatar
             Glide.with(this)
                     .load(pet.avatar)
                     .circleCrop()
@@ -64,6 +68,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
         avatar = view.findViewById(R.id.pet_avatar)
         avatar.setOnClickListener { loadAvatar() }
 
+        avatarUri = pet.avatar
         view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
@@ -108,7 +113,6 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
         return view
     }
 
-
     override fun onResume() {
         super.onResume()
         editPetName.text?.clear()
@@ -116,6 +120,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
         editPetBreed.text?.clear()
     }
 
+    //Причем клавиатуру
     private fun hideKeyboard() {
         val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)

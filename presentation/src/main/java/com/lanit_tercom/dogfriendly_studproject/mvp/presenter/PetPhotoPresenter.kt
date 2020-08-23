@@ -35,14 +35,7 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
         this.view = view
     }
 
-
-    /**
-     * тут твориться полнейший ад, все беды этого кода рождаются тут
-     * Если вкратце - механизм такой
-     * 1)проверяем является ли аватар null - если да, сразу переходим к отправкн фото, если нет - отправляем автатар
-     * 2)проверяем есть ли фото уже в бд (внутри модельки питомца) и есть ли выбранные новые - в зависимости от этого добавляем/удаляем/пропускаем
-     * 3)добавляем новую/обновленную модель
-     */
+    //Вроде работает нормально (добавляет: аватар -> фото -> сама модель юзера)
     fun addPet(pet: PetModel ,uriStrings: ArrayList<String>) {
         //3
         val addPetCallback: AddPetUseCase.Callback = object : AddPetUseCase.Callback {
@@ -98,11 +91,9 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
         fun pushPhotoArray(){
             if(uriStrings.isEmpty()){
                 if(pet.photos == null){
-                    Log.i("PHOTO_PRESENTER", "PUSH_AVATAR_FINISHED")
                     addPetUseCase.execute(userId, mapper.map1(pet), addPetCallback)
                 } else{
                     deletePhotoArray(pet)
-                    Log.i("PHOTO_PRESENTER", "PUSH_AVATAR_FINISHED")
                     addPetUseCase.execute(userId, mapper.map1(pet), addPetCallback)
                 }
             } else {
@@ -121,6 +112,7 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
 
             override fun onPhotoPushed(downloadUri: String?) {
                 Log.i("PHOTO_PRESENTER", "PUSH_AVATAR_FINISHED")
+                pet.avatar = Uri.parse(downloadUri)
                 pushPhotoArray()
             }
 

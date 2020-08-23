@@ -27,6 +27,7 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper.UnderlayButtonClickListener
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
@@ -44,17 +45,18 @@ import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
+import java.lang.Exception
 import kotlin.math.abs
 
 class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailView{
     private lateinit var petList: RecyclerView
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
-    private lateinit var petListAdapter: PetListAdapter
+    lateinit var petListAdapter: PetListAdapter
     private lateinit var name: TextView
     private lateinit var age: TextView
     private lateinit var avatar: ImageView
-    private var pets: ArrayList<PetListItem> = ArrayList()
+    var pets: ArrayList<PetListItem> = ArrayList()
     private var userDetailPresenter: UserDetailPresenter? = null
     private var user: UserModel? = null
 
@@ -93,8 +95,9 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         age = view.findViewById(R.id.age)
         avatar = view.findViewById(R.id.user_avatar)
 
-        //Это чтобы кнопка удаления в RecyclerView выезжала
+        //Это чтобы кнопка удаления в RecyclerView выезжала, взято из гугла
         val swipeHelper: SwipeHelper = object : SwipeHelper(context, petList) {
+
             override fun instantiateUnderlayButton(viewHolder: RecyclerView.ViewHolder?, underlayButtons: ArrayList<UnderlayButton?>) {
                 underlayButtons.add(UnderlayButton(
                         "Delete",
@@ -111,20 +114,16 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
                                 btnCancel.setOnClickListener{dialog.dismiss()}
                                 btnDelete.setOnClickListener {
-                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id)
-                                    pets.removeAt(viewHolder.adapterPosition)
+                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id, viewHolder.adapterPosition)
                                     dialog.dismiss()
                                 }
 
                                 dialog.show()
                             }
-                            petListAdapter.notifyDataSetChanged()
                         }
                 ))
             }
         }
-
-
 
         //Присвоение OnClickListener кнопкам
         view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit() }
@@ -146,7 +145,6 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         }
 
         //Открытие/скрытие нижней панели
-
         val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
         view.findViewById<AppBarLayout>(R.id.appbar).addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 

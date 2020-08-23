@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
@@ -24,22 +25,26 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
         this.view = view
     }
 
-    //Функции вызывающие соответствующие callbacks
     private fun loadUserDetails() =
             getUserDetailsUseCase?.execute(userId, userDetailsCallback)
 
-    fun deletePet(petId: String?) {
+    //Удаление питомца
+    fun deletePet(petId: String?, position: Int) {
 
         val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback {
 
-            override fun onPetDeleted() {}
+            override fun onPetDeleted() {
+                //Удаление питомца из списка происходит только после удаления его из базы данных (не очень красиво, но вроде работает)
+                (view as UserDetailFragment).pets.removeAt(position)
+                (view as UserDetailFragment).petListAdapter.notifyDataSetChanged()
+            }
 
             override fun onError(errorBundle: ErrorBundle?) {
             }
 
         }
 
-        deletePetUseCase.execute(userId, petId, deletePetCallback)
+
 
         val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
 
@@ -49,22 +54,23 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         }
 
+        //Удаляем питомца -> его фото -> его аватар
+        deletePetUseCase.execute(userId, petId, deletePetCallback)
         deletePhotoUseCase.execute("$userId/$petId/pet_photos", deletePhotoCallback)
         deletePhotoUseCase.execute("$userId/$petId/avatar", deletePhotoCallback)
 
     }
 
-
+    //Вывод загруженных данных юзера на экран
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
-        (view as UserDetailView).renderCurrentUser(userModel)
+        (view as? UserDetailView)?.renderCurrentUser(userModel)
 
 
     }
 
-    //Callbacks для загрузки данных пользователя и удаления питомца
-
+    //Callbacks для загрузки данных пользователя
     private val userDetailsCallback: GetUserDetailsUseCase.Callback = object : GetUserDetailsUseCase.Callback {
 
         override fun onUserDataLoaded(userDto: UserDto?) =
