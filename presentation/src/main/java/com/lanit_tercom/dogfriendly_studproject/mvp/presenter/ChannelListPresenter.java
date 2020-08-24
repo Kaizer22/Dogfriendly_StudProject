@@ -111,6 +111,6 @@ public class ChannelListPresenter extends BasePresenter {
 
     @Override
     public void onDestroy() {
-
+        this.channelListView = null;
     }
 }

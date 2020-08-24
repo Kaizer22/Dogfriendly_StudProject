@@ -144,6 +144,6 @@ public class WalkPresenter extends BasePresenter {
 
     @Override
     public void onDestroy() {
-
+        this.walkDetailsView = null;
     }
 }

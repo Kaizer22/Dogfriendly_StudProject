@@ -54,6 +54,7 @@ class PetDetailEditPresenter(private val userId: String?,
     }
 
     override fun onDestroy() {
-        TODO("Not yet implemented")
+        this.view = null;
     }
+
 }

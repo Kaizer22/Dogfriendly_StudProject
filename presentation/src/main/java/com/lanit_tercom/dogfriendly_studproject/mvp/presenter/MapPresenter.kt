@@ -58,4 +58,6 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     override fun onDestroy() {
         this.view = null
     }
+
+
 }

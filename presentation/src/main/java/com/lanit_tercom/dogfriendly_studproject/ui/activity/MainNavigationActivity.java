@@ -129,7 +129,5 @@ public class MainNavigationActivity extends BaseActivity {
         getNavigator().navigateToChat(this, channelID);
     }
 
-    public void navigateToUserDetail(String userId){
-        getNavigator().navigateToUserDetail(this, userId);
-    }
+    public void navigateToWalkCreation(String userId){getNavigator().navigateToInvitationScreen(this, userId);}
 }

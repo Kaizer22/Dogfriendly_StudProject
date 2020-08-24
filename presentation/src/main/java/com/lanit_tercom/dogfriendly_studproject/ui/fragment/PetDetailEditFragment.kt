@@ -30,6 +30,13 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.UserRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
@@ -40,6 +47,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
     private lateinit var avatar: ImageView
     private lateinit var menButton: MaterialButton
     private lateinit var womanButton: MaterialButton
+    private var petDetailEditPresenter: PetDetailEditPresenter? = null
     private var avatarUri: Uri? = null
     private var gender: String? = null
     lateinit var pet: PetModel
@@ -47,6 +55,44 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
     //Прикручиваем питомца к фрагменту - если он пустой значит мы его добавляем, если нет - редактируем
     fun initializePet(pet: PetModel){
         this.pet = pet
+    }
+
+    override fun initializePresenter() {
+        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+        val networkManager: NetworkManager = NetworkManagerImpl(context)
+        val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
+        val userEntityDtoMapper = UserEntityDtoMapper()
+        val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
+                userEntityDtoMapper)
+        val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
+
+        petDetailEditPresenter = PetDetailEditPresenter(userId, pet, getUserDetailsUseCase)
+    }
+
+    fun initializeView(pet: PetModel?) {
+        if(pet!=null){
+            if (pet.name != null) {
+                editPetName.setText(pet.name)
+                this.pet.name = pet.name
+            }
+            if (pet.breed != null) {
+                editPetBreed.setText(pet.breed)
+                this.pet.breed = pet.breed
+            }
+            if (pet.age != null) {
+                editPetAge.setText(pet.age.toString())
+                this.pet.age = pet.age
+            }
+            if (pet.avatar != null) {
+                Glide.with(this)
+                        .load(pet.avatar)
+                        .circleCrop()
+                        .into(avatar)
+                this.pet.avatar = pet.avatar
+            }
+        }
     }
 
     //Lifecycle методы
@@ -128,8 +174,6 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
             }
         }
 
-
-
         return view
     }
 
@@ -171,7 +215,6 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
                 .start(context!!, this)
     }
 
-    override fun initializePresenter() {}
 
     //Обратная связь с галереей, проброс данных обратно в UserDetailActivity(4)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
