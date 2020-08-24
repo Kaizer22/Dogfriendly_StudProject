@@ -104,6 +104,16 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
+
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
+                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
+    }
+
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
         //String firebaseId = referenceDatabase.push().getKey();
@@ -113,35 +123,6 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         referenceDatabase.updateChildren(map)
                 .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
                 .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
-    @Override
-    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
-                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
-    @Override
-    public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        String firebaseId = referenceDatabase.push().getKey();
-        user.setId(firebaseId);
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userCreateCallback.onUserCreated())
-                .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
-    @Override
-    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
-                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
     }
 
 
