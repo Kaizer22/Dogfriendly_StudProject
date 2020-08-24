@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.lanit_tercom.dogfriendly_studproject.navigation.Navigator
 
 /**
@@ -24,8 +25,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun addFragment(containerViewId: Int, fragment: Fragment?) {
         val fragmentTransaction = this.supportFragmentManager.beginTransaction().addToBackStack(null)
-        if (fragment != null)
+        if (fragment != null) {
             fragmentTransaction.add(containerViewId, fragment)
+        }
         fragmentTransaction.commit()
     }
 

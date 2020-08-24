@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 
+import android.util.Log
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView

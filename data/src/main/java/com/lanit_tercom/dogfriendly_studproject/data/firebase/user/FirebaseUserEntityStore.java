@@ -2,8 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.user;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,14 +16,12 @@ import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBu
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
-
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 public class FirebaseUserEntityStore implements UserEntityStore {
 
@@ -37,7 +34,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     protected DatabaseReference referenceDatabase;
 
-    public FirebaseUserEntityStore(UserCache userCache){
+    public FirebaseUserEntityStore(UserCache userCache) {
         referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
         authManager = new AuthManagerFirebaseImpl();
@@ -106,18 +103,9 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
 
     @Override
-    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(user.getId(), user);
-        referenceDatabase.updateChildren(map)
-                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
-                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
-    }
-
-    @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
-        //String firebaseId = referenceDatabase.push().getKey();
-        //user.setId(firebaseId);
+        String firebaseId = referenceDatabase.push().getKey();
+        user.setId(firebaseId);
         Map<String, Object> map = new HashMap<>();
         map.put(user.getId(), user);
         referenceDatabase.updateChildren(map)
@@ -125,6 +113,14 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> userCreateCallback.onError(new RepositoryErrorBundle(e)));
     }
 
+    @Override
+    public void editUser(UserEntity user, UserEditCallback userEditCallback) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(user.getId(), user);
+        referenceDatabase.updateChildren(map)
+                .addOnSuccessListener(aVoid -> userEditCallback.onUserEdited())
+                .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
+    }
 
     @Override
     public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
