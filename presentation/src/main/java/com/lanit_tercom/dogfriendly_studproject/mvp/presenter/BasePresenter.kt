@@ -9,6 +9,8 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.LoadDataView
  */
 abstract class BasePresenter {
 
+    //protected var view: LoadDataView? = null
+
     fun onResume(){
         //TODO("Not yet implemented")
     }
@@ -18,5 +20,4 @@ abstract class BasePresenter {
     }
 
     abstract fun onDestroy()
-
 }

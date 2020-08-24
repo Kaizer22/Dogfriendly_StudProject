@@ -166,6 +166,8 @@ public class MainNavigationActivity extends BaseActivity {
         getNavigator().navigateToUserDetailObserver(this, hostId, checkedUserId);
     }
 
+    public void navigateToWalkCreation(String userId){getNavigator().navigateToInvitationScreen(this, userId);}
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -209,4 +211,5 @@ public class MainNavigationActivity extends BaseActivity {
     }
 
     //endregion
+
 }

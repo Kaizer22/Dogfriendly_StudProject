@@ -20,7 +20,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBu
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
 
 import androidx.annotation.NonNull;
-
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     protected DatabaseReference referenceDatabase;
 
-    public FirebaseUserEntityStore(UserCache userCache) {
+    public FirebaseUserEntityStore(UserCache userCache){
         referenceDatabase = FirebaseDatabase.getInstance().getReference().child(CHILD_USERS);
         this.userCache = userCache;
         authManager = new AuthManagerFirebaseImpl();
@@ -62,12 +62,10 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     public void getAllUsers(final UserListCallback userListCallback) {
         final List<UserEntity> users = new ArrayList<>();
-
         referenceDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 users.clear();
-                Log.i("TEST_ACTIVITY", "GET_ALL_USERS");
                 for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     UserEntity userEntity = keyNode.getValue(UserEntity.class);
                     userEntity.setId(keyNode.getKey());
@@ -83,7 +81,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
-    @Override
+
     public void getUserListById(List<String> usersId, UserListByIdCallback userListByIdCallback) {
         final List<UserEntity> users = new ArrayList<>();
         referenceDatabase.addValueEventListener(new ValueEventListener() {
@@ -107,6 +105,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         });
     }
 
+
     @Override
     public void createUser(UserEntity user, UserCreateCallback userCreateCallback) {
         //String firebaseId = referenceDatabase.push().getKey();
@@ -129,7 +128,6 @@ public class FirebaseUserEntityStore implements UserEntityStore {
                 .addOnFailureListener(e -> userEditCallback.onError(new RepositoryErrorBundle(e)));
     }
 
-
     @Override
     public void deleteUser(String id, UserDeleteCallback userDeleteCallback) {
         referenceDatabase.child(id).removeValue()
@@ -146,7 +144,6 @@ public class FirebaseUserEntityStore implements UserEntityStore {
         referenceDatabase.child(id).child("pets").child(pet.getId()).setValue(pet)
                 .addOnSuccessListener(aVoid -> {addPetCallback.onPetAdded();})
                 .addOnFailureListener(e -> addPetCallback.onError(new RepositoryErrorBundle(e)));
-
     }
 
     @Override

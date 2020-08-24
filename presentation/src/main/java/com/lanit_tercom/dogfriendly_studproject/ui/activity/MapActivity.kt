@@ -29,7 +29,6 @@ class MapActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
         button_map_settings.setOnClickListener(this)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -39,6 +38,7 @@ class MapActivity : BaseActivity(), View.OnClickListener {
 
     fun navigateToUserDetail(userId: String?) =
         navigator?.navigateToUserDetail(this, userId)
+
 
 
     override fun initializeActivity(savedInstanceState: Bundle?){

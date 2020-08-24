@@ -3,7 +3,6 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import android.net.Uri
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
-import com.lanit_tercom.dogfriendly_studproject.mvp.view.SignInView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle

@@ -42,6 +42,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
@@ -55,7 +56,6 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
-import kotlin.math.sqrt
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -179,7 +179,9 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        //button_create_walk.setOnClickListener { v: View? ->  (activity as MapActivity).navigateToWalkCreation(currentId)}
         (activity as MainNavigationActivity).switch_visibility.setOnCheckedChangeListener(this)
+        (activity as MainNavigationActivity).button_create_walk.setOnClickListener(this)
         //(activity as MapActivity).switch_visibility.setOnCheckedChangeListener(this)
     }
 
@@ -436,6 +438,9 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 })
                 bottomSheetDialog.setContentView(bottomSheetView)
                 bottomSheetDialog.show()
+            }
+            R.id.button_create_walk -> {
+                (activity as MainNavigationActivity).navigateToWalkCreation(currentId)
             }
         }
     }

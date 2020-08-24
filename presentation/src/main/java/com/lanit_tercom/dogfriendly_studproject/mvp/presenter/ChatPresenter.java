@@ -168,6 +168,6 @@ public class ChatPresenter extends BasePresenter {
 
     @Override
     public void onDestroy() {
-        //TODO Not yet implemented
+        this.view = null;
     }
 }

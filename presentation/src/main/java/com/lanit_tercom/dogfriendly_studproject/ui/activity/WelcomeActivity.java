@@ -35,4 +35,5 @@ public class WelcomeActivity extends BaseActivity {
     public void navigateToUserSignUp(){
         getNavigator().navigateToUserSignUp(this);
     }
+
 }
