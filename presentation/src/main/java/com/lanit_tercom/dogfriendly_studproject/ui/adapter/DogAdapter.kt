@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
 import kotlinx.android.synthetic.main.near_list_item_view_test.view.*
 
-class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distances: Array<Int>, val tag: String): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
+class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val distances: Array<Double>, val breeds: Array<String>, val ages: Array<Int>, val tag: String ): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
 
@@ -47,15 +48,14 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<Int>, val distanc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cardView = holder.cardView
         val imageView = cardView.image_dog_icon
-        val drawable = ContextCompat.getDrawable(cardView.context, imageIds[position])
-        imageView.setImageDrawable(drawable)
+        Glide.with(cardView.context).load(imageIds[position]).into(imageView)
         val textViewDogName = cardView.textView_dog_name
         textViewDogName.text = names[position]
         val textViewDistance = cardView.textView_distance
         if (tag == "map")
-            textViewDistance.text = "${distances[position]} км от вас"
+            textViewDistance.text = "${distances[position]} м от вас"
         else
-            textViewDistance.text = "Колли, 3 месяца"
+            textViewDistance.text = "${breeds[position]}, ${ages[position]} года"
         cardView.setOnClickListener {
             listener?.onClick(position)
         }
