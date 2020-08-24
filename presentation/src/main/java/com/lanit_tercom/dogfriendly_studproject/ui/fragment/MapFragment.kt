@@ -230,7 +230,9 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onMarkerClick(p0: Marker?): Boolean {
         //(activity as MapActivity).navigateToUserDetail(p0?.title)
         //(activity as MainNavigationActivity).navigateToUserDetail(p0?.title)
-        startActivity(Intent(activity, PetDetailTestActivity::class.java))
+        Log.d("MARKER_CLICKED", p0?.title)
+        (activity as MainNavigationActivity).navigateToUserDetailObserver(AuthManagerFirebaseImpl().currentUserId , p0?.title)
+        //startActivity(Intent(activity, UserDetailObserverFragment::class.java))
         //(activity as MapActivity).navigateToUserDetail(p0?.title)
         return true
     }
@@ -427,7 +429,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                         // нахождение пользователей в радиусе
-                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
+                        //userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
+                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(1.0)!!)
                         bottomSheetDialog.dismiss()
                     }
                 })
@@ -475,17 +478,21 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
                         allUsers?.forEach { user ->
                             if (nearUsers.keys.contains(user.id) && user.id != currentId) {
-                                user.pets.forEach { pet ->
-                                    names.add(pet.value.name)
-                                    imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
-                                    breeds.add(pet.value.breed)
-                                    ages.add(pet.value.age)
-                                    val lat1 = currentLocation?.latitude!!
-                                    val long1 = currentLocation?.longitude!!
-                                    val lat2 = nearUsers[user.id]?.get(0)!!
-                                    val long2 = nearUsers[user.id]?.get(1)!!
-                                    val distance = distance(lat1, lat2, long1, long2, 0.0, 0.0)
-                                    distances.add(distance)
+                                //Крашилось с user.pets must not be null
+                                Log.d("MAP_TEST", user.id)
+                                if (user.pets != null){
+                                    user.pets.forEach { pet ->
+                                        names.add(pet.value.name)
+                                        imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
+                                        breeds.add(pet.value.breed)
+                                        ages.add(pet.value.age)
+                                        val lat1 = currentLocation?.latitude!!
+                                        val long1 = currentLocation?.longitude!!
+                                        val lat2 = nearUsers[user.id]?.get(0)!!
+                                        val long2 = nearUsers[user.id]?.get(1)!!
+                                        val distance = distance(lat1, lat2, long1, long2, 0.0, 0.0)
+                                        distances.add(distance)
+                                    }
                                 }
                             }
                             if (user.id == currentId) currentUser = user

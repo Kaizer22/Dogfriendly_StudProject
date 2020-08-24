@@ -12,6 +12,19 @@ public class ChannelDto {
     private Long timestamp;
     private List<String> members;
 
+
+    public ChannelDto(){}
+
+    public ChannelDto(String id, String name, String lastMessage, String lastMessageOwner
+            , Long timestamp, List<String> members) {
+        this.id = id;
+        this.name = name;
+        this.lastMessage = lastMessage;
+        this.lastMessageOwner = lastMessageOwner;
+        this.timestamp = timestamp;
+        this.members = members;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

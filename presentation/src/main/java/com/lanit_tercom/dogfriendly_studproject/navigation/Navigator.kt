@@ -64,4 +64,10 @@ class Navigator {
                     WalkActivity.getCallingIntent(context, userId)
             )
 
+    fun navigateToUserDetailObserver(context: Context, hostId: String, checkedUserId: String) {
+        context.startActivity(
+                UserDetailObserverActivity.getCallingIntent(context, hostId, checkedUserId)
+        )
+    }
+
 }

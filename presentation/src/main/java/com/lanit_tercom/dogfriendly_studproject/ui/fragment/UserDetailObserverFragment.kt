@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
@@ -24,13 +27,18 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase
+import com.lanit_tercom.domain.interactor.channel.impl.AddChannelUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.ChannelRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
+import kotlinx.android.synthetic.main.fragment_user_detail_observer.*
 
-class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), UserDetailView{
+class UserDetailObserverFragment(private val hostId: String?,
+                                 private val userId: String?) : BaseFragment(), UserDetailView{
     private lateinit var petList: RecyclerView
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
@@ -47,14 +55,23 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
+
         val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
+        val channelEntityStoreFactory = ChannelEntityStoreFactory(networkManager, null)
+
         val userEntityDtoMapper = UserEntityDtoMapper()
+        val channelEntityDtoMapper = ChannelEntityDtoMapper()
         val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
                 userEntityDtoMapper)
+        val channelRepository: ChannelRepository = ChannelRepositoryImpl.getInstance(channelEntityStoreFactory,
+        channelEntityDtoMapper)
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
+        val addChannelUseCase: AddChannelUseCase = AddChannelUseCaseImpl(channelRepository,
+                threadExecutor, postExecutionThread)
 
-        userDetailObserverPresenter = UserDetailObserverPresenter(getUserDetailsUseCase)
+        userDetailObserverPresenter = UserDetailObserverPresenter(getUserDetailsUseCase,
+                addChannelUseCase)
     }
 
 
@@ -70,6 +87,9 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         name = view.findViewById(R.id.name)
         age = view.findViewById(R.id.age)
         avatar = view.findViewById(R.id.user_avatar)
+
+        view.findViewById<ImageButton>(R.id.button_start_chat).setOnClickListener{
+            userDetailObserverPresenter?.startChatWithCurrentUser(hostId, userId, user?.name) }
 
         view.findViewById<ImageButton>(R.id.edit_button).setOnClickListener {
             val dialog = Dialog(context!!)
@@ -97,6 +117,10 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         aboutText = view.findViewById(R.id.about_text)
 
         return view
+    }
+
+    private fun startChat() {
+
     }
 
 
@@ -184,7 +208,6 @@ class UserDetailObserverFragment(private val userId: String?) : BaseFragment(), 
         }
 
         petListAdapter.notifyDataSetChanged()
-
     }
 
 }

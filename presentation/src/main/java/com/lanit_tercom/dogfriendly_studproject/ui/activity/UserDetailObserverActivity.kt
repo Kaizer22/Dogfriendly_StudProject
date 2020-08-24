@@ -10,14 +10,17 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailObserverFr
 
 class UserDetailObserverActivity : BaseActivity() {
     private var userId: String? = null
+    private var hostUserId: String? = null
 
     companion object{
 
         private const val INTENT_EXTRA_PARAM_USER_ID = "INTENT_PARAM_USER_ID"
+        private const val INTENT_EXTRA_PARAM_HOST_USER_ID = "INTENT_PARAM_HOST_USER_ID"
 
-        fun getCallingIntent(context: Context, userId: String?): Intent {
-            val callingIntent = Intent(context, UserDetailActivity::class.java)
+        fun getCallingIntent(context: Context, hostUserId: String?, userId: String?): Intent {
+            val callingIntent = Intent(context, UserDetailObserverActivity::class.java)
             callingIntent.putExtra(INTENT_EXTRA_PARAM_USER_ID, userId)
+            callingIntent.putExtra(INTENT_EXTRA_PARAM_HOST_USER_ID, hostUserId)
             return callingIntent
         }
 
@@ -32,8 +35,9 @@ class UserDetailObserverActivity : BaseActivity() {
     override fun initializeActivity(savedInstanceState: Bundle?){
         if (savedInstanceState == null){
             userId = intent.extras?.getString(INTENT_EXTRA_PARAM_USER_ID)
+            hostUserId = intent.extras?.getString(INTENT_EXTRA_PARAM_HOST_USER_ID)
 //            addFragment(R.id.ft_container, UserDetailFragment(userId))
-            addFragment(R.id.ft_container, UserDetailObserverFragment("-MEYGzlqgcVxSHRV5LQ9"))
+            addFragment(R.id.ft_container, UserDetailObserverFragment(hostUserId, userId))
 
 
         }

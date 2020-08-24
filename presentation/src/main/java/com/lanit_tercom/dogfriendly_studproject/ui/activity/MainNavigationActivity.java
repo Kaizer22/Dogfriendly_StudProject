@@ -162,6 +162,10 @@ public class MainNavigationActivity extends BaseActivity {
         getNavigator().navigateToUserDetail(this, userId);
     }
 
+    public void navigateToUserDetailObserver(String hostId, String checkedUserId){
+        getNavigator().navigateToUserDetailObserver(this, hostId, checkedUserId);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
