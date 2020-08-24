@@ -431,8 +431,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
                     override fun onStopTrackingTouch(seekBar: SeekBar?) {
                         // нахождение пользователей в радиусе
-                        //userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
-                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(1.0)!!)
+                        userMapPresenter?.initialize(currentId, seekBar?.progress?.times(0.05)!!)
                         bottomSheetDialog.dismiss()
                     }
                 })

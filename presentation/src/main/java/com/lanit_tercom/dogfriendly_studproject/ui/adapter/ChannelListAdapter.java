@@ -15,8 +15,12 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHolder> {
 
@@ -42,9 +46,13 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     public void onBindViewHolder(@NonNull ChannelListViewHolder holder, int position) {
         ChannelModel channelModel = channels.get(position);
         holder.setUserProfileImage(R.drawable.ic_user_profile_image);
-        holder.setUserReceiverName(channelModel.getLastMessageOwner());
+        //holder.setUserReceiverName(channelModel.getLastMessageOwner());
+        holder.setUserReceiverName(channelModel.getName());
         holder.setLastMessage(channelModel.getLastMessage());
-        holder.setLastMessageTime(channelModel.getTimestamp().toString());
+        //holder.setLastMessageTime(channelModel.getTimestamp().toString());
+        Date date = new Date(channelModel.getTimestamp());
+        holder.setLastMessageTime(
+                new SimpleDateFormat("dd.MM.YYYY hh:mm", Locale.UK).format(date));
 
         holder.itemView.setOnClickListener(v -> {
             String channelId = channelModel.getId();

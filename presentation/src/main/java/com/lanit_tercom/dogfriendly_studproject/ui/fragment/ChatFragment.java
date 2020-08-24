@@ -258,12 +258,14 @@ public class ChatFragment extends BaseFragment implements ChatView {
         chatMenu.setOnMenuItemClickListener(menuItem ->{
             switch (menuItem.getItemId()){
                 case R.id.item_open_user_profile:
+                    //TODO переход к профилю пользователя
                     return true;
                 case R.id.item_disable_notification:
                     return true;
                 case R.id.item_add_user:
                     return true;
                 case R.id.item_delete_all_messages:
+                    //TODO очистить переписку
                     return true;
                 default:
                     return false;
