@@ -23,17 +23,37 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel;
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetCharacterFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailEditFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment;
 
 import org.jetbrains.annotations.Nullable;
 
+//Часть кода перенесена сюда из MapActivity и UserDetailActivity
+
 public class MainNavigationActivity extends BaseActivity {
+    private String userId;
+
     private int DEFAULT_CHECKED_ITEM = R.id.navigation_settings;
 
+    //region supported fragments
+    private MapFragment mapFragment;
+    private UserDetailFragment userDetailFragment ;
+    private ChannelListFragment channelListFragment;
+    private TestEmptyFragment testEmptyFragment;
+
+    private UserDetailEditFragment userDetailEditFragment;
+    private PetDetailEditFragment petDetailEditFragment;
+    private PetCharacterFragment petCharacterFragment;
+    private PetPhotoFragment petPhotoFragment;
+    //endregion
 
     public static Intent getCallingIntent(Context context){
         return new Intent(context, MainNavigationActivity.class);
@@ -44,23 +64,36 @@ public class MainNavigationActivity extends BaseActivity {
 
     }
 
+    private void initFragments(){
+        mapFragment = new MapFragment();
+        userDetailFragment = new UserDetailFragment(userId);
+        channelListFragment = new ChannelListFragment();
+        testEmptyFragment = new TestEmptyFragment();
+
+        userDetailEditFragment = new UserDetailEditFragment(userId);
+        petCharacterFragment = new PetCharacterFragment(userId);
+        petPhotoFragment = new PetPhotoFragment(userId);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_navigation_activity);
         AuthManager authManager = new AuthManagerFirebaseImpl();
+        userId = authManager.getCurrentUserId();
+        initFragments();
 
-        AppBarLayout mapTopBar = findViewById(R.id.map_app_bar);
+        initBottomNavigation();
 
-        MapFragment mapFragment = new MapFragment();
-        UserDetailFragment userDetailFragment = new UserDetailFragment(
-                authManager.getCurrentUserId());
-        ChannelListFragment channelListFragment = new ChannelListFragment();
-        TestEmptyFragment testEmptyFragment = new TestEmptyFragment();
+        initInteractions();
+        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        //NavigationUI.setupWithNavController(navView, navController);
 
+    }
 
-
+    private void initBottomNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        AppBarLayout mapTopBar = findViewById(R.id.map_app_bar);
         navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navView.setItemIconTintList(ContextCompat
                 .getColorStateList(this, R.color.bottom_navigation_colors_list));
@@ -73,18 +106,18 @@ public class MainNavigationActivity extends BaseActivity {
                     navView.getMenu().findItem(R.id.navigation_profile).setChecked(true);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, userDetailFragment)
-                           .commit();
+                            .commit();
                     break;
-               case R.id.navigation_map:
-                   mapTopBar.setVisibility(View.VISIBLE);
-                   navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
+                case R.id.navigation_map:
+                    mapTopBar.setVisibility(View.VISIBLE);
+                    navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, mapFragment)
                             .commit();
                     break;
-               case R.id.navigation_channels:
-                   mapTopBar.setVisibility(View.GONE);
-                   navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
+                case R.id.navigation_channels:
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.nav_host_fragment, channelListFragment)
                             .commit();
@@ -106,10 +139,6 @@ public class MainNavigationActivity extends BaseActivity {
                 R.id.navigation_settings,
                 R.id.navigation_channels)
                 .build();
-        initInteractions();
-        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        //NavigationUI.setupWithNavController(navView, navController);
-
     }
 
     @Override
@@ -132,4 +161,48 @@ public class MainNavigationActivity extends BaseActivity {
     public void navigateToUserDetail(String userId){
         getNavigator().navigateToUserDetail(this, userId);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+
+
+    //region User and Pets profile
+    public void startUserDetail(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, new UserDetailFragment(userId))
+                .commit();
+    }
+
+
+    public void startUserDetailEdit(){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, userDetailEditFragment)
+                .commit();
+    }
+
+    public void startPetDetailEdit(PetModel pet){
+        petDetailEditFragment = new PetDetailEditFragment(userId); //вынужденная мера, тут иначе никак - нужен чистый фрагмент
+        petDetailEditFragment.initializePet(pet);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, petDetailEditFragment)
+                .commit();
+    }
+    public void startPetCharacterEdit(PetModel pet){
+        petCharacterFragment.initializePet(pet);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, petCharacterFragment)
+                .commit();
+    }
+
+    public void startPetPhotoEdit(PetModel pet){
+        petPhotoFragment.initializePet(pet);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, petPhotoFragment)
+                .commit();
+    }
+
+    //endregion
 }

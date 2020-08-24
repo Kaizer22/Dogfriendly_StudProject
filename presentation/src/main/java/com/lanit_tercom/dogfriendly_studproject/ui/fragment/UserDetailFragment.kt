@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,37 +18,46 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.SwipeHelper.UnderlayButtonClickListener
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
+import java.lang.Exception
 import kotlin.math.abs
 
 class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailView{
     private lateinit var petList: RecyclerView
     private lateinit var plansText: TextView
     private lateinit var aboutText: TextView
-    private lateinit var petListAdapter: PetListAdapter
+    lateinit var petListAdapter: PetListAdapter
     private lateinit var name: TextView
     private lateinit var age: TextView
     private lateinit var avatar: ImageView
-    private var pets: ArrayList<PetListItem> = ArrayList()
+    var pets: ArrayList<PetListItem> = ArrayList()
     private var userDetailPresenter: UserDetailPresenter? = null
     private var user: UserModel? = null
 
@@ -57,16 +66,21 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
         val postExecutionThread: PostExecutionThread = UIThread.getInstance()
         val networkManager: NetworkManager = NetworkManagerImpl(context)
+        val photoStoreFactory = PhotoStoreFactory(networkManager)
+
+        val photoRepository: PhotoRepository = PhotoRepositoryImpl.getInstance(photoStoreFactory)
         val userEntityStoreFactory = UserEntityStoreFactory(networkManager, null)
         val userEntityDtoMapper = UserEntityDtoMapper()
         val userRepository: UserRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory,
                 userEntityDtoMapper)
+
         val getUserDetailsUseCase: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val deletePetUseCase: DeletePetUseCase = DeletePetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
+        val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
-        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase)
+        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase, deletePhotoUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -82,8 +96,9 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         age = view.findViewById(R.id.age)
         avatar = view.findViewById(R.id.user_avatar)
 
-        //Это чтобы кнопка удаления в RecyclerView выезжала
+        //Это чтобы кнопка удаления в RecyclerView выезжала, взято из гугла
         val swipeHelper: SwipeHelper = object : SwipeHelper(context, petList) {
+
             override fun instantiateUnderlayButton(viewHolder: RecyclerView.ViewHolder?, underlayButtons: ArrayList<UnderlayButton?>) {
                 underlayButtons.add(UnderlayButton(
                         "Delete",
@@ -100,28 +115,18 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
                                 btnCancel.setOnClickListener{dialog.dismiss()}
                                 btnDelete.setOnClickListener {
-                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id)
-                                    pets.removeAt(viewHolder.adapterPosition)
+                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id, viewHolder.adapterPosition)
                                     dialog.dismiss()
                                 }
 
                                 dialog.show()
                             }
-                            petListAdapter.notifyDataSetChanged()
                         }
                 ))
             }
         }
 
-        //Динамическое задание высоты блока
-        val appbar = view.findViewById<View>(R.id.appbar) as AppBarLayout
-        //val bottomNav = view.findViewById<View>(R.id.bottom_nav) as BottomNavigationView
         val bottomNav = (activity as BaseActivity).findViewById<View>(R.id.nav_view) as BottomNavigationView
-
-        val heightDp = resources.displayMetrics.heightPixels * 0.5 - 10 * resources.displayMetrics.density
-        val lp = appbar.layoutParams as CoordinatorLayout.LayoutParams
-        lp.height = heightDp.toInt()
-
         //Присвоение OnClickListener кнопкам
         view.findViewById<View>(R.id.edit_button).setOnClickListener { toUserEdit()
             bottomNav.visibility = View.GONE}
@@ -134,18 +139,17 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         //Присвоение OnClickListener текстовым полям "о себе" и "планы на прогулку" - так будет открываться фрагмент для редактирования соотв полей
         plansText = view.findViewById(R.id.plans_text)
         plansText.setOnClickListener {
-            //(activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("plans", user))
-            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("plans", user))
+            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("plans", userId, plansText.text.toString()))
 
         }
 
         aboutText = view.findViewById(R.id.about_text)
         aboutText.setOnClickListener {
-            //(activity as BaseActivity).replaceFragment(R.id.ft_container, EditTextFragment("about", user))
-            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("about", user))
+            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("about", userId, plansText.text.toString()))
         }
 
         //Открытие/скрытие нижней панели
+
         view.findViewById<AppBarLayout>(R.id.appbar).addOnOffsetChangedListener(object : AppBarStateChangeListener() {
 
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
@@ -162,15 +166,11 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
     //Навигация
     private fun toUserEdit() {
-        //(activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailEditFragment(user))
-        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, UserDetailEditFragment(user))
-
+        (activity as MainNavigationActivity).startUserDetailEdit()
     }
 
     private fun addPet() {
-
-        //(activity as BaseActivity).replaceFragment(R.id.ft_container, PetDetailEditFragment(userId))
-        (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, PetDetailEditFragment(userId))
+        (activity as MainNavigationActivity).startPetDetailEdit(PetModel())
     }
 
     private fun toPetDetail() {}
@@ -251,6 +251,11 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         if(user?.avatar != null){
             Glide.with(this)
                     .load(user.avatar)
+                    .circleCrop()
+                    .into(avatar)
+        } else {
+            Glide.with(this)
+                    .load(R.drawable.ic_set_avatar_green)
                     .circleCrop()
                     .into(avatar)
         }

@@ -9,6 +9,7 @@ import com.google.firebase.storage.UploadTask;
 
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FirebasePhotoStore implements PhotoStore {
     private static final String CHILD_PHOTOS = "Uploads";
@@ -49,10 +50,11 @@ public class FirebasePhotoStore implements PhotoStore {
         });
     }
 
-
+    //ВОТ КАЗАЛОСЬ БЫ - ЧТО ТУТ МОЖЕТ ПОЙТИ НЕ ТАК?
     @Override
-    public void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback) {
-        storageReference.child(fileName).delete()
+    public void deletePhoto(String uriString, DeletePhotoCallback deletePhotoCallback) {
+        StorageReference s = FirebaseStorage.getInstance().getReferenceFromUrl(uriString);
+        s.delete()
                 .addOnSuccessListener(aVoid -> deletePhotoCallback.onPhotoDeleted())
                 .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
     }
@@ -67,6 +69,7 @@ public class FirebasePhotoStore implements PhotoStore {
     @Override
     public void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback) {
 
+        storageReference.child(dirName).delete();
 
         ArrayList<String> downloadUris = new ArrayList<>();
         boolean[] booleanArray = new boolean[uriStrings.size()];
@@ -80,7 +83,6 @@ public class FirebasePhotoStore implements PhotoStore {
 
             uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
-                    Log.i("TEST_ACTIVITY", "ERROR1");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
 
@@ -94,11 +96,9 @@ public class FirebasePhotoStore implements PhotoStore {
 
 
                     if(syncFunction(booleanArray))
-                        Log.i("TEST_ACTIVITY", "SUCCESS");
                         pushPhotoArrayCallback.onPhotoArrayPushed(downloadUris);
 
                 } else {
-                    Log.i("TEST_ACTIVITY", "ERROR2");
                     pushPhotoArrayCallback.onError(new RepositoryErrorBundle(task.getException()));
                 }
             });

@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.model
 
 import android.net.Uri
+import java.lang.StringBuilder
 
 data class PetModel(var id: String?,
                     var name: String?,

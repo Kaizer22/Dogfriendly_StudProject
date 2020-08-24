@@ -35,12 +35,14 @@ class SignInPresenter(private val authManager: AuthManager?) : BasePresenter() {
                 ((view as SignInFragment).activity as SignInActivity).navigateToMainNavigation()
                 //((view as SignInFragment).activity as SignInActivity).navigateToUserDetail(currentUserId)
                 //((view as UserSignInFragment).activity as UserSignInActivity).navigateToChannelList(currentUserId!!)
-            else
+            //else
             //не срабатывает... не знаю почему. Ведь такое же обращение к фрагменту работает сверху
-                ((view as SignInFragment).showToastMessage("Неверный email или пароль"))
+
         }
 
-        override fun onError(e: Exception?) {}
+        override fun onError(e: Exception?) {
+            ((view as SignInFragment).showToastMessage("Ошибка!"))
+        }
 
     }
 
