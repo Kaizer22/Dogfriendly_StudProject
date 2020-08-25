@@ -175,7 +175,7 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
     }
 
     override fun navigateBack() {
-        (activity as MainNavigationActivity).startUserDetail()
+        (activity as? MainNavigationActivity)?.startUserDetail()
     }
 
     override fun showLoading() {

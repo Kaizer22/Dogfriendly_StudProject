@@ -7,7 +7,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment
 import com.lanit_tercom.domain.exception.ErrorBundle
-import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
 import com.lanit_tercom.domain.interactor.user.AddPetUseCase
@@ -15,7 +15,7 @@ import java.util.ArrayList
 
 
 class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
-                        private val deletePhotoUseCase: DeletePhotoUseCase,
+                        private val deletePhotoArrayUseCase: DeletePhotoArrayUseCase,
                         private val pushPhotoUseCase: PushPhotoUseCase,
                         private val pushPhotoArrayUseCase: PushPhotoArrayUseCase) : BasePresenter() {
 
@@ -70,7 +70,7 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
 
         }
 
-        val deletePhotoArrayCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback{
+        val deletePhotoArrayCallback: DeletePhotoArrayUseCase.Callback = object : DeletePhotoArrayUseCase.Callback{
 
             override fun onPhotoDeleted() {
                 Log.i("PHOTO_PRESENTER", "ARRAY_PHOTO_DELETE_SUCCESS")
@@ -83,9 +83,11 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
         }
 
         fun deletePhotoArray(pet:PetModel){
-            if(pet.photos != null)
-                for(photo in pet.photos!!)
-                    deletePhotoUseCase.execute(photo.toString(), deletePhotoArrayCallback)
+            val photoList = ArrayList<String>()
+            if(pet.photos != null){
+                for(photo in pet.photos!!) photoList.add(photo.toString())
+                deletePhotoArrayUseCase.execute(photoList, deletePhotoArrayCallback)
+            }
         }
 
         fun pushPhotoArray(){
@@ -133,7 +135,7 @@ class PetPhotoPresenter(private val addPetUseCase: AddPetUseCase,
     }
 
     override fun onDestroy() {
-        //TODO("Not yet implemented")
+
     }
 
 

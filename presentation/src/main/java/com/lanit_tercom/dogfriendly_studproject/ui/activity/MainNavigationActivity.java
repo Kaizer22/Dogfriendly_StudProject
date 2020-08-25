@@ -180,18 +180,15 @@ public class MainNavigationActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-
-
     //region User and Pets profile
     public void startUserDetail(){
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, new UserDetailFragment(userId))
                 .commit();
     }
 
-
     public void startUserDetailEdit(){
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, userDetailEditFragment)
                 .commit();
     }
@@ -199,35 +196,35 @@ public class MainNavigationActivity extends BaseActivity {
     public void startPetDetailEdit(PetModel pet){
         petDetailEditFragment = new PetDetailEditFragment(userId); //вынужденная мера, тут иначе никак - нужен чистый фрагмент
         petDetailEditFragment.initializePet(pet);
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, petDetailEditFragment)
                 .commit();
     }
+
     public void startPetCharacterEdit(PetModel pet){
         petCharacterFragment.initializePet(pet);
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, petCharacterFragment)
                 .commit();
     }
 
     public void startPetPhotoEdit(PetModel pet){
         petPhotoFragment.initializePet(pet);
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, petPhotoFragment)
                 .commit();
     }
 
     public void startPlansEdit(String prevValue){
         editPlansFragment.setPrevValue(prevValue);
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, editPlansFragment)
                 .commit();
-
     }
 
     public void startAboutEdit(String prevValue){
         editAboutFragment.setPrevValue(prevValue);
-        getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, editAboutFragment)
                 .commit();
     }

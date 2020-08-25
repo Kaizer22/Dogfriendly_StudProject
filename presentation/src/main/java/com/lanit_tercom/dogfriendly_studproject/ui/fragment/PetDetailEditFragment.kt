@@ -80,15 +80,17 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
             if (pet.gender == "men") {
                 menButton.background.setTint(Color.parseColor("#B2BC24"))
                 menButton.setTextColor(Color.parseColor("#FFFFFF"))
+                gender = "men"
             } else {
                 womanButton.background.setTint(Color.parseColor("#B2BC24"))
                 womanButton.setTextColor(Color.parseColor("#FFFFFF"))
+                gender = "woman"
             }
 
         }
 
 
-        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
+        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { navigateBack(PetModel()) }
 
         //Присвоили модельке питомца что надо и пошли дальше в характеры
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
@@ -120,8 +122,6 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
                 navigateToNext(pet)
             }
         }
-
-
 
         return view
     }
@@ -186,7 +186,11 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as MainNavigationActivity).startPetCharacterEdit(pet)
+        (activity as? MainNavigationActivity)?.startPetCharacterEdit(pet)
+    }
+
+    override fun navigateBack(pet: PetModel) {
+        (activity as? MainNavigationActivity)?.startUserDetail()
     }
 
     override fun showLoading() {

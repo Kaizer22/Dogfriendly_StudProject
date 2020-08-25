@@ -26,9 +26,11 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivi
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.PushPhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoArrayUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoArrayUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
@@ -70,10 +72,10 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
 
         val addPetUseCase: AddPetUseCase = AddPetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+        val deletePhotoArrayUseCase: DeletePhotoArrayUseCase = DeletePhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoArrayUseCase: PushPhotoArrayUseCase = PushPhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val pushPhotoUseCase: PushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
-        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, deletePhotoUseCase, pushPhotoUseCase, pushPhotoArrayUseCase)
+        this.petPhotoPresenter = PetPhotoPresenter(addPetUseCase, deletePhotoArrayUseCase, pushPhotoUseCase, pushPhotoArrayUseCase)
     }
 
     //Lifecycle-методы
@@ -85,6 +87,7 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         petPhotoPresenter?.initialize(userId, pet.id)
+
     }
 
     override fun onPause() {
@@ -119,7 +122,7 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
         }
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener {
-            activity?.onBackPressed()
+            navigateBack(pet)
         }
 
         //Преобразуем array в arrayList и добавляем питомца. По завершении презентер вызовет navigateToNext()
@@ -185,7 +188,7 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1,1)
                 .setActivityTitle("")
-                .start(context!!,this)
+                .start(requireContext(),this)
     }
 
     //Обратная связь с галереей
@@ -207,8 +210,11 @@ class PetPhotoFragment(private val userId: String?): BaseFragment(), PetDetailEd
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as MainNavigationActivity).startUserDetail()
-        //(activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, UserDetailFragment(userId))
+        (activity as? MainNavigationActivity)?.startUserDetail()
+    }
+
+    override fun navigateBack(pet: PetModel) {
+        (activity as? MainNavigationActivity)?.startPetCharacterEdit(pet)
     }
 
     override fun showLoading() {

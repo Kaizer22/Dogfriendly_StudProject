@@ -8,13 +8,16 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
 import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
+import java.util.ArrayList
 
 class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase?,
                           private val deletePetUseCase: DeletePetUseCase,
-                          private val deletePhotoUseCase: DeletePhotoUseCase) : BasePresenter() {
+                          private val deletePhotoUseCase: DeletePhotoUseCase,
+                          private val deletePhotoArrayUseCase: DeletePhotoArrayUseCase) : BasePresenter() {
 
     private var view: UserDetailView? = null
     private var userId: String? = null
@@ -48,8 +51,16 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         }
 
+
         val deletePhotoCallback: DeletePhotoUseCase.Callback = object : DeletePhotoUseCase.Callback {
 
+            override fun onPhotoDeleted() {}
+
+            override fun onError(errorBundle: ErrorBundle?) {}
+
+        }
+
+        val deletePhotoArrayCallback: DeletePhotoArrayUseCase.Callback = object : DeletePhotoArrayUseCase.Callback{
             override fun onPhotoDeleted() {}
 
             override fun onError(errorBundle: ErrorBundle?) {}
@@ -63,13 +74,13 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
         val photos: List<String>? = petDto?.photos
 
         if (avatar != null) {
-            FirebaseStorage.getInstance().getReferenceFromUrl(avatar).delete()
+            deletePhotoUseCase.execute(avatar, deletePhotoCallback)
+
         }
 
         if (photos != null) {
-            for(photo in photos){
-                FirebaseStorage.getInstance().getReferenceFromUrl(photo).delete()
-            }
+
+            deletePhotoArrayUseCase.execute(photos as? ArrayList<String>?, deletePhotoArrayCallback)
         }
         
 
@@ -79,7 +90,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
     private fun showUserDetailsInView(userDto: UserDto?) {
         val userDtoModelMapper = UserDtoModelMapper()
         val userModel = userDtoModelMapper.map2(userDto)
-        (view as? UserDetailView)?.renderCurrentUser(userModel)
+        view?.renderCurrentUser(userModel)
 
 
     }

@@ -42,7 +42,7 @@ class EditTextPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
             override fun onUserDataEdited() {
-                (view as EditTextFragment).navigateBack()
+                (view as? EditTextFragment)?.navigateBack()
             }
 
             override fun onError(errorBundle: ErrorBundle?) {}

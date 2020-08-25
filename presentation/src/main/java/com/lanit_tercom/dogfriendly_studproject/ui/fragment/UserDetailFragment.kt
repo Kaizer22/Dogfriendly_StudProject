@@ -36,7 +36,9 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoArrayUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
 import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
@@ -79,8 +81,9 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val deletePetUseCase: DeletePetUseCase = DeletePetUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
+        val deletePhotoArrayUseCase = DeletePhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
-        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase, deletePhotoUseCase)
+        userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase, deletePhotoUseCase, deletePhotoArrayUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -30,7 +30,7 @@ class PetCharacterFragment(private val userId: String?): BaseFragment(), PetDeta
 
         selected.clear()
 
-        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
+        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { navigateBack(pet) }
         //Выбрали элементы, передали список элементов модельке питомца и пошли дальше в фото
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
             pet.character = selected
@@ -85,7 +85,11 @@ class PetCharacterFragment(private val userId: String?): BaseFragment(), PetDeta
     }
 
     override fun navigateToNext(pet: PetModel) {
-        (activity as MainNavigationActivity).startPetPhotoEdit(pet)
+        (activity as? MainNavigationActivity)?.startPetPhotoEdit(pet)
+    }
+
+    override fun navigateBack(pet: PetModel) {
+        (activity as? MainNavigationActivity)?.startPetDetailEdit(pet)
     }
 
     override fun showError(message: String) {
