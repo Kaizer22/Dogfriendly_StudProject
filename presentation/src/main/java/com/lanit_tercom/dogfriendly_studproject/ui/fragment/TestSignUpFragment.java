@@ -127,7 +127,6 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
     }
 
     private void initInteractions(View root){
-
         TestSignUpActivity baseActivity = (TestSignUpActivity) getActivity();
         switch (currentStage) {
             case REGISTRATION:
