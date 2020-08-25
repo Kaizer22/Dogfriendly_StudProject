@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -15,13 +15,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -146,6 +145,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                         }
 
                         override fun onLocationSet() {
+                            fillRecycler()
                         }
                     })
                 }
@@ -204,7 +204,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 // Get the current location of the device and set the position of the map.
                 getDeviceLocation()
                 startLocationUpdates()
-                fillRecycler()
             }
 
         }
@@ -315,7 +314,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
             // Get the current location of the device and set the position of the map.
             getDeviceLocation()
             startLocationUpdates()
-            fillRecycler()
         }
         else{
             val dogRecycler = near_list_recycler_view
@@ -467,7 +465,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                     // Get the current location of the device and set the position of the map.
                     getDeviceLocation()
                     startLocationUpdates()
-                    fillRecycler()
                 } else (activity as MainNavigationActivity).switch_visibility.isChecked = false
             }
         }
@@ -495,24 +492,38 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         }
     }
 
-    override fun renderUserOnMap(userId: String?, latitude: Double?, longitude: Double?) {
+    override fun renderUserOnMap(petId: String?, avatar: String, latitude: Double?, longitude: Double?) {
         map?.apply {
             val point = LatLng(latitude!!, longitude!!)
-            addMarker(
-                    MarkerOptions()
-                            .position(point)
-                            .anchor(0.5F, 0.5F)
-                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIconsHalfSize(R.drawable.image_dog_icon)))
-                            .title(userId)
+            val imageView = ImageView(requireActivity())
+            Glide.with(requireActivity())
+                    .asBitmap()
+                    .load(avatar)
+                    .into(object : CustomTarget<Bitmap>(){
+                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                            addMarker(
+                                    MarkerOptions()
+                                            .position(point)
+                                            .anchor(0.5F, 0.5F)
+                                            .icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons(resource, 5)))
+                                            .title(petId)
 
-            )
+                            )
+                        }
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            // this is called when imageView is cleared on lifecycle call or for
+                            // some other reason.
+                            // if you are referencing the bitmap somewhere else too other than this imageView
+                            // clear it here as you can no longer have the bitmap
+                        }
+                    })
+
 
         }
     }
 
-    fun resizeMapIconsHalfSize(iconId: Int): Bitmap? {
-        val imageBitmap: Bitmap = BitmapFactory.decodeResource(resources, iconId)
-        return Bitmap.createScaledBitmap(imageBitmap, imageBitmap.width / 2, imageBitmap.height / 2, false)
+    fun resizeMapIcons(imageBitmap: Bitmap, multiplier: Int): Bitmap? {
+        return Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
     }
 
     override fun onClick(v: View?) {

@@ -1,13 +1,11 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
-import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
-import java.lang.Exception
+
 
 /**
  * presenter класс для работы с картой
@@ -17,10 +15,14 @@ import java.lang.Exception
 class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) : BasePresenter(){
 
     private var view: MapView? = null
+    private var users: MutableList<UserDto>? = null
 
     fun setView(view: MapView){ this.view = view }
 
-    fun initialize(userId: String, radius: Double) = this.loadUsersCoordinates(userId, radius)
+    fun initialize(userId: String, radius: Double){
+        getUsersDetails(usersDetailsCallback)
+        this.loadUsersCoordinates(userId, radius)
+    }
 
 
 
@@ -33,25 +35,33 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     }
 
 
-    fun renderMap(userId: String?, latitude: Double?, longitude: Double?){
-        view?.renderUserOnMap(userId, latitude, longitude)
+    fun renderMap(userId: String?, avatar: String, latitude: Double?, longitude: Double?){
+        view?.renderUserOnMap(userId, avatar, latitude, longitude)
     }
 
-//    private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
-//
-//        override fun onUsersDataLoaded(users: MutableList<UserDto>?) =
-//            this@MapPresenter.renderMap(users)
-//
-//
-//        override fun onError(errorBundle: ErrorBundle?) {}
-//
-//    }
+    private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
+
+        override fun onUsersDataLoaded(users: MutableList<UserDto>?){
+            this@MapPresenter.users = users
+        }
+
+
+        override fun onError(errorBundle: ErrorBundle?) {}
+
+    }
+
     private val userQueryAtLocationCallback = object: UserGeoFire.UserQueryAtLocationCallback{
         override fun onError(exception: Exception?) {
         }
 
         override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
-            this@MapPresenter.renderMap(key, latitude, longitude)
+            val user =users?.find { it.id == key }
+            if (user != null && user.pets != null){
+                for (pet in user.pets){
+                    this@MapPresenter.renderMap(pet.key, pet.value.avatar , latitude, longitude)
+                    return
+                }
+            }
         }
     }
 
