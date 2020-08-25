@@ -75,7 +75,9 @@
     <!--ChannelList-->
     <string name="channel_delete_button">Удалить</string>
     <string name="channel_notification_turn_off_button">Выкл.звук</string>
-    <string name="channel_hold_on_button">Открепить</string>
+    <string name="channel_notification_turn_on_button">Вкл.звук</string>
+    <string name="channel_pin_button">Закрепить</string>
+    <string name="channel_unpin_button">Открепить</string>
 
     <!--Invitation Activity-->
     <string name="invitation_headline">Приглашение</string>

@@ -17,6 +17,8 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivi
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +32,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
 
 
     public ChannelListAdapter(Context context){
-        this.channels = new LinkedList<>();
+        this.channels = new ArrayList<>();
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
@@ -51,8 +53,33 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         holder.setLastMessage(channelModel.getLastMessage());
         //holder.setLastMessageTime(channelModel.getTimestamp().toString());
         Date date = new Date(channelModel.getTimestamp());
-        holder.setLastMessageTime(
-                new SimpleDateFormat("dd.MM.YYYY hh:mm", Locale.UK).format(date));
+        Date currentDate = new Date();
+        String lastMessageTime = "";
+        long diff = currentDate.getTime() - date.getTime();
+        if (diff < 60000){
+            lastMessageTime = "сейчас";
+        }
+        else if(diff < 3600000){
+            lastMessageTime = diff/60000 + " мин";
+        }
+        else if(diff < 60000 * 60 * 24){
+            lastMessageTime = diff/60000/60 + " ч";
+        }
+        else if((diff > 60000 * 60 * 24) && (diff < 60000 * 60 * 24*2)){
+            lastMessageTime = "вчера";
+        }
+        else if ((diff > 60000 * 60 * 24*2) && (diff < 60000L*60*24*365)) {
+            long time = diff / 60 / 60000 / 24;
+            if (time%10 < 4)
+                lastMessageTime = time + " дня";
+            else
+                lastMessageTime = time + " дней";
+        }
+        else lastMessageTime = diff / 60000L/60/24/365 + " г";
+
+
+        //holder.setLastMessageTime(new SimpleDateFormat("dd.MM.YYYY hh:mm", Locale.UK).format(currentDate));
+        holder.setLastMessageTime(lastMessageTime);
 
         holder.itemView.setOnClickListener(v -> {
             String channelId = channelModel.getId();
@@ -90,6 +117,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         validateChannelList(channelList);
         channels.clear();
         channels.addAll(channelList);
+        Collections.reverse(channels);
         notifyDataSetChanged();
     }
 

@@ -129,7 +129,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
 
                     }
                 })
-                .setSwipeOptionViews(R.id.delete_button,R.id.turnOffNotification_button, R.id.holdOn_button)
+                .setSwipeOptionViews(R.id.delete_button,R.id.turnOffNotification_button, R.id.pin_message_button)
                 .setSwipeable(R.id.rowFB, R.id.rowBG, new ChannelRecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
@@ -140,10 +140,10 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
                                 Toast.makeText(getContext(), "Диалог удален", Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.turnOffNotification_button:
-                                Toast.makeText(getContext(),"Edit Not Available",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Уведомления выключены",Toast.LENGTH_SHORT).show();
                                 break;
-                            case R.id.holdOn_button:
-                                Toast.makeText(getContext(), "The message was holded", Toast.LENGTH_LONG).show();
+                            case R.id.pin_message_button:
+                                Toast.makeText(getContext(), "Сообщение закреплено", Toast.LENGTH_LONG).show();
                                 break;
 
                         }

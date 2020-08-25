@@ -42,4 +42,8 @@ class UserDetailObserverActivity : BaseActivity() {
 
         }
     }
+
+    fun navigateToChannelList(userId: String?){
+        navigator?.navigateToChannelList(this, userId)
+    }
 }

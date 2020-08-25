@@ -37,13 +37,13 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_delete_24"
-                    android:tint="#FFD688" />
+                    android:tint="@color/whiteTransparent" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/channel_delete_button"
-                    android:textColor="#FFD688"/>
+                    android:textColor="@color/whiteTransparent"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -55,7 +55,7 @@
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            android:background="#FFD688">
+            android:background="@color/fourGray">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,26 +70,27 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_volume_off_24"
-                    android:tint="#4F4F4F" />
+                    android:tint="@color/whiteTransparent" />
 
                 <TextView
+                    android:id="@+id/channel_turnOff__ntf_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="@string/channel_notification_turn_off_button"
-                    android:textColor="#4F4F4F"/>
+                    android:textColor="@color/whiteTransparent"/>
             </LinearLayout>
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/holdOn_button"
+            android:id="@+id/pin_message_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
             android:orientation="vertical"
-            android:background="#828282">
+            android:background="@color/activity_elements">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,20 +99,22 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <!--android:src="@drawable/hold_on_message"-->
+
                 <ImageView
-                    android:id="@+id/img_holdOn"
+                    android:id="@+id/img_pin_message"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:tint="@android:color/white" />
+                    android:src="@drawable/pin_channel"
+                    android:tint="@color/fiveGray" />
 
                 <TextView
+                    android:id="@+id/channel_pin_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="@string/channel_hold_on_button"
-                    android:textColor="#FFFFFF"/>
+                    android:text="@string/channel_pin_button"
+                    android:textColor="@color/fiveGray"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -173,9 +176,37 @@
                     android:textSize="15sp"
                     android:textStyle="normal"
                     android:textColor="@color/channellist_activity_name_text"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                
+                <ImageView
+                    android:id="@+id/turn_off_ntf_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_baseline_volume_off_24"
+                    android:tint="@color/fourGray"
+                    android:visibility="gone"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@id/user_receiver_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/pin_channel_icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/pin_channel"
+                    android:tint="@color/fourGray"
+                    android:visibility="gone"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@id/turn_off_ntf_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <FrameLayout
                     android:id="@+id/frameLayout"
@@ -221,9 +252,13 @@
                     android:textStyle="normal"
                     android:textSize="15sp"
                     android:textColor="@color/channellist_activity_message_text"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:layout_marginEnd="70dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
                 <TextView
                     android:id="@+id/last_message_time"
