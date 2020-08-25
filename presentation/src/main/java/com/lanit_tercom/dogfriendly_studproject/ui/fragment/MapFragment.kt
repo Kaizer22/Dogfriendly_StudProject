@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,7 +43,6 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.MapActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
@@ -56,6 +56,7 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.test_layout_bottom_sheet.*
+import kotlin.math.roundToInt
 
 /**
  * Фрагмент работающий с API googleMaps
@@ -182,12 +183,105 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         //button_create_walk.setOnClickListener { v: View? ->  (activity as MapActivity).navigateToWalkCreation(currentId)}
         (activity as MainNavigationActivity).switch_visibility.setOnCheckedChangeListener(this)
         (activity as MainNavigationActivity).button_create_walk.setOnClickListener(this)
+        button_radar.visibility = View.GONE
         //(activity as MapActivity).switch_visibility.setOnCheckedChangeListener(this)
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        if (isChecked) startLocationUpdates()
-        else stopLocationUpdates()
+
+        val dogRecycler = near_list_recycler_view
+        dogRecycler.layoutManager = LinearLayoutManager(activity)
+
+        if (isChecked){
+            // Prompt the user for permission.
+            getLocationPermission()
+            if (locationPermissionGranted){
+
+                // Turn on the My Location layer and the related control on the map.
+                updateLocationUI()
+                button_radar.visibility = View.VISIBLE
+
+                // Get the current location of the device and set the position of the map.
+                getDeviceLocation()
+                startLocationUpdates()
+                fillRecycler()
+            }
+
+        }
+        else {
+            button_radar.visibility = View.GONE
+            stopLocationUpdates()
+            dogRecycler.adapter = null
+            UserGeoFire().userDeleteLocation(currentId)
+        }
+    }
+
+    private fun fillRecycler(){
+        if (locationPermissionGranted){
+            val dogRecycler = near_list_recycler_view
+            dogRecycler.layoutManager = LinearLayoutManager(activity)
+            //Заполнение RecyclerView с собаками поблизости
+            val nearUsers = mutableMapOf<String?, List<Double?>>()
+            var allUsers: MutableList<UserDto>? = null
+            UserGeoFire().userQueryAtLocation(currentId, 5.0, object : UserGeoFire.UserQueryAtLocationCallback {
+                override fun onError(exception: java.lang.Exception?) {
+
+                }
+
+                override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
+
+                    nearUsers[key] = listOf(latitude, longitude)
+                    userMapPresenter?.getUsersDetails(object : GetUsersDetailsUseCase.Callback {
+                        override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
+                            allUsers = users
+
+                            val names = mutableListOf<String>()
+                            val imageIds = mutableListOf<String>()
+                            val distances = mutableListOf<Double>()
+                            val breeds = mutableListOf<String>()
+                            val ages = mutableListOf<Int>()
+
+                            allUsers?.forEach { user ->
+                                if (nearUsers.keys.contains(user.id) && user.id != currentId) {
+                                    //Крашилось с user.pets must not be null
+                                    Log.d("MAP_TEST", user.id)
+                                    if (user.pets != null) {
+                                        user.pets.forEach { pet ->
+                                            names.add(pet.value.name)
+                                            if (pet.value.avatar != null)
+                                                imageIds.add(pet.value.avatar)
+                                            else
+                                                imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
+                                            breeds.add(pet.value.breed)
+                                            ages.add(pet.value.age)
+                                            val lat1 = currentLocation?.latitude!!
+                                            val long1 = currentLocation?.longitude!!
+                                            val lat2 = nearUsers[user.id]?.get(0)!!
+                                            val long2 = nearUsers[user.id]?.get(1)!!
+                                            var distance = distance(lat1, lat2, long1, long2, 0.0, 0.0).roundToInt()
+                                            distances.add(distance.toDouble())
+                                        }
+                                    }
+                                }
+                                if (user.id == currentId) currentUser = user
+                            }
+
+                            val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                            adapter.setListener(object : DogAdapter.Listener {
+                                override fun onClick(position: Int) {
+                                    startActivity(Intent(activity, PetDetailTestActivity::class.java))
+                                }
+                            })
+                            dogRecycler.adapter = adapter
+                        }
+
+                        override fun onError(errorBundle: ErrorBundle?) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+                }
+            })
+        }
     }
 
     /**
@@ -209,6 +303,27 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     override fun onResume() {
         super.onResume()
+        if ((activity as MainNavigationActivity).switch_visibility.isChecked && locationPermissionGranted){
+            button_radar.visibility = View.VISIBLE
+
+            // Prompt the user for permission.
+            getLocationPermission()
+
+            // Turn on the My Location layer and the related control on the map.
+            updateLocationUI()
+
+            // Get the current location of the device and set the position of the map.
+            getDeviceLocation()
+            startLocationUpdates()
+            fillRecycler()
+        }
+        else{
+            val dogRecycler = near_list_recycler_view
+            button_radar.visibility = View.GONE
+            stopLocationUpdates()
+            dogRecycler.adapter = null
+            UserGeoFire().userDeleteLocation(currentId)
+        }
         userMapPresenter?.onResume()
     }
 
@@ -233,7 +348,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         //(activity as MapActivity).navigateToUserDetail(p0?.title)
         //(activity as MainNavigationActivity).navigateToUserDetail(p0?.title)
         Log.d("MARKER_CLICKED", p0?.title)
-        (activity as MainNavigationActivity).navigateToUserDetailObserver(AuthManagerFirebaseImpl().currentUserId , p0?.title)
+        (activity as MainNavigationActivity).navigateToUserDetailObserver(AuthManagerFirebaseImpl().currentUserId, p0?.title)
         //startActivity(Intent(activity, UserDetailObserverFragment::class.java))
         //(activity as MapActivity).navigateToUserDetail(p0?.title)
         return true
@@ -246,15 +361,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onMapReady(googleMap: GoogleMap?) {
         this.map = googleMap
         googleMap?.setOnMarkerClickListener(this)
-
-        // Prompt the user for permission.
-        getLocationPermission()
-
-        // Turn on the My Location layer and the related control on the map.
-        updateLocationUI()
-
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation()
     }
 
     private fun createLocationRequest(): LocationRequest? {
@@ -333,13 +439,14 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
          * device. The result of the permission request is handled by a callback,
          * onRequestPermissionsResult.
          */
+
         if (ContextCompat.checkSelfPermission(activity?.applicationContext!!,
                         Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true
         } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+            requestPermissions(arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
         }
     }
 
@@ -357,7 +464,11 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 if (grantResults.isNotEmpty() &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     locationPermissionGranted = true
-                }
+                    // Get the current location of the device and set the position of the map.
+                    getDeviceLocation()
+                    startLocationUpdates()
+                    fillRecycler()
+                } else (activity as MainNavigationActivity).switch_visibility.isChecked = false
             }
         }
         updateLocationUI()
@@ -378,7 +489,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 map?.isMyLocationEnabled = false
                 map?.uiSettings?.isMyLocationButtonEnabled = false
                 lastKnownLocation = null
-                getLocationPermission()
             }
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message, e)
@@ -455,69 +565,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         val halfScreenHeight = point.y / 2
         params.height = halfScreenHeight
         bottom_sheet.layoutParams = params
-
-        //Заполнение RecyclerView с собаками поблизости
-        val dogRecycler = near_list_recycler_view
-        dogRecycler.layoutManager = LinearLayoutManager(activity)
-
-        val nearUsers = mutableMapOf<String?, List<Double?>>()
-        var allUsers: MutableList<UserDto>? = null
-        UserGeoFire().userQueryAtLocation(currentId, 5.0, object : UserGeoFire.UserQueryAtLocationCallback {
-            override fun onError(exception: java.lang.Exception?) {
-
-            }
-
-            override fun onQueryLoaded(key: String?, latitude: Double?, longitude: Double?) {
-
-                nearUsers[key] = listOf(latitude, longitude)
-                userMapPresenter?.getUsersDetails(object : GetUsersDetailsUseCase.Callback {
-                    override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
-                        allUsers = users
-
-                        val names = mutableListOf<String>()
-                        val imageIds = mutableListOf<String>()
-                        val distances = mutableListOf<Double>()
-                        val breeds = mutableListOf<String>()
-                        val ages = mutableListOf<Int>()
-
-                        allUsers?.forEach { user ->
-                            if (nearUsers.keys.contains(user.id) && user.id != currentId) {
-                                //Крашилось с user.pets must not be null
-                                Log.d("MAP_TEST", user.id)
-                                if (user.pets != null){
-                                    user.pets.forEach { pet ->
-                                        names.add(pet.value.name)
-                                        imageIds.add("https://firebasestorage.googleapis.com/v0/b/dogfriendlystudproject.appspot.com/o/Uploads%2F-MEYGzlqgcVxSHRV5LQ9%2Favatar?alt=media&token=fc7472ba-bfa2-4885-a6e3-f679a6ccfa78")
-                                        breeds.add(pet.value.breed)
-                                        ages.add(pet.value.age)
-                                        val lat1 = currentLocation?.latitude!!
-                                        val long1 = currentLocation?.longitude!!
-                                        val lat2 = nearUsers[user.id]?.get(0)!!
-                                        val long2 = nearUsers[user.id]?.get(1)!!
-                                        val distance = distance(lat1, lat2, long1, long2, 0.0, 0.0)
-                                        distances.add(distance)
-                                    }
-                                }
-                            }
-                            if (user.id == currentId) currentUser = user
-                        }
-
-                        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
-                        adapter.setListener(object : DogAdapter.Listener {
-                            override fun onClick(position: Int) {
-                                startActivity(Intent(activity, PetDetailTestActivity::class.java))
-                            }
-                        })
-                        dogRecycler.adapter = adapter
-                        dogRecycler.layoutManager = LinearLayoutManager(activity)
-                    }
-
-                    override fun onError(errorBundle: ErrorBundle?) {
-                        TODO("Not yet implemented")
-                    }
-                })
-            }
-        })
     }
 
     /**
