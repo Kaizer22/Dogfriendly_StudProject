@@ -42,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 public class MainNavigationActivity extends BaseActivity {
     private String userId;
 
-    private int DEFAULT_CHECKED_ITEM = R.id.navigation_settings;
+    private int DEFAULT_CHECKED_ITEM = R.id.navigation_profile;
 
     //region supported fragments
     private MapFragment mapFragment;
@@ -104,39 +104,9 @@ public class MainNavigationActivity extends BaseActivity {
         navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navView.setItemIconTintList(ContextCompat
                 .getColorStateList(this, R.color.bottom_navigation_colors_list));
-        navView.getMenu().findItem(DEFAULT_CHECKED_ITEM).setChecked(true);
-
+        updateNavigationHostFragment(navView, mapTopBar, DEFAULT_CHECKED_ITEM);
         navView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()){
-                case R.id.navigation_profile:
-                    mapTopBar.setVisibility(View.GONE);
-                    navView.getMenu().findItem(R.id.navigation_profile).setChecked(true);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.nav_host_fragment, userDetailFragment)
-                            .commit();
-                    break;
-                case R.id.navigation_map:
-                    mapTopBar.setVisibility(View.VISIBLE);
-                    navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.nav_host_fragment, mapFragment)
-                            .commit();
-                    break;
-                case R.id.navigation_channels:
-                    mapTopBar.setVisibility(View.GONE);
-                    navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.nav_host_fragment, channelListFragment)
-                            .commit();
-                    break;
-                case R.id.navigation_settings:
-                    mapTopBar.setVisibility(View.GONE);
-                    navView.getMenu().findItem(R.id.navigation_settings).setChecked(true);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.nav_host_fragment, testEmptyFragment)
-                            .commit();
-                    break;
-            }
+            updateNavigationHostFragment(navView, mapTopBar, item.getItemId());
             return false;
         });
 
@@ -146,6 +116,40 @@ public class MainNavigationActivity extends BaseActivity {
                 R.id.navigation_settings,
                 R.id.navigation_channels)
                 .build();
+    }
+
+    private void updateNavigationHostFragment(BottomNavigationView navView,
+                                              AppBarLayout mapTopBar, int navigationId){
+            switch (navigationId){
+                case R.id.navigation_profile:
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_profile).setChecked(true);
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.nav_host_fragment, userDetailFragment)
+                            .commit();
+                    break;
+                case R.id.navigation_map:
+                    mapTopBar.setVisibility(View.VISIBLE);
+                    navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.nav_host_fragment, mapFragment)
+                            .commit();
+                    break;
+                case R.id.navigation_channels:
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.nav_host_fragment, channelListFragment)
+                            .commit();
+                    break;
+                case R.id.navigation_settings:
+                    mapTopBar.setVisibility(View.GONE);
+                    navView.getMenu().findItem(R.id.navigation_settings).setChecked(true);
+                    getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                            .replace(R.id.nav_host_fragment, testEmptyFragment)
+                            .commit();
+                    break;
+            }
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -125,6 +127,7 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
     }
 
     private void initInteractions(View root){
+
         TestSignUpActivity baseActivity = (TestSignUpActivity) getActivity();
         switch (currentStage) {
             case REGISTRATION:
@@ -133,6 +136,8 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
 
                 toGeolocationHint.setOnClickListener(l -> register(root) );
                 toSignInLink.setOnClickListener(l -> baseActivity.navigateToSignIn());
+                root.findViewById(R.id.fragment_sign_up)
+                        .setOnClickListener(l -> hideKeyboard(root));
                 break;
             case GEOLOCATION_HINT:
                 Button turnOnGeolocation = root.findViewById(R.id.button_turn_on_geolocation);
@@ -149,7 +154,7 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
                 Button finishRegistration = root.findViewById(R.id.button_finish_registration);
                 finishRegistration.setOnClickListener(l ->{
                     currentStage = SignUpStage.REGISTRATION;
-                    baseActivity.navigateToSignIn();
+                    baseActivity.navigateToUserProfile();
                 });
                 //finishRegistration.setOnClickListener(l -> baseActivity.navigateToUserProfile());
                 break;
@@ -164,6 +169,12 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
         presenter.registerUser(email.getText().toString(),
                 password.getText().toString(),
                 name.getText().toString());
+    }
+
+    private void hideKeyboard(View root) {
+        InputMethodManager inputMethodManager  =
+                (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(root.getWindowToken(),0);
     }
 
     private void turnOnGeolocation(){

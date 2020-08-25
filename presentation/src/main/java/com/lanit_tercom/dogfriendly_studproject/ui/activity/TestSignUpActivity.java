@@ -23,7 +23,7 @@ public class TestSignUpActivity extends BaseActivity {
 
     public void navigateToUserProfile(){ //Переход в пустой профиль нового
                                          // пользователя по завершении регистрации
-        //getNavigator().navigateTo
+        getNavigator().navigateToMainNavigation(this);
     }
 
     public void navigateToSignIn(){

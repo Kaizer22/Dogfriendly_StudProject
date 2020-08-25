@@ -24,6 +24,10 @@ public class TestSignUpPresenter extends BasePresenter {
     private String currentUserId;
     private TestSignUpView view;
 
+    private String DEFAULT_USER_AVATAR= "https://firebasestorage.googleapis.com" +
+            "/v0/b/dogfriendlystudproject.appspot.com/o" +
+            "/Uploads%2FJurrTX2vrYWWX4Svo9CO42xFrnk2%2Favatar?alt=media&token=b5f13ce4-a1bd-4468-8bf8-925e3a5e759c";
+
     private CreateUserDetailsUseCase createUser;
 
     public TestSignUpPresenter(AuthManager authManager, CreateUserDetailsUseCase createUser){
@@ -43,8 +47,8 @@ public class TestSignUpPresenter extends BasePresenter {
                         currentUserId = currentUserID;
                         view.changeSignUpStage(TestSignUpFragment.SignUpStage.GEOLOCATION_HINT);
                         UserDto userDto = new UserDto(currentUserId, name,
-                                0, "Расскажите о себе", "Ваши планы",
-                                new HashMap<String, PetDto>(), "@drawable/fox");
+                                0, "Расскажите о себе", "Ваши планы на ближаюшую прогулку",
+                                new HashMap<String, PetDto>(), DEFAULT_USER_AVATAR);
                         createUser.execute(userDto, new CreateUserDetailsUseCase.Callback() {
                             @Override
                             public void onUserDataCreated() {
