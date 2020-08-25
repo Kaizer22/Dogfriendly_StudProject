@@ -26,9 +26,14 @@ public interface PhotoStore {
         void onPhotoArrayPushed(ArrayList<String> downloadUris);
     }
 
+    interface DeletePhotoArrayCallback extends Error{
+        void onPhotoArrayDeleted();
+    }
+
     void getPhoto(String fileName, GetPhotoCallback getPhotoCallback);
     void pushPhoto(String fileName, String uriString, PushPhotoCallback pushPhotoCallback);
     void deletePhoto(String fileName, DeletePhotoCallback deletePhotoCallback);
     void pushPhotoArray(String dirName, ArrayList<String> uriStrings, PushPhotoArrayCallback pushPhotoArrayCallback);
+    void deletePhotoArray(ArrayList<String> photoList, DeletePhotoArrayCallback deletePhotoArrayCallback);
 
 }

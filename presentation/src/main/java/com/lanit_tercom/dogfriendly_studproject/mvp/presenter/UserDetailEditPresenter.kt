@@ -48,7 +48,9 @@ class UserDetailEditPresenter(private val getUserDetailsUseCase: GetUserDetailsU
 
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
-            override fun onUserDataEdited() {(view as? UserDetailEditView)?.navigateBack()}
+            override fun onUserDataEdited() {
+                view?.navigateBack()
+            }
 
             override fun onError(errorBundle: ErrorBundle?) {}
 
@@ -84,7 +86,7 @@ class UserDetailEditPresenter(private val getUserDetailsUseCase: GetUserDetailsU
             }
 
             if(user?.avatar != null){
-                deletePhotoUseCase?.execute(user?.id+"/avatar", deletePhotoCallback)
+                deletePhotoUseCase?.execute(user?.avatar.toString(), deletePhotoCallback)
             } else {
                 editUserDetailsUseCase?.execute(mapper.map1(user), editUserDetailsCallback)
             }

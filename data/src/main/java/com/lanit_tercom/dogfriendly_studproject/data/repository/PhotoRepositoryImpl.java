@@ -95,4 +95,19 @@ public class PhotoRepositoryImpl implements PhotoRepository {
         });
     }
 
+    @Override
+    public void deletePhotoArray(ArrayList<String> photoList, DeletePhotoArrayCallback deletePhotoArrayCallback) {
+        PhotoStore photoStore = this.photoStoreFactory.create();
+        photoStore.deletePhotoArray(photoList, new PhotoStore.DeletePhotoArrayCallback() {
+            @Override
+            public void onPhotoArrayDeleted() {
+                deletePhotoArrayCallback.onPhotoArrayDeleted();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                deletePhotoArrayCallback.onError(errorBundle);
+            }
+        });
+    }
 }

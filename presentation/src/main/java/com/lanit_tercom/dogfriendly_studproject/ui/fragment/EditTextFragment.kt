@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.InputFilter
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
@@ -23,6 +25,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPres
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.EditTextView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
@@ -34,12 +37,17 @@ import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 
-class EditTextFragment(private val fieldType: String?, private val userId: String?, private val prevValue: String?): BaseFragment(), EditTextView {
+class EditTextFragment(private val fieldType: String?, private val userId: String?): BaseFragment(), EditTextView {
     private lateinit var btnReady: Button
     private lateinit var btnBack: ImageButton
     private lateinit var titleText: TextView
     private lateinit var editText: EditText
     private lateinit var editTextPresenter: EditTextPresenter
+    private var prevValue: String? = null
+
+    fun setPrevValue(prevValue: String?){
+        this.prevValue = prevValue
+    }
 
     //Инициализация презентера
     override fun initializePresenter() {
@@ -52,7 +60,7 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
                 userEntityDtoMapper)
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
-        val getUserDetailsUseCase: GetUserDetailsUseCaseImpl = GetUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
+        val getUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
 
         this.editTextPresenter = EditTextPresenter(getUserDetailsUseCase,editUserDetailsUseCase)
     }
@@ -64,6 +72,8 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
         btnBack = view.findViewById(R.id.back_button)
         editText = view.findViewById(R.id.editText)
         titleText = view.findViewById(R.id.title_text)
+
+        view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
         //Загрузка текущего значения (если имеется)
         if(prevValue != null) editText.setText(prevValue)
@@ -101,11 +111,17 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
             //Прячем клавиатуру при выходе из метода
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(editText.windowToken, 0)
-            activity?.onBackPressed()
+            //activity?.onBackPressed()
         }
 
         return view
 
+    }
+
+    //Прячем клавиатуру
+    private fun hideKeyboard() {
+        val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     //Lifecycle - методы
@@ -122,7 +138,7 @@ class EditTextFragment(private val fieldType: String?, private val userId: Strin
 
     //Навигация обратно в профиль пользователя
     override fun navigateBack() {
-        (activity as UserDetailActivity).startUserDetail()
+        (activity as MainNavigationActivity).startUserDetail()
     }
 
     override fun showLoading() {

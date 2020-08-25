@@ -25,13 +25,10 @@ import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailEditPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailEditView
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
-import com.lanit_tercom.domain.interactor.photo.impl.GetPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.EditUserDetailsUseCaseImpl
@@ -87,7 +84,6 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
         view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener {
-            // activity?.onBackPressed()
             navigateBack();
             }
 
@@ -143,7 +139,7 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
                 .setAspectRatio(1,1)
                 .setRequestedSize(320, 320)
                 .setActivityTitle("")
-                .start(context!!, this)
+                .start(requireContext(), this)
     }
 
     //Обратная связь с галлереей

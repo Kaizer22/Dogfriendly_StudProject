@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
 import android.util.Log
+import com.google.firebase.storage.FirebaseStorage
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment
@@ -61,14 +62,16 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
         val avatar: String? = petDto?.avatar
         val photos: List<String>? = petDto?.photos
 
-        deletePhotoUseCase.execute(avatar, deletePhotoCallback)
+        if (avatar != null) {
+            FirebaseStorage.getInstance().getReferenceFromUrl(avatar).delete()
+        }
 
         if (photos != null) {
             for(photo in photos){
-                deletePhotoUseCase.execute(photo, deletePhotoCallback)
+                FirebaseStorage.getInstance().getReferenceFromUrl(photo).delete()
             }
         }
-
+        
 
     }
 

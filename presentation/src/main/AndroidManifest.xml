@@ -18,7 +18,6 @@
         <activity android:name=".tests.ui.map.MapSettingsActivity" />
         <activity android:name=".tests.ui.PhotoTestActivity" />
         <activity android:name=".ui.activity.UserDetailObserverActivity"></activity>
-        <activity android:name=".ui.activity.EditTextActivity" />
         <activity android:name=".ui.activity.UserDetailActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

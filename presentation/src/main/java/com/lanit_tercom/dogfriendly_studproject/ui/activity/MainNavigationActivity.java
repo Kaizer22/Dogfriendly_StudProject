@@ -26,6 +26,7 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel;
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.EditTextFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetCharacterFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment;
@@ -53,6 +54,9 @@ public class MainNavigationActivity extends BaseActivity {
     private PetDetailEditFragment petDetailEditFragment;
     private PetCharacterFragment petCharacterFragment;
     private PetPhotoFragment petPhotoFragment;
+
+    private EditTextFragment editPlansFragment;
+    private EditTextFragment editAboutFragment;
     //endregion
 
     public static Intent getCallingIntent(Context context){
@@ -73,6 +77,9 @@ public class MainNavigationActivity extends BaseActivity {
         userDetailEditFragment = new UserDetailEditFragment(userId);
         petCharacterFragment = new PetCharacterFragment(userId);
         petPhotoFragment = new PetPhotoFragment(userId);
+
+        editPlansFragment = new EditTextFragment("plans", userId);
+        editAboutFragment = new EditTextFragment("about", userId);
     }
 
     @Override
@@ -207,6 +214,21 @@ public class MainNavigationActivity extends BaseActivity {
         petPhotoFragment.initializePet(pet);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, petPhotoFragment)
+                .commit();
+    }
+
+    public void startPlansEdit(String prevValue){
+        editPlansFragment.setPrevValue(prevValue);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, editPlansFragment)
+                .commit();
+
+    }
+
+    public void startAboutEdit(String prevValue){
+        editAboutFragment.setPrevValue(prevValue);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, editAboutFragment)
                 .commit();
     }
 

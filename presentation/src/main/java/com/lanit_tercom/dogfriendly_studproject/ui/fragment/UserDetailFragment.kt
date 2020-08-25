@@ -139,13 +139,13 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         //Присвоение OnClickListener текстовым полям "о себе" и "планы на прогулку" - так будет открываться фрагмент для редактирования соотв полей
         plansText = view.findViewById(R.id.plans_text)
         plansText.setOnClickListener {
-            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("plans", userId, plansText.text.toString()))
+            (activity as MainNavigationActivity).startPlansEdit(plansText.text.toString())
 
         }
 
         aboutText = view.findViewById(R.id.about_text)
         aboutText.setOnClickListener {
-            (activity as BaseActivity).replaceFragment(R.id.nav_host_fragment, EditTextFragment("about", userId, plansText.text.toString()))
+            (activity as MainNavigationActivity).startAboutEdit(plansText.text.toString())
         }
 
         //Открытие/скрытие нижней панели

@@ -128,7 +128,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
 
 
 
-    //Причем клавиатуру
+    //Прячем клавиатуру
     private fun hideKeyboard() {
         val inputMethodManager: InputMethodManager = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
@@ -161,7 +161,7 @@ class PetDetailEditFragment(private val userId: String?) : BaseFragment(), PetDe
                 .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1, 1)
                 .setActivityTitle("")
-                .start(context!!, this)
+                .start(requireContext(), this)
     }
 
     override fun initializePresenter() {}

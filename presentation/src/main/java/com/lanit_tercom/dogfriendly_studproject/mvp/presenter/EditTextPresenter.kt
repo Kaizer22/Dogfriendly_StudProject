@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.EditTextView
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.EditTextFragment
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
@@ -40,7 +41,9 @@ class EditTextPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCase
     fun editTextFields() {
         val editUserDetailsCallback: EditUserDetailsUseCase.Callback = object : EditUserDetailsUseCase.Callback {
 
-            override fun onUserDataEdited() {}
+            override fun onUserDataEdited() {
+                (view as EditTextFragment).navigateBack()
+            }
 
             override fun onError(errorBundle: ErrorBundle?) {}
 
