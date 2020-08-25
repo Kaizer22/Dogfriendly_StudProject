@@ -183,7 +183,7 @@ public class MainNavigationActivity extends BaseActivity {
     //region User and Pets profile
     public void startUserDetail(){
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                .replace(R.id.nav_host_fragment, new UserDetailFragment(userId))
+                .replace(R.id.nav_host_fragment, userDetailFragment)
                 .commit();
     }
 

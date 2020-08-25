@@ -81,6 +81,8 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
 
         avatar.setOnClickListener{ loadAvatar() }
 
+        avatarUri = null
+
         view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
         view.findViewById<ImageView>(R.id.back_button).setOnClickListener {
