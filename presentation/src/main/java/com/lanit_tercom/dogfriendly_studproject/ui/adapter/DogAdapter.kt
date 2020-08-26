@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
 import kotlinx.android.synthetic.main.near_list_item_view_test.view.*
 
-class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val distances: Array<Double>, val breeds: Array<String>, val ages: Array<Int>, val tag: String ): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
+class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val distances: Array<Int?>, val breeds: Array<String>, val ages: Array<Int>, val tag: String ): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
 
@@ -48,7 +48,7 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val dist
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cardView = holder.cardView
         val imageView = cardView.image_dog_icon
-        Glide.with(cardView.context).load(imageIds[position]).into(imageView)
+        Glide.with(cardView.context).load(imageIds[position]).circleCrop().into(imageView)
         val textViewDogName = cardView.textView_dog_name
         textViewDogName.text = names[position]
         val textViewDistance = cardView.textView_distance

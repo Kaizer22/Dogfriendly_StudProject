@@ -1,5 +1,6 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 
+import android.graphics.Bitmap
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.domain.dto.UserDto
@@ -35,7 +36,7 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     }
 
 
-    fun renderMap(userId: String?, avatar: String, latitude: Double?, longitude: Double?){
+    fun renderMap(userId: String?, avatar: String?, latitude: Double?, longitude: Double?){
         view?.renderUserOnMap(userId, avatar, latitude, longitude)
     }
 
@@ -69,5 +70,31 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
         this.view = null
     }
 
+    /**
+     * Рассчитывает расстояние между двумя точками по широте и долготе
+     * (если не нужна высота - подать на вход функции в параметрах el1, el2 0.0
+     * @returns Дистанцию в метрах
+     */
+    fun distance(lat1: Double, lat2: Double, lon1: Double,
+                 lon2: Double, el1: Double, el2: Double): Double {
+        val R = 6371 // Radius of the earth
+        val latDistance = Math.toRadians(lat2 - lat1)
+        val lonDistance = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + (Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2)))
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        var distance = R * c * 1000 // convert to meters
+        val height = el1 - el2
+        distance = Math.pow(distance, 2.0) + Math.pow(height, 2.0)
+        return Math.sqrt(distance)
+    }
+
+    /**
+     * Изменение размера аватарок для карты (до 100х100 px)
+     */
+    fun resizeMapIcons(imageBitmap: Bitmap, multiplier: Int): Bitmap? {
+        return Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
+    }
 
 }
