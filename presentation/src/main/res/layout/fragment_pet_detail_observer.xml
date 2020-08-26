@@ -23,8 +23,9 @@
                 android:id="@+id/pet_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="420dp"
+                android:src="@drawable/dummy_dog_avatar"
+                android:background="#96a404"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fox"
                 app:layout_collapseMode="parallax"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -33,18 +34,21 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:background="@color/white">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
+
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/gender_image"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_female"
                     android:layout_marginTop="25dp"
                     android:layout_marginBottom="25dp"
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center"/>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,32 +58,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Аришка"
+                        tools:text="Аришка"
                         android:textColor="@color/black"
                         android:id="@+id/name"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Колли, 3 года"
+                        tools:text="Колли, 3 года"
                         android:textColor="@color/black"
                         android:id="@+id/description"/>
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_anchor="@id/toolbar"
-        app:layout_anchorGravity="center_vertical|end"
-        android:backgroundTint="@color/primaryLight"
-        app:srcCompat="@drawable/ic_edit" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -141,7 +138,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
-                    android:text="@string/lorem"
+                    tools:text="@string/lorem"
                     android:textColor="#333333"
                     android:textSize="15sp"
                     android:translationY="-1.11sp" />
@@ -164,11 +161,11 @@
                 android:id="@+id/photo_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

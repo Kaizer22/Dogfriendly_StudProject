@@ -1,31 +1,29 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.Character
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.CharacterAdapter
-import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PhotoAdapter
 
 class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), PetDetailView{
     private lateinit var avatar: ImageView
     private lateinit var name: TextView
     private lateinit var description: TextView
-//    private lateinit var fab: FloatingActionButton
     private lateinit var aboutText: TextView
     private lateinit var characterList: RecyclerView
     private lateinit var photoList: RecyclerView
+    private lateinit var genderImage: ImageView
 
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var photoAdapter: PhotoAdapter
@@ -67,15 +65,26 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
         if(pet.about != null){
             aboutText.text = pet.about
         }
+
+        if(pet.gender != null){
+            if(pet.gender == "men"){
+                genderImage.setImageResource(R.drawable.ic_male)
+            } else {
+                genderImage.setImageResource(R.drawable.ic_female)
+            }
+        }
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.pet_detail_new, container, false)
+        val view = inflater.inflate(R.layout.fragment_pet_detail_observer, container, false)
 
         avatar = view.findViewById(R.id.pet_avatar)
         name = view.findViewById(R.id.name)
         description = view.findViewById(R.id.description)
         aboutText = view.findViewById(R.id.about_text)
+        genderImage = view.findViewById(R.id.gender_image)
 
         characterList = view.findViewById(R.id.character_list)
         photoList = view.findViewById(R.id.photo_list)
@@ -108,11 +117,13 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
 
         characterAdapter = CharacterAdapter(characters)
         characterList.adapter = characterAdapter
+        characterList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         characterAdapter.notifyDataSetChanged()
 
         if(pet.photos != null){
             photoAdapter = PhotoAdapter(pet.photos!!)
             photoList.adapter = photoAdapter
+            photoList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             photoAdapter.notifyDataSetChanged()
         }
 
