@@ -1,6 +1,9 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +18,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
-import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
-import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
-import com.lanit_tercom.dogfriendly_studproject.data.mapper.MessageEntityDtoMapper;
+
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
-import com.lanit_tercom.dogfriendly_studproject.data.repository.MessageRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.TestSignUpPresenter;
@@ -41,12 +40,13 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
 import org.jetbrains.annotations.NotNull;
 
+
 public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
 
     private TestSignUpPresenter presenter;
     private static SignUpStage currentStage = SignUpStage.REGISTRATION;
 
-
+    private static boolean isNotificationsTurnedOn = false;
 
     public enum SignUpStage{
         REGISTRATION,
@@ -178,12 +178,36 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
 
     private void turnOnGeolocation(){
         //TODO предложение пользователю включить геолокацию
+        if (isGeoDisabled()){
+            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
         changeSignUpStage(SignUpStage.CHATS_AND_INVITATIONS_HINT);
     }
 
+    public boolean isGeoDisabled() {
+        LocationManager mLocationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean mIsGPSEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean mIsNetworkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean mIsGeoDisabled = !mIsGPSEnabled && !mIsNetworkEnabled;
+        return mIsGeoDisabled;
+    }
+
     private void turnOnNotifications(){
-        //TODO предложение пользователю включить уведомления от приложения
+        //TODO сохранять куда-то этот выбор пользователя
+        isNotificationsTurnedOn = true;
         changeSignUpStage(SignUpStage.REGISTRATION_FINISHED);
+        //NotificationCompat.Builder builder =
+                //new NotificationCompat.Builder(getContext())
+                        //.setSmallIcon(R.mipmap.ic_launcher)
+                       // .setContentTitle("Title")
+                        //.setContentText("Notification text");
+
+        //Notification notification = builder.build();
+
+        //NotificationManager notificationManager =
+                //(NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+        //notificationManager.notify(1, notification);
+
     }
 
 }
