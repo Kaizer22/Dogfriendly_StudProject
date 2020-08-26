@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
@@ -24,6 +25,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailObserverPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
+import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailObserverActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
@@ -89,7 +91,9 @@ class UserDetailObserverFragment(private val hostId: String?,
         avatar = view.findViewById(R.id.user_avatar)
 
         view.findViewById<ImageButton>(R.id.button_start_chat).setOnClickListener{
-            userDetailObserverPresenter?.startChatWithCurrentUser(hostId, userId, user?.name) }
+            userDetailObserverPresenter?.startChatWithCurrentUser(hostId, userId, user?.name)
+            (activity as UserDetailObserverActivity).navigateToChannelList(AuthManagerFirebaseImpl().currentUserId)
+        }
 
         view.findViewById<ImageButton>(R.id.edit_button).setOnClickListener {
             val dialog = Dialog(context!!)
