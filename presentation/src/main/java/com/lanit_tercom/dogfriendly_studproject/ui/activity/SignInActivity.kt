@@ -37,10 +37,9 @@ class SignInActivity : BaseActivity() {
     fun navigateToWelcomeScreen() =
             navigator?.navigateToWelcomeScreen(this)
 
-    //TODO чтобы протестировать ChatFragment в канале -MCqwIrhuEPqkgz1GV18  раскомментите этот
-    // код и код в UserSignInPresenter
-    fun navigateToChat() =
-            navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
+
+    //fun navigateToChat() =
+            //navigator?.navigateToChat(this, "-MCqwIrhuEPqkgz1GV18" )
 
     //fun navigateToChannelList(userID: String) =
             //navigator?.navigateToChannelList(this, userID)

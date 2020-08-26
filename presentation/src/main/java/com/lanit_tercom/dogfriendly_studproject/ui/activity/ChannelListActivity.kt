@@ -31,8 +31,8 @@ class ChannelListActivity : BaseActivity() {
     }
 
 
-    fun navigateToChat(channelId: String?) =
-            navigator?.navigateToChat(this, channelId)
+    //fun navigateToChat(channelId: String?) =
+            //navigator?.navigateToChat(this, channelId)
 
 
 }

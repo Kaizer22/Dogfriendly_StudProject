@@ -22,11 +22,20 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.MessageEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.MessageRepositoryImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChatPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChatView;
@@ -34,6 +43,8 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChatActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase;
+import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.DeleteMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
@@ -42,7 +53,11 @@ import com.lanit_tercom.domain.interactor.message.impl.DeleteMessageUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.EditMessageUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.GetMessagesUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.impl.PostMessageUseCaseImpl;
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl;
+import com.lanit_tercom.domain.repository.ChannelRepository;
 import com.lanit_tercom.domain.repository.MessageRepository;
+import com.lanit_tercom.domain.repository.UserRepository;
 import com.lanit_tercom.library.data.manager.NetworkManager;
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl;
 
@@ -61,11 +76,16 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     private ImageView emptyChatBackground;
     private TextView emptyChatHint;
+    private TextView channelName;
+    private TextView additionalInfo;
 
     private String channelID;
+    private ChannelModel channelModel;
 
-    public ChatFragment(String channelID){
-        this.channelID = channelID;
+    public ChatFragment(ChannelModel channelModel){
+
+        this.channelModel = channelModel;
+        this.channelID = channelModel.getId();
     }
 
     //region Implementations
@@ -83,6 +103,14 @@ public class ChatFragment extends BaseFragment implements ChatView {
         MessageRepository messageRepository = MessageRepositoryImpl
                 .getInstance(messageEntityStoreFactory, messageEntityDtoMapper);
 
+        UserEntityDtoMapper userEntityDtoMapper = new UserEntityDtoMapper();
+        UserCache userCache = null;
+        UserEntityStoreFactory userEntityStoreFactory =
+                new UserEntityStoreFactory(networkManager, userCache);
+        UserRepository userRepository = UserRepositoryImpl
+                .getInstance(userEntityStoreFactory, userEntityDtoMapper);
+
+
         DeleteMessageUseCase deleteMessageUseCase =
                 new DeleteMessageUseCaseImpl(messageRepository, threadExecutor, postExecutionThread);
         EditMessageUseCase editMessageUseCase =
@@ -92,11 +120,13 @@ public class ChatFragment extends BaseFragment implements ChatView {
         PostMessageUseCase postMessageUseCase =
                 new PostMessageUseCaseImpl(messageRepository, threadExecutor, postExecutionThread);
 
-        //GetUserDetailsUseCase getUserDetailsUseCase = new GetUserDetailsUseCaseImpl();
+        GetUserDetailsUseCase getUserDetailsUseCase = new GetUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread);
 
-        chatPresenter = new ChatPresenter(channelID, authManager,
+        chatPresenter = new ChatPresenter(channelModel, authManager,
                 deleteMessageUseCase, editMessageUseCase,
-                getMessagesUseCase, postMessageUseCase);
+                getMessagesUseCase, postMessageUseCase,
+                getUserDetailsUseCase);
     }
 
     @Nullable
@@ -190,6 +220,10 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private void initInteractions(@NotNull View root){
         //TODO смена иконки кнопки "отправить сообщение" при вызове
         // программной клавиатуры, согласно макету
+        channelName = root.findViewById(R.id.chat_screen_user_name);
+        additionalInfo = root.findViewById(R.id.chat_screen_user_additional_info);
+
+
         EditText messageText = root.findViewById(R.id.edit_text_send_message);
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
         sendMessage.setOnClickListener(v -> sendMessage(messageText));
@@ -250,6 +284,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     //TODO кастомизаця PopupMenu
     private void showChatMenu(View root, ConstraintLayout upperSpace){
+        ChatActivity baseActivity = (ChatActivity) getActivity();
         ImageView blur = root.findViewById(R.id.on_chat_menu_blur_effect);
         blur.setVisibility(View.VISIBLE);
         PopupMenu chatMenu = new PopupMenu(upperSpace.getContext(), upperSpace);
@@ -259,6 +294,8 @@ public class ChatFragment extends BaseFragment implements ChatView {
             switch (menuItem.getItemId()){
                 case R.id.item_open_user_profile:
                     //TODO переход к профилю пользователя
+                    baseActivity.navigateToUserDetailObserver(chatPresenter.getCurrentUserID(),
+                            chatPresenter.getAddresseeID());
                     return true;
                 case R.id.item_disable_notification:
                     return true;
@@ -272,6 +309,12 @@ public class ChatFragment extends BaseFragment implements ChatView {
             }
         });
         chatMenu.show();
+    }
+
+    @Override
+    public void updateChannelInfo(@NotNull String name, @NotNull String status) {
+        channelName.setText(name);
+        additionalInfo.setText(status);
     }
     //endregion
 }

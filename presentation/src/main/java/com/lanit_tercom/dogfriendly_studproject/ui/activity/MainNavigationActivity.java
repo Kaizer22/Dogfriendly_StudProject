@@ -23,6 +23,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel;
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment;
@@ -165,8 +166,8 @@ public class MainNavigationActivity extends BaseActivity {
     }
 
 
-    public void navigateToChat(String channelID){
-        getNavigator().navigateToChat(this, channelID);
+    public void navigateToChat(ChannelModel channelModel){
+        getNavigator().navigateToChat(this, channelModel);
     }
 
     public void navigateToUserDetail(String userId){

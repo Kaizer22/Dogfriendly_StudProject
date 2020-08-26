@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.navigation
 
 import android.content.Context
 import android.content.Intent
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.*
 
 /**
@@ -31,9 +32,10 @@ class Navigator {
         context.startActivity(
                 UserDetailActivity.getCallingIntent(context, userId))
 
-    fun navigateToChat(context: Context, channelID : String?) =
+    fun navigateToChat(context: Context, channelModel : ChannelModel) =
             context.startActivity(
-                    ChatActivity.getCallingIntent(context, channelID))
+                    ChatActivity.getCallingIntent(context,
+                            channelModel.id, channelModel.members))
 
     fun navigateToResetPassword(context: Context) =
             context.startActivity(

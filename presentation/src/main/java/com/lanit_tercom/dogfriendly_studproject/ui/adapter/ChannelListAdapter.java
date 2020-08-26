@@ -82,18 +82,18 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         holder.setLastMessageTime(lastMessageTime);
 
         holder.itemView.setOnClickListener(v -> {
-            String channelId = channelModel.getId();
+            //String channelId = channelModel.getId();
             if (context != null && context instanceof MainNavigationActivity){
-                ((MainNavigationActivity) context).navigateToChat(channelId);
+                ((MainNavigationActivity) context).navigateToChat(channelModel);
             }
         });
     }
 
     public void navigate(int position){
         ChannelModel channelModel = channels.get(position);
-        String channelId = channelModel.getId();
+        //String channelId = channelModel.getId();
         if (context != null && context instanceof MainNavigationActivity){
-            ((MainNavigationActivity) context).navigateToChat(channelId);
+            ((MainNavigationActivity) context).navigateToChat(channelModel);
         }
     }
 
