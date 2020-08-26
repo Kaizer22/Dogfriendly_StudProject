@@ -294,20 +294,14 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onResume() {
         super.onResume()
         if ((activity as MainNavigationActivity).switch_visibility.isChecked && locationPermissionGranted()){
-            getDeviceLocation()
             startLocationUpdates()
         }
         userMapPresenter?.onResume()
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        //(activity as MapActivity).navigateToUserDetail(p0?.title)
-        //(activity as MainNavigationActivity).navigateToUserDetail(p0?.title)
-        Log.d("MARKER_CLICKED", p0?.title)
-
-        (activity as MainNavigationActivity).navigateToUserDetailObserver(AuthManagerFirebaseImpl().currentUserId, p0?.title)
-        //startActivity(Intent(activity, UserDetailObserverFragment::class.java))
-        //(activity as MapActivity).navigateToUserDetail(p0?.title)
+        val mapper =  PetDtoModelMapper()
+        (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(p0?.tag as PetDto))
         return true
     }
 
@@ -430,23 +424,24 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
 
-    override fun renderUserOnMap(petId: String?, avatar: String?, latitude: Double?, longitude: Double?) {
+    override fun renderUserOnMap(pet: PetDto?, latitude: Double?, longitude: Double?) {
         map?.apply {
             val point = LatLng(latitude!!, longitude!!)
             val imageView = ImageView(requireActivity())
             Glide.with(requireActivity())
                     .asBitmap()
-                    .load(avatar ?: defaultDogAvatar)
+                    .load(pet?.avatar ?: defaultDogAvatar)
                     .circleCrop()
                     .into(object : CustomTarget<Bitmap>(){
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            addMarker(
+                            val marker = addMarker(
                                     MarkerOptions()
                                             .position(point)
                                             .anchor(0.5F, 0.5F)
                                             .icon(BitmapDescriptorFactory.fromBitmap(userMapPresenter?.resizeMapIcons(resource, 5)))
-                                            .title(petId)
+                                            .title(pet?.id)
                             )
+                            marker.tag = pet
                         }
                         override fun onLoadCleared(placeholder: Drawable?) {
                             // this is called when imageView is cleared on lifecycle call or for

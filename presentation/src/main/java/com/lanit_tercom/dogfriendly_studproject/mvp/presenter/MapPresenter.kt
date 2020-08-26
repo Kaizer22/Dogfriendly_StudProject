@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter
 import android.graphics.Bitmap
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
+import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.interactor.user.GetUsersDetailsUseCase
@@ -36,8 +37,8 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     }
 
 
-    fun renderMap(userId: String?, avatar: String?, latitude: Double?, longitude: Double?){
-        view?.renderUserOnMap(userId, avatar, latitude, longitude)
+    fun renderMap(pet: PetDto, latitude: Double?, longitude: Double?){
+        view?.renderUserOnMap(pet, latitude, longitude)
     }
 
     private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
@@ -59,7 +60,7 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
             val user =users?.find { it.id == key }
             if (user != null && user.pets != null){
                 for (pet in user.pets){
-                    this@MapPresenter.renderMap(pet.key, pet.value.avatar , latitude, longitude)
+                    this@MapPresenter.renderMap(pet.value , latitude, longitude)
                     return
                 }
             }
