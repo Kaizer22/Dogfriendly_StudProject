@@ -37,6 +37,10 @@ public class UserGeoFire {
         });
     }
 
+    public void userDeleteLocation(String userId){
+        geoFire.removeLocation(userId);
+    }
+
     public void userQueryAtLocation(String userId, double radius, UserQueryAtLocationCallback userQueryAtLocationCallback){
         geoFire.getLocation(userId, new LocationCallback() {
             @Override

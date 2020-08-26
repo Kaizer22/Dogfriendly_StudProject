@@ -22,7 +22,7 @@ class MapSettingsActivity : AppCompatActivity() {
         val pets = user?.pets
         val names = mutableListOf<String>()
         val imageIds = mutableListOf<String>()
-        val distances = mutableListOf<Double>()
+        val distances = mutableListOf<Int?>()
         val breeds = mutableListOf<String>()
         val ages = mutableListOf<Int>()
         pets?.forEach {

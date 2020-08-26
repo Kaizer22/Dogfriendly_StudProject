@@ -1,5 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.ui.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
@@ -170,6 +174,8 @@ public class TestSignUpFragment extends BaseFragment implements TestSignUpView {
         //TODO предложение пользователю включить геолокацию
         changeSignUpStage(SignUpStage.CHATS_AND_INVITATIONS_HINT);
     }
+
+
 
     private void turnOnNotifications(){
         //TODO предложение пользователю включить уведомления от приложения
