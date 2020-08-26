@@ -8,6 +8,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment
+import com.lanit_tercom.domain.dto.PetDto
+import com.lanit_tercom.domain.dto.UserDto
 import kotlinx.android.synthetic.main.activity_map_settings.*
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -20,6 +22,7 @@ class MapSettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         val user = MapFragment.currentUser
         val pets = user?.pets
+        val petDtos = mutableListOf<PetDto>()
         val names = mutableListOf<String>()
         val imageIds = mutableListOf<String>()
         val distances = mutableListOf<Int?>()
@@ -31,7 +34,7 @@ class MapSettingsActivity : AppCompatActivity() {
         }
         val dogRecycler = map_settings_recycler_view
 
-        val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map_settings")
+        val adapter = DogAdapter(petDtos.toTypedArray(),names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map_settings")
         dogRecycler.adapter = adapter
         dogRecycler.layoutManager = LinearLayoutManager(this)
 

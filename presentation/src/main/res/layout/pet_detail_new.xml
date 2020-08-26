@@ -18,7 +18,9 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@null">
+
             <ImageView
+                android:id="@+id/pet_avatar"
                 android:layout_width="match_parent"
                 android:layout_height="420dp"
                 android:scaleType="centerCrop"
@@ -48,18 +50,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="center">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Аришка"
                         android:textColor="@color/black"
-                        android:id="@+id/toolbar_textView_name"/>
+                        android:id="@+id/name"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Колли, 3 года"
                         android:textColor="@color/black"
-                        android:id="@+id/toolbar_textView_age"/>
+                        android:id="@+id/description"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
