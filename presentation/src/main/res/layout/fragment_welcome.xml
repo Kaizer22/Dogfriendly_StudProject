@@ -64,23 +64,18 @@
                     android:gravity="center"
                     android:text="@string/welcome_text"
                     android:layout_marginBottom="@dimen/indent_medium_plus" />
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_go_to_sign_up"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/basic_text_button_height"
+                    android:layout_height="wrap_content"
                     android:text="@string/sign_up"
-                    android:background="@drawable/dog_friendly_button_shape_1"
-                    android:textColor="@color/primaryLight"
-                    android:textSize="@dimen/font_size_16"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="@dimen/indent_medium"/>
-                <Button
+                    style="@style/SignInOutButtonStyle2"/>
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_go_to_sign_in"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/basic_text_button_height"
+                    android:layout_height="wrap_content"
                     android:text="@string/sign_in"
-                    android:background="@drawable/dog_friendly_button_shape_2"
-                    android:textColor="@color/black"
+                    style="@style/SignInOutButtonStyle1"
                     android:textSize="@dimen/font_size_16"
                     android:textStyle="bold" />
             </LinearLayout>

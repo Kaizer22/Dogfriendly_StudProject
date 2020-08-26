@@ -63,15 +63,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_finish_registration"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/basic_text_button_height"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/indent_huge"
                 android:layout_marginEnd="@dimen/indent_huge"
-                android:textSize="@dimen/font_size_16"
-                android:background="@drawable/dog_friendly_button_shape_2"
-
+                style="@style/SignInOutButtonStyle1"
                 android:text="@string/continue_finish_registration"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

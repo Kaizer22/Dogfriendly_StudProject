@@ -179,6 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
+            android:paddingBottom="@dimen/navigation_bar_height"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -208,15 +209,13 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_pet_button"
-                    android:layout_width="wrap_content"
+                    style="@style/SignInOutButtonStyle1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    android:backgroundTint="#B2BC24"
                     android:layout_gravity="center"
                     android:layout_marginTop="24dp"
-                    app:icon="@drawable/ic_add"
                     android:text="Добавить питомца"
-                    app:cornerRadius="30dp" />
+                    app:icon="@drawable/ic_add" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

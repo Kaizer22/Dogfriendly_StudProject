@@ -89,15 +89,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_turn_on_notifications"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/basic_text_button_height"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/indent_huge"
                 android:layout_marginEnd="@dimen/indent_huge"
-                android:background="@drawable/dog_friendly_button_shape_2"
                 android:text="@string/turn_on_notifications"
-                android:textSize="@dimen/font_size_16"
+                style="@style/SignInOutButtonStyle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,15 +104,11 @@
             <Button
                 android:id="@+id/button_skip_turning_on_notifications"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/basic_text_button_height"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/indent_huge"
-                android:layout_marginTop="@dimen/indent_medium"
                 android:layout_marginEnd="@dimen/indent_huge"
-                android:background="@drawable/dog_friendly_button_shape_1"
                 android:text="@string/skip"
-                android:textColor="@color/primaryLight"
-                android:textSize="@dimen/font_size_16"
-                android:textStyle="bold"
+                style="@style/SignInOutButtonStyle2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_turn_on_notifications" />
