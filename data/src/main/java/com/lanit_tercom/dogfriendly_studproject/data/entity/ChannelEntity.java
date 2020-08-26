@@ -16,6 +16,8 @@ public class ChannelEntity {
     private String lastMessage;
     private String lastMessageOwner;
     private Long timestamp;
+    private boolean pinned;
+    private boolean offNotification;
     private List<HashMap<String, String>> members;
 
     public void setId(String id) {
@@ -58,6 +60,22 @@ public class ChannelEntity {
         return lastMessageOwner;
     }
 
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    public boolean isOffNotification() {
+        return offNotification;
+    }
+
+    public void setNotification(boolean status) {
+        this.offNotification = status;
+    }
+
     public java.util.Map<String, String> getTimestamp() {
         return ServerValue.TIMESTAMP;
     }
@@ -71,4 +89,6 @@ public class ChannelEntity {
     public List<HashMap<String, String>> getMembers() {
         return members;
     }
+
+
 }
