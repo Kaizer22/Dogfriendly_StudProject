@@ -34,6 +34,9 @@ public class ChannelDtoModelMapper {
                 channelDto.getTimestamp(),
                 channelDto.getMembers());
 
+        channelModel.setPinned(channelDto.isPinned());
+        channelModel.setOffNotification(channelDto.isOffNotification());
+
         return channelModel;
     }
 
@@ -50,6 +53,8 @@ public class ChannelDtoModelMapper {
         channelDto.setLastMessage(channelModel.getLastMessage());
         channelDto.setLastMessageOwner(channelModel.getLastMessageOwner());
         channelDto.setTimestamp(channelModel.getTimestamp());
+        channelDto.setPinned(channelModel.isPinned());
+        channelDto.setOffNotification(channelModel.isNotification());
         channelDto.setMembers(channelModel.getMembers());
 
         return channelDto;

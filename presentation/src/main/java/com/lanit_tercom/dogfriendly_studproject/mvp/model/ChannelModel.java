@@ -9,6 +9,8 @@ public class ChannelModel {
     private String lastMessage;
     private String lastMessageOwner;
     private Long timestamp;
+    private boolean pinned ;
+    private boolean offNotification;
     private List<String> members; // Время последнего полученного сообщения
 
     public ChannelModel() {
@@ -25,6 +27,7 @@ public class ChannelModel {
         this.lastMessage = lastMessage;
         this.lastMessageOwner = lastMessageOwner;
         this.timestamp = timestamp;
+        this.pinned = false;
         this.members = members;
     }
 
@@ -69,6 +72,22 @@ public class ChannelModel {
         return lastMessageOwner;
     }
 
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    public boolean isNotification() {
+        return offNotification;
+    }
+
+    public void setOffNotification(boolean notification) {
+        this.offNotification = notification;
+    }
+
     public Long getTimestamp() {
         return timestamp;
     }
@@ -76,4 +95,7 @@ public class ChannelModel {
     public List<String> getMembers() {
         return members;
     }
+
+
+
 }

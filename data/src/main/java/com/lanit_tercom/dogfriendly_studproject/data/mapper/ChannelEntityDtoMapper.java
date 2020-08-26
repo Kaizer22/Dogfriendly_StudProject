@@ -20,6 +20,8 @@ public class ChannelEntityDtoMapper {
         channelEntity.setLastMessage(channelDto.getLastMessage());
         channelEntity.setLastMessageOwner(channelDto.getLastMessageOwner());
         channelEntity.setTimestamp(channelDto.getTimestamp());
+        channelEntity.setPinned(channelDto.isPinned());
+        channelEntity.setNotification(channelDto.isOffNotification());
 
         List<HashMap<String, String>> members = new ArrayList<>();
 
@@ -43,6 +45,8 @@ public class ChannelEntityDtoMapper {
         channelDto.setLastMessage(channelEntity.getLastMessage());
         channelDto.setLastMessageOwner(channelEntity.getLastMessageOwner());
         channelDto.setTimestamp(channelEntity.getTimestampForMapper());
+        channelDto.setPinned(channelEntity.isPinned());
+        channelDto.setOffNotification(channelEntity.isOffNotification());
 
         List<String> members = new ArrayList<>();
 

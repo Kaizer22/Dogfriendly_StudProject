@@ -86,6 +86,17 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         }
     }
 
+    @Override
+    public void editChannel(ChannelEntity channelEntity, EditChannelCallback callback) {
+        String[] userIDs = getUserIDs(channelEntity.getMembers());
+        for (String userId : userIDs) {
+            Map<String, Object> pair = new HashMap<>();
+            pair.put(channelEntity.getId(), channelEntity);
+            referenceDatabase.child(userId).updateChildren(pair)
+                    .addOnSuccessListener(aVoid -> callback.onChannelEdited())
+                    .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
+        }
+    }
 
     @Override
     public void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback) {
@@ -97,6 +108,7 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
                         .addOnSuccessListener(aVoid -> callback.onChannelDeleted())
                         .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
     }
+
 
 
     private void putChannelEntityInCache(String channelId, ChannelEntity entity) {

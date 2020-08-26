@@ -10,6 +10,8 @@ public class ChannelDto {
     private String lastMessage;
     private String lastMessageOwner;
     private Long timestamp;
+    private boolean pinned ;
+    private boolean offNotification;
     private List<String> members;
 
 
@@ -67,6 +69,22 @@ public class ChannelDto {
 
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    public boolean isPinned() {
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    public boolean isOffNotification() {
+        return offNotification;
+    }
+
+    public void setOffNotification(boolean notification) {
+        this.offNotification = notification;
     }
 
     public List<String> getMembers() {

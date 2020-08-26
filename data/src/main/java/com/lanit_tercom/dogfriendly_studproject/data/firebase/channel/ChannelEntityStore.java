@@ -23,6 +23,12 @@ public interface ChannelEntityStore {
         void onError(ErrorBundle errorBundle);
     }
 
+    interface EditChannelCallback {
+        void onChannelEdited();
+
+        void onError(ErrorBundle errorBundle);
+    }
+
     interface GetChannelsCallback {
         void onChannelsLoaded(List<ChannelEntity> channels);
 
@@ -34,4 +40,6 @@ public interface ChannelEntityStore {
     void addChannel(ChannelEntity channel, AddChannelCallback callback);
 
     void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback);
+
+    void editChannel(ChannelEntity channelEntity, EditChannelCallback callback);
 }

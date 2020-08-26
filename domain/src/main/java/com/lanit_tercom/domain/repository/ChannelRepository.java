@@ -23,6 +23,10 @@ public interface ChannelRepository {
         void onChannelAdded();
     }
 
+    interface ChannelEditCallback extends Error {
+        void onChannelEdited();
+    }
+
     interface ChannelDeleteCallback extends Error {
         void onChannelDeleted();
     }
@@ -31,5 +35,8 @@ public interface ChannelRepository {
 
     void addChannel(ChannelDto channelDto, ChannelAddCallback callback);
 
+    void editChannel(ChannelDto channelDto, ChannelEditCallback callback);
+
     void deleteChannel(String userId, ChannelDto channelDto, ChannelDeleteCallback callback); //String userId ???
+
 }
