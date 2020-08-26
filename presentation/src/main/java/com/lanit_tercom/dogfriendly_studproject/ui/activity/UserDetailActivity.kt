@@ -82,7 +82,7 @@ class UserDetailActivity : BaseActivity() {
             userId = "-MEYGzlqgcVxSHRV5LQ9"
 //            userId = intent.extras?.getString(INTENT_EXTRA_PARAM_USER_ID)
             userDetailFragment = UserDetailFragment(userId)
-            userDetailEditFragment = UserDetailEditFragment(userId)
+            //userDetailEditFragment = UserDetailEditFragment(userId)
             petDetailEditFragment = PetDetailEditFragment(userId)
             petCharacterFragment = PetCharacterFragment(userId)
             petPhotoFragment = PetPhotoFragment(userId)

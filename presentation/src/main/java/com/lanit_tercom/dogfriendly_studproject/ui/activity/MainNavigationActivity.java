@@ -3,6 +3,7 @@ package com.lanit_tercom.dogfriendly_studproject.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.map.MapSettingsActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.ChannelListFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.EditTextFragment;
@@ -74,12 +76,12 @@ public class MainNavigationActivity extends BaseActivity {
         channelListFragment = new ChannelListFragment();
         testEmptyFragment = new TestEmptyFragment();
 
-        userDetailEditFragment = new UserDetailEditFragment(userId);
+        //userDetailEditFragment = new UserDetailEditFragment(userId);
         petCharacterFragment = new PetCharacterFragment(userId);
         petPhotoFragment = new PetPhotoFragment(userId);
 
-        editPlansFragment = new EditTextFragment("plans", userId);
-        editAboutFragment = new EditTextFragment("about", userId);
+        //editPlansFragment = new EditTextFragment("plans", userId);
+        //editAboutFragment = new EditTextFragment("about", userId);
     }
 
     @Override
@@ -187,7 +189,8 @@ public class MainNavigationActivity extends BaseActivity {
                 .commit();
     }
 
-    public void startUserDetailEdit(){
+    public void startUserDetailEdit(UserModel user){
+        userDetailEditFragment = new UserDetailEditFragment(user);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, userDetailEditFragment)
                 .commit();
@@ -215,15 +218,15 @@ public class MainNavigationActivity extends BaseActivity {
                 .commit();
     }
 
-    public void startPlansEdit(String prevValue){
-        editPlansFragment.setPrevValue(prevValue);
+    public void startPlansEdit(UserModel user){
+        editPlansFragment = new EditTextFragment("plans", user);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, editPlansFragment)
                 .commit();
     }
 
-    public void startAboutEdit(String prevValue){
-        editAboutFragment.setPrevValue(prevValue);
+    public void startAboutEdit(UserModel user){
+        editAboutFragment = new EditTextFragment("about", user);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, editAboutFragment)
                 .commit();

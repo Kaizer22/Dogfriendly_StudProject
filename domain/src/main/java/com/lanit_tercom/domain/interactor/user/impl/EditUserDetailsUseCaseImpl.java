@@ -25,13 +25,18 @@ public class EditUserDetailsUseCaseImpl extends UseCase implements EditUserDetai
             throw new IllegalArgumentException("Invalid parameter!!!");
         }
         super.execute();
+        if(userDto == null) throw new ArithmeticException();
         this.userDto = userDto;
         this.callback = callback;
     }
 
     @Override
     public void run() {
-        this.userRepository.editUser(this.userDto, this.repositoryCallback);
+        //Я вообще не понимаю КААК сюда мог прилетать null, если в execute() гарантировано идет не null.
+        //В любом случае вроде такая затычка работает.
+        if(userDto != null){
+            this.userRepository.editUser(this.userDto, this.repositoryCallback);
+        }
     }
 
     private final UserRepository.UserEditCallback repositoryCallback =
