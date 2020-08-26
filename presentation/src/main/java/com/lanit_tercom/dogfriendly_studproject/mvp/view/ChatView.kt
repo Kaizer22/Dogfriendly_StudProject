@@ -16,5 +16,5 @@ interface ChatView : LoadDataView{
 
     fun showMessageMenu(message : MessageModel, position : Int, targetView : View)
 
-    fun updateChannelInfo(name : String, status: String)
+    fun updateChannelInfo(name : String, status: String, avatar: String)
 }

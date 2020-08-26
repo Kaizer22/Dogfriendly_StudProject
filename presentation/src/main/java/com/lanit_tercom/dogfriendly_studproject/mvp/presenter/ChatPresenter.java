@@ -156,9 +156,7 @@ public class ChatPresenter extends BasePresenter {
                 public void onUserDataLoaded(UserDto userDto) {
                     //Пока что статус никак не отображен в модели пользователя
                     view.updateChannelInfo(userDto.getName(),
-                            "offline" );
-                    //view.updateChannelInfo(userDto.getName(),
-                            //"offline", userDto.getAvatar());
+                            "offline", userDto.getAvatar());
                 }
 
                 @Override

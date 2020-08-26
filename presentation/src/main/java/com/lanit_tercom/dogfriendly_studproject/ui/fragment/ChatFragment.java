@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.R;
@@ -76,8 +77,10 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
     private ImageView emptyChatBackground;
     private TextView emptyChatHint;
+
     private TextView channelName;
     private TextView additionalInfo;
+    private ImageView channelAvatar;
 
     private String channelID;
     private ChannelModel channelModel;
@@ -222,7 +225,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
         // программной клавиатуры, согласно макету
         channelName = root.findViewById(R.id.chat_screen_user_name);
         additionalInfo = root.findViewById(R.id.chat_screen_user_additional_info);
-
+        channelAvatar = root.findViewById(R.id.chat_screen_user_avatar);
 
         EditText messageText = root.findViewById(R.id.edit_text_send_message);
         ImageButton sendMessage = root.findViewById(R.id.button_send_message);
@@ -312,9 +315,14 @@ public class ChatFragment extends BaseFragment implements ChatView {
     }
 
     @Override
-    public void updateChannelInfo(@NotNull String name, @NotNull String status) {
+    public void updateChannelInfo(@NotNull String name, @NotNull String status, String avatar) {
         channelName.setText(name);
         additionalInfo.setText(status);
+        Glide.with(this)
+                .load(avatar)
+                .circleCrop()
+                .into(channelAvatar);
     }
+
     //endregion
 }
