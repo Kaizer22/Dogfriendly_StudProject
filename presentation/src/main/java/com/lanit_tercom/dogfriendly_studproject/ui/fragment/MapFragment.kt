@@ -182,10 +182,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-
         val dogRecycler = near_list_recycler_view
-        dogRecycler.layoutManager = LinearLayoutManager(activity)
-
         if (isChecked){
             // Prompt the user for permission.
             if (!locationPermissionGranted()) {
@@ -200,6 +197,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         else {
             stopLocationUpdates()
             dogRecycler.adapter = null
+            dogRecycler.layoutManager = LinearLayoutManager(activity)
             UserGeoFire().userDeleteLocation(currentId)
         }
     }
@@ -208,7 +206,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         //TODO Перенести логику в презентер (если возможно)
         if (locationPermissionGranted() && ((activity as MainNavigationActivity).switch_visibility).isChecked){
             val dogRecycler = near_list_recycler_view
-            dogRecycler.layoutManager = LinearLayoutManager(activity)
             //Заполнение RecyclerView с собаками поблизости
             val nearUsers = mutableMapOf<String?, List<Double?>>()
             var allUsers: MutableList<UserDto>? = null
@@ -264,7 +261,10 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                     (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
                                 }
                             })
-                            dogRecycler.adapter = adapter
+                            if (dogRecycler != null){
+                                dogRecycler.adapter = adapter
+                                dogRecycler.layoutManager = LinearLayoutManager(activity)
+                            }
                         }
 
                         override fun onError(errorBundle: ErrorBundle?) {
