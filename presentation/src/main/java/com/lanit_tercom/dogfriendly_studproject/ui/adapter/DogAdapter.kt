@@ -46,18 +46,23 @@ class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val dist
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val cardView = holder.cardView
-        val imageView = cardView.image_dog_icon
-        Glide.with(cardView.context).load(imageIds[position]).circleCrop().into(imageView)
-        val textViewDogName = cardView.textView_dog_name
-        textViewDogName.text = names[position]
-        val textViewDistance = cardView.textView_distance
-        if (tag == "map")
-            textViewDistance.text = "${distances[position]} м от вас"
-        else
-            textViewDistance.text = "${breeds[position]}, ${ages[position]} года"
-        cardView.setOnClickListener {
-            listener?.onClick(position)
+        if(imageIds.isNotEmpty() && names.isNotEmpty()
+                && distances.isNotEmpty() && breeds.isNotEmpty()
+                && ages.isNotEmpty()){
+            val cardView = holder.cardView
+            val imageView = cardView.image_dog_icon
+            Glide.with(cardView.context).load(imageIds[position]).circleCrop().into(imageView)
+            val textViewDogName = cardView.textView_dog_name
+            textViewDogName.text = names[position]
+            val textViewDistance = cardView.textView_distance
+            if (tag == "map")
+                textViewDistance.text = "${distances[position]} м от вас"
+            else
+                textViewDistance.text = "${breeds[position]}, ${ages[position]} года"
+            cardView.setOnClickListener {
+                listener?.onClick(position)
+            }
         }
+
     }
 }

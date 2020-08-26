@@ -11,8 +11,7 @@ public class ChannelModel {
     private Long timestamp;
     private List<String> members; // Время последнего полученного сообщения
 
-    public ChannelModel() {
-    }
+    public ChannelModel() {}
 
     public ChannelModel(String channelID,
                         String name,

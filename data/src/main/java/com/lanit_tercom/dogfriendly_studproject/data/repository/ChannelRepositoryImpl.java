@@ -82,6 +82,24 @@ public class ChannelRepositoryImpl implements ChannelRepository {
     }
 
     @Override
+    public void editChannel(ChannelDto channelDto, ChannelEditCallback callback) {
+        ChannelEntityStore channelEntityStore = this.channelEntityStoreFactory.create();
+        ChannelEntity channelEntity = this.channelEntityDtoMapper.map1(channelDto);
+
+        channelEntityStore.editChannel(channelEntity , new ChannelEntityStore.EditChannelCallback() {
+            @Override
+            public void onChannelEdited() {
+                callback.onChannelEdited();
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                callback.onError(errorBundle);
+            }
+        });
+    }
+
+    @Override
     public void deleteChannel(String userId, ChannelDto channelDto, ChannelDeleteCallback callback) {
         ChannelEntityStore channelEntityStore = this.channelEntityStoreFactory.create();
         ChannelEntity channelEntity = this.channelEntityDtoMapper.map1(channelDto);

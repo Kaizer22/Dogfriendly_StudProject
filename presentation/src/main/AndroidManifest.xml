@@ -37,7 +37,8 @@
         <activity android:name=".ui.activity.SignUpActivity" />
         <activity android:name=".ui.activity.TestSignUpActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MainNavigationActivity"/>
+        <activity android:name=".ui.activity.MainNavigationActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.MapActivity" />
         <activity android:name=".tests.ui.pet_detail.PetDetailTestActivity" />
         <activity android:name=".ui.activity.WalkActivity">

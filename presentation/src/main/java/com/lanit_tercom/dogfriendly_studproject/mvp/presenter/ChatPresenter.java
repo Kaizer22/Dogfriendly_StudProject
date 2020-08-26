@@ -13,8 +13,7 @@ import com.lanit_tercom.domain.dto.ChannelDto;
 import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
-import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase;
-import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl;
+import com.lanit_tercom.domain.interactor.channel.EditChannelUseCase;
 import com.lanit_tercom.domain.interactor.message.DeleteMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
@@ -49,7 +48,10 @@ public class ChatPresenter extends BasePresenter {
     private PostMessageUseCase postMessage;
     private GetUserDetailsUseCase getUser;
 
+    private EditChannelUseCase editChannel;
+
     private MessageDtoModelMapper messageMapper;
+    private ChannelDtoModelMapper channelMapper;
     private UserDtoModelMapper userMapper;
 
     private ChatView view;
@@ -58,7 +60,8 @@ public class ChatPresenter extends BasePresenter {
 
     public ChatPresenter(ChannelModel channelModel, AuthManager authManager, DeleteMessageUseCase deleteMessage,
                          EditMessageUseCase editMessage, GetMessagesUseCase getMessages,
-                         PostMessageUseCase postMessage, GetUserDetailsUseCase getUser){
+                         PostMessageUseCase postMessage, GetUserDetailsUseCase getUser,
+                         EditChannelUseCase editChannel){
         this.channelModel = channelModel;
         this.channelID = channelModel.getId();
         this.userID = authManager.getCurrentUserId();
@@ -68,7 +71,9 @@ public class ChatPresenter extends BasePresenter {
         this.getMessages = getMessages;
         this.postMessage = postMessage;
         this.getUser = getUser;
+        this.editChannel = editChannel;
         messageMapper = new MessageDtoModelMapper();
+        channelMapper = new ChannelDtoModelMapper();
         messagesList = new LinkedList<>();
     }
 
@@ -97,6 +102,7 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessagePosted() {
                 refreshData();
+
             }
 
             @Override
@@ -141,11 +147,36 @@ public class ChatPresenter extends BasePresenter {
     public void refreshData(){
         //Получение диалога
         getMessagesFromDB();
-        //Обновление данных о чате
-        refreshChannelData();
+        //Обновление данных о пользователях чата
+        refreshUsersData();
+        //Обновление данных о канале
+
     }
 
     private void refreshChannelData() {
+        MessageModel lastMessage = messagesList.get(messagesList.size()-1);
+        channelModel.setLastMessage(
+                lastMessage.getText());
+        channelModel.setLastMessageOwner(
+                lastMessage.getSenderID());
+        channelModel.setTimestamp(
+                lastMessage.getTime().getTime());
+
+        ChannelDto channelDto = channelMapper.mapToDto(channelModel);
+        editChannel.execute(channelDto, new EditChannelUseCase.Callback() {
+            @Override
+            public void onChannelEdited() {
+                Log.d("CHAT_PRESENTER", "CHANEL_EDITED");
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                errorBundle.getException().printStackTrace();
+            }
+        });
+    }
+
+    private void refreshUsersData() {
         List<String> members = channelModel.getMembers();
         if (members.size() == 2){
             String otherUserID = members.get(0).equals(userID) ?
@@ -198,7 +229,11 @@ public class ChatPresenter extends BasePresenter {
                             messageMapper.map2(message));
                 }
                 isChannelEmpty = messagesList.size() == 0;
+                if (!isChannelEmpty){
+                    refreshChannelData();
+                }
                 view.renderMessages();
+
                 view.hideLoading();
             }
             @Override

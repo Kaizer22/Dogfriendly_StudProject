@@ -44,7 +44,9 @@ import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChatActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.MessageAdapter;
 import com.lanit_tercom.domain.executor.PostExecutionThread;
 import com.lanit_tercom.domain.executor.ThreadExecutor;
+import com.lanit_tercom.domain.interactor.channel.EditChannelUseCase;
 import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase;
+import com.lanit_tercom.domain.interactor.channel.impl.EditChannelUseCaseImpl;
 import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl;
 import com.lanit_tercom.domain.interactor.message.DeleteMessageUseCase;
 import com.lanit_tercom.domain.interactor.message.EditMessageUseCase;
@@ -113,6 +115,13 @@ public class ChatFragment extends BaseFragment implements ChatView {
         UserRepository userRepository = UserRepositoryImpl
                 .getInstance(userEntityStoreFactory, userEntityDtoMapper);
 
+        ChannelEntityDtoMapper channelEntityDtoMapper = new ChannelEntityDtoMapper();
+        ChannelCache channelCache = null;
+        ChannelEntityStoreFactory channelEntityStoreFactory =
+                new ChannelEntityStoreFactory(networkManager, channelCache);
+        ChannelRepository channelRepository = ChannelRepositoryImpl
+                .getInstance(channelEntityStoreFactory, channelEntityDtoMapper);
+
 
         DeleteMessageUseCase deleteMessageUseCase =
                 new DeleteMessageUseCaseImpl(messageRepository, threadExecutor, postExecutionThread);
@@ -125,11 +134,13 @@ public class ChatFragment extends BaseFragment implements ChatView {
 
         GetUserDetailsUseCase getUserDetailsUseCase = new GetUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread);
+        EditChannelUseCase editChannelUseCase = new EditChannelUseCaseImpl(channelRepository,
+                threadExecutor, postExecutionThread);
 
         chatPresenter = new ChatPresenter(channelModel, authManager,
                 deleteMessageUseCase, editMessageUseCase,
                 getMessagesUseCase, postMessageUseCase,
-                getUserDetailsUseCase);
+                getUserDetailsUseCase, editChannelUseCase);
     }
 
     @Nullable

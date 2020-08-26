@@ -35,7 +35,7 @@ class Navigator {
     fun navigateToChat(context: Context, channelModel : ChannelModel) =
             context.startActivity(
                     ChatActivity.getCallingIntent(context,
-                            channelModel.id, channelModel.members))
+                            channelModel.id, channelModel.name, channelModel.members))
 
     fun navigateToResetPassword(context: Context) =
             context.startActivity(

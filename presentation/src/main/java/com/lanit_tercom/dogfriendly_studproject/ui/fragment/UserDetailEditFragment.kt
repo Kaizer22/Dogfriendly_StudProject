@@ -108,7 +108,7 @@ class UserDetailEditFragment(private val user: UserModel): BaseFragment(), UserD
                 user.name = editName.text.toString()
                 user.age = editAge.text.toString().toInt()
                 userDetailEditPresenter?.editUserDetails(user, avatarUri)
-                activity?.onBackPressed()
+                //activity?.onBackPressed()
             }
         }
 

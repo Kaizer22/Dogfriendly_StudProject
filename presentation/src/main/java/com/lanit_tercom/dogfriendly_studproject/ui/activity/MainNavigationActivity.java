@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -34,6 +35,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetCharacterFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.SettingsFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailEditFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.UserDetailFragment;
@@ -51,6 +53,7 @@ public class MainNavigationActivity extends BaseActivity {
     private MapFragment mapFragment;
     private UserDetailFragment userDetailFragment ;
     private ChannelListFragment channelListFragment;
+    private SettingsFragment settingsFragment;
     private TestEmptyFragment testEmptyFragment;
 
     private UserDetailEditFragment userDetailEditFragment;
@@ -81,6 +84,8 @@ public class MainNavigationActivity extends BaseActivity {
         petCharacterFragment = new PetCharacterFragment(userId);
         petPhotoFragment = new PetPhotoFragment(userId);
 
+        settingsFragment = new SettingsFragment();
+
         //editPlansFragment = new EditTextFragment("plans", userId);
         //editAboutFragment = new EditTextFragment("about", userId);
     }
@@ -104,12 +109,13 @@ public class MainNavigationActivity extends BaseActivity {
     private void initBottomNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarLayout mapTopBar = findViewById(R.id.map_app_bar);
+        Switch mapSwitch = findViewById(R.id.switch_visibility);
         navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navView.setItemIconTintList(ContextCompat
                 .getColorStateList(this, R.color.bottom_navigation_colors_list));
-        updateNavigationHostFragment(navView, mapTopBar, DEFAULT_CHECKED_ITEM);
+        updateNavigationHostFragment(navView, mapTopBar, mapSwitch, DEFAULT_CHECKED_ITEM);
         navView.setOnNavigationItemSelectedListener(item -> {
-            updateNavigationHostFragment(navView, mapTopBar, item.getItemId());
+            updateNavigationHostFragment(navView, mapTopBar, mapSwitch, item.getItemId());
             return false;
         });
 
@@ -122,10 +128,12 @@ public class MainNavigationActivity extends BaseActivity {
     }
 
     private void updateNavigationHostFragment(BottomNavigationView navView,
-                                              AppBarLayout mapTopBar, int navigationId){
+                                              AppBarLayout mapTopBar, Switch mapSwitch,
+                                              int navigationId){
             switch (navigationId){
                 case R.id.navigation_profile:
                     mapTopBar.setVisibility(View.GONE);
+                    mapSwitch.setChecked(false);
                     navView.getMenu().findItem(R.id.navigation_profile).setChecked(true);
                     getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.nav_host_fragment, userDetailFragment)
@@ -133,6 +141,7 @@ public class MainNavigationActivity extends BaseActivity {
                     break;
                 case R.id.navigation_map:
                     mapTopBar.setVisibility(View.VISIBLE);
+                    mapSwitch.setChecked(false);
                     navView.getMenu().findItem(R.id.navigation_map).setChecked(true);
                     getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.nav_host_fragment, mapFragment)
@@ -140,6 +149,7 @@ public class MainNavigationActivity extends BaseActivity {
                     break;
                 case R.id.navigation_channels:
                     mapTopBar.setVisibility(View.GONE);
+                    mapSwitch.setChecked(false);
                     navView.getMenu().findItem(R.id.navigation_channels).setChecked(true);;
                     getSupportFragmentManager().beginTransaction().addToBackStack(null)
                             .replace(R.id.nav_host_fragment, channelListFragment)
@@ -147,9 +157,10 @@ public class MainNavigationActivity extends BaseActivity {
                     break;
                 case R.id.navigation_settings:
                     mapTopBar.setVisibility(View.GONE);
+                    mapSwitch.setChecked(false);
                     navView.getMenu().findItem(R.id.navigation_settings).setChecked(true);
                     getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                            .replace(R.id.nav_host_fragment, testEmptyFragment)
+                            .replace(R.id.nav_host_fragment, settingsFragment)
                             .commit();
                     break;
             }
@@ -189,6 +200,7 @@ public class MainNavigationActivity extends BaseActivity {
 
     //region User and Pets profile
     public void startUserDetail(){
+        userDetailFragment = new UserDetailFragment(userId);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, userDetailFragment)
                 .commit();

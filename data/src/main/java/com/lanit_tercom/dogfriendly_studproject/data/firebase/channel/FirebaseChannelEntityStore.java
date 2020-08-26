@@ -86,6 +86,20 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
         }
     }
 
+    @Override
+    public void editChannel(ChannelEntity channel, EditChannelCallback callback) {
+        String[] userIDs = getUserIDs(channel.getMembers());
+        DatabaseReference dr = referenceDatabase;
+        for(String userId: userIDs){
+            Map<String, Object> pair = new HashMap<>();
+            pair.put(channel.getId(), channel);
+            dr.child(userId).updateChildren(pair)
+                    .addOnSuccessListener(aVoid -> callback.onChannelEdited())
+                    .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
+        }
+
+    }
+
 
     @Override
     public void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback) {
