@@ -83,6 +83,7 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         val deletePhotoUseCase: DeletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
         val deletePhotoArrayUseCase = DeletePhotoArrayUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
+
         userDetailPresenter = UserDetailPresenter(getUserDetailsUseCase, deletePetUseCase, deletePhotoUseCase, deletePhotoArrayUseCase)
     }
 
