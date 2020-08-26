@@ -7,9 +7,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.domain.dto.PetDto
+import com.lanit_tercom.domain.dto.UserDto
 import kotlinx.android.synthetic.main.near_list_item_view_test.view.*
 
-class DogAdapter(val names: Array<String>, val imageIds: Array<String>, val distances: Array<Int?>, val breeds: Array<String>, val ages: Array<Int>, val tag: String ): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
+class DogAdapter(val petDtos: Array<PetDto>, val names: Array<String>, val imageIds: Array<String>, val distances: Array<Int?>, val breeds: Array<String>, val ages: Array<Int>, val tag: String ): RecyclerView.Adapter<DogAdapter.ViewHolder>() {
 
     private var listener: Listener? = null
 

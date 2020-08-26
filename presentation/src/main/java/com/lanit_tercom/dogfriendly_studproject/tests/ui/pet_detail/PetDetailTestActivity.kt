@@ -1,22 +1,15 @@
 package com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail
 
-import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.ShareActionProvider
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.MenuItemCompat
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.lanit_tercom.dogfriendly_studproject.R
 //import com.lanit_tercom.dogfriendly_studproject.tests.ui.user_detail.UserDetailTestActivity
-import kotlinx.android.synthetic.main.pet_detail_new.*
+import kotlinx.android.synthetic.main.fragment_pet_detail_observer.*
 
 /**
  * Пока это не нужно, раз Саша это делает
@@ -31,7 +24,7 @@ class PetDetailTestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.pet_detail_new)
+        setContentView(R.layout.fragment_pet_detail_observer)
         setSupportActionBar(toolbar as Toolbar)
         supportActionBar?.title = null
 

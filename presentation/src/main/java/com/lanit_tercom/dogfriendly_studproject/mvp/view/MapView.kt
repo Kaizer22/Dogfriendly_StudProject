@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.view
 
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
+import com.lanit_tercom.domain.dto.PetDto
 
 /**
  * Интерфейс, который наследуют все классы работающие с картой
@@ -8,6 +9,6 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel
  */
 interface MapView : LoadDataView{
 
-    fun renderUserOnMap(userId: String?, avatar: String?, latitude: Double?, longitude: Double?)
+    fun renderUserOnMap(pet: PetDto?, latitude: Double?, longitude: Double?)
 
 }

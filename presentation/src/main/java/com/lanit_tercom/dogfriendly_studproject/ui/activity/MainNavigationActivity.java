@@ -34,6 +34,7 @@ import com.lanit_tercom.dogfriendly_studproject.ui.fragment.EditTextFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetCharacterFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailEditFragment;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetDetailObserverFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.PetPhotoFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.SettingsFragment;
 import com.lanit_tercom.dogfriendly_studproject.ui.fragment.TestEmptyFragment;
@@ -246,6 +247,13 @@ public class MainNavigationActivity extends BaseActivity {
         editAboutFragment = new EditTextFragment("about", user);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, editAboutFragment)
+                .commit();
+    }
+
+    public void startPetDetailObserver(PetModel pet){
+        PetDetailObserverFragment petDetailObserverFragment = new PetDetailObserverFragment(pet);
+        getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.nav_host_fragment, petDetailObserverFragment)
                 .commit();
     }
 

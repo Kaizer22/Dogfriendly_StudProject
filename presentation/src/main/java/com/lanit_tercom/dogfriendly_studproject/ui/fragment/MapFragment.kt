@@ -39,11 +39,13 @@ import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
+import com.lanit_tercom.dogfriendly_studproject.mapper.PetDtoModelMapper
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.MapPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
+import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
 import com.lanit_tercom.domain.executor.PostExecutionThread
@@ -180,10 +182,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-
         val dogRecycler = near_list_recycler_view
-        dogRecycler.layoutManager = LinearLayoutManager(activity)
-
         if (isChecked){
             // Prompt the user for permission.
             if (!locationPermissionGranted()) {
@@ -198,6 +197,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         else {
             stopLocationUpdates()
             dogRecycler.adapter = null
+            dogRecycler.layoutManager = LinearLayoutManager(activity)
             UserGeoFire().userDeleteLocation(currentId)
         }
     }
@@ -206,7 +206,6 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
         //TODO Перенести логику в презентер (если возможно)
         if (locationPermissionGranted() && ((activity as MainNavigationActivity).switch_visibility).isChecked){
             val dogRecycler = near_list_recycler_view
-            dogRecycler.layoutManager = LinearLayoutManager(activity)
             //Заполнение RecyclerView с собаками поблизости
             val nearUsers = mutableMapOf<String?, List<Double?>>()
             var allUsers: MutableList<UserDto>? = null
@@ -222,6 +221,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                         override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
                             allUsers = users
 
+                            val petDtos = mutableListOf<PetDto>()
                             val names = mutableListOf<String>()
                             val imageIds = mutableListOf<String>()
                             val distances = mutableListOf<Int?>()
@@ -232,6 +232,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                 if (nearUsers.keys.contains(user.id) && user.id != currentId) {
                                     if (user.pets != null) {
                                         user.pets.forEach { pet ->
+                                            petDtos.add(pet.value)
                                             names.add(pet.value.name)
                                             if (pet.value.avatar != null)
                                                 imageIds.add(pet.value.avatar)
@@ -251,13 +252,19 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                 if (user.id == currentId) currentUser = user
                             }
 
-                            val adapter = DogAdapter(names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                            val adapter = DogAdapter(petDtos.toTypedArray(), names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
                             adapter.setListener(object : DogAdapter.Listener {
                                 override fun onClick(position: Int) {
-                                    startActivity(Intent(activity, PetDetailTestActivity::class.java))
+                                    //Вот тут я хочу получить UserId хозяйна питомца
+                                    val petDto = petDtos[position]
+                                    val mapper =  PetDtoModelMapper()
+                                    (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
                                 }
                             })
-                            dogRecycler.adapter = adapter
+                            if (dogRecycler != null){
+                                dogRecycler.adapter = adapter
+                                dogRecycler.layoutManager = LinearLayoutManager(activity)
+                            }
                         }
 
                         override fun onError(errorBundle: ErrorBundle?) {
@@ -287,19 +294,14 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onResume() {
         super.onResume()
         if ((activity as MainNavigationActivity).switch_visibility.isChecked && locationPermissionGranted()){
-            getDeviceLocation()
             startLocationUpdates()
         }
         userMapPresenter?.onResume()
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {
-        //(activity as MapActivity).navigateToUserDetail(p0?.title)
-        //(activity as MainNavigationActivity).navigateToUserDetail(p0?.title)
-        Log.d("MARKER_CLICKED", p0?.title)
-        (activity as MainNavigationActivity).navigateToUserDetailObserver(AuthManagerFirebaseImpl().currentUserId, p0?.title)
-        //startActivity(Intent(activity, UserDetailObserverFragment::class.java))
-        //(activity as MapActivity).navigateToUserDetail(p0?.title)
+        val mapper =  PetDtoModelMapper()
+        (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(p0?.tag as PetDto))
         return true
     }
 
@@ -422,23 +424,24 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
 
-    override fun renderUserOnMap(petId: String?, avatar: String?, latitude: Double?, longitude: Double?) {
+    override fun renderUserOnMap(pet: PetDto?, latitude: Double?, longitude: Double?) {
         map?.apply {
             val point = LatLng(latitude!!, longitude!!)
             val imageView = ImageView(requireActivity())
             Glide.with(requireActivity())
                     .asBitmap()
-                    .load(avatar ?: defaultDogAvatar)
+                    .load(pet?.avatar ?: defaultDogAvatar)
                     .circleCrop()
                     .into(object : CustomTarget<Bitmap>(){
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            addMarker(
+                            val marker = addMarker(
                                     MarkerOptions()
                                             .position(point)
                                             .anchor(0.5F, 0.5F)
                                             .icon(BitmapDescriptorFactory.fromBitmap(userMapPresenter?.resizeMapIcons(resource, 5)))
-                                            .title(petId)
+                                            .title(pet?.id)
                             )
+                            marker.tag = pet
                         }
                         override fun onLoadCleared(placeholder: Drawable?) {
                             // this is called when imageView is cleared on lifecycle call or for
