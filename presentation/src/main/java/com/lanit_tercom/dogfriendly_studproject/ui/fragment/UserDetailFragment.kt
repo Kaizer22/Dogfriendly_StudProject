@@ -3,7 +3,6 @@ package com.lanit_tercom.dogfriendly_studproject.ui.fragment
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +31,9 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.UserDetailPresente
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.UserDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.BaseActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
-import com.lanit_tercom.dogfriendly_studproject.ui.activity.UserDetailActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PetListAdapter
 import com.lanit_tercom.domain.executor.PostExecutionThread
 import com.lanit_tercom.domain.executor.ThreadExecutor
-import com.lanit_tercom.domain.interactor.photo.DeletePhotoArrayUseCase
 import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoArrayUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
@@ -48,7 +45,6 @@ import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
 import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
-import java.lang.Exception
 import kotlin.math.abs
 
 class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDetailView{
@@ -143,13 +139,13 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
         //Присвоение OnClickListener текстовым полям "о себе" и "планы на прогулку" - так будет открываться фрагмент для редактирования соотв полей
         plansText = view.findViewById(R.id.plans_text)
         plansText.setOnClickListener {
-            (activity as MainNavigationActivity).startPlansEdit(plansText.text.toString())
+            (activity as MainNavigationActivity).startPlansEdit(user)
 
         }
 
         aboutText = view.findViewById(R.id.about_text)
         aboutText.setOnClickListener {
-            (activity as MainNavigationActivity).startAboutEdit(plansText.text.toString())
+            (activity as MainNavigationActivity).startAboutEdit(user)
         }
 
         //Открытие/скрытие нижней панели
@@ -170,14 +166,14 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
     //Навигация
     private fun toUserEdit() {
-        (activity as MainNavigationActivity).startUserDetailEdit()
+        (activity as MainNavigationActivity).startUserDetailEdit(user)
     }
 
     private fun addPet() {
         (activity as MainNavigationActivity).startPetDetailEdit(PetModel())
     }
 
-    private fun toPetDetail() {}
+    //private fun toPetDetail() {}
 
     private fun toMap() {}
 

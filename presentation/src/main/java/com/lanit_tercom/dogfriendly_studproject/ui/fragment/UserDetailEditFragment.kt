@@ -32,7 +32,6 @@ import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.photo.impl.PushPhotoUseCaseImpl
 import com.lanit_tercom.domain.interactor.user.EditUserDetailsUseCase
 import com.lanit_tercom.domain.interactor.user.impl.EditUserDetailsUseCaseImpl
-import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
 import com.lanit_tercom.domain.repository.PhotoRepository
 import com.lanit_tercom.domain.repository.UserRepository
 import com.lanit_tercom.library.data.manager.NetworkManager
@@ -40,7 +39,7 @@ import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 
-class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserDetailEditView {
+class UserDetailEditFragment(private val user: UserModel): BaseFragment(), UserDetailEditView {
     //Декларация UI элементов и переменных
     private lateinit var editName: TextInputEditText
     private lateinit var editAge: TextInputEditText
@@ -66,10 +65,9 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
         val editUserDetailsUseCase: EditUserDetailsUseCase = EditUserDetailsUseCaseImpl(userRepository,
                 threadExecutor, postExecutionThread)
         val pushPhotoUseCase = PushPhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
-        val getUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository, threadExecutor, postExecutionThread)
         val deletePhotoUseCase = DeletePhotoUseCaseImpl(photoRepository, threadExecutor, postExecutionThread)
 
-        this.userDetailEditPresenter = UserDetailEditPresenter(getUserDetailsUseCase, editUserDetailsUseCase, pushPhotoUseCase, deletePhotoUseCase)
+        this.userDetailEditPresenter = UserDetailEditPresenter(editUserDetailsUseCase, pushPhotoUseCase, deletePhotoUseCase)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -81,13 +79,14 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
 
         avatar.setOnClickListener{ loadAvatar() }
 
-        avatarUri = null
+        if(user.name != null)
+            editName.setText(user.name)
+        if(user.age != null)
+            editAge.setText(user.age.toString())
 
         view.findViewById<ConstraintLayout>(R.id.main_layout).setOnClickListener { hideKeyboard() }
 
-        view.findViewById<ImageView>(R.id.back_button).setOnClickListener {
-            navigateBack();
-            }
+        view.findViewById<ImageView>(R.id.back_button).setOnClickListener { activity?.onBackPressed() }
 
         //Изменяем модельку юзера, пушим ее в базу данных и возвращаеся обратно в экран юзера
         view.findViewById<Button>(R.id.ready_button).setOnClickListener {
@@ -106,23 +105,14 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
             }
 
             if(validate()){
-                val user = userDetailEditPresenter?.user
-                user?.name = editName.text.toString()
-                user?.age = editAge.text.toString().toInt()
-                userDetailEditPresenter?.editUserDetails(avatarUri)
+                user.name = editName.text.toString()
+                user.age = editAge.text.toString().toInt()
+                userDetailEditPresenter?.editUserDetails(user, avatarUri)
+                activity?.onBackPressed()
             }
         }
+
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        userDetailEditPresenter?.setView(this)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        userDetailEditPresenter?.initialize(userId)
     }
 
     private fun hideKeyboard(){
@@ -166,18 +156,11 @@ class UserDetailEditFragment(private val userId: String?): BaseFragment(), UserD
 
     }
 
-    override fun renderCurrentUser(user: UserModel?) {
-        editName.setText(user?.name)
-        editAge.setText(user?.age.toString())
-//        avatarUri = user?.avatar
-//        Glide.with(this)
-//                .load(user?.avatar)
-//                .circleCrop()
-//                .into(avatar)
-    }
+    override fun renderCurrentUser(user: UserModel?) {}
 
     override fun navigateBack() {
-        (activity as? MainNavigationActivity)?.startUserDetail()
+        (activity as MainNavigationActivity).startUserDetail()
+        //(activity as BaseActivity).replaceFragment(R.id.ft_container, UserDetailFragment(user?.id))
     }
 
     override fun showLoading() {

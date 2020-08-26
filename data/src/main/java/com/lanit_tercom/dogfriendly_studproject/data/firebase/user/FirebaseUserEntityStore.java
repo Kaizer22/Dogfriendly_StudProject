@@ -51,7 +51,7 @@ public class FirebaseUserEntityStore implements UserEntityStore {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userEntity = dataSnapshot.getValue(UserEntity.class);
                 userEntity.setId(id);
-                userByIdCallback.onUserLoaded(userEntity); // return UserEntity
+                userByIdCallback.onUserLoaded(userEntity);
             }
 
             @Override

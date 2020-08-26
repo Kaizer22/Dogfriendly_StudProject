@@ -52,9 +52,14 @@ public class FirebasePhotoStore implements PhotoStore {
 
     @Override
     public void deletePhoto(String uriString, DeletePhotoCallback deletePhotoCallback) {
-        FirebaseStorage.getInstance().getReferenceFromUrl(uriString).delete()
-                .addOnSuccessListener(aVoid -> deletePhotoCallback.onPhotoDeleted())
-                .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
+        if(uriString != null && !uriString.equals("")){
+            FirebaseStorage.getInstance().getReferenceFromUrl(uriString).delete()
+                    .addOnSuccessListener(aVoid -> deletePhotoCallback.onPhotoDeleted())
+                    .addOnFailureListener(e -> deletePhotoCallback.onError(new RepositoryErrorBundle(e)));
+        } else {
+            deletePhotoCallback.onError(new RepositoryErrorBundle(new IllegalArgumentException()));
+        }
+
     }
 
     public void deletePhotoArray(ArrayList<String> photoList, DeletePhotoArrayCallback deletePhotoArrayCallback){
