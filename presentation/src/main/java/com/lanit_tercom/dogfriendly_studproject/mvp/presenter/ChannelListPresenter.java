@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mapper.MessageDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper;
@@ -105,8 +106,8 @@ public class ChannelListPresenter extends BasePresenter {
         });
     }
 
-    public void getChannelMembers(List<String> channelsId, String currentUserID){
-        this.getUsersByIdUseCase.execute(channelsId, new GetUsersByIdUseCase.Callback() {
+    public void getChannelMembers(List<String> membersId){
+        this.getUsersByIdUseCase.execute(membersId, new GetUsersByIdUseCase.Callback() {
             @Override
             public void onUsersDataLoaded(List<UserDto> users) {
                 ChannelListPresenter.this.sendChannelMembersInView(users);
@@ -168,14 +169,20 @@ public class ChannelListPresenter extends BasePresenter {
 
     private void showChannelListInView(List<ChannelDto> channelDtoList){
         List<String> channelsId = new ArrayList<>();
+        List<String> receiversId = new ArrayList<>();
         final List<ChannelModel> channelModelList = this.channelModelMapper.transformList(channelDtoList);
 
         for (ChannelModel channel: channelModelList){
             channelsId.add(channel.getId());
+            for(String id: channel.getMembers()){
+                if (!id.equals(currentUserID)){
+                    receiversId.add(id);
+                }
+            }
         }
         this.getLastMessageDetails(channelsId);
+        this.getChannelMembers(receiversId);
         channels = channelModelList;
-
     }
 
     private void sendChannelMembersInView(List<UserDto> channelMembers){

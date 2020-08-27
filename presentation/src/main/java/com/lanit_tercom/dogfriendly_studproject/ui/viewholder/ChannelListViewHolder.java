@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.library.presentation.ui.viewholder.BaseViewHolder;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,7 +46,8 @@ public class ChannelListViewHolder extends BaseViewHolder {
     }
 
     public void setUserProfileImage(Uri imageID){
-        userProfileImage.setImageURI(imageID);
+        Picasso.get().load(imageID).into(userProfileImage);
+        //userProfileImage.setImageURI(imageID);
     }
 
     public void setUserReceiverName(String userName) {

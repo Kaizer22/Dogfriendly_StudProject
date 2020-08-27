@@ -63,7 +63,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     public void onBindViewHolder(@NonNull ChannelListViewHolder holder, int position) {
         ChannelModel channelModel = channels.get(position);
         holder.setUserProfileImage(getUserAvatar(channelModel));
-        holder.setUserReceiverName(channelModel.getName());
+        holder.setUserReceiverName(getUserName(channelModel)); //channelModel.getName()
         holder.setLastMessage(channelModel.getLastMessage());
         holder.setLastMessageTime(getLastMessageTime(channelModel));
 
@@ -183,7 +183,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         for (UserModel userModel: channelMembers) {
             if ((userModel.getId()).equals(userId)) {
                 avatar = userModel.getAvatar();
-                break;
+                return avatar;
             }
         }
 
@@ -196,6 +196,25 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
             avatar = uri;
         }
         return avatar;
+    }
+
+    private String getUserName(ChannelModel channelModel){
+        String name = "...";
+        if (channelMembers.isEmpty()){
+            return "NAME";
+        }
+        else {
+            for (String members: channelModel.getMembers()){
+                for (UserModel userId: channelMembers){
+                    if (members.equals(userId.getId())){
+                        name = userId.getName();
+                    }
+                }
+            }
+
+        }
+
+        return name;
     }
 
     private String getLastMessageTime(ChannelModel channelModel){
