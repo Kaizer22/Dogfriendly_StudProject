@@ -2,7 +2,6 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.message;
 
 import com.lanit_tercom.dogfriendly_studproject.data.entity.MessageEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
-import com.lanit_tercom.domain.repository.MessageRepository;
 
 import java.util.List;
 
@@ -20,10 +19,6 @@ public interface MessageEntityStore {
         void onMessagesLoaded(List<MessageEntity> messages);
     }
 
-    interface LastMessagesDetailsCallback extends Error{
-        void onLastMessagesLoaded(List<MessageEntity> messages);
-    }
-
     interface MessagePostCallback extends Error {
         void onMessagePosted();
     }
@@ -38,7 +33,6 @@ public interface MessageEntityStore {
 
     void getMessages(String channelId, MessagesDetailCallback messagesDetailCallback);
 
-    void getLastMessages(List<String> channelsId, LastMessagesDetailsCallback callback);
 
     void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback);
 

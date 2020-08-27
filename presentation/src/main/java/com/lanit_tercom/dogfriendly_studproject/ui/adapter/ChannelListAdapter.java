@@ -16,9 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lanit_tercom.dogfriendly_studproject.R;
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
-import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
-import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.ChannelListActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity;
 import com.lanit_tercom.dogfriendly_studproject.ui.viewholder.ChannelListViewHolder;
@@ -37,18 +35,16 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
     private List<ChannelModel> channels;
     private List<UserModel> channelMembers;
     private List<ChannelModel> pinnedChannels;
-    private MessageModel lastMessageModel;
+    private List<ChannelModel> unpinnedChannels;
     private Context context;
 
-    private ChannelListPresenter channelPresenter;
 
-
-    public ChannelListAdapter(Context context, ChannelListPresenter channelPresenter){
+    public ChannelListAdapter(Context context){
         this.channels = new ArrayList<>();
         this.channelMembers = new ArrayList<>();
         this.pinnedChannels = new ArrayList<>();
+        //this.unpinnedChannels = new ArrayList<>();
         this.context = context;
-        this.channelPresenter =channelPresenter;
         inflater = LayoutInflater.from(context);
     }
 
@@ -67,6 +63,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         holder.setLastMessage(channelModel.getLastMessage());
         holder.setLastMessageTime(getLastMessageTime(channelModel));
 
+        //holder.setTurnNotifications(channelModel.);
         holder.itemView.setOnClickListener(v -> {
             //String channelId = channelModel.getId();
             if (context != null && context instanceof MainNavigationActivity){
@@ -126,15 +123,15 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         validateChannelList(channelList);
         channels.clear();
         pinnedChannels.clear();
-
         for (ChannelModel channel: channelList){
             if (channel.isPinned())
                 pinnedChannels.add(channel);
             else channels.add(channel);
         }
-        Collections.sort(channels, Collections.reverseOrder());
+        //channels.addAll(channelList);
         for (ChannelModel channel: pinnedChannels)
-            channels.add(0, channel);
+            channels.add(channel);
+        Collections.reverse(channels);
         notifyDataSetChanged();
     }
 
@@ -143,15 +140,6 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         channelMembers.clear();
         channelMembers.addAll(users);
         notifyDataSetChanged();
-    }
-
-    public void setLastMessage(MessageModel messageModel){
-        this.lastMessageModel = messageModel;
-        notifyDataSetChanged();
-    }
-
-    public MessageModel getLastMessageModel(){
-        return lastMessageModel;
     }
 
     public ChannelModel getChannelByID(int position){
@@ -195,6 +183,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
             Uri uri = builder.build();
             avatar = uri;
             }
+        //System.out.println("Avatar uri: " + avatar);
         return avatar;
     }
 
@@ -217,9 +206,7 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         }
         else if ((diff > 60000 * 60 * 24*2) && (diff < 60000L*60*24*365)) {
             long time = diff / 60 / 60000 / 24;
-            if (time%10 == 1)
-                lastMessageTime = time + "день";
-            else if (time%10 < 4 || (time>19))
+            if (time%10 < 4)
                 lastMessageTime = time + " дня";
             else
                 lastMessageTime = time + " дней";

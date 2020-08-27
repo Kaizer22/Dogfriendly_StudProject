@@ -60,7 +60,7 @@ public class ChannelDtoModelMapper {
         return channelDto;
     }
 
-    public List<ChannelModel> transformList(List<ChannelDto> channelDtoList){
+    public Collection<ChannelModel> transformList(List<ChannelDto> channelDtoList){
         List<ChannelModel> channelModelList;
 
         if (channelDtoList != null && !channelDtoList.isEmpty()){
