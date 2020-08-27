@@ -11,6 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
+import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.UserCache
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.photo.PhotoStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
+import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.data.repository.PhotoRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
+import com.lanit_tercom.dogfriendly_studproject.executor.UIThread
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailObserverPresenter
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailObserverView
@@ -18,8 +30,25 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.Character
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.CharacterAdapter
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PhotoAdapter
+import com.lanit_tercom.domain.executor.PostExecutionThread
+import com.lanit_tercom.domain.executor.ThreadExecutor
+import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase
+import com.lanit_tercom.domain.interactor.channel.impl.AddChannelUseCaseImpl
+import com.lanit_tercom.domain.interactor.photo.DeletePhotoUseCase
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoArrayUseCaseImpl
+import com.lanit_tercom.domain.interactor.photo.impl.DeletePhotoUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.DeletePetUseCase
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase
+import com.lanit_tercom.domain.interactor.user.impl.DeletePetUseCaseImpl
+import com.lanit_tercom.domain.interactor.user.impl.GetUserDetailsUseCaseImpl
+import com.lanit_tercom.domain.repository.ChannelRepository
+import com.lanit_tercom.domain.repository.PhotoRepository
+import com.lanit_tercom.domain.repository.UserRepository
+import com.lanit_tercom.library.data.manager.NetworkManager
+import com.lanit_tercom.library.data.manager.impl.NetworkManagerImpl
 
-class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), PetDetailObserverView {
+class PetDetailObserverFragment(private val userId: String,
+        private val pet: PetModel) : BaseFragment(), PetDetailObserverView {
     private lateinit var avatar: ImageView
     private lateinit var name: TextView
     private lateinit var description: TextView
@@ -94,7 +123,7 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
 
         startChannel = view.findViewById(R.id.button_start_chat)
         startChannel.setOnClickListener { petDetailObserverPresenter.addChannel(petDetailObserverPresenter.currentUserId,
-                "oher_user_id","Новый канал") }
+                userId) }
 
         characterList = view.findViewById(R.id.character_list)
         photoList = view.findViewById(R.id.photo_list)
@@ -144,10 +173,31 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
     }
 
     override fun initializePresenter() {
-        //petDetailObserverPresenter = PetDetailObserverPresenter()
-    }
+        val threadExecutor: ThreadExecutor = JobExecutor.getInstance()
+        val postExecutionThread: PostExecutionThread = UIThread.getInstance()
+        val networkManager: NetworkManager = NetworkManagerImpl(context)
+        val channelCache: ChannelCache? = null
+        val channelStoreFactory = ChannelEntityStoreFactory(networkManager, channelCache)
+
+        val userCache: UserCache? = null
+        val userStoreFactory = UserEntityStoreFactory(networkManager, userCache)
+
+        val channelEntityDtoMapper = ChannelEntityDtoMapper()
+        val channelRepository: ChannelRepository = ChannelRepositoryImpl.getInstance(channelStoreFactory,
+        channelEntityDtoMapper)
+
+        val userEntityDtoMapper = UserEntityDtoMapper()
+        val userRepository: UserRepository = UserRepositoryImpl.getInstance(userStoreFactory,
+                userEntityDtoMapper)
+        //val channelEntityStoreFactory = ChannelEntityStoreFactory(networkManager, null)
 
 
+        val addChannel: AddChannelUseCase = AddChannelUseCaseImpl(channelRepository,
+                threadExecutor, postExecutionThread)
+        val getUserDetails: GetUserDetailsUseCase = GetUserDetailsUseCaseImpl(userRepository,
+                threadExecutor, postExecutionThread)
+
+        petDetailObserverPresenter = PetDetailObserverPresenter(addChannel, getUserDetails) }
 }
 
 

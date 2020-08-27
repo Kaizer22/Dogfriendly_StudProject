@@ -253,10 +253,10 @@ public class MainNavigationActivity extends BaseActivity {
                 .commit();
     }
 
-    public void startPetDetailObserver(PetModel pet){
+    public void startPetDetailObserver(String userId, PetModel pet){
         mapTopBar.setVisibility(View.GONE);
         mapSwitch.setChecked(false);
-        PetDetailObserverFragment petDetailObserverFragment = new PetDetailObserverFragment(pet);
+        PetDetailObserverFragment petDetailObserverFragment = new PetDetailObserverFragment(userId, pet);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, petDetailObserverFragment)
                 .commit();

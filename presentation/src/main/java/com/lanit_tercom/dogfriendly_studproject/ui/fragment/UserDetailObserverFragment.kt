@@ -90,10 +90,10 @@ class UserDetailObserverFragment(private val hostId: String?,
         age = view.findViewById(R.id.age)
         avatar = view.findViewById(R.id.user_avatar)
 
-        view.findViewById<ImageButton>(R.id.button_start_chat).setOnClickListener{
-            userDetailObserverPresenter?.startChatWithCurrentUser(hostId, userId, user?.name)
-            (activity as UserDetailObserverActivity).navigateToChannelList(AuthManagerFirebaseImpl().currentUserId)
-        }
+        //view.findViewById<ImageButton>(R.id.button_start_chat).setOnClickListener{
+           // userDetailObserverPresenter?.startChatWithCurrentUser(hostId, userId, user?.name)
+            //(activity as UserDetailObserverActivity).navigateToChannelList(AuthManagerFirebaseImpl().currentUserId)
+        //}
 
         view.findViewById<ImageButton>(R.id.edit_button).setOnClickListener {
             val dialog = Dialog(context!!)

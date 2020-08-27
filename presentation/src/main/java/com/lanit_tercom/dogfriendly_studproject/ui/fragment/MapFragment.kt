@@ -260,7 +260,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                     val userId = userIds[position]
                                     val petDto = petDtos[position]
                                     val mapper =  PetDtoModelMapper()
-                                    (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
+                                    (activity as MainNavigationActivity).startPetDetailObserver(userId, mapper.map2(petDto))
                                 }
                             })
                             if (dogRecycler != null){
@@ -304,7 +304,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     override fun onMarkerClick(p0: Marker?): Boolean {
         val mapper =  PetDtoModelMapper()
         val userId = p0?.title
-        (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(p0?.tag as PetDto))
+        (activity as MainNavigationActivity).startPetDetailObserver(userId, mapper.map2(p0?.tag as PetDto))
         return true
     }
 

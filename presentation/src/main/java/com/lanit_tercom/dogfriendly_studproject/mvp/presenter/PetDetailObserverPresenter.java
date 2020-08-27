@@ -7,8 +7,11 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStore;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailObserverView;
 import com.lanit_tercom.domain.dto.ChannelDto;
+import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase;
+import com.lanit_tercom.domain.interactor.user.GetUserDetailsUseCase;
+import com.lanit_tercom.domain.interactor.user.GetUsersByIdUseCase;
 
 import java.util.LinkedList;
 
@@ -18,9 +21,12 @@ public class PetDetailObserverPresenter extends BasePresenter {
     private AuthManager authManager;
 
     private AddChannelUseCase addChannel;
+    private GetUserDetailsUseCase getUserDetails;
 
-    public PetDetailObserverPresenter(AddChannelUseCase addChannel){
+    public PetDetailObserverPresenter(AddChannelUseCase addChannel,
+    GetUserDetailsUseCase getUserDetails){
         this.addChannel = addChannel;
+        this.getUserDetails = getUserDetails;
         authManager = new AuthManagerFirebaseImpl();
     }
     @Override
@@ -29,25 +35,39 @@ public class PetDetailObserverPresenter extends BasePresenter {
     }
 
 
-    public void addChannel(String hostID, String viewingUserId, String viewingUserName){
+    public void addChannel(String hostID, String viewingUserId){
         long timestamp = System.currentTimeMillis();
         LinkedList<String> members = new LinkedList<>();
         members.add(hostID);
         members.add(viewingUserId);
-        ChannelDto channelDto = new ChannelDto("id будет присвоен при добавлении в БД",
-                viewingUserName, "Пусто...", viewingUserId, timestamp, members);
-        addChannel.execute(channelDto, new AddChannelUseCase.Callback() {
+
+        getUserDetails.execute(viewingUserId, new GetUserDetailsUseCase.Callback() {
             @Override
-            public void onChannelAdded() {
-                //view.navigateToChat();
-                Log.d("PET_OBSERVER","CHANNEL CREATED");
+            public void onUserDataLoaded(UserDto userDto) {
+                ChannelDto channelDto = new ChannelDto("id будет присвоен при добавлении в БД",
+                        userDto.getName(), "Пусто...", viewingUserId, timestamp, members);
+                addChannel.execute(channelDto, new AddChannelUseCase.Callback() {
+                    @Override
+                    public void onChannelAdded() {
+                        //view.navigateToChat();
+                        Log.d("PET_OBSERVER","CHANNEL CREATED");
+                    }
+
+                    @Override
+                    public void onError(ErrorBundle errorBundle) {
+                        errorBundle.getException().printStackTrace();
+                    }
+                });
             }
 
             @Override
             public void onError(ErrorBundle errorBundle) {
-                errorBundle.getException().printStackTrace();
+
             }
         });
+
+
+
     }
 
     public void setView(PetDetailObserverView view) {
