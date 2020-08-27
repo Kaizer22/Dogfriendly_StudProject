@@ -1,14 +1,18 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire;
+import com.lanit_tercom.dogfriendly_studproject.data.geofire.WalkGeoFire;
 import com.lanit_tercom.dogfriendly_studproject.mapper.WalkDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.WalkModel;
+import com.lanit_tercom.dogfriendly_studproject.ui.fragment.MapFragment;
 import com.lanit_tercom.domain.dto.WalkDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.walk.AddWalkUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class InvitationPresenter extends BasePresenter {
 
@@ -50,6 +54,7 @@ public class InvitationPresenter extends BasePresenter {
 
             }
         });
+
     }
 
 

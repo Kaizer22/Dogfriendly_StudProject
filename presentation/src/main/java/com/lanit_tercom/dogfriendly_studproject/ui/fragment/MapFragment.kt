@@ -231,8 +231,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                             allUsers?.forEach { user ->
                                 if (nearUsers.keys.contains(user.id) && user.id != currentId) {
                                     if (user.pets != null) {
-                                        userIds.add(user.id)
                                         user.pets.forEach { pet ->
+                                            userIds.add(user.id)
                                             petDtos.add(pet.value)
                                             names.add(pet.value.name)
                                             if (pet.value.avatar != null)
