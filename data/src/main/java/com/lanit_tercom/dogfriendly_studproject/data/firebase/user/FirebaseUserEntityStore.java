@@ -149,9 +149,15 @@ public class FirebaseUserEntityStore implements UserEntityStore {
 
     @Override
     public void deletePet(String userId, String petId, DeletePetCallback deletePetCallback) {
-        referenceDatabase.child(userId).child("pets").child(petId).removeValue()
-                .addOnSuccessListener(aVoid -> deletePetCallback.onPetDeleted())
-                .addOnFailureListener(e -> deletePetCallback.onError(new RepositoryErrorBundle(e)));
+        if(userId != null && petId != null){
+            referenceDatabase.child(userId).child("pets").child(petId).removeValue()
+                    .addOnSuccessListener(aVoid -> deletePetCallback.onPetDeleted())
+                    .addOnFailureListener(e -> deletePetCallback.onError(new RepositoryErrorBundle(e)));
+        } else {
+            deletePetCallback.onError(new RepositoryErrorBundle(new IllegalArgumentException()));
+            Log.i("TEST_ACTIVITY", "SOMETHING WENT WRONG WHILE PET DELETION");
+        }
+
     }
 
     private void putUserEntityInCache(String userId, UserEntity userEntity) {
