@@ -66,6 +66,9 @@ public class MainNavigationActivity extends BaseActivity {
     private EditTextFragment editAboutFragment;
     //endregion
 
+    private AppBarLayout mapTopBar;
+    private Switch mapSwitch;
+
     public static Intent getCallingIntent(Context context){
         return new Intent(context, MainNavigationActivity.class);
     }
@@ -109,8 +112,8 @@ public class MainNavigationActivity extends BaseActivity {
 
     private void initBottomNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        AppBarLayout mapTopBar = findViewById(R.id.map_app_bar);
-        Switch mapSwitch = findViewById(R.id.switch_visibility);
+        mapTopBar = findViewById(R.id.map_app_bar);
+        mapSwitch = findViewById(R.id.switch_visibility);
         navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
         navView.setItemIconTintList(ContextCompat
                 .getColorStateList(this, R.color.bottom_navigation_colors_list));
@@ -251,6 +254,8 @@ public class MainNavigationActivity extends BaseActivity {
     }
 
     public void startPetDetailObserver(PetModel pet){
+        mapTopBar.setVisibility(View.GONE);
+        mapSwitch.setChecked(false);
         PetDetailObserverFragment petDetailObserverFragment = new PetDetailObserverFragment(pet);
         getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.nav_host_fragment, petDetailObserverFragment)

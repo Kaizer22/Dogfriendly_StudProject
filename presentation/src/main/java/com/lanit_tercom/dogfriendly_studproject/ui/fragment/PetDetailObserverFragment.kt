@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.PetModel
+import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.PetDetailObserverPresenter
+import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailObserverView
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.PetDetailView
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.Character
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.CharacterAdapter
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.PhotoAdapter
 
-class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), PetDetailView{
+class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), PetDetailObserverView {
     private lateinit var avatar: ImageView
     private lateinit var name: TextView
     private lateinit var description: TextView
@@ -25,9 +28,12 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
     private lateinit var photoList: RecyclerView
     private lateinit var genderImage: ImageView
 
+    private lateinit var startChannel: ImageButton
+
     private lateinit var characterAdapter: CharacterAdapter
     private lateinit var photoAdapter: PhotoAdapter
 
+    private lateinit var petDetailObserverPresenter: PetDetailObserverPresenter
 
 
     private fun ageDesc(age: Int?): String{
@@ -86,6 +92,10 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
         aboutText = view.findViewById(R.id.about_text)
         genderImage = view.findViewById(R.id.gender_image)
 
+        startChannel = view.findViewById(R.id.button_start_chat)
+        startChannel.setOnClickListener { petDetailObserverPresenter.addChannel(petDetailObserverPresenter.currentUserId,
+                "oher_user_id","Новый канал") }
+
         characterList = view.findViewById(R.id.character_list)
         photoList = view.findViewById(R.id.photo_list)
 
@@ -134,6 +144,7 @@ class PetDetailObserverFragment(private val pet: PetModel) : BaseFragment(), Pet
     }
 
     override fun initializePresenter() {
+        //petDetailObserverPresenter = PetDetailObserverPresenter()
     }
 
 

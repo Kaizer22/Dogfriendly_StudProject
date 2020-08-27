@@ -37,7 +37,7 @@ class UserDetailObserverPresenter(private val getUserDetailsUseCase: GetUserDeta
         members.add(hostID.toString())
         Log.d("PRESENTER", "host - $hostID    veiwing - $viewingUserID")
         val channelDto  =  ChannelDto("id будет присвоен при добавлении в БД",
-            viewingUserName, "Тишина...", viewingUserID, timestamp, members)
+            viewingUserName, "Пусто...", viewingUserID, timestamp, members)
         addChannelUseCase?.execute(channelDto, addChannelCallback)
     }
 
