@@ -77,7 +77,7 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
             deletePhotoArrayUseCase.execute(photos as? ArrayList<String>?, deletePhotoArrayCallback)
         }
-        
+
 
     }
 

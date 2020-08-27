@@ -63,15 +63,22 @@ public class FirebasePhotoStore implements PhotoStore {
     }
 
     public void deletePhotoArray(ArrayList<String> photoList, DeletePhotoArrayCallback deletePhotoArrayCallback){
-        for(int i = 0;i<photoList.size();i++){
-            int finalI = i;
-            FirebaseStorage.getInstance().getReferenceFromUrl(photoList.get(i)).delete()
-                    .addOnSuccessListener(aVoid -> {
-                        if(finalI == photoList.size()-1)
-                            deletePhotoArrayCallback.onPhotoArrayDeleted();
-                    })
-                    .addOnFailureListener(e -> deletePhotoArrayCallback.onError(new RepositoryErrorBundle(e)));
+        if(photoList != null){
+            for(int i = 0;i<photoList.size();i++){
+                int finalI = i;
+                FirebaseStorage.getInstance().getReferenceFromUrl(photoList.get(i)).delete()
+                        .addOnSuccessListener(aVoid -> {
+                            if(finalI == photoList.size()-1)
+                                deletePhotoArrayCallback.onPhotoArrayDeleted();
+                        })
+                        .addOnFailureListener(e -> deletePhotoArrayCallback.onError(new RepositoryErrorBundle(e)));
+            }
+        } else {
+            deletePhotoArrayCallback.onError(new RepositoryErrorBundle(new IllegalArgumentException()));
+            Log.i("TEST_ACTIVITY", "SOMETHING WENT WRONG WHILE PET DELETION");
         }
+
+
     }
 
 
