@@ -35,11 +35,15 @@ public interface MessageRepository {
     //to get messages
     interface MessagesDetailCallback extends Error{
         void onMessagesLoaded(List<MessageDto> messages);
+    }
 
-
+    interface LastMessagesDetailCallback extends Error{
+        void onLastMessagesLoaded(List<MessageDto> lastMessages);
     }
 
     void getMessages(String channelId, MessagesDetailCallback callback);
+
+    void getLastMessages(List<String> channelsId, LastMessagesDetailCallback callback);
 
     void postMessage(MessageDto message, MessagePostCallback callback);
 
