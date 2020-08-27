@@ -99,6 +99,6 @@ public class ChannelModel implements Comparable<ChannelModel>{
 
     @Override
     public int compareTo(ChannelModel o) {
-        return (int) (this.getTimestamp() - o.getTimestamp());
+        return this.getTimestamp().compareTo(o.getTimestamp());
     }
 }

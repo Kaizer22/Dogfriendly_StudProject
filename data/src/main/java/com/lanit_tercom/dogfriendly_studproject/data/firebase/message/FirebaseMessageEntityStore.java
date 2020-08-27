@@ -69,7 +69,8 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     public void getLastMessages(List<String> channelsId, LastMessagesDetailsCallback callback) {
         final List<MessageEntity> lastmessages = new ArrayList<>();
         final List<MessageEntity> messages = new ArrayList<>();
-        //messages.clear();
+        lastmessages.clear();
+        messages.clear();
         for (String channelId : channelsId) {
             referenceDatabase.child(channelId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
                 @Override

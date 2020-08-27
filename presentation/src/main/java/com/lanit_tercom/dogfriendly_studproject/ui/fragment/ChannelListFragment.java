@@ -241,8 +241,14 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
             for (ChannelModel channel: channels){
                 for (MessageModel message: messages){
                     if (channel.getId().equals(message.getChatID())){
-                        channel.setLastMessage(message.getText());
-                        channel.setTimestamp(message.getTime().getTime());
+                        if (message.getText().isEmpty()) {
+                            channel.setLastMessage("...");
+                            channel.setTimestamp(0L);
+                        }
+                        else {
+                            channel.setLastMessage(message.getText());
+                            channel.setTimestamp(message.getTime().getTime());
+                        }
                     }
                 }
             }

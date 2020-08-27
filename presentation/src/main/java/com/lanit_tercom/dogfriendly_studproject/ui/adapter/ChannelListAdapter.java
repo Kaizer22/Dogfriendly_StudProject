@@ -203,7 +203,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         Date currentDate = new Date();
         String lastMessageTime = "";
         long diff = currentDate.getTime() - date.getTime();
-        if (diff < 60000){
+        if (date.getTime() == 0L){
+            lastMessageTime = "";
+        }
+        else if (diff < 60000){
             lastMessageTime = "сейчас";
         }
         else if(diff < 3600000){
