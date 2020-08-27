@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.exception.RepositoryErrorBundle;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
 
@@ -96,6 +97,11 @@ public class FirebaseChannelEntityStore implements ChannelEntityStore{
                     .addOnSuccessListener(aVoid -> callback.onChannelEdited())
                     .addOnFailureListener(e -> callback.onError(new RepositoryErrorBundle(e)));
         }
+    }
+
+    @Override
+    public void getReceiversDetails(List<String> channelsId, String currentUserId, GetUsersReceiverDetails callback) {
+        final List<UserEntity> receivers = new ArrayList<>();
     }
 
     @Override

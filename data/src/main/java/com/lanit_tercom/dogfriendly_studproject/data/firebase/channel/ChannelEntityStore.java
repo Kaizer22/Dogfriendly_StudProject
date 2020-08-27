@@ -2,6 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.channel;
 
 
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
+import com.lanit_tercom.dogfriendly_studproject.data.entity.UserEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
 import java.util.List;
@@ -35,6 +36,12 @@ public interface ChannelEntityStore {
         void onError(ErrorBundle errorBundle);
     }
 
+    interface GetUsersReceiverDetails{
+        void onUsersDetailsLoaded(List<UserEntity> receivers);
+
+        void onError(ErrorBundle errorBundle);
+    }
+
     void getChannels(String userId, GetChannelsCallback callback);
 
     void addChannel(ChannelEntity channel, AddChannelCallback callback);
@@ -42,4 +49,6 @@ public interface ChannelEntityStore {
     void deleteChannel(String userId, ChannelEntity channel, DeleteChannelCallback callback);
 
     void editChannel(ChannelEntity channelEntity, EditChannelCallback callback);
+
+    void getReceiversDetails(List<String> channelsId, String currentUserId, GetUsersReceiverDetails callback);
 }

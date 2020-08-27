@@ -29,7 +29,11 @@ public class MessageDtoModelMapper extends BaseMapper<MessageDto, MessageModel> 
         String messageID = o1.getId();
         String chatID = o1.getChannelId();
         String senderID = o1.getUserName();
-        Date time = new Date(o1.getTimestamp());
+        Date time;
+        if (o1.getTimestamp() == null){
+            time = new Date();
+        }
+        else time = new Date(o1.getTimestamp());
         String text = o1.getBody();
         MessageModel messageModel = new MessageModel(messageID, senderID, chatID, text);
         messageModel.setTime(time);
