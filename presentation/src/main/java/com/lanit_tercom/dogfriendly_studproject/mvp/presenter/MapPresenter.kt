@@ -37,8 +37,8 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
     }
 
 
-    fun renderMap(pet: PetDto, latitude: Double?, longitude: Double?){
-        view?.renderUserOnMap(pet, latitude, longitude)
+    fun renderMap(userId: String?, pet: PetDto?, latitude: Double?, longitude: Double?){
+        view?.renderUserOnMap(userId, pet, latitude, longitude)
     }
 
     private val usersDetailsCallback = object: GetUsersDetailsUseCase.Callback{
@@ -60,7 +60,7 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
             val user =users?.find { it.id == key }
             if (user != null && user.pets != null){
                 for (pet in user.pets){
-                    this@MapPresenter.renderMap(pet.value , latitude, longitude)
+                    this@MapPresenter.renderMap(user.id, pet.value , latitude, longitude)
                     return
                 }
             }

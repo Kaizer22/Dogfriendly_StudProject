@@ -28,7 +28,6 @@ class MapActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
-        button_map_settings.setOnClickListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,11 +48,11 @@ class MapActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() { return }
     override fun onClick(v: View?) {
-        when (v?.id){
-            R.id.button_map_settings -> {
-                startActivity(Intent(this, MapSettingsActivity::class.java))
-            }
-        }
+//        when (v?.id){
+//            R.id.button_map_settings -> {
+//                startActivity(Intent(this, MapSettingsActivity::class.java))
+//            }
+//        }
     }
 
 

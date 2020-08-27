@@ -44,23 +44,26 @@
                 android:src="@drawable/ic_add"
                 app:fabCustomSize="30dp" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Включить видимость"
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black"
+                android:layout_gravity="center"/>
+
             <Switch
+                android:scaleX="1.5"
+                android:scaleY="1.5"
                 android:id="@+id/switch_visibility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:backgroundTint="@color/primaryLight"
-                app:layout_anchorGravity="center" />
-
-            <ImageButton
-                android:id="@+id/button_map_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="10dp"
-                android:background="@null"
-                android:src="@drawable/ic_map_settings"
-                app:layout_anchorGravity="end|center_vertical" />
+                android:backgroundTint="@color/primaryLight"
+                app:layout_anchorGravity="end|center_vertical"
+                android:layout_marginEnd="20dp"/>
+
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>

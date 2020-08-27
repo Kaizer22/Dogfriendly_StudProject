@@ -220,7 +220,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                     userMapPresenter?.getUsersDetails(object : GetUsersDetailsUseCase.Callback {
                         override fun onUsersDataLoaded(users: MutableList<UserDto>?) {
                             allUsers = users
-
+                            val userIds = mutableListOf<String>()
                             val petDtos = mutableListOf<PetDto>()
                             val names = mutableListOf<String>()
                             val imageIds = mutableListOf<String>()
@@ -231,6 +231,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                             allUsers?.forEach { user ->
                                 if (nearUsers.keys.contains(user.id) && user.id != currentId) {
                                     if (user.pets != null) {
+                                        userIds.add(user.id)
                                         user.pets.forEach { pet ->
                                             petDtos.add(pet.value)
                                             names.add(pet.value.name)
@@ -252,10 +253,11 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                 if (user.id == currentId) currentUser = user
                             }
 
-                            val adapter = DogAdapter(petDtos.toTypedArray(), names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                            val adapter = DogAdapter(userIds.toTypedArray(), petDtos.toTypedArray(), names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
                             adapter.setListener(object : DogAdapter.Listener {
                                 override fun onClick(position: Int) {
                                     //Вот тут я хочу получить UserId хозяйна питомца
+                                    val userId = userIds[position]
                                     val petDto = petDtos[position]
                                     val mapper =  PetDtoModelMapper()
                                     (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
@@ -301,6 +303,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     override fun onMarkerClick(p0: Marker?): Boolean {
         val mapper =  PetDtoModelMapper()
+        val userId = p0?.title
         (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(p0?.tag as PetDto))
         return true
     }
@@ -424,7 +427,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
     }
 
 
-    override fun renderUserOnMap(pet: PetDto?, latitude: Double?, longitude: Double?) {
+    override fun renderUserOnMap(userId: String?, pet: PetDto?, latitude: Double?, longitude: Double?) {
         map?.apply {
             val point = LatLng(latitude!!, longitude!!)
             val imageView = ImageView(requireActivity())
@@ -439,7 +442,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                             .position(point)
                                             .anchor(0.5F, 0.5F)
                                             .icon(BitmapDescriptorFactory.fromBitmap(userMapPresenter?.resizeMapIcons(resource, 5)))
-                                            .title(pet?.id)
+                                            .title(userId)
                             )
                             marker.tag = pet
                         }
@@ -462,6 +465,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                 if (!locationPermissionGranted()) getLocationPermission()
                 else {
                     getDeviceLocation()
+                    userMapPresenter?.initialize(currentId,0.0)
                 }
             }
             //Открытие окна с seekBar для поиска поблизости
