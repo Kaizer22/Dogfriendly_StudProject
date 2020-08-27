@@ -9,6 +9,6 @@ import com.lanit_tercom.domain.dto.PetDto
  */
 interface MapView : LoadDataView{
 
-    fun renderUserOnMap(pet: PetDto?, latitude: Double?, longitude: Double?)
+    fun renderUserOnMap(userId: String?, pet: PetDto?, latitude: Double?, longitude: Double?)
 
 }

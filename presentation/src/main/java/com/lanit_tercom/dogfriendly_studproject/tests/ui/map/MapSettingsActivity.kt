@@ -17,26 +17,26 @@ class MapSettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map_settings)
-        setSupportActionBar(toolbar as Toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        val user = MapFragment.currentUser
-        val pets = user?.pets
-        val petDtos = mutableListOf<PetDto>()
-        val names = mutableListOf<String>()
-        val imageIds = mutableListOf<String>()
-        val distances = mutableListOf<Int?>()
-        val breeds = mutableListOf<String>()
-        val ages = mutableListOf<Int>()
-        pets?.forEach {
-            names.add(it.value.name)
-            imageIds.add(it.value.avatar)
-        }
-        val dogRecycler = map_settings_recycler_view
-
-        val adapter = DogAdapter(petDtos.toTypedArray(),names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map_settings")
-        dogRecycler.adapter = adapter
-        dogRecycler.layoutManager = LinearLayoutManager(this)
+//        setSupportActionBar(toolbar as Toolbar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayShowTitleEnabled(false)
+//        val user = MapFragment.currentUser
+//        val pets = user?.pets
+//        val petDtos = mutableListOf<PetDto>()
+//        val names = mutableListOf<String>()
+//        val imageIds = mutableListOf<String>()
+//        val distances = mutableListOf<Int?>()
+//        val breeds = mutableListOf<String>()
+//        val ages = mutableListOf<Int>()
+//        pets?.forEach {
+//            names.add(it.value.name)
+//            imageIds.add(it.value.avatar)
+//        }
+//        val dogRecycler = map_settings_recycler_view
+//
+//        val adapter = DogAdapter(petDtos.toTypedArray(),names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map_settings")
+//        dogRecycler.adapter = adapter
+//        dogRecycler.layoutManager = LinearLayoutManager(this)
 
     }
 }

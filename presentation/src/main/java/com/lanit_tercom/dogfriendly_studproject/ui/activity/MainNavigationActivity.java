@@ -174,9 +174,9 @@ public class MainNavigationActivity extends BaseActivity {
     }
 
     private void initInteractions(){
-        ImageButton mapSettings = findViewById(R.id.button_map_settings);
-        mapSettings.setOnClickListener(l ->
-                startActivity(new Intent(this, MapSettingsActivity.class)));
+//        ImageButton mapSettings = findViewById(R.id.button_map_settings);
+//        mapSettings.setOnClickListener(l ->
+//                startActivity(new Intent(this, MapSettingsActivity.class)));
     }
 
 
