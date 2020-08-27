@@ -10,6 +10,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -115,7 +116,21 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
 
                                 btnCancel.setOnClickListener{dialog.dismiss()}
                                 btnDelete.setOnClickListener {
-                                    userDetailPresenter?.deletePet(pets[viewHolder.adapterPosition].id, viewHolder.adapterPosition)
+                                    val position = viewHolder.adapterPosition
+
+                                    //Была очень редко вылезающая ошибка с -1 индексом в массиве (RecyclerView.NO_POSITION)
+                                    //В интернете мало инфы насчет фиксов, но я вроде изменил код так, что ошибка не вылезает
+                                    //Уже долгое время + поставил проверку, чтоб не вылетало в случае чего.
+                                    if(position != RecyclerView.NO_POSITION){
+                                        val petId = pets[position].id
+                                        pets.removeAt(position)
+                                        petListAdapter.notifyDataSetChanged()
+                                        userDetailPresenter?.deletePet(petId, position)
+                                    } else{
+                                        Toast.makeText(context, "Error while pet deletion, please try again", Toast.LENGTH_SHORT).show()
+                                        petListAdapter.notifyDataSetChanged()
+                                    }
+
                                     dialog.dismiss()
                                 }
 
@@ -266,10 +281,9 @@ class UserDetailFragment(private val userId: String?) : BaseFragment(), UserDeta
             for(model in petModelList){
                 val item = getPetListItem(model)
                 if(!pets.contains(item)) pets.add(item)
+                petListAdapter.notifyDataSetChanged()
             }
         }
-
-        petListAdapter.notifyDataSetChanged()
 
     }
 

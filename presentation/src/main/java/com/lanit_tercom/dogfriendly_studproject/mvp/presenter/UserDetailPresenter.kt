@@ -40,14 +40,9 @@ class UserDetailPresenter(private val getUserDetailsUseCase: GetUserDetailsUseCa
 
         val deletePetCallback: DeletePetUseCase.Callback = object : DeletePetUseCase.Callback {
 
-            override fun onPetDeleted() {
-                //Удаление питомца из списка происходит только после удаления его из базы данных (не очень красиво, но вроде работает)
-                (view as UserDetailFragment).pets.removeAt(position)
-                (view as UserDetailFragment).petListAdapter.notifyDataSetChanged()
-            }
+            override fun onPetDeleted() {}
 
-            override fun onError(errorBundle: ErrorBundle?) {
-            }
+            override fun onError(errorBundle: ErrorBundle?) {}
 
         }
 
