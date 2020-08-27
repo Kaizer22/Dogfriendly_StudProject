@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -33,8 +34,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.lanit_tercom.dogfriendly_studproject.R
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl
+import com.lanit_tercom.dogfriendly_studproject.data.entity.WalkEntity
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.walk.FirebaseWalkEntityStore
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.walk.WalkEntityStore
 import com.lanit_tercom.dogfriendly_studproject.data.geofire.UserGeoFire
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl
@@ -45,6 +49,7 @@ import com.lanit_tercom.dogfriendly_studproject.mvp.view.MapView
 import com.lanit_tercom.dogfriendly_studproject.tests.ui.pet_detail.PetDetailTestActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.activity.MainNavigationActivity
 import com.lanit_tercom.dogfriendly_studproject.ui.adapter.DogAdapter
+import com.lanit_tercom.dogfriendly_studproject.ui.adapter.WalkAdapter
 import com.lanit_tercom.domain.dto.PetDto
 import com.lanit_tercom.domain.dto.UserDto
 import com.lanit_tercom.domain.exception.ErrorBundle
@@ -228,6 +233,11 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                             val breeds = mutableListOf<String>()
                             val ages = mutableListOf<Int>()
 
+                            val walkUserIds = mutableListOf<String>()
+                            val walkIds = mutableListOf<String>()
+                            val walkNames = mutableListOf<String>()
+                            val walkDistances = mutableListOf<Int?>()
+
                             allUsers?.forEach { user ->
                                 if (nearUsers.keys.contains(user.id) && user.id != currentId) {
                                     if (user.pets != null) {
@@ -249,24 +259,54 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
                                             distances.add(distance)
                                         }
                                     }
+
+                                    FirebaseWalkEntityStore().getUserWalks(user.id, object: WalkEntityStore.GetWalksCallback{
+                                        override fun onError(errorBundle: ErrorBundle?) {
+                                            TODO("Not yet implemented")
+                                        }
+
+                                        override fun onWalksLoaded(walks: MutableList<WalkEntity>?) {
+                                            if (walks != null){
+                                                for (walk in walks){
+                                                    walkUserIds.add(walk.creator)
+                                                    walkIds.add(walk.walkId)
+                                                    walkNames.add(walk.name)
+                                                    val walkLat1 = currentLocation?.latitude!!
+                                                    val walkLong1 = currentLocation?.longitude!!
+                                                    val walkLat2 = nearUsers[user.id]?.get(0)!!
+                                                    val walkLong2 = nearUsers[user.id]?.get(1)!!
+                                                    var walkDistance = userMapPresenter?.distance(walkLat1, walkLat2, walkLong1, walkLong2, 0.0, 0.0)?.roundToInt()
+                                                    walkDistances.add(walkDistance)
+                                                }
+                                                val walksAdapter = WalkAdapter(walkUserIds.toTypedArray(), walkIds.toTypedArray(),walkNames.toTypedArray(), walkDistances.toTypedArray())
+                                                val adapter = DogAdapter(userIds.toTypedArray(), petDtos.toTypedArray(), names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
+                                                adapter.setListener(object : DogAdapter.Listener {
+                                                    override fun onClick(position: Int) {
+                                                        //Вот тут я хочу получить UserId хозяйна питомца
+                                                        val userId = userIds[position]
+                                                        val petDto = petDtos[position]
+                                                        val mapper =  PetDtoModelMapper()
+                                                        (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
+                                                    }
+                                                })
+                                                walksAdapter.setListener(object: WalkAdapter.Listener{
+                                                    override fun onClick(position: Int) {
+                                                        // TODO! Вот здесь можно работать с прогулкой: есть userId, walkId
+                                                        Toast.makeText(requireContext(), walkNames[position], Toast.LENGTH_LONG).show()
+                                                    }
+                                                })
+                                                val mergeAdapter = ConcatAdapter(adapter, walksAdapter)
+                                                if (dogRecycler != null){
+                                                    dogRecycler.adapter = mergeAdapter
+                                                    dogRecycler.layoutManager = LinearLayoutManager(activity)
+                                                }
+                                            }
+                                        }
+                                    })
                                 }
                                 if (user.id == currentId) currentUser = user
                             }
 
-                            val adapter = DogAdapter(userIds.toTypedArray(), petDtos.toTypedArray(), names.toTypedArray(), imageIds.toTypedArray(), distances.toTypedArray(), breeds.toTypedArray(), ages.toTypedArray(), "map")
-                            adapter.setListener(object : DogAdapter.Listener {
-                                override fun onClick(position: Int) {
-                                    //Вот тут я хочу получить UserId хозяйна питомца
-                                    val userId = userIds[position]
-                                    val petDto = petDtos[position]
-                                    val mapper =  PetDtoModelMapper()
-                                    (activity as MainNavigationActivity).startPetDetailObserver(mapper.map2(petDto))
-                                }
-                            })
-                            if (dogRecycler != null){
-                                dogRecycler.adapter = adapter
-                                dogRecycler.layoutManager = LinearLayoutManager(activity)
-                            }
                         }
 
                         override fun onError(errorBundle: ErrorBundle?) {
@@ -322,8 +362,8 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
 
     private fun createLocationRequest(): LocationRequest? {
         return LocationRequest.create()?.apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 15000
+            fastestInterval = 10000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }

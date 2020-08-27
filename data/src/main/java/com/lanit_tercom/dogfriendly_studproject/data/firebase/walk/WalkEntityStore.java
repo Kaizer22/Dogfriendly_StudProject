@@ -3,6 +3,9 @@ package com.lanit_tercom.dogfriendly_studproject.data.firebase.walk;
 import com.lanit_tercom.dogfriendly_studproject.data.entity.WalkEntity;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface WalkEntityStore {
 
     interface Error{
@@ -11,6 +14,9 @@ public interface WalkEntityStore {
 
     interface GetWalkCallback extends Error{
         void onWalkLoaded(WalkEntity walkEntity);
+    }
+    interface GetWalksCallback extends Error{
+        void onWalksLoaded(List<WalkEntity> walks);
     }
 
     interface AddWalkCallback extends Error{
