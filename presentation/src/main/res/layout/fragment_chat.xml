@@ -169,7 +169,7 @@
         android:layout_marginBottom="@dimen/indent_enormous"
         android:gravity="center"
         android:minLines="2"
-        android:text="Вы приняли приглашение USER_NAME, теперь договоритесь о встрече и в путь!"
+        android:text="@string/empty_chat_text"
         app:layout_constraintBottom_toBottomOf="@+id/chat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

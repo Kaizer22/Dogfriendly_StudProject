@@ -118,5 +118,6 @@
     <string name="pet_age_label">Возраст</string>
     <string name="pet_gender_label">Пол питомца</string>
     <string name="sign_out">Выйти из учетной записи</string>
+    <string name="empty_chat_text">Итак, а теперь договоритесь о встрече и в путь!</string>
 
 </resources>
