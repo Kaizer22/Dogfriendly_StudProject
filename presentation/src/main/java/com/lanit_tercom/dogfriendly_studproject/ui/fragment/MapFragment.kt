@@ -203,7 +203,7 @@ class MapFragment : BaseFragment(), MapView, OnMapReadyCallback, GoogleMap.OnMar
             stopLocationUpdates()
             dogRecycler.adapter = null
             dogRecycler.layoutManager = LinearLayoutManager(activity)
-            UserGeoFire().userDeleteLocation(currentId)
+            //UserGeoFire().userDeleteLocation(currentId)
         }
     }
 

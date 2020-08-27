@@ -95,7 +95,7 @@ class MapPresenter(private val getUsersDetailsUseCase: GetUsersDetailsUseCase) :
      * Изменение размера аватарок для карты (до 100х100 px)
      */
     fun resizeMapIcons(imageBitmap: Bitmap, multiplier: Int): Bitmap? {
-        return Bitmap.createScaledBitmap(imageBitmap, 100, 100, false)
+        return Bitmap.createScaledBitmap(imageBitmap, 150, 150, false)
     }
 
 }
