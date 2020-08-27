@@ -2,7 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
 import java.util.List;
 
-public class ChannelModel {
+public class ChannelModel implements Comparable<ChannelModel>{
 
     private String id;
     private String name;
@@ -96,5 +96,8 @@ public class ChannelModel {
     }
 
 
-
+    @Override
+    public int compareTo(ChannelModel o) {
+        return (int) (this.getTimestamp() - o.getTimestamp());
+    }
 }
