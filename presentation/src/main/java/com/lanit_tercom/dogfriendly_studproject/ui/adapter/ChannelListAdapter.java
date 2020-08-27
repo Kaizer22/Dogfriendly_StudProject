@@ -217,8 +217,10 @@ public class ChannelListAdapter extends RecyclerView.Adapter<ChannelListViewHold
         }
         else if ((diff > 60000 * 60 * 24*2) && (diff < 60000L*60*24*365)) {
             long time = diff / 60 / 60000 / 24;
-            if (time%10 == 1)
-                lastMessageTime = time + "день";
+            if (time%10 == 1 && time != 11)
+                lastMessageTime = time + " день";
+            else if (time>4 && time<21)
+                lastMessageTime = time + " дней";
             else if (time%10 < 4 || (time>19))
                 lastMessageTime = time + " дня";
             else
