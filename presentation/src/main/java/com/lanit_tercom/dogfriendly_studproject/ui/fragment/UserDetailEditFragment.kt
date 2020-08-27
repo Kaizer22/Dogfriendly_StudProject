@@ -127,7 +127,7 @@ class UserDetailEditFragment(private val user: UserModel): BaseFragment(), UserD
     private fun loadAvatar() {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setAspectRatio(1,1)
                 .setRequestedSize(320, 320)
                 .setActivityTitle("")

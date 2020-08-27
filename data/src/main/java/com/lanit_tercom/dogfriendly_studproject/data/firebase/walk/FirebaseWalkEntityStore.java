@@ -37,7 +37,7 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
 
     @Override
     public void getWalk(String userId, String walkId,  GetWalkCallback getWalkCallback) {
-        
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -53,6 +53,48 @@ public class FirebaseWalkEntityStore implements WalkEntityStore {
             }
         });
     }
+
+    public void getUserWalks(String userId,  GetWalksCallback getWalkCallback) {
+        final List<WalkEntity> walks = new ArrayList<>();
+        databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                walks.clear();
+                for (DataSnapshot keyNode: snapshot.getChildren()){
+                    WalkEntity walkEntityForList = keyNode.getValue(WalkEntity.class);
+                    walkEntityForList.setWalkId(keyNode.getKey());
+                    walks.add(walkEntityForList);
+                }
+                getWalkCallback.onWalksLoaded(walks);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                getWalkCallback.onError(new RepositoryErrorBundle(error.toException()));
+            }
+        });
+    }
+    /*
+            final List<UserEntity> users = new ArrayList<>();
+        referenceDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                users.clear();
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                    UserEntity userEntity = keyNode.getValue(UserEntity.class);
+                    userEntity.setId(keyNode.getKey());
+                    users.add(userEntity);
+                }
+                userListCallback.onUsersListLoaded(users); // return all users from Realtime Database
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                userListCallback.onError(new RepositoryErrorBundle(databaseError.toException()));
+            }
+        });
+     */
 
     @Override
     public void addWalk(WalkEntity walkEntity, AddWalkCallback addWalkCallback) {

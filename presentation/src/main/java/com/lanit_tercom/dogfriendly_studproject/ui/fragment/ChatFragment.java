@@ -280,6 +280,7 @@ public class ChatFragment extends BaseFragment implements ChatView {
     private void backToDialogsFragment(){
         ChatActivity baseActivity = (ChatActivity) getActivity();
         baseActivity.navigateToChannelsList();
+        baseActivity.finish();
     }
 
     private void showEditDialog(MessageModel message){

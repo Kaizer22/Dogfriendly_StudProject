@@ -102,7 +102,6 @@ public class ChatPresenter extends BasePresenter {
             @Override
             public void onMessagePosted() {
                 refreshData();
-
             }
 
             @Override
@@ -154,26 +153,26 @@ public class ChatPresenter extends BasePresenter {
     }
 
     private void refreshChannelData() {
-        MessageModel lastMessage = messagesList.get(messagesList.size()-1);
-        channelModel.setLastMessage(
-                lastMessage.getText());
-        channelModel.setLastMessageOwner(
-                lastMessage.getSenderID());
-        channelModel.setTimestamp(
-                lastMessage.getTime().getTime());
+            MessageModel lastMessage = messagesList.get(messagesList.size() - 1);
+            channelModel.setLastMessage(
+                    lastMessage.getText());
+            channelModel.setLastMessageOwner(
+                    lastMessage.getSenderID());
+            channelModel.setTimestamp(
+                    lastMessage.getTime().getTime());
 
-        ChannelDto channelDto = channelMapper.mapToDto(channelModel);
-        editChannel.execute(channelDto, new EditChannelUseCase.Callback() {
-            @Override
-            public void onChannelEdited() {
-                Log.d("CHAT_PRESENTER", "CHANEL_EDITED");
-            }
+            ChannelDto channelDto = channelMapper.mapToDto(channelModel);
+            editChannel.execute(channelDto, new EditChannelUseCase.Callback() {
+                @Override
+                public void onChannelEdited() {
+                    Log.d("CHAT_PRESENTER", "CHANEL_EDITED");
+                }
 
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                errorBundle.getException().printStackTrace();
-            }
-        });
+                @Override
+                public void onError(ErrorBundle errorBundle) {
+                    errorBundle.getException().printStackTrace();
+                }
+            });
     }
 
     private void refreshUsersData() {
@@ -224,13 +223,15 @@ public class ChatPresenter extends BasePresenter {
         getMessages.execute(channelID, new GetMessagesUseCase.Callback() {
             @Override
             public void onMessagesDataLoaded(List<MessageDto> messages) {
+                Log.d("CHAT_PRESENTER", channelID);
                 for (MessageDto message: messages) {
+                    Log.d("CHAT_PRESENTER", message.getBody());
                    messagesList.add(
                             messageMapper.map2(message));
                 }
                 isChannelEmpty = messagesList.size() == 0;
                 if (!isChannelEmpty){
-                    refreshChannelData();
+                    //refreshChannelData();
                 }
                 view.renderMessages();
 
