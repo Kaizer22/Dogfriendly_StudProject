@@ -24,14 +24,19 @@ import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.
 import com.lanit_tercom.dogfriendly_studproject.data.entity.ChannelEntity;
 import com.lanit_tercom.dogfriendly_studproject.data.executor.JobExecutor;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.ChannelCache;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.cache.MessageCache;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.channel.ChannelEntityStoreFactory;
+import com.lanit_tercom.dogfriendly_studproject.data.firebase.message.MessageEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.firebase.user.UserEntityStoreFactory;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.ChannelEntityDtoMapper;
+import com.lanit_tercom.dogfriendly_studproject.data.mapper.MessageEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.mapper.UserEntityDtoMapper;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.ChannelRepositoryImpl;
+import com.lanit_tercom.dogfriendly_studproject.data.repository.MessageRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.data.repository.UserRepositoryImpl;
 import com.lanit_tercom.dogfriendly_studproject.executor.UIThread;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelListPresenter;
 import com.lanit_tercom.dogfriendly_studproject.mvp.presenter.ChannelRecyclerTouchListener;
@@ -48,6 +53,10 @@ import com.lanit_tercom.domain.interactor.channel.impl.AddChannelUseCaseImpl;
 import com.lanit_tercom.domain.interactor.channel.impl.DeleteChannelUseCaseImpl;
 import com.lanit_tercom.domain.interactor.channel.impl.EditChannelUseCaseImpl;
 import com.lanit_tercom.domain.interactor.channel.impl.GetChannelsUseCaseImpl;
+import com.lanit_tercom.domain.interactor.message.GetLastMessagesUseCase;
+import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
+import com.lanit_tercom.domain.interactor.message.impl.GetLastMessagesUseCaseImpl;
+import com.lanit_tercom.domain.interactor.message.impl.GetMessagesUseCaseImpl;
 import com.lanit_tercom.domain.interactor.user.GetUsersByIdUseCase;
 import com.lanit_tercom.domain.interactor.user.impl.GetUsersByIdUseCaseImpl;
 import com.lanit_tercom.library.data.manager.NetworkManager;
@@ -108,6 +117,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         NetworkManager networkManager = new NetworkManagerImpl(getContext());
         ChannelEntityDtoMapper dtoMapper = new ChannelEntityDtoMapper();
         UserEntityDtoMapper userEntityDtoMapper = new UserEntityDtoMapper();
+        MessageEntityDtoMapper messageEntityDtoMapper = new MessageEntityDtoMapper();
 
         ChannelCache channelCache = new ChannelCache() {
             @Override
@@ -116,11 +126,16 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
             }
         };
 
+        MessageCache messageCache = null;
+
         ChannelEntityStoreFactory channelEntityStoreFactory = new ChannelEntityStoreFactory(networkManager, channelCache);
         ChannelRepositoryImpl channelRepository = ChannelRepositoryImpl.getInstance(channelEntityStoreFactory, dtoMapper);
 
         UserEntityStoreFactory userEntityStoreFactory = new UserEntityStoreFactory(networkManager);
         UserRepositoryImpl userRepository = UserRepositoryImpl.getInstance(userEntityStoreFactory, userEntityDtoMapper);
+
+        MessageEntityStoreFactory messageEntityStoreFactory = new MessageEntityStoreFactory(networkManager, messageCache);
+        MessageRepositoryImpl messageRepository = MessageRepositoryImpl.getInstance(messageEntityStoreFactory, messageEntityDtoMapper);
 
         GetChannelsUseCase getChannelsUseCase = new GetChannelsUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
         AddChannelUseCase addChannelUseCase = new AddChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
@@ -128,13 +143,15 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
         DeleteChannelUseCase deleteChannelUseCase = new DeleteChannelUseCaseImpl(channelRepository, threadExecutor, postExecutionThread);
 
         GetUsersByIdUseCase getUsersByIdUseCase = new GetUsersByIdUseCaseImpl(userRepository, threadExecutor, postExecutionThread);
+        GetLastMessagesUseCase getLastMessagesUseCase = new GetLastMessagesUseCaseImpl(messageRepository, threadExecutor, postExecutionThread);
 
         channelListPresenter = new ChannelListPresenter(authManager,
                 getChannelsUseCase,
                 addChannelUseCase,
                 editChannelUseCase,
                 deleteChannelUseCase,
-                getUsersByIdUseCase);
+                getUsersByIdUseCase,
+                getLastMessagesUseCase);
 
         channelListPresenter.refreshChannelsData();
     }
@@ -203,7 +220,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     public void initRecycleView(@NotNull View view){
         channelListRecyclerView = view.findViewById(R.id.rv_channel);
         channelListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        channelListAdapter = new ChannelListAdapter(getContext());
+        channelListAdapter = new ChannelListAdapter(getContext(), channelListPresenter);
         channelListRecyclerView.setAdapter(channelListAdapter);
 
     }
@@ -213,7 +230,7 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     }
 
     @Override
-    public void renderChannels(List<ChannelModel> channels){
+    public void renderChannels(List<ChannelModel> channels, List<MessageModel> messages){
         if (channelListPresenter.isChannelListEmpty()){
             constraintLayout.setVisibility(View.VISIBLE);
             channelListRecyclerView.setVisibility(View.INVISIBLE);
@@ -221,7 +238,22 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
             constraintLayout.setVisibility(View.INVISIBLE);
             channelListRecyclerView.setVisibility(View.VISIBLE);
 
-        channelListAdapter.setChannels(channels);
+            for (ChannelModel channel: channels){
+                for (MessageModel message: messages){
+                    if (channel.getId().equals(message.getChatID())){
+                        if (message.getText().isEmpty()) {
+                            channel.setLastMessage("...");
+                            channel.setTimestamp(0L);
+                        }
+                        else {
+                            channel.setLastMessage(message.getText());
+                            channel.setTimestamp(message.getTime().getTime());
+                        }
+                    }
+                }
+            }
+
+            channelListAdapter.setChannels(channels);
 
         }
     }
@@ -230,6 +262,12 @@ public class ChannelListFragment extends BaseFragment implements ChannelListView
     public void renderChannelMembers(List<UserModel> channelMembers) {
         channelListAdapter.setChannelMembers(channelMembers);
     }
+
+    @Override
+    public void renderChannelLastMessage(MessageModel messageModel) {
+        channelListAdapter.setLastMessage(messageModel);
+    }
+
 
     private void initEmptyChannelList(View view){
         constraintLayout = view.findViewById(R.id.empty_channellist_layout);

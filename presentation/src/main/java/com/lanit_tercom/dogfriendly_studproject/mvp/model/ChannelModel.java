@@ -2,7 +2,7 @@ package com.lanit_tercom.dogfriendly_studproject.mvp.model;
 
 import java.util.List;
 
-public class ChannelModel {
+public class ChannelModel implements Comparable<ChannelModel>{
 
     private String id;
     private String name;
@@ -13,7 +13,8 @@ public class ChannelModel {
     private boolean offNotification;
     private List<String> members; // Время последнего полученного сообщения
 
-    public ChannelModel() {}
+    public ChannelModel() {
+    }
 
     public ChannelModel(String channelID,
                         String name,
@@ -96,5 +97,8 @@ public class ChannelModel {
     }
 
 
-
+    @Override
+    public int compareTo(ChannelModel o) {
+        return this.getTimestamp().compareTo(o.getTimestamp());
+    }
 }

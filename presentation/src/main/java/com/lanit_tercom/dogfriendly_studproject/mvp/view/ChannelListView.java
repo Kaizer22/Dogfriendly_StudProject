@@ -1,6 +1,7 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.view;
 
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 
 import java.util.List;
@@ -12,9 +13,11 @@ public interface ChannelListView extends LoadDataView{
      */
     void showUnreadMessage();
 
-    void renderChannels(List<ChannelModel> channels);
+    void renderChannels(List<ChannelModel> channels, List<MessageModel> messages);
 
     void renderChannelMembers(List<UserModel> channelMembers);
+
+    void renderChannelLastMessage(MessageModel messageModel);
 
     /**
      * View a {@link ChannelModel} profile/details.

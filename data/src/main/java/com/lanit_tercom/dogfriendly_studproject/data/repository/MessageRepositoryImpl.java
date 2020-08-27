@@ -31,7 +31,7 @@ public class MessageRepositoryImpl implements MessageRepository {
     private final MessageEntityDtoMapper messageEntityDtoMapper;
 
     protected MessageRepositoryImpl(MessageEntityStoreFactory messageEntityStoreFactory,
-                                 MessageEntityDtoMapper messageEntityDtoMapper) {
+                                    MessageEntityDtoMapper messageEntityDtoMapper) {
 
         if (messageEntityStoreFactory == null || messageEntityDtoMapper == null) {
             throw new IllegalArgumentException("Invalid null parameters in constructor!!!");
@@ -59,6 +59,24 @@ public class MessageRepositoryImpl implements MessageRepository {
             }
         });
 
+    }
+
+    @Override
+    public void getLastMessages(List<String> channelsId, LastMessagesDetailCallback callback) {
+        MessageEntityStore messageEntityStore = messageEntityStoreFactory.create();
+        messageEntityStore.getLastMessages(channelsId, new MessageEntityStore.LastMessagesDetailsCallback(){
+            @Override
+            public void onLastMessagesLoaded(List<MessageEntity> messages) {
+                List<MessageDto> messagesDtoList = MessageRepositoryImpl.this.messageEntityDtoMapper.mapForList(messages);
+                if (messagesDtoList != null)
+                    callback.onLastMessagesLoaded(messagesDtoList);
+                else callback.onError(new RepositoryErrorBundle(new MessageListException()));
+            }
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                callback.onError(errorBundle);
+            }
+        });
     }
 
     @Override

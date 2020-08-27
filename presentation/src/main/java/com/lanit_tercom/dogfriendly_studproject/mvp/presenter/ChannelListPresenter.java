@@ -1,20 +1,29 @@
 package com.lanit_tercom.dogfriendly_studproject.mvp.presenter;
 
 import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.AuthManager;
+import com.lanit_tercom.dogfriendly_studproject.data.auth_manager.firebase_impl.AuthManagerFirebaseImpl;
 import com.lanit_tercom.dogfriendly_studproject.mapper.ChannelDtoModelMapper;
+import com.lanit_tercom.dogfriendly_studproject.mapper.MessageDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mapper.UserDtoModelMapper;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.ChannelModel;
+import com.lanit_tercom.dogfriendly_studproject.mvp.model.MessageModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.model.UserModel;
 import com.lanit_tercom.dogfriendly_studproject.mvp.view.ChannelListView;
 import com.lanit_tercom.domain.dto.ChannelDto;
+import com.lanit_tercom.domain.dto.MessageDto;
 import com.lanit_tercom.domain.dto.UserDto;
 import com.lanit_tercom.domain.exception.ErrorBundle;
 import com.lanit_tercom.domain.interactor.channel.AddChannelUseCase;
 import com.lanit_tercom.domain.interactor.channel.DeleteChannelUseCase;
 import com.lanit_tercom.domain.interactor.channel.EditChannelUseCase;
 import com.lanit_tercom.domain.interactor.channel.GetChannelsUseCase;
+import com.lanit_tercom.domain.interactor.message.GetLastMessagesUseCase;
+import com.lanit_tercom.domain.interactor.message.GetMessagesUseCase;
 import com.lanit_tercom.domain.interactor.user.GetUsersByIdUseCase;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,9 +32,15 @@ public class ChannelListPresenter extends BasePresenter {
 
     private ChannelListView channelListView;
 
+    List<MessageModel> messages = new ArrayList<>();
+    List<ChannelModel> channels = new ArrayList<>();
+    List<UserModel> channelMembersList = new ArrayList<>();
+    String currentUserID = new AuthManagerFirebaseImpl().getCurrentUserId();
+
     private AuthManager authManager;
     private ChannelDtoModelMapper channelModelMapper;
     private UserDtoModelMapper userModelMapper;
+    private MessageDtoModelMapper messageDtoModelMapper;
     private boolean isChannelListEmpty;
 
     private GetChannelsUseCase getChannels;
@@ -33,22 +48,26 @@ public class ChannelListPresenter extends BasePresenter {
     private EditChannelUseCase editChannel;
     private DeleteChannelUseCase deleteChannel;
     private GetUsersByIdUseCase getUsersByIdUseCase;
+    private GetLastMessagesUseCase getLastMessagesUseCase;
 
     public ChannelListPresenter(AuthManager authManager,
                                 GetChannelsUseCase getChannelListUseCase,
                                 AddChannelUseCase addChannelUseCase,
                                 EditChannelUseCase editChannelUseCase,
                                 DeleteChannelUseCase deleteChannelUseCase,
-                                GetUsersByIdUseCase getUsersByIdUseCase){
+                                GetUsersByIdUseCase getUsersByIdUseCase,
+                                GetLastMessagesUseCase getLastMessagesUseCase){
         this.authManager = authManager;
         this.getChannels = getChannelListUseCase;
         this.addChannel = addChannelUseCase;
         this.editChannel = editChannelUseCase;
         this.deleteChannel = deleteChannelUseCase;
         this.getUsersByIdUseCase = getUsersByIdUseCase;
+        this.getLastMessagesUseCase = getLastMessagesUseCase;
 
         channelModelMapper = new ChannelDtoModelMapper();
         userModelMapper = new UserDtoModelMapper();
+        messageDtoModelMapper = new MessageDtoModelMapper();
     }
 
     public void setView(ChannelListView view){
@@ -86,8 +105,8 @@ public class ChannelListPresenter extends BasePresenter {
         });
     }
 
-    public void getChannelMembers(List<String> membersId){
-        this.getUsersByIdUseCase.execute(membersId, new GetUsersByIdUseCase.Callback() {
+    public void getChannelMembers(List<String> channelsId, String currentUserID){
+        this.getUsersByIdUseCase.execute(channelsId, new GetUsersByIdUseCase.Callback() {
             @Override
             public void onUsersDataLoaded(List<UserDto> users) {
                 ChannelListPresenter.this.sendChannelMembersInView(users);
@@ -101,7 +120,6 @@ public class ChannelListPresenter extends BasePresenter {
     }
 
     public void editChannel(ChannelModel channelModel){
-
         ChannelDto channelDto = channelModelMapper.mapToDto(channelModel);
         this.editChannel.execute(channelDto, new EditChannelUseCase.Callback() {
             @Override
@@ -116,8 +134,18 @@ public class ChannelListPresenter extends BasePresenter {
         });
     }
 
-    public void turnOffNotifications(ChannelModel channelModel){
-        //TODO Отключение уведомлений в выбранном диалоге
+    public void getLastMessageDetails(List<String> channelsId){
+        this.getLastMessagesUseCase.execute(channelsId, new GetLastMessagesUseCase.Callback() {
+            @Override
+            public void onLastMessagesLoaded(List<MessageDto> messages) {
+                ChannelListPresenter.this.showLastMessageInView(messages);
+            }
+
+            @Override
+            public void onError(ErrorBundle errorBundle) {
+                errorBundle.getException().printStackTrace();
+            }
+        });
     }
 
     public void initialize(){
@@ -139,14 +167,27 @@ public class ChannelListPresenter extends BasePresenter {
     }
 
     private void showChannelListInView(List<ChannelDto> channelDtoList){
-        final Collection<ChannelModel> channelModelList = this.channelModelMapper.transformList(channelDtoList);
-        this.channelListView.renderChannels((List<ChannelModel>) channelModelList);
+        List<String> channelsId = new ArrayList<>();
+        final List<ChannelModel> channelModelList = this.channelModelMapper.transformList(channelDtoList);
+
+        for (ChannelModel channel: channelModelList){
+            channelsId.add(channel.getId());
+        }
+        this.getLastMessageDetails(channelsId);
+        channels = channelModelList;
+
     }
 
     private void sendChannelMembersInView(List<UserDto> channelMembers){
-        final List<UserModel> userModelList = this.userModelMapper.fromDtoToModelList(channelMembers);
-        this.channelListView.renderChannelMembers(userModelList);
+        channelMembersList = this.userModelMapper.fromDtoToModelList(channelMembers);
+        this.channelListView.renderChannelMembers(channelMembersList);
     }
+
+    private void showLastMessageInView(@NotNull List<MessageDto> messageDtoList){
+        messages = this.messageDtoModelMapper.map2(messageDtoList);
+        this.channelListView.renderChannels(channels, messages);
+    }
+
 
 
     public void refreshChannelsData(){

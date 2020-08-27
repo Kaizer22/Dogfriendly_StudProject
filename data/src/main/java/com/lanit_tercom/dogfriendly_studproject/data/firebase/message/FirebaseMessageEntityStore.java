@@ -66,6 +66,37 @@ public class FirebaseMessageEntityStore implements MessageEntityStore {
     }
 
     @Override
+    public void getLastMessages(List<String> channelsId, LastMessagesDetailsCallback callback) {
+        final List<MessageEntity> lastmessages = new ArrayList<>();
+        final List<MessageEntity> messages = new ArrayList<>();
+        lastmessages.clear();
+        messages.clear();
+        for (String channelId : channelsId) {
+            referenceDatabase.child(channelId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Iterable<DataSnapshot> snapshots = snapshot.getChildren();
+                    for (DataSnapshot keyNode : snapshots) {
+                        MessageEntity messageEntity = keyNode.getValue(MessageEntity.class);
+                        messages.add(messageEntity);
+                    }
+                    //Это решает проблему с пустым каналом
+                    if (!messages.isEmpty()){
+                        lastmessages.add(messages.get(messages.size()-1));
+                    }
+                    callback.onLastMessagesLoaded(lastmessages);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    callback.onError(new RepositoryErrorBundle(error.toException()));
+                }
+            });
+        }
+    }
+
+    @Override
     public void postMessage(MessageEntity messageEntity, MessagePostCallback messagePostCallback) {
 
         String channelId = messageEntity.getChannelId();
