@@ -107,17 +107,19 @@ public class ChannelListPresenter extends BasePresenter {
     }
 
     public void getChannelMembers(List<String> membersId){
-        this.getUsersByIdUseCase.execute(membersId, new GetUsersByIdUseCase.Callback() {
-            @Override
-            public void onUsersDataLoaded(List<UserDto> users) {
-                ChannelListPresenter.this.sendChannelMembersInView(users);
-            }
+        if (!membersId.isEmpty()) {
+            this.getUsersByIdUseCase.execute(membersId, new GetUsersByIdUseCase.Callback() {
+                @Override
+                public void onUsersDataLoaded(List<UserDto> users) {
+                    ChannelListPresenter.this.sendChannelMembersInView(users);
+                }
 
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                errorBundle.getException().printStackTrace();
-            }
-        });
+                @Override
+                public void onError(ErrorBundle errorBundle) {
+                    errorBundle.getException().printStackTrace();
+                }
+            });
+        }
     }
 
     public void editChannel(ChannelModel channelModel){
