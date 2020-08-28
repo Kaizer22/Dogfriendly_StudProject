@@ -101,7 +101,7 @@ public class ChatPresenter extends BasePresenter {
         postMessage.execute(messageDto, new PostMessageUseCase.Callback() {
             @Override
             public void onMessagePosted() {
-                refreshData();
+//                refreshData();
             }
 
             @Override
@@ -117,7 +117,7 @@ public class ChatPresenter extends BasePresenter {
         editMessage.execute(messageDto, new EditMessageUseCase.Callback() {
             @Override
             public void onMessageEdited() {
-                refreshData();
+//                refreshData();
             }
 
             @Override
@@ -133,7 +133,7 @@ public class ChatPresenter extends BasePresenter {
         deleteMessage.execute(messageDto, new DeleteMessageUseCase.Callback() {
             @Override
             public void onMessageDeleted() {
-                refreshData();
+//                refreshData();
             }
 
             @Override
@@ -219,30 +219,32 @@ public class ChatPresenter extends BasePresenter {
     //}
 
     private void getMessagesFromDB(){
-        messagesList.clear();
-        getMessages.execute(channelID, new GetMessagesUseCase.Callback() {
-            @Override
-            public void onMessagesDataLoaded(List<MessageDto> messages) {
-                Log.d("CHAT_PRESENTER", channelID);
-                for (MessageDto message: messages) {
-                    Log.d("CHAT_PRESENTER", message.getBody());
-                   messagesList.add(
-                            messageMapper.map2(message));
-                }
-                isChannelEmpty = messagesList.size() == 0;
-                if (!isChannelEmpty){
-                    //refreshChannelData();
-                }
-                view.renderMessages();
-
-                view.hideLoading();
-            }
-            @Override
-            public void onError(ErrorBundle errorBundle) {
-                errorBundle.getException().printStackTrace();
-            }
-        });
+        getMessages.execute(channelID, getMessagesUseCase);
     }
+
+    private final GetMessagesUseCase.Callback getMessagesUseCase = new GetMessagesUseCase.Callback() {
+        @Override
+        public void onMessagesDataLoaded(List<MessageDto> messages) {
+            Log.d("CHAT_PRESENTER", channelID);
+            messagesList.clear();
+            for (MessageDto message: messages) {
+                Log.d("CHAT_PRESENTER", message.getBody());
+                messagesList.add(
+                        messageMapper.map2(message));
+            }
+            isChannelEmpty = messagesList.size() == 0;
+            if (!isChannelEmpty){
+                //refreshChannelData();
+            }
+            view.renderMessages();
+
+            view.hideLoading();
+        }
+        @Override
+        public void onError(ErrorBundle errorBundle) {
+            errorBundle.getException().printStackTrace();
+        }
+    };
 
     @Override
     public void onDestroy() {
